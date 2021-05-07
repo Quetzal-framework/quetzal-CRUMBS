@@ -1,4 +1,5 @@
-import unittest
+import unittest, math
+from pathlib import Path
 from crumbs import sequence, bpp
 
 class TestSequence(unittest.TestCase):
@@ -18,14 +19,15 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(sequences[1].header, "AZER2")
         self.assertEqual(sequences[1].sequence, "---CTGCACTCACCG")
 
-class TestSequence(unittest.TestCase):
+class TestBPP(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def test_bpp_extract_probability(self):
-        p1, p2 = bpp.extract_probabilities("test_data/bpp_output.txt")
-        self.assertEqual(p1, 0.0)
-        self.assertEqual(p2, 0.985)
+    def test_nb_species_posterior_probabilities(self):
+        string = Path('test_data/bpp_output.txt').read_text()
+        posterior = bpp.nb_species_posterior_probabilities(string)
+        assert math.isclose(posterior[1], 0.0)
+        assert math.isclose(posterior[2], 0.985)
 
 if __name__=="__main__":
     unittest.main()
