@@ -1,6 +1,6 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp
+from crumbs import sequence, bpp, random_lonlat
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -57,6 +57,9 @@ class TestTiff(unittest.TestCase):
         self.assertEqual(band.GetNoDataValue(), -3.4e+38)
         self.assertEqual(band.GetMinimum(), 0.15809911489487)
         self.assertEqual(band.GetMaximum(), 0.78696364164352)
+
+    def test_random_lonlat(self)
+        lonlat = random_lonlat("test_data/suitability.tif")
 
 if __name__=="__main__":
     unittest.main()
