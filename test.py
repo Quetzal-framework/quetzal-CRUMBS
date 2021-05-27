@@ -1,6 +1,6 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp, sample
+from crumbs import sequence, bpp, sample, get_simulations
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -60,6 +60,15 @@ class TestTiff(unittest.TestCase):
 
     def test_sample_latlon(self):
         latlon = sample.uniform_latlon("test_data/suitability.tif")
+
+class TestGetSimulation(unittest.TestCase):
+    def SetUp(self):
+        pass
+
+    def test_database_IDS(self):
+        # Open the file:
+        print(get_simulations.get_simulations("test_data/database.db", "quetzal_EGG_1"))
+
 
 if __name__=="__main__":
     unittest.main()
