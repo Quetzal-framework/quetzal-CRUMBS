@@ -26,13 +26,6 @@ jobs:
             cd build
             cmake ..
             cmake --build .
-      - run:
-          name: Setup cmake and build artifacts
-          command: |
-            mkdir build
-            cd build
-            cmake ..
-            cmake --build .
       - persist_to_workspace:
           root: .
           paths:
