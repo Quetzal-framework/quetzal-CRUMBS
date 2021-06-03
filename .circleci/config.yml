@@ -31,6 +31,7 @@ jobs:
           root: .
           paths:
             - quetzal-EGGS/build/stage/bin
+            - quetzal-EGGS/quetzal-EGGS-core/test/data
 
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
@@ -38,22 +39,13 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Setup quetzal child repo
+          name: Run simulation
           command: |
-            cd quetzal-EGGS-core/quetzal
-            git submodule init
-            git submodule update
-      - run:
-          name: Setup cmake and build artifacts
-          command: |
-            mkdir build
-            cd build
-            cmake ..
-            cmake --build .
+             ./qegg1 quetzal_egg_1.config suitability.tif sample.csv --output egg1.out
       - persist_to_workspace:
           root: .
           paths:
-            - build/stage/bin/
+            - egg1.out
 
   build-and-test-CRUMBS:  # This is the name of the job, feel free to change it to better match what you're trying to do!
     # These next lines defines a Docker executors: https://circleci.com/docs/2.0/executor-types/
