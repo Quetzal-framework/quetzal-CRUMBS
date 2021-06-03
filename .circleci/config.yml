@@ -12,17 +12,7 @@ orbs:
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@1.2
 
-workflows:
-  sample:  # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
-    jobs:
-      - build-and-test-quetzal-EGGS
-      - generate-simulation-database
-      - build-and-test-quetzal-CRUMBS
-
 jobs:
-
   build-and-test-quetzal-EGGS: # we will use EGGS simulations to test database API
     executor: exectr
     steps:
@@ -47,7 +37,6 @@ jobs:
           root: .
           paths:
             - build
-
   generate-simulation-database: # generate output database that can be used to test CRUMBS API
     executor: exectr
     steps:
@@ -69,8 +58,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - build
-
+            - build/stage/bin/
 
   build-and-test:  # This is the name of the job, feel free to change it to better match what you're trying to do!
     # These next lines defines a Docker executors: https://circleci.com/docs/2.0/executor-types/
@@ -95,3 +83,11 @@ jobs:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
           command: pytest
+
+workflows:
+  version: 2
+  CRUMBS-integration:
+    jobs:
+      - build-and-test-quetzal-EGGS
+      - generate-simulation-database
+      #- build-and-test-quetzal-CRUMBS
