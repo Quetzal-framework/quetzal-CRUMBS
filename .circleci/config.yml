@@ -13,6 +13,7 @@ orbs:
   python: circleci/python@1.2
 
 jobs:
+
   build-and-test-EGGS: # we will use EGGS simulations to test database API
     executor: exectr
     steps:
@@ -29,7 +30,8 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - build
+            - quetzal-EGGS/build/stage/bin
+
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
     steps:
