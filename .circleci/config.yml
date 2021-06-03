@@ -13,7 +13,7 @@ orbs:
   python: circleci/python@1.2
 
 jobs:
-  build-and-test-quetzal-EGGS: # we will use EGGS simulations to test database API
+  build-and-test-EGGS: # we will use EGGS simulations to test database API
     executor: exectr
     steps:
       - checkout
@@ -37,7 +37,7 @@ jobs:
           root: .
           paths:
             - build
-  generate-simulation-database: # generate output database that can be used to test CRUMBS API
+  generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
     steps:
       - attach_workspace:
@@ -60,7 +60,7 @@ jobs:
           paths:
             - build/stage/bin/
 
-  build-and-test:  # This is the name of the job, feel free to change it to better match what you're trying to do!
+  build-and-test-CRUMBS:  # This is the name of the job, feel free to change it to better match what you're trying to do!
     # These next lines defines a Docker executors: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of the convenience images from CircleCI's Developer Hub
     # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images/image/cimg/python
@@ -88,6 +88,10 @@ workflows:
   version: 2
   CRUMBS-integration:
     jobs:
-      - build-and-test-quetzal-EGGS
-      - generate-simulation-database
-      #- build-and-test-quetzal-CRUMBS
+      - build-and-test-EGGS
+      - generate-EGGS-output:
+          requires:
+              - build-and-test-EGGS
+      - build-and-test-CRUMBS:
+          requires:
+            - generate-EGGS-output
