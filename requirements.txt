@@ -1,2 +1,2 @@
-GDAL==3.0.4
+GDAL
 pyvolve==1.0.3
