@@ -51,18 +51,11 @@ jobs:
 
   build-and-test-CRUMBS:
     docker:
-      - image: cimg/python:3.8
+      - image: arnaudbecheler/quetzal-eggs:latest
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: install GDAL
-          command: |
-            sudo apt-get install libgdal-dev
-            gdal-config --version  # to see what version of GDAL you have
-            export CPLUS_INCLUDE_PATH=/usr/include/gdal
-            export C_INCLUDE_PATH=/usr/include/gdal
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
