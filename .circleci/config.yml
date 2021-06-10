@@ -51,11 +51,20 @@ jobs:
 
   build-and-test-CRUMBS:
     docker:
-      - image: arnaudbecheler/quetzal-eggs:latest
+      - image: python/default
     steps:
       - checkout
       - attach_workspace:
           at: .
+      - run:
+          name: install GDAL
+          command: |
+            sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+            sudo apt-get update
+            sudo apt-get install gdal-bin
+            sudo apt-get install libgdal-dev
+            export CPLUS_INCLUDE_PATH=/usr/include/gdal
+            export C_INCLUDE_PATH=/usr/include/gdal
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
