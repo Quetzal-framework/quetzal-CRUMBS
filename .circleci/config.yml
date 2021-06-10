@@ -14,7 +14,7 @@ orbs:
 
 jobs:
 
-  build-and-test-EGGS: # we will use EGGS simulations to test database API
+  build-test-install-EGGS: # we will use EGGS simulations to test database API
     executor: exectr
     steps:
       - checkout
@@ -25,13 +25,13 @@ jobs:
             cd quetzal-EGGS
             mkdir build
             cd build
-            cmake ..
+            cmake -DCMAKE_INSTALL_PREFIX=./EGGS ..
             cmake --build .
+            cmake --install .
       - persist_to_workspace:
           root: .
           paths:
-            - quetzal-EGGS/build/stage/bin
-            - quetzal-EGGS/quetzal-EGGS-core/test/data
+            - EGGS/
 
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Run simulation
           command: |
-             ./quetzal-EGGS/build/src/quetzal-EGG1 quetzal-EGGS/test/data/quetzal_egg_1.config quetzal-EGGS/test/data/suitability.tif quetzal-EGGS/test/data/sample.csv --output egg1.out
+             ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv --output egg1.out
       - persist_to_workspace:
           root: .
           paths:
