@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Run simulation
           command: |
+              ls
              ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv
       - persist_to_workspace:
           root: .
