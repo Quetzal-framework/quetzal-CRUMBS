@@ -43,11 +43,7 @@ jobs:
           name: Run simulation
           command: |
             cd EGGS
-            ls
-            ./EGG1 --version
-            ./EGG1 --help
             ./EGG1 quetzal_EGG1.config suitability.tif sample.csv out.db
-            cd ..
       - persist_to_workspace:
           root: .
           paths:
@@ -60,14 +56,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: install dependencies
-          command: |
-            sudo -E apt-get update
-            sudo apt-get install libgdal-dev
-            gdal-config --version  # to see what version of GDAL you have
-            export CPLUS_INCLUDE_PATH=/usr/include/gdal
-            export C_INCLUDE_PATH=/usr/include/gdal
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
