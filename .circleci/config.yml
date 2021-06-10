@@ -44,6 +44,8 @@ jobs:
           command: |
             cd EGGS
             ls
+            ./EGG1 --version
+            ./EGG1 --help
             ./EGG1 quetzal_egg_1.config suitability.tif sample.csv
             cd ..
       - persist_to_workspace:
