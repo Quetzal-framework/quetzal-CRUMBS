@@ -32,7 +32,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - EGGS/
+            - ~/project/
 
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Run simulation
           command: |
-             ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv --output egg1.out
+             ./EGGS/EGG1 quetzal_egg_1.config suitability.tif sample.csv --output egg1.out
       - persist_to_workspace:
           root: .
           paths:
