@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Setup quetzal-EGGS repo
           command: |
+            pwd
             git clone --recurse-submodules https://github.com/Becheler/quetzal-EGGS
             cd quetzal-EGGS
             mkdir build
