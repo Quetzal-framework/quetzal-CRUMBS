@@ -25,14 +25,14 @@ jobs:
             cd quetzal-EGGS
             mkdir build
             cd build
-            cmake -DCMAKE_INSTALL_PREFIX=/EGGS ..
+            cmake ..
             cmake --build .
             ctest
             cmake --install .
       - persist_to_workspace:
           root: .
           paths:
-            - ~/project/
+            - .
 
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
     executor: exectr
@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Run simulation
           command: |
-             ./EGGS/EGG1 quetzal_egg_1.config suitability.tif sample.csv --output egg1.out
+             ./EGG1 quetzal_egg_1.config suitability.tif sample.csv --output egg1.out
       - persist_to_workspace:
           root: .
           paths:
