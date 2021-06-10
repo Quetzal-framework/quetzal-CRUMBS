@@ -21,7 +21,6 @@ jobs:
       - run:
           name: Setup quetzal-EGGS repo
           command: |
-            pwd
             git clone --recurse-submodules https://github.com/Becheler/quetzal-EGGS
             cd quetzal-EGGS
             mkdir build
@@ -43,8 +42,8 @@ jobs:
       - run:
           name: Run simulation
           command: |
-              ls
-             ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv
+            ls
+            ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv
       - persist_to_workspace:
           root: .
           paths:
