@@ -46,7 +46,7 @@ jobs:
             ls
             ./EGG1 --version
             ./EGG1 --help
-            ./EGG1 quetzal_egg_1.config suitability.tif sample.csv
+            ./EGG1 quetzal_egg_1.config suitability.tif sample.csv out.db
             cd ..
       - persist_to_workspace:
           root: .
