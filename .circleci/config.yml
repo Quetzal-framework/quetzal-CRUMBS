@@ -6,10 +6,6 @@ executors:
       - image: arnaudbecheler/quetzal-eggs:latest
 
 orbs:
-  # The python orb contains a set of prepackaged CircleCI configuration you can use repeatedly in your configuration files
-  # Orb commands and jobs help you with common scripting around a language/tool
-  # so you dont have to copy and paste it everywhere.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@1.2
 
 jobs:
@@ -51,20 +47,11 @@ jobs:
 
   build-and-test-CRUMBS:
     docker:
-      - image: python/default
+      - image: arnaudbecheler/quetzal-eggs:latest 
     steps:
       - checkout
       - attach_workspace:
           at: .
-      - run:
-          name: install GDAL
-          command: |
-            sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
-            sudo apt-get update
-            sudo apt-get install gdal-bin
-            sudo apt-get install libgdal-dev
-            export CPLUS_INCLUDE_PATH=/usr/include/gdal
-            export C_INCLUDE_PATH=/usr/include/gdal
       - python/install-packages:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
