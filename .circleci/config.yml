@@ -25,7 +25,7 @@ jobs:
             cd quetzal-EGGS
             mkdir build
             cd build
-            cmake -DCMAKE_INSTALL_PREFIX=EGGS ..
+            cmake -DCMAKE_INSTALL_PREFIX=./EGGS ..
             cmake --build .
             ctest
             cmake --install .
