@@ -27,6 +27,7 @@ jobs:
             cd build
             cmake -DCMAKE_INSTALL_PREFIX=./EGGS ..
             cmake --build .
+            ctest
             cmake --install .
       - persist_to_workspace:
           root: .
@@ -73,10 +74,10 @@ workflows:
   version: 2
   CRUMBS-integration:
     jobs:
-      - build-and-test-EGGS
+      - build-test-install-EGGS
       - generate-EGGS-output:
           requires:
-              - build-and-test-EGGS
+              - build-test-install-EGGS
       - build-and-test-CRUMBS:
           requires:
             - generate-EGGS-output
