@@ -26,7 +26,7 @@ jobs:
             cd quetzal-EGGS
             mkdir build
             cd build
-            cmake -DCMAKE_INSTALL_PREFIX=/root/project/ ..
+            cmake -DCMAKE_INSTALL_PREFIX=/root/project/EGGS ..
             cmake --build .
             ctest
             cmake --install .
@@ -43,11 +43,11 @@ jobs:
       - run:
           name: Run simulation
           command: |
-             ./EGG1 quetzal_egg_1.config suitability.tif sample.csv --output egg1.out
+             ./EGGS/EGG1 EGGS/quetzal_egg_1.config EGGS/suitability.tif EGGS/sample.csv --output EGGS/egg1.out
       - persist_to_workspace:
           root: .
           paths:
-            - egg1.out
+            - EGGS
 
   build-and-test-CRUMBS:
     docker:
