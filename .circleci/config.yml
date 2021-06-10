@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Run simulation
           command: |
-             ./quetzal-EGGS/build/stage/bin/qegg1 quetzal-EGGS/quetzal-EGGS-core/test/data/quetzal_egg_1.config quetzal-EGGS/quetzal-EGGS-core/test/data/suitability.tif quetzal-EGGS/quetzal-EGGS-core/test/data/sample.csv --output egg1.out
+             ./quetzal-EGGS/build/src/quetzal-EGG1 quetzal-EGGS/test/data/quetzal_egg_1.config quetzal-EGGS/test/data/suitability.tif quetzal-EGGS/test/data/sample.csv --output egg1.out
       - persist_to_workspace:
           root: .
           paths:
