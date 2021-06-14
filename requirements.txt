@@ -1,2 +1,3 @@
 pyvolve==1.0.3
 pygdal
+GDAL
