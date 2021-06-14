@@ -54,8 +54,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install gdal-bin
           ogrinfo --version
+          sudo apt install libpq-dev
           sudo apt-get install libgdal-dev
-          sudo apt-get install -f
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
       - attach_workspace:
