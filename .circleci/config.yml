@@ -50,8 +50,10 @@ jobs:
     steps:
       - checkout
       - run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt-get update
           sudo apt-get install libgdal-dev
-          gdal-config --version  # to see what version of GDAL you have
+          gdal-config --version
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
       - attach_workspace:
