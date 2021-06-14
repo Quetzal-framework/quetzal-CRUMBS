@@ -67,6 +67,9 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run:
+          name: Copy data for tests
+          command: cp EGGS/out.db test_data/
+      - run:
           name: Run tests
           command: python3 test.py
 
