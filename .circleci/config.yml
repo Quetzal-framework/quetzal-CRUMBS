@@ -46,8 +46,7 @@ jobs:
             - EGGS
 
   build-and-test-CRUMBS:
-    docker:
-      - image: arnaudbecheler/quetzal-eggs:latest 
+    executor: python/default
     steps:
       - checkout
       - attach_workspace:
