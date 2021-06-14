@@ -67,7 +67,7 @@ class TestGetSimulation(unittest.TestCase):
 
     def test_database_IDS(self):
         # Open the file:
-        print(get_simulations.get_simulations("test_data/database.db", "quetzal_EGG_1"))
+        print(get_simulations.get_simulations("test_data/out.db", "quetzal_EGG_1"))
 
 
 if __name__=="__main__":
