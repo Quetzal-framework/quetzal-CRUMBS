@@ -18,7 +18,7 @@ setup(
     author='Arnaud Becheler',
     author_email='arnaud.becheler@gmail.com',
     packages=["crumbs"],
-    include_package_data=True
+    include_package_data=True,
     install_requires=[
         'numpy',
         'GDAL',
