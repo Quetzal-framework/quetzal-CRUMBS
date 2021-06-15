@@ -46,7 +46,7 @@ jobs:
           paths:
             - EGGS
 
-  build-test:
+  build-test-CRUMBS:
     executor: python/default
     steps:
       - checkout
@@ -106,19 +106,19 @@ workflows:
       - generate-EGGS-output:
           requires:
               - build-test-install-EGGS
-      - build-test:
+      - build-test-CRUMBS:
           requires:
             - generate-EGGS-output
       - test_pypi_publish:
           requires:
-            - build_test
+            - build-test-CRUMBS
           filters:
             branches:
               only:
                 - develop
       - pypi_publish:
           requires:
-            - build_test
+            - build-test-CRUMBS
           filters:
             branches:
               only:
