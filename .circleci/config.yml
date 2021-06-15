@@ -73,19 +73,15 @@ jobs:
             pipenv install numpy
             pipenv install GDAL==3.2.1
       - run:
-          name: Run tests
-          command: pipenv run python3 tests/test.py
-      - run:
           name: Create a source distribution and a shareable wheel
           command: |
             pipenv run python3 -m build
             ls /dist
             pipenv install dist/quetzal-crumbs-0.0.2-py3-none-any.whl
-            pipenv install pytest
       - run:
-          name: Run test suite
-          command: pipenv run pytest
-
+          name: Run tests
+          command: pipenv run python3 tests/test.py
+          
   test_pypi_publish:
     docker:
       - image: circleci/python:3.6.4
