@@ -77,8 +77,11 @@ jobs:
       - run: 
           name: create whl and use pipenv to install dependencies
           command: |
-            python setup.py sdist bdist_wheel
-            pip install pipenv
+            python setup.py sdist bdist_wheel # creates a source distribution and a shareable wheel that can be published on pypi.org.
+            cd dist
+            ls
+            cd ..
+            pip3 install pipenv
             pipenv install dist/quetzal-crumbs-0.0.2-py3-none-any.whl
             pipenv install pytest
       - run:
