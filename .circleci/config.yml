@@ -74,7 +74,7 @@ jobs:
             pipenv install GDAL==3.2.1
       - run:
           name: Run tests
-          command: pipenv run python test.py
+          command: pipenv run python3 tests/test.py
       - run:
           name: Create a source distribution and a shareable wheel
           command: |
