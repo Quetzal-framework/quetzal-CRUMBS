@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="quetzal-crumbs",
-    version="0.0.1",
+    version="0.0.2",
     description='Utility scripts for Quetzal-based programs',
     long_description=README,
     long_description_content_type="text/markdown",
