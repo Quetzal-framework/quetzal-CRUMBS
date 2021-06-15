@@ -50,6 +50,11 @@ jobs:
     executor: python/default
     steps:
       - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Copy simulated database to package test data
+          command: cp EGGS/out.db test_data/
       - run:
           name: Install GDAL for python 
           command: |
@@ -63,19 +68,12 @@ jobs:
             sudo apt-get install libgdal-dev
             export CPLUS_INCLUDE_PATH=/usr/include/gdal
             export C_INCLUDE_PATH=/usr/include/gdal
-            pip install numpy
-            pip install GDAL==3.2.1
-      - attach_workspace:
-          at: .
-      - python/install-packages:
-          pkg-manager: pip
-          pip-dependency-file: requirements.txt
-      - run:
-          name: Copy simulated database to package test data
-          command: cp EGGS/out.db test_data/
+            pip install pipenv
+            pipenv install numpy
+            pipenv install GDAL==3.2.1
       - run:
           name: Run tests
-          command: python3 test.py
+          command: python test.py
       - run: 
           name: Create a source distribution and a shareable wheel
           command: |
