@@ -75,6 +75,21 @@ jobs:
           name: Run tests
           command: python3 test.py
 
+  build_test:
+    docker:
+      - image: circleci/python:3.6.4
+    steps:
+      - checkout  # checkout source code to working directory
+      - run:
+          command: |  # create whl and use pipenv to install dependencies
+            python setup.py sdist bdist_wheel
+            sudo pip install pipenv
+            pipenv install dist/quetzal-crumbs-0.0.1-py3-none-any.whl
+            pipenv install pytest
+      - run:
+          command: |  # Run test suite
+            pipenv run pytest
+
   test_pypi_publish:
     docker:
       - image: circleci/python:3.6.4
