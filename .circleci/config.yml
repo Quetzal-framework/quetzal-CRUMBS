@@ -50,7 +50,9 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - run: |
+      - run:
+        name: Install GDAL for python
+        command: |
           sudo add-apt-repository ppa:ubuntugis/ppa
           sudo apt-get update
           sudo apt-get install gdal-bin
@@ -75,12 +77,9 @@ jobs:
           name: Run tests
           command: python3 test.py
       - run: 
-          name: create whl and use pipenv to install dependencies
+          name: Create source distribution and sharable wheel
           command: |
-            python setup.py sdist bdist_wheel # creates a source distribution and a shareable wheel that can be published on pypi.org.
-            cd dist
-            ls
-            cd ..
+            python setup.py sdist bdist_wheel
             pip3 install pipenv
             pipenv install dist/quetzal-crumbs-0.0.2-py3-none-any.whl
             pipenv install pytest
