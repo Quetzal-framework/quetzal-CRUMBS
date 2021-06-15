@@ -47,7 +47,8 @@ jobs:
             - EGGS
 
   build-test-CRUMBS:
-    executor: python/default
+    docker:
+      - image: circleci/python:3.6.4
     steps:
       - checkout
       - attach_workspace:
