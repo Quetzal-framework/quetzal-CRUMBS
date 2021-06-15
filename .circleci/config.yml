@@ -78,7 +78,6 @@ jobs:
           name: Create a source distribution and a shareable wheel
           command: |
             python setup.py sdist bdist_wheel
-            pip install pipenv
             pipenv install dist/quetzal-crumbs-0.0.2-py3-none-any.whl
             pipenv install pytest
       - run:
