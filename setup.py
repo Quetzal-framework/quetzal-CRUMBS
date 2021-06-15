@@ -19,4 +19,9 @@ setup(
     author_email='arnaud.becheler@gmail.com',
     packages=["crumbs"],
     include_package_data=True
+    install_requires=[
+        'numpy',
+        'GDAL',
+        'pyvolve'
+    ]
 )
