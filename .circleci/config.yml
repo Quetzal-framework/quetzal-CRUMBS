@@ -54,7 +54,7 @@ jobs:
           at: .
       - run:
           name: Copy simulated database to package test data
-          command: cp EGGS/out.db test_data/
+          command: cp EGGS/out.db tests/data/
       - run:
           name: Install GDAL for python
           command: |
