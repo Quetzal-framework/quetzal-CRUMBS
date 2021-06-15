@@ -78,7 +78,7 @@ jobs:
           name: create whl and use pipenv to install dependencies
           command: |
             python setup.py sdist bdist_wheel
-            sudo pip install pipenv
+            pip install pipenv
             pipenv install dist/quetzal-crumbs-0.0.1-py3-none-any.whl
             pipenv install pytest
       - run:
