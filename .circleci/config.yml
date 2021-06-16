@@ -1,17 +1,17 @@
 version: 2.1
 
 executors:
-  exectr:
+  executor-eggs:
     docker:
       - image: arnaudbecheler/quetzal-eggs:latest
-
-orbs:
-  python: circleci/python@1.2
+  -executor-crumbs:
+    docker:
+      -image: arnaudbecheler/quetzal-crumbs:latest
 
 jobs:
 
   build-test-install-EGGS: # we will use EGGS simulations to test database API
-    executor: exectr
+    executor: executor-eggs
     steps:
       - checkout
       - run:
@@ -31,7 +31,7 @@ jobs:
             - EGGS
 
   generate-EGGS-output: # generate output database that can be used to test CRUMBS API
-    executor: exectr
+    executor: executor-eggs
     steps:
       - checkout
       - attach_workspace:
@@ -47,7 +47,7 @@ jobs:
             - EGGS
 
   build-test-CRUMBS:
-    executor: python/default
+    executor: executor-crumbs
     steps:
       - checkout
       - attach_workspace:
@@ -55,23 +55,6 @@ jobs:
       - run:
           name: Copy simulated database to package test data
           command: cp EGGS/out.db tests/data/
-      - run:
-          name: Install GDAL for python
-          command: |
-            sudo add-apt-repository ppa:ubuntugis/ppa
-            sudo apt-get update
-            sudo apt-get install gdal-bin
-            ogrinfo --version
-            sudo apt install libpq-dev
-            sudo apt install libmysqlclient-dev
-            sudo apt install default-libmysqlclient-dev
-            sudo apt-get install libgdal-dev
-            export CPLUS_INCLUDE_PATH=/usr/include/gdal
-            export C_INCLUDE_PATH=/usr/include/gdal
-            pip3 install --upgrade pip
-            pip3 install pipenv
-            pipenv install numpy
-            pipenv install GDAL==3.2.1
       - run:
           name: Create a source distribution and a shareable wheel
           command: |
