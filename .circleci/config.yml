@@ -6,7 +6,7 @@ executors:
       - image: arnaudbecheler/quetzal-eggs:latest
   -executor-crumbs:
     docker:
-      -image: arnaudbecheler/quetzal-crumbs:latest
+      - image: arnaudbecheler/quetzal-crumbs:latest
 
 jobs:
 
