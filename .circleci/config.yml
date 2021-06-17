@@ -64,7 +64,7 @@ jobs:
             cd dist
             ls
             cd ..
-            pipenv run pip3 install dist/quetzal-crumbs-0.0.2-py3-none-any.whl
+            pipenv run pip3 install dist/quetzal_crumbs-0.0.2-py3-none-any.whl
       - run:
           name: Run tests
           command: pipenv run python3 tests/test.py
