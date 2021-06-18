@@ -66,7 +66,7 @@ jobs:
           command: python3 tests/test.py
 
   test_pypi_publish:
-    executor: executor-eggs
+    executor: executor-crumbs
     steps:
       - checkout
       - run:
@@ -75,7 +75,7 @@ jobs:
             python3 -m build
             twine upload --repository testpypi dist/*
   pypi_publish:
-    executor: executor-eggs
+    executor: executor-crumbs
     steps:
       - checkout
       - run:
