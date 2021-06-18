@@ -58,12 +58,12 @@ jobs:
       - run:
           name: Create a source distribution and a shareable wheel
           command: |
-            pipenv install build
-            pipenv run python3 -m build
-            pipenv run pip3 install dist/quetzal_crumbs-0.0.2-py3-none-any.whl
+            pip3 install build
+            python3 -m build
+            pip3 install dist/quetzal_crumbs-0.0.2-py3-none-any.whl
       - run:
           name: Run tests
-          command: pipenv run python3 tests/test.py
+          command: python3 tests/test.py
 
   test_pypi_publish:
     docker:
