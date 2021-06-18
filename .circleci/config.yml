@@ -58,7 +58,6 @@ jobs:
       - run:
           name: Create a source distribution and a shareable wheel
           command: |
-            pip3 install build
             python3 -m build
             pip3 install dist/quetzal_crumbs-0.0.2-py3-none-any.whl
       - run:
@@ -71,7 +70,7 @@ jobs:
       - checkout
       - run:
           command: |  # create whl, install twine and publish to Test PyPI
-            pip3 install build twine
+            #pip3 install build twine
             python3 -m build
             python3 -m twine upload -u TESTPYPI_USERNAME -p TESTPYPI_PASSWORD --repository testpypi dist/*
   pypi_publish:
@@ -80,7 +79,7 @@ jobs:
       - checkout
       - run:
           command: |  # create whl, install twine and publish to PyPI
-            pip3 install build twine
+            #pip3 install build twine
             python3 -m build
             python3 -m twine upload -u PYPI_USERNAME -p PYPI_PASSWORD dist/*
 workflows:
