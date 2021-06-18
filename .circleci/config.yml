@@ -66,28 +66,23 @@ jobs:
           command: python3 tests/test.py
 
   test_pypi_publish:
-    docker:
-      - image: circleci/python:3.6.4
+    executor: executor-eggs
     steps:
       - checkout
       - run:
           command: |  # create whl, install twine and publish to Test PyPI
-            python setup.py sdist bdist_wheel
-            sudo pip install pipenv
-            pipenv install twine
-            pipenv run twine upload --repository testpypi dist/*
+            pip3 install build twine
+            python3 -m build
+            twine upload --repository testpypi dist/*
   pypi_publish:
-    docker:
-      - image: circleci/python:3.6.4
+    executor: executor-eggs
     steps:
       - checkout
       - run:
           command: |  # create whl, install twine and publish to PyPI
-            python setup.py sdist bdist_wheel
-            sudo pip install pipenv
-            pipenv install twine
-            pipenv run twine upload dist/*
-
+            pip3 install build twine
+            python3 -m build
+            twine upload dist/*
 workflows:
   version: 2
   CRUMBS-integration:
