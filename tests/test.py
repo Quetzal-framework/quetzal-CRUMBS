@@ -13,7 +13,7 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(s.sequence,"--ACGT")
 
     def test_parse(self):
-        generator = sequence.fasta_parse("test_data/sequences.fasta")
+        generator = sequence.fasta_parse("tests/data/sequences.fasta")
         sequences = list(generator)
         self.assertEqual(sequences[0].header, "QWER1")
         self.assertEqual(sequences[0].sequence, "GGCAGATTCCCCCTA")
@@ -25,7 +25,7 @@ class TestBPP(unittest.TestCase):
         pass
 
     def test_nb_species_posterior_probabilities(self):
-        string = Path('test_data/bpp_output.txt').read_text()
+        string = Path('tests/data/bpp_output.txt').read_text()
         posterior = bpp.nb_species_posterior_probabilities(string)
         assert math.isclose(posterior[1], 0.0)
         assert math.isclose(posterior[2], 0.985)
@@ -36,7 +36,7 @@ class TestTiff(unittest.TestCase):
 
     def test_rasterIO(self):
         # Open the file:
-        raster = gdal.Open(r'test_data/suitability.tif')
+        raster = gdal.Open(r'tests/data/suitability.tif')
         # Check type of the variable 'raster'
         type(raster)
         # Projection
@@ -59,7 +59,7 @@ class TestTiff(unittest.TestCase):
         self.assertEqual(band.GetMaximum(), 0.78696364164352)
 
     def test_sample_latlon(self):
-        latlon = sample.uniform_latlon("test_data/suitability.tif")
+        latlon = sample.uniform_latlon("tests/data/suitability.tif")
 
 class TestGetSimulation(unittest.TestCase):
     def SetUp(self):
@@ -67,7 +67,7 @@ class TestGetSimulation(unittest.TestCase):
 
     def test_database_IDS(self):
         # Open the file:
-        print(get_simulations.get_simulations("test_data/out.db", "quetzal_EGG_1"))
+        print(get_simulations.get_simulations("tests/data/out.db", "quetzal_EGG_1"))
 
 
 if __name__=="__main__":
