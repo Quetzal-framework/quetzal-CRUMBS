@@ -1,6 +1,6 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp, sample, get_simulations
+from crumbs import sequence, bpp, sample, get_simulations_rowids
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -67,7 +67,8 @@ class TestGetSimulation(unittest.TestCase):
 
     def test_database_IDS(self):
         # Open the file:
-        print(get_simulations.get_simulations("tests/data/out.db", "quetzal_EGG_1"))
+        print(get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=False))
+        print(get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=True))
 
 
 if __name__=="__main__":
