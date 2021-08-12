@@ -35,7 +35,7 @@ def get_simulations_rowids(database, table, failed=False):
     records = cursor.fetchall()
     rowids = list()
     for row in records:
-        ids.append(row[0])
+        rowids.append(row[0])
     conn.close()
     # return the result
     return rowids
