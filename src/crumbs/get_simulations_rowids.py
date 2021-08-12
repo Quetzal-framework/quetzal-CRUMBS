@@ -3,7 +3,7 @@ from optparse import OptionParser
 import os
 import re
 
-def get_simulations(database, table, failed=False):
+def get_simulations_rowids(database, table, failed=False):
     """Prints the rowids of simulations registered in the database.
 
     Parameters
@@ -46,7 +46,7 @@ def main(argv):
     parser.add_option("--table", type="str", dest="table", help="what quetzal-EGG was used (eg: quetzal_EGG_1)")
     parser.add_option("--failed", type="bool", dest="failed", default=False, help="only retrieve failed simulations")
     (options, args) = parser.parse_args(argv)
-    return get_simulations(options.database, options.table, options.failed)
+    return get_simulations_rowids(options.database, options.table, options.failed)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
