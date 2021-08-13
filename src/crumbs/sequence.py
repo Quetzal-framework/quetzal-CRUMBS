@@ -1,4 +1,4 @@
-import re, os
+import re, os, random
 
 class Sequence(object):
     """The Sequence object has a string *header* and various representations."""
