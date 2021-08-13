@@ -1,6 +1,7 @@
 import sqlite3
 from optparse import OptionParser
 import pyvolve
+from sequence import fasta_to_phyl
 
 def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output):
     temp = "temporary_sequences.fasta"
@@ -15,7 +16,7 @@ def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output)
         phylip_seqfile = "temp" + str(i) + ".phyl"
         phy_files.append(phylip_seqfile)
         my_evolver(seqfile=fasta_seqfile, seqfmt = "fasta", ratefile = None, infofile = None)
-        sequence.fasta_to_phyl(fasta_seqfile, phylip_seqfile)
+        fasta_to_phyl(fasta_seqfile, phylip_seqfile)
         os.remove(fasta_seqfile)
     phyl_output = "temp_seq.phyl"
     with open(phyl_output, 'w') as outfile:
