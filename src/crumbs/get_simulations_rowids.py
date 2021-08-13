@@ -1,7 +1,6 @@
 import sqlite3
 from optparse import OptionParser
-import os
-import re
+import os, re, sys
 
 def get_simulations_rowids(database, table, failed=False):
     """Prints the rowids of simulations registered in the database.
