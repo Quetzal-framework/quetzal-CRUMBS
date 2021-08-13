@@ -16,7 +16,7 @@ def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output)
         phylip_seqfile = "temp" + str(i) + ".phyl"
         phy_files.append(phylip_seqfile)
         my_evolver(seqfile=fasta_seqfile, seqfmt = "fasta", ratefile = None, infofile = None)
-        fasta_to_phylip(fasta_seqfile, phylip_seqfile)
+        sequence.fasta_to_phylip(fasta_seqfile, phylip_seqfile)
         os.remove(fasta_seqfile)
     phyl_output = "temp_seq.phyl"
     with open(phyl_output, 'w') as outfile:
