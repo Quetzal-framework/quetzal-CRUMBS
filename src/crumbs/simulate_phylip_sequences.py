@@ -1,6 +1,5 @@
-import sqlite3
+import sqlite3, pyvolve, os
 from optparse import OptionParser
-import pyvolve
 from crumbs.sequence import fasta_to_phylip
 
 def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output):
