@@ -6,19 +6,19 @@
 
 General utility scripts for the Quetzal framework projects
 
-# Usage in bash
+## Usage in bash
 
-## Sampling parameters in prior distribution:
+### Sampling parameters in prior distribution
 
-Sampling integers (eg population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
--------------------------------------------
-Sampling double (eg probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
----------------------------------------------------------
-Sampling coordinate in a landscape (geotiff): `latlon=($(python3 -m crumbs.sample "uniform_latlon" "suitability.tif" | tr -d '[],'))`
-* get latitude with `${latlon[0]}`
-* get longitude with `${latlon[1]}`
---------------------------------------------------------
-## To visualize the parameter space:
+* Sampling integers (eg population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
+* Sampling double (eg probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
+* Sampling coordinate in geotiff: `latlon=($(python3 -m crumbs.sample "uniform_latlon" "file.tif" | tr -d '[],'))`
+    * get latitude with `${latlon[0]}`
+    * get longitude with `${latlon[1]}`
+
+-------------------------------------------------------
+
+### To visualize the parameter space:
 
 What parameters lead to simulation that failed?
 
