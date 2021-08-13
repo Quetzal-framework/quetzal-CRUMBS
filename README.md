@@ -13,7 +13,8 @@ General utility scripts for the Quetzal framework projects
 
 * Sampling integers (eg population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
 * Sampling double (eg probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
-* Sampling coordinate in geotiff: `latlon=($(python3 -m crumbs.sample "uniform_latlon" "file.tif" | tr -d '[],'))`
+* Sampling a coordinate uniformly at random in a geotiff file:
+    * `latlon=($(python3 -m crumbs.sample "uniform_latlon" "file.tif" | tr -d '[],'))`
     * get latitude with `${latlon[0]}`
     * get longitude with `${latlon[1]}`
 

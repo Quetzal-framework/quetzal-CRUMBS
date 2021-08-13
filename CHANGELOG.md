@@ -18,3 +18,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Some documentation
 - Some tests
 - Try to use it on OSG
+
+## [0.0.4] - 2021-08-13
+
+### Added
+
+- Some documentation
+- Some tests
+- Try to use it on OSG
+
+## [0.0.5] - 2021-08-13
+
+### Added
+
+- Some documentation
+- Some tests
+- Try to use it on OSG
