@@ -30,7 +30,7 @@ def get_simulations_rowids(database, table, failed=False):
         else :
             cursor.execute("SELECT rowid, * FROM quetzal_EGG_1 WHERE newicks <> '';")
     else :
-        NotImplementedError("Error when setting option table: should be quetzal_EGG_n, where n = 1.")
+        raise NotImplementedError("Error when setting option table: should be quetzal_EGG_n, where n = 1.")
     # Build the rowids list
     records = cursor.fetchall()
     rowids = list()

@@ -1,6 +1,17 @@
 # quetzal-CRUMBS
-Geneal utility scripts for Quetzal projects
 
+General utility scripts for Quetzal projects
+
+# Updating the package
+
+  * create a *feature* branch, make updates to it.
+  * Create tests for it
+  * Bump the version in setup.py
+  * Bump the version of the whl file in the CircleCI config file
+  * Update the ChangeLog
+  * Push to GitHub
+
+When you have a successful build, create a GitHub Pull Request (PR) to the develop branch. If it looks good, merge it. When that build succeeds, create a PR to the main branch, review it, and merge.
 # Usage
 
 ## To visualize the parameter space:

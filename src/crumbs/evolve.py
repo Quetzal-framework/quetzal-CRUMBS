@@ -1,6 +1,6 @@
 import pyvolve
 
-def evolve(newicks, sequence_size, scale_tree):
+def evolve(newicks, sequence_size, scale_tree, output):
     temp = "temporary_sequences.fasta"
     phy_files = []
     my_model = pyvolve.Model("nucleotide")
