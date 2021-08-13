@@ -1,4 +1,4 @@
-# Quetzal-CRUMBS <img align="right" width="200" src="https://github.com/Becheler/Becheler.github.io/blob/master/draw/logos/quetzal_crumbs.png">
+# Quetzal-CRUMBS <img align="right" width="200" src="https://github.com/Becheler/Becheler.github.io/raw/master/draw/logos/quetzal_crumbs.png">
 
 [![Becheler](https://circleci.com/gh/Becheler/quetzal-CRUMBS.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
