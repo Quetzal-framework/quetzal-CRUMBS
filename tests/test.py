@@ -75,7 +75,7 @@ class TestGetSimulation(unittest.TestCase):
     def test_simulate_phylip(self):
         rowids = get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=False)
         sequence_size = 100
-        scaling_tree = 0.000025
+        scale_tree = 0.000025
         simulate_phylip_sequences.simulate_phylip_sequences("tests/data/out.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl")
 
 if __name__=="__main__":
