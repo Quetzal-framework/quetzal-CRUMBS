@@ -40,7 +40,7 @@ jobs:
           name: Run simulation
           command: |
             cd EGGS
-            ./EGG1 quetzal_EGG1.config suitability.tif sample.csv out.db --duration=400 --K_suit=500
+            ./EGG1 quetzal_EGG1.config suitability.tif sample.csv out.db --duration=363 --K_suit=500
       - persist_to_workspace:
           root: .
           paths:
