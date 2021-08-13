@@ -1,6 +1,5 @@
 import sqlite3
 from optparse import OptionParser
-import evolve
 
 def maybe_alter_table_to_add_2_columns(database, table):
     conn = sqlite3.connect(database)
