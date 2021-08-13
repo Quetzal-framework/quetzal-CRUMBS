@@ -2,7 +2,6 @@ import sqlite3
 from optparse import OptionParser
 import evolve
 
-
 def maybe_alter_table_to_add_2_columns(database, table):
     conn = sqlite3.connect(database)
     # Check that table is properly named
@@ -56,7 +55,7 @@ def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree,
         raise Runtime("Error when fetching row with rowid " + rowid + ". Make sure that row is defined in table using crumbs.get_simulations_rowids.")
     # newick formulas are separated by 2 Newline characters
     trees = record[0].split("\n\n")
-    newick_list_to_phylip_simulation(trees, sequence_size, scale_tree, output_file)
+    evolve.newick_list_to_phylip_simulation(trees, sequence_size, scale_tree, output_file)
     record_parameters(conn, )
     cursor.execute('''UPDATE quetzal_EGG_1 SET scale_tree = ? WHERE rowid = ?''', (scale_tree, rowid))
     cursor.execute('''UPDATE quetzal_EGG_1 SET sequence_size = ? WHERE rowid = ?''', (sequence_size, rowid))

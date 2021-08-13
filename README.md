@@ -4,6 +4,8 @@ General utility scripts for Quetzal projects
 
 # Updating the package
 
+From https://circleci.com/blog/publishing-a-python-package/ :
+
 * Create a `feature` branch, make updates to it.
 * Test the feature
 * Bump the version in `setup.py`

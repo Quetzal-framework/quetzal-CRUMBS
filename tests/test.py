@@ -1,6 +1,6 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp, sample, get_simulations_rowids, simulate_phylip_sequences
+from crumbs import sequence, bpp, sample, get_simulations_rowids, simulate_phylip_sequences, evolve
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
