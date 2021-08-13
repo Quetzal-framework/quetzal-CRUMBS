@@ -8,7 +8,7 @@ From https://circleci.com/blog/publishing-a-python-package/ :
 
 * Create a `feature` branch, make updates to it.
 * Test the feature
-* Bump the version in `setup.py`
+* Bump the version in `setup.cfg`
 * Bump the version of the `whl` file in `.circleci/config.yml`
 * Update the ChangeLog
 * Push to GitHub
