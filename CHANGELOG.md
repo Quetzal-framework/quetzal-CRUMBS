@@ -10,3 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Tests and CircleCI
+
+## [0.0.3] - 2021-08-12
+
+### Added
+
+- Some documentation
+- Some tests
+- Try to use it on OSG
