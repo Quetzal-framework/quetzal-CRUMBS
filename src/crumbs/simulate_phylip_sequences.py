@@ -80,7 +80,6 @@ def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree,
     # newick formulas are separated by 2 Newline characters
     trees = record[0].split("\n\n")
     newick_list_to_phylip_simulation(trees, sequence_size, scale_tree, output_file)
-    record_parameters(conn, )
     cursor.execute('''UPDATE quetzal_EGG_1 SET scale_tree = ? WHERE rowid = ?''', (scale_tree, rowid))
     cursor.execute('''UPDATE quetzal_EGG_1 SET sequence_size = ? WHERE rowid = ?''', (sequence_size, rowid))
     conn.commit()
