@@ -21,32 +21,32 @@ def maybe_alter_table_to_add_2_columns(database, table):
     return conn
 
 def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree, output_file):
-        """Add sequencReads newicks in database and simulate  the rowids of simulations registered in the database.
+    """Add sequencReads newicks in database and simulate  the rowids of simulations registered in the database.
 
-        Parameters
-        ----------
-        database : str
-            The path to the sqlite database.
+    Parameters
+    ----------
+    database : str
+        The path to the sqlite database.
 
-        table : str
-            The name of the database table to read from
+    table : str
+        The name of the database table to read from
 
-        rowid : int
-            The simulation row to read from
+    rowid : int
+        The simulation row to read from
 
-        sequence_size : int
-            The sequence length (in bp) to be simulated
+    sequence_size : int
+        The sequence length (in bp) to be simulated
 
-        scale_tree : double
-            The scaling factor along branches (see Pyvolve manual)
+    scale_tree : double
+        The scaling factor along branches (see Pyvolve manual)
 
-        output : str
-            The name of the output file where to store the result
-        Raises
-        ------
-        NotImplementedError
-            If the incorrect table name is passed as parameter.
-        """
+    output : str
+        The name of the output file where to store the result
+    Raises
+    ------
+    NotImplementedError
+        If the incorrect table name is passed as parameter.
+    """
     conn = maybe_alter_table_to_add_2_columns(database, table)
     cursor = conn.cursor()
     cursor.execute('SELECT newicks FROM quetzal_EGG_1 WHERE rowid=?', (rowid,))
