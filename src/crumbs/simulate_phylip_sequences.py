@@ -1,7 +1,7 @@
 import sqlite3
 from optparse import OptionParser
 import pyvolve
-from sequence import fasta_to_phylip
+from crumbs.sequence import fasta_to_phylip
 
 def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output):
     temp = "temporary_sequences.fasta"
