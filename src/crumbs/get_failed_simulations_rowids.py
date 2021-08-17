@@ -42,4 +42,5 @@ def main(argv):
     return get_failed_simulations_rowids(options.database, options.table)
 
 if __name__ == '__main__':
+    import sys
     main(sys.argv[1:])

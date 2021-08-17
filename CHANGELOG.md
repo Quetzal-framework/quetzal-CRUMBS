@@ -40,3 +40,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Failed/success simulation rowids getter syntax changed
+
+## [0.0.7] - 2021-08-17
+
+### Added
+
+- Import sys in module mode
