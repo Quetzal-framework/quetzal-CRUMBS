@@ -70,7 +70,7 @@ class TestGetSimulation(unittest.TestCase):
         print("Successful simulations rowids:")
         print(get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
         print("Failed simulations rowids:")
-        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=True))
+        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
 
     def test_simulate_phylip(self):
         rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1")
