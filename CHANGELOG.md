@@ -34,3 +34,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Some documentation
 - Some tests
 - Try to use it on OSG
+
+## [0.0.6] - 2021-08-17
+
+### Added
+
+- Failed/success simulation rowids getter syntax changed
