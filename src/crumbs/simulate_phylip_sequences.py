@@ -97,4 +97,5 @@ def main(argv):
     return simulate_phylip_sequences(options.database, options.table, options.rowid, options.sequence_size, options.scale_tree, options.output_file)
 
 if __name__ == '__main__':
+    import sys
     main(sys.argv[1:])

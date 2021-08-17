@@ -37,6 +37,7 @@ commands = {
 }
 
 if __name__ == '__main__':
+    import sys
     command = os.path.basename(sys.argv[1])
     if command in commands:
         commands[command](*sys.argv[2:])
