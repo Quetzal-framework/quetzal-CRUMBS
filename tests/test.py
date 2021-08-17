@@ -1,6 +1,6 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp, sample, get_simulations_rowids, simulate_phylip_sequences
+from crumbs import sequence, bpp, sample, get_successful_simulations_rowids, get_failed_simulations_rowids, simulate_phylip_sequences
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -68,12 +68,12 @@ class TestGetSimulation(unittest.TestCase):
     def test_database_IDS(self):
         # Open the file:
         print("Successful simulations rowids:")
-        print(get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=False))
+        print(get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
         print("Failed simulations rowids:")
-        print(get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=True))
+        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
 
     def test_simulate_phylip(self):
-        rowids = get_simulations_rowids.get_simulations_rowids("tests/data/out.db", "quetzal_EGG_1", failed=False)
+        rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1")
         sequence_size = 100
         scale_tree = 0.000025
         simulate_phylip_sequences.simulate_phylip_sequences("tests/data/out.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl")
