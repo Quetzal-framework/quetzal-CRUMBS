@@ -68,9 +68,11 @@ class TestGetSimulation(unittest.TestCase):
     def test_database_IDS(self):
         # Open the file:
         print("Successful simulations rowids:")
-        print(get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1"))
+        success_rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
+        self.assertEqual(success_rowids, list(range(1:30)))
         print("Failed simulations rowids:")
-        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1"))
+        failed_rowids = get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1")
+        self.assertEqual(failed_rowids, list(range(1:30)))
 
     def test_simulate_phylip(self):
         rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
