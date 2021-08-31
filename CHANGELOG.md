@@ -52,3 +52,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Change output format compatible with bash arrays
+
+## [0.0.9] - 2021-08-31
+
+### Added
+
+- Debug bash options
