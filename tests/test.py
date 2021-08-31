@@ -68,12 +68,12 @@ class TestGetSimulation(unittest.TestCase):
     def test_database_IDS(self):
         # Open the file:
         print("Successful simulations rowids:")
-        print(get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
+        print(get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_successfull_newicks.db", "quetzal_EGG_1"))
         print("Failed simulations rowids:")
-        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/out.db", "quetzal_EGG_1"))
+        print(get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1"))
 
     def test_simulate_phylip(self):
-        rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/out.db", "quetzal_EGG_1")
+        rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database.db", "quetzal_EGG_1")
         sequence_size = 100
         scale_tree = 0.000025
         simulate_phylip_sequences.simulate_phylip_sequences("tests/data/out.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl")
