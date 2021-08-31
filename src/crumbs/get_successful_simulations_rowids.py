@@ -39,7 +39,11 @@ def main(argv):
     parser.add_option("--database", type="str", dest="database", help="path to SQLite database")
     parser.add_option("--table", type="str", dest="table", help="what quetzal-EGG was used (eg: quetzal_EGG_1)")
     (options, args) = parser.parse_args(argv)
-    return get_successful_simulations_rowids(options.database, options.table)
+    rreturnList = get_successful_simulations_rowids(options.database, options.table)
+    returnStr = ''
+    for item in returnList:
+        returnStr += str(item)+' '
+    print(returnStr)
 
 if __name__ == '__main__':
     import sys
