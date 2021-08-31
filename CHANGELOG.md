@@ -46,3 +46,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Import sys in module mode
+
+## [0.0.8] - 2021-08-31
+
+### Added
+
+- Change output format compatible with bash arrays
