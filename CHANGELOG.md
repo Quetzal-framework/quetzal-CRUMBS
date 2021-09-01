@@ -58,3 +58,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Debug bash options
+
+## [0.0.10] - 2021-08-31
+
+### Added
+
+- Debug
