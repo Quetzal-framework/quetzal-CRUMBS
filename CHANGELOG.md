@@ -64,3 +64,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Debug
+
+
+## [0.0.11] - 2021-09-01
+
+### Added
+
+- Debug
