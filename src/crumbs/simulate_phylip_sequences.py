@@ -2,29 +2,33 @@ import sqlite3, pyvolve, os
 from optparse import OptionParser
 from crumbs.sequence import fasta_to_phylip
 
-def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output):
-    temp = "temporary_sequences.fasta"
-    phy_files = []
+def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output, temporary_prefix):
+    temporaries = []
     my_model = pyvolve.Model("nucleotide")
     partition = pyvolve.Partition(models = my_model, size = sequence_size)
     for i in range(0, len(newicks)):
+        # creating a evolver object
         newick = newicks[i]
         tree = pyvolve.read_tree(tree = newick, scale_tree = scale_tree)
         my_evolver = pyvolve.Evolver(tree = tree, partitions = partition)
-        fasta_seqfile = "temp" + str(i) + ".fasta"
-        phylip_seqfile = "temp" + str(i) + ".phyl"
-        phy_files.append(phylip_seqfile)
+        # creating temporaries
+        fasta_seqfile = temporary_prefix + str(i) + ".fasta"
+        phylip_seqfile = temporary_prefix + str(i) + ".phyl"
+        temporaries.append(temporary_prefix + str(i))
+        # simulating
         my_evolver(seqfile=fasta_seqfile, seqfmt = "fasta", ratefile = None, infofile = None)
+        # converting
         fasta_to_phylip(fasta_seqfile, phylip_seqfile)
-        os.remove(fasta_seqfile)
-    phyl_output = "temp_seq.phyl"
-    with open(phyl_output, 'w') as outfile:
-        for fname in phy_files:
-            with open(fname) as infile:
+    # concatening all sequences into a bigger file
+    with open(output, 'w') as outfile:
+        for fname in temporaries:
+            with open(fname + ".phyl") as infile:
                 outfile.write(infile.read())
                 outfile.write("\n")
-            os.remove(fname)
-    return phyl_output
+            # cleaning
+            os.remove(fname + ".phyl")
+            os.remove(fname + ".fasta")
+    return output
 
 def maybe_alter_table_to_add_2_columns(database, table):
     conn = sqlite3.connect(database)
@@ -43,7 +47,7 @@ def maybe_alter_table_to_add_2_columns(database, table):
     conn.commit()
     return conn
 
-def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree, output_file):
+def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree, output_file, temporary_prefix):
     """Add sequencReads newicks in database and simulate  the rowids of simulations registered in the database.
 
     Parameters
@@ -79,7 +83,7 @@ def simulate_phylip_sequences(database, table, rowid, sequence_size, scale_tree,
         raise Runtime("Error when fetching row with rowid " + rowid + ". Make sure that row is defined in table using crumbs.get_simulations_rowids.")
     # newick formulas are separated by 2 Newline characters
     trees = record[0].split("\n\n")
-    newick_list_to_phylip_simulation(trees, sequence_size, scale_tree, output_file)
+    newick_list_to_phylip_simulation(trees, sequence_size, scale_tree, output_file, temporary_prefix)
     cursor.execute('''UPDATE quetzal_EGG_1 SET scale_tree = ? WHERE rowid = ?''', (scale_tree, rowid))
     cursor.execute('''UPDATE quetzal_EGG_1 SET sequence_size = ? WHERE rowid = ?''', (sequence_size, rowid))
     conn.commit()
@@ -94,7 +98,7 @@ def main(argv):
     parser.add_option("--scale_tree", type="float", dest="scale_tree", help="scale tree branch length")
     parser.add_option("--output", type="str", dest="output", help="output file name")
     (options, args) = parser.parse_args(argv)
-    return simulate_phylip_sequences(options.database, options.table, options.rowid, options.sequence_size, options.scale_tree, options.output)
+    return simulate_phylip_sequences(options.database, options.table, options.rowid, options.sequence_size, options.scale_tree, options.output, options.output + "_temp")
 
 if __name__ == '__main__':
     import sys
