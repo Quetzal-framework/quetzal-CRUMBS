@@ -92,7 +92,7 @@ def main(argv):
     parser.add_option("--rowid", type="str", dest="rowid", help="what row in the database table")
     parser.add_option("--sequence_size", type="int", dest="sequence_size", help="sequence_size")
     parser.add_option("--scale_tree", type="float", dest="scale_tree", help="scale tree branch length")
-    parser.add_option("--output", type="str", dest="filename", help="output file name")
+    parser.add_option("--output", type="str", dest="output", help="output file name")
     (options, args) = parser.parse_args(argv)
     return simulate_phylip_sequences(options.database, options.table, options.rowid, options.sequence_size, options.scale_tree, options.output)
 
