@@ -80,7 +80,7 @@ def phylip2arlequin(input, imap, output):
             buffer = (buffer +
             str(arl_id) + "\t" + str(count) + "\t" + seq + "\n")
         buffer = buffer + "}\t"
-    bouffer = ( buffer +
+    buffer = ( buffer +
     "\n\t[[Structure]]\n\n\t\t" +
     '''StructureName="A group of simulated populations"''' + "\n"
     "\t\tNbGroups=1\n\n" +
