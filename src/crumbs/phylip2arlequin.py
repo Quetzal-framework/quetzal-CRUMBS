@@ -15,7 +15,7 @@ def phylip2arlequin(input, imap, output):
         reader = csv.reader(csvfile, delimiter='\t')
         for row in reader:
             # TODO: check for empty lines: IMAP last line can not be empty!
-            assert len(row) > 0
+            assert len(row) == 2
             # assign seq id to pop in dico
             id_to_pop[row[0]]=row[1]
             pop_set.add(row[1])
