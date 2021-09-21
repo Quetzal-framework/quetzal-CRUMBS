@@ -4,6 +4,19 @@ import os
 from collections import defaultdict
 
 def phylip2arlequin(input, imap, output):
+        """Converts a PHYLIP alignement to ALREQUIN format using population mapping
+
+        Parameters
+        ----------
+        input : str
+            The path to the phylip sequence file.
+
+        imap : str
+            The path to the imap file mapping sequences ids to population
+
+        output : str
+            The path of the arlequin file to write the result
+        """
     assert os.stat(input).st_size > 0, "Phylip input file is empty"
     assert os.stat(imap).st_size > 0, "Imap input file is empty"
     # mapping imap sequences ids to their population id.
