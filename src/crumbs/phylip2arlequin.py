@@ -6,12 +6,17 @@ from collections import defaultdict
 def phylip2arlequin(input, imap, output):
     assert os.stat(input).st_size > 0, "Phylip input file is empty"
     assert os.stat(imap).st_size > 0, "Imap input file is empty"
+    # mapping imap sequences ids to their population id.
     id_to_pop = {}
+    # defining the set of populations defined in imap
     pop_set = set()
     with open(imap, newline='') as csvfile:
+        # TODO: IMAP is tabulation based !!!
         reader = csv.reader(csvfile, delimiter='\t')
         for row in reader:
-            assert row
+            # TODO: check for empty lines: IMAP last line can not be empty!
+            assert len(row) > O
+            # assign seq id to pop in dico
             id_to_pop[row[0]]=row[1]
             pop_set.add(row[1])
     id_to_seq = {}
