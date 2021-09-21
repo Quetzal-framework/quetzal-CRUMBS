@@ -9,10 +9,10 @@ def phylip2arlequin(input, imap, output):
     Parameters
     ----------
     input : str
-        The path to the phylip sequence file.
+        The path to the phylip sequence file - space delimiter
 
     imap : str
-        The path to the imap file mapping sequences ids to population
+        The path to the imap file mapping sequences ids to population - tab delimiter.
 
     output : str
         The path of the arlequin file to write the result
