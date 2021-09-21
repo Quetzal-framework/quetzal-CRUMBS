@@ -28,7 +28,7 @@ def phylip2arlequin(input, imap, output):
         reader = csv.reader(csvfile, delimiter='\t')
         for row in reader:
             # TODO: check for empty lines: IMAP last line can not be empty!
-            assert len(row) == 2
+            assert len(row) == 2, "row (%s) in IMAP file has more than 2 columns." % row
             # assign seq id to pop in dico
             id_to_pop[row[0]]=row[1]
             pop_set.add(row[1])
@@ -40,7 +40,7 @@ def phylip2arlequin(input, imap, output):
         next(reader)
         for row in reader:
             # TODO: check for empty lines: PHYLIP last line can not be empty!
-            assert len(row) == 2
+            assert len(row) == 2, "row (%s) in MHYLIP file has more than 2 columns." % row
             caret_ID = row[0]
             ID = caret_ID[1:]
             id_to_seq[ID] = row[1]
