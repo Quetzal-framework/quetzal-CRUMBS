@@ -71,3 +71,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Debug
+
+
+## [0.0.12] - 2021-09-21
+
+### Added
+
+- phylip2arlequin debugging
