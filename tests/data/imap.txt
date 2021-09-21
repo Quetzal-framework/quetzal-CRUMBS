@@ -1,0 +1,5 @@
+specimen1 Pop1
+specimen2 Pop1
+specimen3 Pop2
+specimen4 Pop2
+specimen5 Pop3
