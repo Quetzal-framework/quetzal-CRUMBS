@@ -8,14 +8,14 @@ def phylip2arlequin(input, imap, output):
     assert os.stat(imap).st_size > 0, "Imap input file is empty"
     id_to_pop = {}
     pop_set = set()
-    with open(options.imap, newline='') as csvfile:
+    with open(imap, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter='\t')
         for row in reader:
             assert row
             id_to_pop[row[0]]=row[1]
             pop_set.add(row[1])
     id_to_seq = {}
-    with open(options.input, newline='') as csvfile:
+    with open(input, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ')
         next(reader)
         for row in reader:
@@ -66,7 +66,7 @@ def phylip2arlequin(input, imap, output):
     for pop in pop_set:
         output = output + "\t\t\t" + '''"''' + pop + '''"''' + "\n"
     output = output + "\t\t}"
-    outfile = open(options.output,'w')
+    outfile = open(output,'w')
     outfile.write(output)
     outfile.close()
 
