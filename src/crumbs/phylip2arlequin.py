@@ -9,10 +9,10 @@ def phylip2arlequin(input, imap, output):
     Parameters
     ----------
     input : str
-        The path to the phylip sequence file - space delimiter
+        The path to the phylip sequence file - space delimited csv
 
     imap : str
-        The path to the imap file mapping sequences ids to population - tab delimiter.
+        The path to the imap file mapping sequences ids to population - space delimited csv
 
     output : str
         The path of the arlequin file to write the result
@@ -24,8 +24,8 @@ def phylip2arlequin(input, imap, output):
     # defining the set of populations defined in imap
     pop_set = set()
     with open(imap, newline='') as csvfile:
-        # TODO: IMAP is tabulation delimiter based !!!
-        reader = csv.reader(csvfile, delimiter='\t')
+        # TODO: IMAP is space delimiter based !!!
+        reader = csv.reader(csvfile, delimiter=' ')
         for row in reader:
             # TODO: check for empty lines: IMAP last line can not be empty!
             assert len(row) == 2, "row (%s) in IMAP file has more than 2 columns." % row
