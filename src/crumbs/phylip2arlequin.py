@@ -58,7 +58,7 @@ def phylip2arlequin(input, imap, output):
         seq_to_arl_ID[s] = i;
         i += 1
     nb_samples = len(pop_set)
-    output = (
+    buffer = (
     "[Profile]\n\t" +
     '''Title="Simulated DNA sequence data"''' + "\n"
     "\tNbSamples=" + str(nb_samples) + "\n" +
@@ -69,7 +69,7 @@ def phylip2arlequin(input, imap, output):
     "\t[[Samples]]")
     for pop in pop_set:
         sample_size = len(pop_to_ids[pop])
-        output = (output +
+        buffer = (buffer +
         "\n\t\tSampleName=" + '''"'''+ pop + '''"''' + "\n" +
         "\t\tSampleSize=" + str(sample_size) + "\n" +
         "\t\tSampleData={\n")
@@ -77,19 +77,19 @@ def phylip2arlequin(input, imap, output):
             seq = id_to_seq[id]
             arl_id = seq_to_arl_ID[seq]
             count = pop_to_seqs[pop].count(seq)
-            output = (output +
+            buffer = (buffer +
             str(arl_id) + "\t" + str(count) + "\t" + seq + "\n")
-        output = output + "}\t"
-    output = ( output +
+        buffer = buffer + "}\t"
+    bouffer = ( buffer +
     "\n\t[[Structure]]\n\n\t\t" +
     '''StructureName="A group of simulated populations"''' + "\n"
     "\t\tNbGroups=1\n\n" +
     "\t\tGroup={\n")
     for pop in pop_set:
-        output = output + "\t\t\t" + '''"''' + pop + '''"''' + "\n"
-    output = output + "\t\t}"
+        buffer = buffer+ "\t\t\t" + '''"''' + pop + '''"''' + "\n"
+    buffer = buffer + "\t\t}"
     outfile = open(output,'w')
-    outfile.write(output)
+    outfile.write(buffer)
     outfile.close()
 
 def main(argv):
