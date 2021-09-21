@@ -11,19 +11,23 @@ def phylip2arlequin(input, imap, output):
     # defining the set of populations defined in imap
     pop_set = set()
     with open(imap, newline='') as csvfile:
-        # TODO: IMAP is tabulation based !!!
+        # TODO: IMAP is tabulation delimiter based !!!
         reader = csv.reader(csvfile, delimiter='\t')
         for row in reader:
             # TODO: check for empty lines: IMAP last line can not be empty!
-            assert len(row) > O
+            assert len(row) > 0
             # assign seq id to pop in dico
             id_to_pop[row[0]]=row[1]
             pop_set.add(row[1])
+    #reading sequences
     id_to_seq = {}
     with open(input, newline='') as csvfile:
+        # TODO: PHYLIP files is space delimiter based !!!
         reader = csv.reader(csvfile, delimiter=' ')
         next(reader)
         for row in reader:
+            # TODO: check for empty lines: PHYLIP last line can not be empty!
+            assert len(row) == 2
             caret_ID = row[0]
             ID = caret_ID[1:]
             id_to_seq[ID] = row[1]
