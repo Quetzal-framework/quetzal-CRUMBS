@@ -83,7 +83,7 @@ class TestConvertPhylipToArlequin(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def phylip_to_alequin(self):
+    def test_phylip_to_alequin(self):
         output = "test.arlequin"
         phylip2arlequin.phylip2arlequin("tests/data/seq.phyl", "test/data/imap.txt", output)
         print(output.read())
