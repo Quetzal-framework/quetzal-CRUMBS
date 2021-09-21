@@ -86,7 +86,8 @@ class TestConvertPhylipToArlequin(unittest.TestCase):
     def test_phylip_to_alequin(self):
         output = "test.arlequin"
         phylip2arlequin.phylip2arlequin("tests/data/seq.phyl", "tests/data/imap.txt", output)
-        print(output.read())
+        with open('test.arlequin', 'r') as f:
+            print(f.read())
 
 if __name__=="__main__":
     unittest.main()
