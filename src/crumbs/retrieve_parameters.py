@@ -8,12 +8,12 @@ def retrieve_parameters(database, table, rowid, header=True):
     cursor = conn.cursor()
     # Check that table is properly named
     if table == "quetzal_EGG_1" :
-        cursor.execute("SELECT N_0, K_suit, r, emigrant_rate, duration, p_K, scale_tree FROM quetzal_EGG_1 WHERE rowid = ?", rowid)
+        cursor.execute("SELECT lon_0, lat_0, N_0, duration, K_suit, K_max, K_min, p_K, r, emigrant_rate, scale_tree FROM quetzal_EGG_1 WHERE rowid = ?", rowid)
     else :
         raise NotImplementedError("Error when setting option table: should be quetzal_EGG_n, where n = 1.")
     buffer = ""
     if(header):
-        buffer += "N_0 K_suit r emigrant_rate duration p_K scale_tree\n"
+        buffer += "lon_0, lat_0, N_0, duration, K_suit, K_max, K_min, p_K, r, emigrant_rate, scale_tree\n"
     records = row.fetchone()
     records = [str(i) for i in records]
     buffer+=(" ".join(records))
