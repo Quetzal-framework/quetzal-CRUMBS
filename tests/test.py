@@ -78,7 +78,9 @@ class TestGetSimulation(unittest.TestCase):
         sequence_size = 100
         scale_tree = 0.000025
         simulate_phylip_sequences.simulate_phylip_sequences("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl", "sim_test_temp")
-
+        p = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0])
+        print(p)
+        
 class TestConvertPhylipToArlequin(unittest.TestCase):
     def SetUp(self):
         pass
