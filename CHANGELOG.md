@@ -78,3 +78,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - phylip2arlequin debugging
+
+## [0.0.13] - 2021-09-22
+
+### Added
+
+- retrieve_parameters debugging

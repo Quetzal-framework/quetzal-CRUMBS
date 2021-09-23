@@ -1,6 +1,9 @@
 import unittest, math
 from pathlib import Path
-from crumbs import sequence, bpp, sample, get_successful_simulations_rowids, get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
+from crumbs import sequence, bpp, sample, get_successful_simulations_rowids
+from crumbs import get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
+from crumbs import retrieve_parameters
+
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -77,7 +80,11 @@ class TestGetSimulation(unittest.TestCase):
         rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
         sequence_size = 100
         scale_tree = 0.000025
+        print(rowids[0])
         simulate_phylip_sequences.simulate_phylip_sequences("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl", "sim_test_temp")
+        print(retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0]))
+        print(retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], True))
+        print(retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], False))
 
 class TestConvertPhylipToArlequin(unittest.TestCase):
     def SetUp(self):
