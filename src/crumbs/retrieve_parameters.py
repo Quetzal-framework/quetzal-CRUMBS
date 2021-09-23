@@ -26,7 +26,9 @@ def main(argv):
     parser.add_option("--database", type="str", dest="database", help="path to database")
     parser.add_option("--table", type="str", dest="table", help="what simulation core table to use")
     parser.add_option("--rowid", type="str", dest="rowid", help="what rowid to retrieve")
-    parser.add_option('--header', help='add header of summary statistics', dest = 'header', default = true, action = 'store_true')
+    parser.add_option('--header', dest = 'header', action = 'store_true', help='header for summary statistics')
+    parser.add_option('--no-header', dest = 'header', action = 'store_false', help='no header for summary statistics')
+    parser.set_defaults(header=True)
     (options, args) = parser.parse_args()
     print(retrieve_parameters(options.database, options.table, options.rowid, options.header))
 

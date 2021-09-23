@@ -84,3 +84,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - retrieve_parameters debugging
+
+## [0.0.14] - 2021-09-22
+
+### Added
+
+- retrieve_parameters: more tests
