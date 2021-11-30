@@ -13,11 +13,29 @@ def animate(inputRaster, output='animation.gif'):
     with imageio.get_writer(output, mode='I') as writer:
 
         for bandId in tqdm(range(source.count)):
+
             bandId = bandId+1
             band = source.read(bandId, masked=True)
 
             fig, ax = pyplot.subplots()
-            img = rasterio.plot.show(band, cmap='viridis', ax=ax)
+
+            # use imshow so that we have something to map the colorbar to
+            image_hidden = ax.imshow(band,
+                                     cmap='viridis',
+                                     vmin=0,
+                                     vmax=100)
+
+            # plot on the same axis with rio.plot.show
+            image = rasterio.plot.show(band,
+                                  transform=source.transform,
+                                  ax=ax,
+                                  cmap='viridis',
+                                  vmin=0,
+                                  vmax=100)
+
+            # add colorbar using the now hidden image
+            fig.colorbar(image_hidden, ax=ax)
+
             pyplot.savefig("layer.png", bbox_inches='tight')
             pyplot.close()
 
