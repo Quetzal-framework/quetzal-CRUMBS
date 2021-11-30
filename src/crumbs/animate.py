@@ -1,15 +1,28 @@
 #!/usr/bin/python
 from optparse import OptionParser
+
 import rasterio.plot
 from rasterio.plot import show_hist
+
 from matplotlib import pyplot
 import imageio
 from tqdm import tqdm
 import numpy
 
-def animate(inputRaster, output='animation.gif'):
+def get_global_max(source):
+
+    array = source.read()
+    # mask off no data values
+    m = (array != source.nodata)
+    return array[m].max()
+
+
+def animate(inputRaster, vmax, output='animation.gif'):
 
     source = rasterio.open(inputRaster)
+
+    if vmax is None:
+        vmax = get_global_max(source)
 
     with imageio.get_writer(output, mode='I') as writer:
 
@@ -28,7 +41,7 @@ def animate(inputRaster, output='animation.gif'):
                                      extent=extent,
                                      cmap='viridis',
                                      vmin=0,
-                                     vmax=100)
+                                     vmax=vmax)
 
             # plot on the same axis with rio.plot.show
             image = rasterio.plot.show(band,
@@ -36,7 +49,7 @@ def animate(inputRaster, output='animation.gif'):
                                   ax=ax,
                                   cmap='viridis',
                                   vmin=0,
-                                  vmax=100)
+                                  vmax=vmax)
 
             # add colorbar using the now hidden image
             fig.colorbar(image_hidden, ax=ax)
@@ -49,10 +62,11 @@ def animate(inputRaster, output='animation.gif'):
 
 def main(argv):
     parser = OptionParser()
-    parser.add_option("--input", type="str", dest="input", help="Geotiff multiband file")
-    parser.add_option("--output", type="str", dest="output", help="output animation name")
+    parser.add_option("-i", "--input", type="str", dest="input", help="Geotiff multiband file")
+    parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")
+    parser.add_option("-m", "--vmax", type="int", dest="vmax", help="max value in color scale")
     (options, args) = parser.parse_args(argv)
-    return animate(options.input, options.output)
+    return animate(options.input, options.vmax, options.output)
 
 if __name__ == '__main__':
     import sys
