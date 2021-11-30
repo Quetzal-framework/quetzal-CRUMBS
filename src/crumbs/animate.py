@@ -5,6 +5,7 @@ from rasterio.plot import show_hist
 from matplotlib import pyplot
 import imageio
 from tqdm import tqdm
+import numpy
 
 def animate(inputRaster, output='animation.gif'):
 
@@ -19,8 +20,12 @@ def animate(inputRaster, output='animation.gif'):
 
             fig, ax = pyplot.subplots()
 
+            # to get longitude/latitude axis
+            extent = numpy.asarray(source.bounds)[[0,2,1,3]]
+
             # use imshow so that we have something to map the colorbar to
             image_hidden = ax.imshow(band,
+                                     extent=extent,
                                      cmap='viridis',
                                      vmin=0,
                                      vmax=100)
