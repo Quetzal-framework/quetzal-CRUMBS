@@ -7,6 +7,10 @@ name = "pypi"
 Pyvolve = "==1.0.3"
 GDAL = "==3.0.4"
 numpy = "*"
+rasterio = "*"
+matplotlib = "*"
+imageio = "*"
+imageio-ffmpeg = "*"
 
 [dev-packages]
 
