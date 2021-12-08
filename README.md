@@ -9,16 +9,30 @@ General utility scripts for the Quetzal framework projects
 
 ## Usage in bash
 
+At the present moment the python interfaces are not very stable, and are not really
+meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
+when I'm doing ABC-inference or when I'm calibrating my simulations.
+
 ### Sampling parameters in prior distribution
 
-* Sampling integers (eg population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
-* Sampling double (eg probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
+* Sampling integers (*e.g.*, population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
+* Sampling double (*e.g.*, probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
 * Sampling a coordinate uniformly at random in a geotiff file:
     * `latlon=($(python3 -m crumbs.sample "uniform_latlon" "file.tif" | tr -d '[],'))`
     * get latitude with `${latlon[0]}`
     * get longitude with `${latlon[1]}`
 
-# Updating the package
+### Visualizing demographic history:
+
+* If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
+It is quite handy to check the impact of parameters or suitability on the simulation. The `animate`
+function can be called with the following:
+    * Default settings: `python3 animate.py --input "animation.tif"` (generates an `animation.gif`)
+    * Change the output format: `python3 animate.py --input "animation.tif" --output "animation.mp4"` (detects the mp4 extension and converts accordingly)
+    * Change the colorbar cap value `python3 animate.py --input "animation.tif" --vmax 100` ( if none is given then the max value is inferred from the multiband raster.
+    * or a combination of those: `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100``
+
+# Updating the package (tip note for the dev)
 
 * Create a `feature` branch, make updates to it.
 * Test the feature
