@@ -80,13 +80,7 @@ def animate(inputRaster, vmax=None, output='animation.gif'):
             # add colorbar using the now hidden image
             fig.colorbar(image_hidden, ax=ax)
 
-            # Too slow
-            # pyplot.savefig("layer.png", bbox_inches='tight')
-            # image = imageio.imread('layer.png')
-
-            # Try this instead
             writer.append_data(plot3(fig))
-
             pyplot.close()
 
 
