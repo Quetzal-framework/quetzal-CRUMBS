@@ -90,3 +90,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - retrieve_parameters: more tests
+
+## [0.0.15] - 2021-12-08
+
+### Added
+
+- animate module
