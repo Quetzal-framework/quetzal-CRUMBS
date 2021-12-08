@@ -105,7 +105,7 @@ class TestAnimate(unittest.TestCase):
         pass
 
     def test_animate(self):
-        animate.animate("../tests/data/EGG2_history.tif")
+        animate.animate("../tests/data/EGG2_history.tif", 500)
         animate.animate("../tests/data/EGG2_history.tif", 500)
         animate.animate("../tests/data/EGG2_history.tif", 500, "animation.mp4")
 
