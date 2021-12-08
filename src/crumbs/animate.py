@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from optparse import OptionParser
-
+import io
 import rasterio.plot
 from rasterio.plot import show_hist
 
@@ -8,6 +8,32 @@ from matplotlib import pyplot
 import imageio
 from tqdm import tqdm
 import numpy
+
+def plot1(fig):
+    fig.canvas.draw()
+    data = numpy.frombuffer(fig.canvas.tostring_rgb(), dtype=numpy.uint8)
+    w, h = fig.canvas.get_width_height()
+    im = data.reshape((int(h), int(w), -1))
+    return(im)
+
+
+def plot2(fig):
+    with io.BytesIO() as buff:
+        fig.savefig(buff, format='png')
+        buff.seek(0)
+        im = plt.imread(buff)
+        return(im)
+
+
+def plot3(fig):
+    with io.BytesIO() as buff:
+        fig.savefig(buff, format='raw')
+        buff.seek(0)
+        data = numpy.frombuffer(buff.getvalue(), dtype=numpy.uint8)
+    w, h = fig.canvas.get_width_height()
+    im = data.reshape((int(h), int(w), -1))
+    return(im)
+
 
 def get_global_max(source):
 
@@ -17,7 +43,7 @@ def get_global_max(source):
     return array[m].max()
 
 
-def animate(inputRaster, vmax, output='animation.gif'):
+def animate(inputRaster, vmax=None, output='animation.gif'):
 
     source = rasterio.open(inputRaster)
 
@@ -54,11 +80,15 @@ def animate(inputRaster, vmax, output='animation.gif'):
             # add colorbar using the now hidden image
             fig.colorbar(image_hidden, ax=ax)
 
-            pyplot.savefig("layer.png", bbox_inches='tight')
+            # Too slow
+            # pyplot.savefig("layer.png", bbox_inches='tight')
+            # image = imageio.imread('layer.png')
+
+            # Try this instead
+            writer.append_data(plot3(fig))
+
             pyplot.close()
 
-            image = imageio.imread('layer.png')
-            writer.append_data(image)
 
 def main(argv):
     parser = OptionParser()
