@@ -27,13 +27,13 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
 * If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
 It is quite handy to check the impact of parameters or suitability on the simulation. The `animate`
 function can be called with the following:
-    * Default settings (generates an `animation.gif`):
+    * **Default settings** (generates an `animation.gif`):
     `python3 animate.py --input "animation.tif"`
-    * Change the output format (detects the mp4 extension and converts accordingly):
+    * **Change the output format** (detects the mp4 extension and converts accordingly):
     `python3 animate.py --input "animation.tif" --output "animation.mp4"`
-    * Change the colorbar cap value (if none is given then the max value is inferred from the multiband raster).
+    * **Change the colorbar cap value** (if none is given then the max value is inferred from the multiband raster).
     `python3 animate.py --input "animation.tif" --vmax 100`
-    * Use a combination of the previous settings: `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
+    * **Combination of the previous:** `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
 
 # Updating the package (tip note for the dev)
 
