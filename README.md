@@ -31,11 +31,11 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
 * If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
 It is quite handy to check the impact of parameters or suitability on the simulation. The `animate`
 function can be called with the following:
-    * **Default settings** (generates an animated gif):  
+    * **Default settings:**generates an animated gif    
     `python3 animate.py --input "animation.tif"`
-    * **Change the output format** (detects the mp4 extension and converts accordingly):  
+    * **Change the output format:** detects the mp4 extension and converts accordingly    
     `python3 animate.py --input "animation.tif" --output "animation.mp4"`
-    * **Change the colorbar cap value** (if none is given then the max value is inferred from the multiband raster):  
+    * **Change the colorbar cap value:** if none is given then the max value is inferred from the multiband   raster):  
     `python3 animate.py --input "animation.tif" --vmax 100`
     * **Combination of the previous:**  
     `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
@@ -56,12 +56,12 @@ the spatial resolution and grid orientation as parameters to be estimated
 * Then you can call the resampling function:  
   *Upsampling* refers to cases where we are converting to higher resolution/smaller cells (factor > 1)  
   *Downsampling* is resampling to lower resolution/larger cellsizes (factor <1)  
-    * **Default settings** (generates a `resampled.tif` file):  
+    * **Default settings:** generates a `resampled.tif` file    
     `python3 -m crumbs.sample "resample" --input "suitability.tif" --factor $factor)`
-    * **Change the output name**:  
+    * **Change the output name:**  
     `python3 -m crumbs.sample "resample" -i "suitability.tif" -f $factor -o "myfile.tif")`
 
-
+--------------------------------------------------------------------------------
 # Updating the package (tip note for the dev)
 
 
