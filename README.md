@@ -13,7 +13,7 @@ At the present moment the python interfaces are not very stable, and are not rea
 meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
 when I'm doing ABC-inference or when I'm calibrating my simulations.
 
-
+-------------------------------------------------------------------------------
 ### Sampling parameters in prior distribution
 
 
@@ -24,7 +24,7 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
     * get latitude with `${latlon[0]}`
     * get longitude with `${latlon[1]}`
 
-
+-------------------------------------------------------------------------------
 ### Visualizing demographic history:
 
 
@@ -40,9 +40,8 @@ function can be called with the following:
     * **Combination of the previous:**  
     `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
 
-
-### Automate spatial resolution selection
-
+--------------------------------------------------------------------------------
+### Automate spatial resolution selection
 
 In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)). If the resolution is too low, biological processes may be misrepresented
 and important biases may plague the results. If the resolution is too high, computational
