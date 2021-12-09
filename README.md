@@ -53,11 +53,10 @@ the spatial resolution and grid orientation as parameters to be estimated
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
 
 * You can sample a resolution with quetzal-CRUMBS.  
-  *Upsampling* refers to cases where we are converting to higher resolution/smaller cells (factor > 1).  
+  `factor=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
+* Then you can call the resampling function:  
+  *Upsampling* refers to cases where we are converting to higher resolution/smaller cells (factor > 1)  
   *Downsampling* is resampling to lower resolution/larger cellsizes (factor <1)  
-`factor=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
-
-* Then you can call the resampling function:
     * **Default settings** (generates a `resampled.tif` file):  
     `python3 -m crumbs.sample "resample" --input "suitability.tif" --factor $factor)`
     * **Change the output name**:  
