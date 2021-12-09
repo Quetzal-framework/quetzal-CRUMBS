@@ -41,7 +41,7 @@ function can be called with the following:
     `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
 
 --------------------------------------------------------------------------------
-### Automate spatial resolution selection
+### Automating the selection of an adequate spatial resolution
 
 In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)). If the resolution is too low, biological processes may be misrepresented
 and important biases may plague the results. If the resolution is too high, computational
