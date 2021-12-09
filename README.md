@@ -13,7 +13,9 @@ At the present moment the python interfaces are not very stable, and are not rea
 meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
 when I'm doing ABC-inference or when I'm calibrating my simulations.
 
+
 ### Sampling parameters in prior distribution
+
 
 * Sampling integers (*e.g.*, population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
 * Sampling double (*e.g.*, probability): `p=$(python3 -m crumbs.sample "uniform_real" 0.0001 0.1)`
@@ -22,7 +24,9 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
     * get latitude with `${latlon[0]}`
     * get longitude with `${latlon[1]}`
 
+
 ### Visualizing demographic history:
+
 
 * If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
 It is quite handy to check the impact of parameters or suitability on the simulation. The `animate`
@@ -36,7 +40,9 @@ function can be called with the following:
     * **Combination of the previous:**  
     `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
 
+
 ### Automate spatial resolution selection
+
 
 In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)). If the resolution is too low, biological processes may be misrepresented
 and important biases may plague the results. If the resolution is too high, computational
@@ -46,16 +52,20 @@ the spatial resolution and grid orientation as parameters to be estimated
 (see e.g., [Baird and Santos 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02865.x?casa_token=LDz1BGeg5lgAAAAA:_cCFdutvABU0kUsKxQApztP_tU9Yulej32wRRM8vb8Q3pQxlysu7LITGpxlweX81QKhm0tfaiyzWBAE),
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
 
-* You can sample a resolution with quetzal-CRUMBS. *Upsampling* refers to cases where we are converting to higher resolution/smaller cells (factor > 1). *Downsampling* is resampling to lower resolution/larger cellsizes (factor <1)  
+* You can sample a resolution with quetzal-CRUMBS.  
+  *Upsampling* refers to cases where we are converting to higher resolution/smaller cells (factor > 1).  
+  *Downsampling* is resampling to lower resolution/larger cellsizes (factor <1)  
 `factor=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
 
 * Then you can call the resampling function:
     * **Default settings** (generates a `resampled.tif` file):  
     `python3 -m crumbs.sample "resample" --input "suitability.tif" --factor $factor)`
-    * **Change the output name** (if none is given then the max value is inferred from the multiband raster):  
+    * **Change the output name**:  
     `python3 -m crumbs.sample "resample" -i "suitability.tif" -f $factor -o "myfile.tif")`
 
+
 # Updating the package (tip note for the dev)
+
 
 * Create a `feature` branch, make updates to it.
 * Test the feature
