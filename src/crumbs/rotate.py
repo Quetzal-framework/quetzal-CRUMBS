@@ -45,7 +45,7 @@ def rotate(inputRaster, angle, outputRaster=None):
     new_affine_matrix = rotate_geotransform(old_affine_matrix, angle, pivot)
 
     # array rotation
-    rotated_Z = scipy.ndimage.rotate(Z, angle, order=1, reshape=False)
+    rotated_Z = scipy.ndimage.rotate(Z, angle, order=1, reshape=True, axes=(1,2))
     print(Z.shape)
     pyplot.imshow(reshape_as_image(Z))
     pyplot.show()
@@ -57,9 +57,9 @@ def rotate(inputRaster, angle, outputRaster=None):
         outputRaster,
         'w',
         driver='GTiff',
-        height=rotated_Z.shape[0],
-        width=rotated_Z.shape[1],
-        count=1,
+        height=rotated_Z.shape[1],
+        width=rotated_Z.shape[2],
+        count=rotated_Z.shape[0],
         dtype=Z.dtype,
         crs=src_dataset.crs,
         transform=new_affine_matrix
@@ -67,33 +67,6 @@ def rotate(inputRaster, angle, outputRaster=None):
     new_dataset.write(rotated_Z)
     new_dataset.close()
 
-    # dataset_src = gdal.Open(inputRaster)
-    # src_arr = dataset_src.GetRasterBand(1).ReadAsArray()
-    #
-    # rotated_arr = scipy.ndimage.rotate(src_arr, angle, order=1, reshape=True)
-    # rotated_arr = scipy.ndimage.rotate(src_arr, angle, order=1, reshape=True)
-    # pyplot.imshow(rotated_arr)
-    # pyplot.show()
-    # dst_arr = rotated_arr.reshape(src_arr.shape)
-    # pyplot.imshow(dst_arr)
-    # pyplot.show()
-    #
-    # driver = gdal.GetDriverByName("GTiff")
-    # dataset_dst = driver.CreateCopy(outputRaster, dataset_src, strict=0)
-    # # First step, get the affine tranformation matrix of the initial file
-    # old_affine_matrix = dataset_src.GetGeoTransform()
-    # pivot = get_center(dataset_src)
-    # # Rotate the raster by setting a new affine matrix made by the "rotate_gt" function.
-    # new_affine_matrix = rotate_geotransform(old_affine_matrix, angle, pivot)
-    # dataset_dst.SetGeoTransform(new_affine_matrix)
-    # # setting spatial reference of output raster
-    # prj = dataset_src.GetProjection()
-    # srs = osr.SpatialReference(wkt = prj)
-    # dataset_dst.SetProjection( srs.ExportToWkt() )
-    #
-    # dst_band = dataset_dst.GetRasterBand(1)
-    # dst_band.WriteArray(rotated_arr)
-    # dataset_dst.FlushCache() ##saves to disk!!
 
 def main(argv):
     parser = OptionParser()
