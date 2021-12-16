@@ -4,9 +4,7 @@ import rasterio
 from affine import Affine  # For easly manipulation of affine matrix
 import scipy.ndimage
 from rasterio.plot import reshape_as_raster, reshape_as_image
-# from osgeo import gdal, osr  # For read and manipulate rasters
-# import numpy as np
-
+import numpy as np
 from matplotlib import pyplot
 
 
@@ -35,9 +33,6 @@ def rotate(inputRaster, angle, outputRaster=None):
     src_dataset = rasterio.open(inputRaster)
     # this is a 3D numpy array, with dimensions [band, row, col]
     Z = src_dataset.read()
-    print(Z.shape)
-    pyplot.imshow(reshape_as_image(Z))
-    pyplot.show()
 
     # raster rotation
     old_affine_matrix = src_dataset.transform
@@ -45,10 +40,17 @@ def rotate(inputRaster, angle, outputRaster=None):
     new_affine_matrix = rotate_geotransform(old_affine_matrix, angle, pivot)
 
     # array rotation
-    rotated_Z = scipy.ndimage.rotate(Z, angle, order=1, reshape=True, axes=(1,2))
+    rotated_Z = scipy.ndimage.rotate(Z, angle, order=1, reshape=False, axes=(1,2), cval=np.nan)
     print(Z.shape)
     pyplot.imshow(reshape_as_image(Z))
     pyplot.show()
+    gt = src_dataset.transform
+    print(gt)
+    pixelSizeX = gt[0]
+    pixelSizeY =-gt[4]
+    print(pixelSizeX)
+    print(pixelSizeY)
+
     print(rotated_Z.shape)
     pyplot.imshow(reshape_as_image(rotated_Z))
     pyplot.show()
@@ -64,6 +66,12 @@ def rotate(inputRaster, angle, outputRaster=None):
         crs=src_dataset.crs,
         transform=new_affine_matrix
     )
+    gt = new_dataset.transform
+    print(gt)
+    pixelSizeX = gt[0]
+    pixelSizeY =-gt[4]
+    print(pixelSizeX)
+    print(pixelSizeY)
     new_dataset.write(rotated_Z)
     new_dataset.close()
 
