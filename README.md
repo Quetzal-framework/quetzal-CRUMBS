@@ -60,10 +60,10 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 ### :globe_with_meridians: Sampling spatial grid parameters
 
 > :bulb: In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)).  
-* If the resolution is too low, biological processes may be misrepresented and important biases may plague the results.  
-* If the resolution is too high, computational
+> * If the resolution is too low, biological processes may be misrepresented and important biases may plague the results.  
+> * If the resolution is too high, computational
 costs make ABC methodology impossible.  
-* The same goes with the grid orientation, that is arbitrary but is a necessary model parameter.  
+> * The same goes with the grid orientation, that is arbitrary but is a necessary model parameter.  
 >
 > Choices have to be made and their
 impact on inference should be carefully assessed: one way to do so is to include
