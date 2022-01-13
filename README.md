@@ -9,7 +9,7 @@ General utility scripts for the Quetzal framework projects and iDDC modeling (In
 
 ## Usage in bash
 
-At the present moment the python interfaces are not very stable, and are not really
+:warning: At the present moment the python interfaces are not very stable, and are not really
 meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
 when I'm doing ABC-inference or when I'm calibrating my simulations.
 
@@ -48,10 +48,8 @@ The quetzal-EGG program you are using is responsible for logging the parameter v
 
 ### :scissors: Cutting a circular landscape
 
-When you begin to rotate and rescale landscapes, you can end up with quite
-counter-intuitive orientations that are not very convenient.
-To facilitate landscape manipulation and analysis, we implemented a function that
-fits and cuts a circle with maximal radius around the landscape center:
+> :bulb: When you begin to rotate and rescale landscapes, you can end up with quite counter-intuitive orientations that are not very convenient.  
+To facilitate landscape manipulation and analysis, we implemented a function that fits and cuts a circle with maximal radius around the landscape center:
 
 * **Default settings:** generates a `disk.tif` file    
 `python3 -m crumbs.circle_mask input.tif`
@@ -59,13 +57,17 @@ fits and cuts a circle with maximal radius around the landscape center:
 `python3 -m crumbs.circle_mask input.tif -o masked_output.tif`
 
 --------------------------------------------------------------------------------
-### :globe_with_meridians: :world_map: Sampling spatial grid parameters
-:world_map:
-In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)). If the resolution is too low, biological processes may be misrepresented
-and important biases may plague the results. If the resolution is too high, computational
-costs make ABC methodology impossible. The same goes with the grid orientation, that is arbitrary but is a necessary model parameter. Choices have to be made and their
+### :globe_with_meridians: Sampling spatial grid parameters
+
+> :bulb: In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)).  
+* If the resolution is too low, biological processes may be misrepresented and important biases may plague the results.  
+* If the resolution is too high, computational
+costs make ABC methodology impossible.  
+* The same goes with the grid orientation, that is arbitrary but is a necessary model parameter.  
+>
+> Choices have to be made and their
 impact on inference should be carefully assessed: one way to do so is to include
-the spatial resolution and grid orientation as parameters to be estimated
+the spatial resolution and grid orientation as parameters to be sampled and estimated by ABC inference
 (see e.g., [Baird and Santos 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02865.x?casa_token=LDz1BGeg5lgAAAAA:_cCFdutvABU0kUsKxQApztP_tU9Yulej32wRRM8vb8Q3pQxlysu7LITGpxlweX81QKhm0tfaiyzWBAE),
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
 
@@ -96,20 +98,18 @@ the spatial resolution and grid orientation as parameters to be estimated
 
 ### :hourglass_flowing_sand: Temporal interpolation
 
-You typically don't have a raster whose number of bands (layers) conveniently matches the number
-of generations you want to simulate. Instead, iDDC studies have focused on using a
-limited number of bands to represent the landscape temporal variance.
->*e.g.*, using 3 bands: *present*, *past*, *distant_past* :black_large_square: :black_medium_square: :black_small_square:
-
-But because Quetzal-CoaTL embeds GDAL library, it allows much more granularity in
-the way to represent the landscape. Even if you could map periods of times to a single
-band, it's not really intuitive. Quetzal-CRUMBS comes with an `interpolate` function,
-that
-- assigns existing bands to the generation indices of your choice:
+> :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
+of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
+>
+>*e.g.*, using 3 bands: *present*, *past*, *distant_past* :black_large_square: :black_medium_square: :black_small_square: and mapping them to time periods
+>
+> :gift: But because Quetzal-CoaTL embeds the GDAL library, it allows much more granularity in
+the way to represent the landscape. With the `interpolate` function, you can:  
+- assignexisting bands to the generations of your choice:
     - the first band must be assigned to 0
     - the last band is assigned to the integer *n* of you choice, *n* being the number of generations of the simulation
-- then it interpolates the missing layers using the Scipy `RegularGridInterpolator`.
-- You can then simply gives the output raster to a Quetzal-EGG: no mapping required!
+- The crumbs will interpolate the missing layers
+- When it's done, you can simply pass the output to a Quetzal-EGG simulator: no painful mapping required!
 
 * To generate a `interpolated.tif` file with 10 bands (*i.e.*, 10 generations) from a raster with only 2 bands:   
 `python3 -m crumbs.interpolate input_with_2_bands.tif 0 9`
@@ -129,7 +129,7 @@ that
 * Update the ChangeLog
 * Push to GitHub
 
-When you have a successful build on https://app.circleci.com/pipelines/github/Becheler/quetzal-CRUMBS:
+:rainbow: When you have a successful build on https://app.circleci.com/pipelines/github/Becheler/quetzal-CRUMBS:
 * create a Pull Request (PR) to the develop branch
 * Merge the PR if it looks good.
 * When that build succeeds, create a PR to the main branch, review it, and merge.
