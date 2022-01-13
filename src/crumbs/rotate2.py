@@ -15,21 +15,22 @@ def summary(dataset):
     print(" - pixel size Y: \t", pysz, "unit:", dataset.crs.linear_units)
     return
 
-def get_center(dataset):
+def get_center_pixel(dataset):
     """This function return the pixel coordinates of the raster center
     """
     width, height = dataset.width, dataset.height
     # We calculate the middle of raster
     x_pixel_med = width // 2
     y_pixel_med = height // 2
-    # The convention for the transform array as used by GDAL (T0) is to reference the pixel corner
-    T0 = dataset.transform
-    # We want to instead reference the pixel centre, so it needs to be translated by 50%:
-    T1 = T0 * Affine.translation(0.5, 0.5)
-    # to transform from pixel coordinates to world coordinates, multiply the coordinates with the matrix
-    rc2xy = lambda r, c: T1 * (c, r)
-    # get the coordinates for a raster in the first row, second column (index [0, 1]):
-    return rc2xy(y_pixel_med, x_pixel_med)
+    # # The convention for the transform array as used by GDAL (T0) is to reference the pixel corner
+    # T0 = dataset.transform
+    # # We want to instead reference the pixel centre, so it needs to be translated by 50%:
+    # T1 = T0 * Affine.translation(0.5, 0.5)
+    # # to transform from pixel coordinates to world coordinates, multiply the coordinates with the matrix
+    # rc2xy = lambda r, c: T1 * (c, r)
+    # # get the coordinates for a raster in the first row, second column (index [0, 1]):
+    # return rc2xy(y_pixel_med, x_pixel_med)
+    return (x_pixel_med, y_pixel_med)
 
 def rotate(inputRaster, angle, scale=1, outputRaster=None):
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
@@ -42,9 +43,10 @@ def rotate(inputRaster, angle, scale=1, outputRaster=None):
     print("\nSource dataset:\n")
     summary(source)
 
-    ### Rotate the affine
-    pivot = get_center(source)
-    print("\nPivot coordinates:", pivot)
+    ### Rotate the affine about a pivot and rescale
+    pivot = get_center_pixel(source)
+    #pivot = None
+    print("\nPivot coordinates:", source.transform * pivot)
     new_transform = source.transform * Affine.rotation(angle, pivot) * Affine.scale(scale)
 
     # this is a 3D numpy array, with dimensions [band, row, col]
