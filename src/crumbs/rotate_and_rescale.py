@@ -24,7 +24,7 @@ def get_center_pixel(dataset):
     y_pixel_med = height // 2
     return (x_pixel_med, y_pixel_med)
 
-def rotate(inputRaster, angle, scale=1, outputRaster=None):
+def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
 
     ### Read input
@@ -67,7 +67,7 @@ def main(argv):
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="Rotated output raster name")
     (options, args) = parser.parse_args(argv)
-    return rotate(args[0], float(args[1]), float(args[2]), options.output)
+    return rotate_and_rescale(args[0], float(args[1]), float(args[2]), options.output)
 
 if __name__ == '__main__':
     import sys
