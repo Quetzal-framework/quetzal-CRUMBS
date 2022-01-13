@@ -22,14 +22,6 @@ def get_center_pixel(dataset):
     # We calculate the middle of raster
     x_pixel_med = width // 2
     y_pixel_med = height // 2
-    # # The convention for the transform array as used by GDAL (T0) is to reference the pixel corner
-    # T0 = dataset.transform
-    # # We want to instead reference the pixel centre, so it needs to be translated by 50%:
-    # T1 = T0 * Affine.translation(0.5, 0.5)
-    # # to transform from pixel coordinates to world coordinates, multiply the coordinates with the matrix
-    # rc2xy = lambda r, c: T1 * (c, r)
-    # # get the coordinates for a raster in the first row, second column (index [0, 1]):
-    # return rc2xy(y_pixel_med, x_pixel_med)
     return (x_pixel_med, y_pixel_med)
 
 def rotate(inputRaster, angle, scale=1, outputRaster=None):
