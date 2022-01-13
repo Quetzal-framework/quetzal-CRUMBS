@@ -33,48 +33,40 @@ def get_center(dataset):
 
 def rotate(inputRaster, angle, scale=1, outputRaster=None):
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
+
     ### Read input
     source = rasterio.open(inputRaster)
     assert source.crs == 'EPSG:4326', "Raster must have CRS=EPSG:4326, that is unprojected lon/lat (degree) relative to WGS84 datum"
+
     # Display information
     print("\nSource dataset:\n")
     summary(source)
+
     ### Rotate the affine
     pivot = get_center(source)
     print("\nPivot coordinates:", pivot)
-    new_transform = source.transform * Affine.translation( -source.width/2.0, -source.height/2.0) * Affine.rotation(angle, pivot) * Affine.scale(scale)
+    new_transform = source.transform * Affine.rotation(angle, pivot) * Affine.scale(scale)
+
     # this is a 3D numpy array, with dimensions [band, row, col]
-    Z_source = source.read(masked=True)
-    # Create destination raster
-    destination = rasterio.open( outputRaster, 'w',
-        driver='GTiff',
-        height=source.height,
-        width=source.width,
-        count=source.count,
-        crs=source.crs,
-        dtype=Z_source.dtype,
-        nodata=source.nodata,
-        transform=new_transform)
-    # Display information
-    print("\nNew rotated dataset:\n")
-    summary(destination)
-    # Reproject pixels
-    dst_shape = (destination.count, destination.height, destination.width)
-    Z_destination = np.empty(dst_shape)
-    Z_destination[:] = source.nodata
+    data = source.read(masked=True)
+    kwargs = source.meta
+    kwargs['transform'] = new_transform
 
-    reproject(
-        Z_source,
-        Z_destination,
-        src_transform=source.transform,
-        src_crs=source.crs,
-        dst_transform=destination.transform,
-        dst_crs=destination.crs,
-        resampling=Resampling.average)
+    with rasterio.open(outputRaster, 'w', **kwargs) as dst:
+        for i in range(1, source.count + 1):
+            reproject(
+                source=rasterio.band(source, i),
+                destination=rasterio.band(dst, i),
+                src_transform=source.transform,
+                src_crs=source.crs,
+                dst_transform=new_transform,
+                dst_crs=dst.crs,
+                resampling=Resampling.average)
 
-    destination.write(Z_destination)
-    source.close()
-    destination.close()
+        # Display information
+        print("\nNew rotated dataset:\n")
+        summary(dst)
+
     return
 
 def main(argv):
