@@ -31,7 +31,7 @@ def get_center(dataset):
     # get the coordinates for a raster in the first row, second column (index [0, 1]):
     return rc2xy(y_pixel_med, x_pixel_med)
 
-def rotate(inputRaster, angle, outputRaster=None):
+def rotate(inputRaster, angle, scale=1, outputRaster=None):
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
     ### Read input
     source = rasterio.open(inputRaster)
@@ -40,10 +40,9 @@ def rotate(inputRaster, angle, outputRaster=None):
     print("\nSource dataset:\n")
     summary(source)
     ### Rotate the affine
-    pivot_x, pivot_y = get_center(source)
-    pixel_size_x, pixel_size_y = source.res
-    print("\nPivot coordinates:", pivot_x, pivot_y)
-    new_affine = Affine.translation(pivot_x, pivot_y) * Affine.rotation(angle) * Affine.scale(pixel_size_x, pixel_size_y)
+    pivot = get_center(source)
+    print("\nPivot coordinates:", pivot)
+    new_transform = source.transform * Affine.translation( -source.width/2.0, -source.height/2.0) * Affine.rotation(angle, pivot) * Affine.scale(scale)
     # this is a 3D numpy array, with dimensions [band, row, col]
     Z_source = source.read(masked=True)
     # Create destination raster
@@ -55,7 +54,7 @@ def rotate(inputRaster, angle, outputRaster=None):
         crs=source.crs,
         dtype=Z_source.dtype,
         nodata=source.nodata,
-        transform=new_affine)
+        transform=new_transform)
     # Display information
     print("\nNew rotated dataset:\n")
     summary(destination)
@@ -73,9 +72,6 @@ def rotate(inputRaster, angle, outputRaster=None):
         dst_crs=destination.crs,
         resampling=Resampling.average)
 
-    print(Z_source)
-    print(Z_destination)
-
     destination.write(Z_destination)
     source.close()
     destination.close()
@@ -85,7 +81,7 @@ def main(argv):
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="Rotated output raster name")
     (options, args) = parser.parse_args(argv)
-    return rotate(args[0], float(args[1]), options.output)
+    return rotate(args[0], float(args[1]), float(args[2]), options.output)
 
 if __name__ == '__main__':
     import sys

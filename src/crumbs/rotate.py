@@ -11,13 +11,13 @@ from matplotlib import pyplot
 def get_center(dataset):
     """This function return the pixel coordinates of the raster center
     """
-    # We get the size (in pixels) of the raster using gdal
-    #width, height = raster.RasterXSize, raster.RasterYSize
-    width, height = dataset.width, dataset.height
-    # We calculate the middle of raster
-    xmed = width // 2
-    ymed = height // 2
-    return (xmed, ymed)
+    # The convention for the transform array as used by GDAL (T0) is to reference the pixel corner
+    T0 = dataset.affine
+    # We want to instead reference the pixel centre, so it needs to be translated by 50%:
+    T1 = T0 * Affine.translation(0.5, 0.5)
+    # to transform from pixel coordinates to world coordinates, multiply the coordinates with the matrix
+    rc2xy = lambda r, c: T1 * (c, r)
+    return rc2xy(0, 1)
 
 
 def rotate_geotransform(affine_matrix, angle, pivot):
