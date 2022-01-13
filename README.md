@@ -14,7 +14,7 @@ meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
 when I'm doing ABC-inference or when I'm calibrating my simulations.
 
 -------------------------------------------------------------------------------
-### Sampling model parameters in a prior distribution
+### :game_die: Sampling model parameters in a prior distribution
 
 
 * Sampling integers (*e.g.*, population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
@@ -25,26 +25,42 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
     * get longitude with `${latlon[1]}`
 
 -------------------------------------------------------------------------------
-### Visualizing a demographic history:
+### :clapper: Visualizing a dynamic landscape:
 
+This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
+- If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `crumbs.interpolate`),
+you can easily perform a visual check of the landscape dynamics before to run the simulations
+- If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
 
-* If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
-It is quite handy to check the impact of parameters or suitability on the simulation. The `animate`
-function can be called with the following:
+- The `animate` function can be called with the following:
     * **Default settings:** generates an animated gif    
-    `python3 animate.py --input "animation.tif"`
+    `python3 animate.py input.tif`
     * **Change the output format:** detects the mp4 extension and converts accordingly    
-    `python3 animate.py --input "animation.tif" --output "animation.mp4"`
-    * **Change the colorbar cap value:** if none is given then the max value is inferred from the multiband   raster):  
-    `python3 animate.py --input "animation.tif" --vmax 100`
+    `python3 animate.py  input.tif -o "output.mp4"`
+    * **Change the colorbar cap value:** if none is given then the max value is inferred from the multiband raster):  
+    `python3 animate.py input.tif" --vmax 100`
     * **Combination of the previous:**  
-    `python3 animate.py --input "animation.tif" --output "animation.mp4" --vmax 100`
+    `python3 animate.py input.tif -o output.mp4 --vmax 100`
 
 The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
 
---------------------------------------------------------------------------------
-### Sampling spatial grid parameters
+--------------------
 
+### :scissors: Cutting a circular landscape
+
+When you begin to rotate and rescale landscapes, you can end up with quite
+counter-intuitive orientations that are not very convenient.
+To facilitate landscape manipulation and analysis, we implemented a function that
+fits and cuts a circle with maximal radius around the landscape center:
+
+* **Default settings:** generates a `disk.tif` file    
+`python3 -m crumbs.circle_mask input.tif`
+* **Change the output name:**  
+`python3 -m crumbs.circle_mask input.tif -o masked_output.tif`
+
+--------------------------------------------------------------------------------
+### :globe_with_meridians: :world_map: Sampling spatial grid parameters
+:world_map:
 In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)). If the resolution is too low, biological processes may be misrepresented
 and important biases may plague the results. If the resolution is too high, computational
 costs make ABC methodology impossible. The same goes with the grid orientation, that is arbitrary but is a necessary model parameter. Choices have to be made and their
@@ -52,23 +68,58 @@ impact on inference should be carefully assessed: one way to do so is to include
 the spatial resolution and grid orientation as parameters to be estimated
 (see e.g., [Baird and Santos 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02865.x?casa_token=LDz1BGeg5lgAAAAA:_cCFdutvABU0kUsKxQApztP_tU9Yulej32wRRM8vb8Q3pQxlysu7LITGpxlweX81QKhm0tfaiyzWBAE),
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
-#### Grid resolution
 
-* You can sample a rescaling factor in a prior distribution with quetzal-CRUMBS.  
-  `factor=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
-* Then you can call the resampling function:  
-  *Upsampling*: converting to higher resolution/smaller cells (factor > 1)  
-  *Downsampling*: converting to lower resolution/larger cellsizes (factor < 1)  
-    * **Default settings:** generates a `resampled.tif` file    
-    `python3 -m crumbs.resample -i "suitability.tif" -f $factor)`
+#### :arrows_counterclockwise: Adjusting the grid orientation
+
+* Sample a rotation angle about the center in a prior distribution:  
+  `angle=$(python3 -m crumbs.sample "uniform_real" 0.0 360.0)`
+* Then you can call the `rotate_and_rescale` function:  
+    * **Default:** generates a `rotated.tif` file with no resolution change (scale=1)   
+    `python3 -m crumbs.rotate_and_rescale input.tif $angle`
     * **Change the output name:**  
-    `python3 -m crumbs.resample -i "suitability.tif" -f $factor -o "out.tif")`
+    `python3 -m crumbs.resample input.tif $angle $factor -o out.tif`
 
+#### :mag_right: Adjusting the grid resolution:
 
-#### Grid orientation
+* Sample a rescaling factor in a prior distribution:  
+`scale=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
+* Perform the rescaling with no rotation (angle=0):  
+ `python3 -m crumbs.rotate_and_rescale input.tif 0.0 $scale`
+* Perform the rescaling with a rotation:
+`python3 -m crumbs.rotate_and_rescale input.tif $angle $scale`
+
+>  :open_book:   
+>*Upsampling*: converting to higher resolution/smaller cells (scale > 1)  
+    *Downsampling*: converting to lower resolution/larger cell (scale < 1)  
+
+--------------------------------------------
+
+### :hourglass_flowing_sand: Temporal interpolation
+
+You typically don't have a raster whose number of bands (layers) conveniently matches the number
+of generations you want to simulate. Instead, iDDC studies have focused on using a
+limited number of bands to represent the landscape temporal variance.
+>*e.g.*, using 3 bands: *present*, *past*, *distant_past* :black_large_square: :black_medium_square: :black_small_square:
+
+But because Quetzal-CoaTL embeds GDAL library, it allows much more granularity in
+the way to represent the landscape. Even if you could map periods of times to a single
+band, it's not really intuitive. Quetzal-CRUMBS comes with an `interpolate` function,
+that
+- assigns existing bands to the generation indices of your choice:
+    - the first band must be assigned to 0
+    - the last band is assigned to the integer *n* of you choice, *n* being the number of generations of the simulation
+- then it interpolates the missing layers using the Scipy `RegularGridInterpolator`.
+- You can then simply gives the output raster to a Quetzal-EGG: no mapping required!
+
+* To generate a `interpolated.tif` file with 10 bands (*i.e.*, 10 generations) from a raster with only 2 bands:   
+`python3 -m crumbs.interpolate input_with_2_bands.tif 0 9`
+* To generate a `interpolated.tif` file with 100 bands (*i.e.*, 100 generations) fom a raster with only 3 bands (the middle band being assigned to generation 42):  
+`python3 -m crumbs.interpolate input_with_3_bands.tif 0 42 99`
+* General mapping form, also changing the output name:
+`python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
-# Updating the package (tip note for the dev)
+### :rocket: Updating the package (tip note for the dev)
 
 
 * Create a `feature` branch, make updates to it.
@@ -82,7 +133,7 @@ When you have a successful build on https://app.circleci.com/pipelines/github/Be
 * create a Pull Request (PR) to the develop branch
 * Merge the PR if it looks good.
 * When that build succeeds, create a PR to the main branch, review it, and merge.
-* Go get a beer and bless this new version with some luuuv.
+* Go get a beer and bless this new version with some luuuv :beer: :revolving_hearts:
 
 Workflow from https://circleci.com/blog/publishing-a-python-package/.
 
