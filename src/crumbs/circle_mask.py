@@ -39,8 +39,6 @@ def geodesic_point_buffer(lat, lon, km):
     buf = Point(0, 0).buffer(km * 1000)  # distance in metres
     return transform(project, buf).exterior.coords[:]
 
-    # Example
-    #b = geodesic_point_buffer(45.4, -75.7, 100.0)
 
 def circle_mask(inputFile, outputFile=None):
     outputFile = 'disk.tif' if outputFile is None else outputFile

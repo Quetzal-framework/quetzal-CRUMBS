@@ -43,7 +43,8 @@ def get_global_max(source):
     return array[m].max()
 
 
-def animate(inputRaster, vmax=None, output='animation.gif'):
+def animate(inputRaster, vmax=None, output=None):
+    output = 'animation.gif' if output is None else output
 
     source = rasterio.open(inputRaster)
 
@@ -86,11 +87,10 @@ def animate(inputRaster, vmax=None, output='animation.gif'):
 
 def main(argv):
     parser = OptionParser()
-    parser.add_option("-i", "--input", type="str", dest="input", help="Geotiff multiband file")
     parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")
     parser.add_option("-m", "--vmax", type="int", dest="vmax", help="max value in color scale")
     (options, args) = parser.parse_args(argv)
-    return animate(options.input, options.vmax, options.output)
+    return animate(args[0], options.vmax, options.output)
 
 if __name__ == '__main__':
     import sys
