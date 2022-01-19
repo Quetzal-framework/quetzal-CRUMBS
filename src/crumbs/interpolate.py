@@ -12,7 +12,7 @@ def pad(data):
     return interpolated
 
 def temporal_interpolation(inputFile, band_to_generation, outputFile=None):
-    assert band_to_generation[0] == 0, "band_to_generation mapping should begin with 0, mapping the first layer to present generation 0"
+    assert band_to_generation[0] == 0, "band_to_generation mapping should begin with 0, mapping the first layer to introduction generation 0"
     outputFile = 'interpolated.tif' if outputFile is None else outputFile
 
     with rasterio.open(inputFile) as source:
@@ -48,6 +48,7 @@ def temporal_interpolation(inputFile, band_to_generation, outputFile=None):
 
 def main(argv):
     parser = OptionParser()
+    parser.add_option("-t", "--time", nargs="*", type="int", dest="timesID", help="how to map band ID to generation")
     parser.add_option("-o", "--output", type="str", dest="output", help="Cliped output raster name")
     (options, args) = parser.parse_args(argv)
     return temporal_interpolation(args[0], [int(x) for x in args[1:]], options.output)

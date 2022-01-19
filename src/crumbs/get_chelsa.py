@@ -32,12 +32,16 @@ def sort_nicely(l):
     return l
 
 def to_polygon(long0, lat0, long1, lat1, margin=0.0):
+    """ Convert the given points into a polygon, adding a margin.
+    """
     return Polygon([[long0 - margin , lat0 - margin],
                     [long1 + margin , lat0 - margin],
                     [long1 + margin , lat1 + margin],
                     [long0 - margin , lat1 + margin]])
 
 def clip(inputFile, shape, outputFile):
+    """ Clip the input file by the shape given, saving the output file
+    """
     # read source
     source = rasterio.open(inputFile)
     out_image, out_transform = msk.mask(source, [shape], crop=True)
@@ -51,13 +55,16 @@ def clip(inputFile, shape, outputFile):
     with rasterio.open(outputFile, "w", **out_meta) as dest:
         dest.write(out_image)
 
+
 def resume_download(fileurl, resume_byte_pos):
+    """ Resume the download of the file given its url
+    """
     resume_header = {'Range': 'bytes=%d-' % resume_byte_pos}
     return requests.get(fileurl, headers=resume_header, stream=True,  verify=True, allow_redirects=True)
 
 def get_chelsa(url, output_dir):
-    """downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG"""
-    print("Downloading to", output_dir, "directory, url", url)
+    """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
+    """
 
     #  Retrievethe filename from the URL so we have a local file to write to
     filename = output_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
@@ -87,6 +94,8 @@ def get_chelsa(url, output_dir):
         print(e)
 
 def generate_url(variables, timesID):
+    """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
+    """
     implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19,1)]]
     if(set(variables).issubset(set(implemented))):
         if(set('dem').issubset(set(variables))):
@@ -107,6 +116,8 @@ def generate_url(variables, timesID):
         raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
 
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
+    """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
+    """
     vrt_file = outputFile
     images = inputFiles
     gdal.BuildVRT(vrt_file, images, separate=True, callback=gdal.TermProgress_nocb)
@@ -115,17 +126,17 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
     my_vrt = None
     return(vrt_file)
 
-def to_geotiff(vrt):
+def to_geotiff(vrt, outputFile='stacked.tif'):
+    """ Converts the VRT files to a geotiff file
+    """
     ds = gdal.Open(vrt)
-    ds = gdal.Translate('stacked.tif', ds)
+    ds = gdal.Translate(outputFile, ds)
     ds = None
 
 def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, variable_string=None, cleanup=False):
-    """downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG and clip to spatial extent of sampling points"""
-    # output_dir = 'CHELSA' if output_dir is None else output_dir
-    # clipped_dir = 'CHELSA_clipped' if clipped_dir is None else clipped_dir
-    # variable_string = 'dem' if variable_string is None else variable_string
-
+    """ Downloads bio and orog variables from CHELSA-TraCE21k –
+        1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
+    """
     if(points is not None):
         shapes = fiona.open(points)
         bbox = to_polygon(*shapes.bounds, margin)
@@ -159,10 +170,7 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
     images = [output_dir + '/' + str(f) for f in clipped_files]
-    for i in sort_nicely(images):
-        print(i)
     to_geotiff(to_vrt(sort_nicely(images)))
-    return
 
 def main(argv):
     parser = OptionParser()
