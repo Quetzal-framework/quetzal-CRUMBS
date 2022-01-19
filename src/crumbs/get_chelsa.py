@@ -15,7 +15,6 @@ import re
 
 def tryfloat(s):
     try:
-        print(float(s))
         return float(s)
     except:
         return s
@@ -24,12 +23,13 @@ def alphanum_key(s):
     """ Turn a string into a list of string and number chunks.
         "z23a" -> ["z", 23, "a"]
     """
-    return [ tryfloat(c) for c in re.split('(-*\d+\.\d*)' , s) ]
+    return [ tryfloat(c) for c in re.split('_(-*\d+)_' , s) ]
 
 def sort_nicely(l):
     """ Sort the given list in the way that humans expect.
     """
     l.sort(key=alphanum_key)
+    return l
 
 def to_polygon(long0, lat0, long1, lat1, margin=0.0):
     return Polygon([[long0 - margin , lat0 - margin],
@@ -159,10 +159,8 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
     images = [output_dir + '/' + str(f) for f in clipped_files]
-    pattern = r'V1.0'
-    # Replace all occurrences of character s with an empty string
-    images  = [ re.sub(pattern, '', s ) for s in images ]
-    print(images)
+    for i in sort_nicely(images):
+        print(i)
     to_geotiff(to_vrt(sort_nicely(images)))
     return
 
