@@ -11,6 +11,26 @@ from pathlib import Path;
 from os import walk
 from os.path import exists
 
+import re
+
+def tryfloat(s):
+    try:
+        print(float(s))
+        return float(s)
+    except:
+        return s
+
+def alphanum_key(s):
+    """ Turn a string into a list of string and number chunks.
+        "z23a" -> ["z", 23, "a"]
+    """
+    return [ tryfloat(c) for c in re.split('(-*\d+\.\d*)' , s) ]
+
+def sort_nicely(l):
+    """ Sort the given list in the way that humans expect.
+    """
+    l.sort(key=alphanum_key)
+
 def to_polygon(long0, lat0, long1, lat1, margin=0.0):
     return Polygon([[long0 - margin , lat0 - margin],
                     [long1 + margin , lat0 - margin],
@@ -68,7 +88,6 @@ def get_chelsa(url, output_dir):
 
 def generate_url(variables, timesID):
     implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19,1)]]
-    print(implemented)
     if(set(variables).issubset(set(implemented))):
         if(set('dem').issubset(set(variables))):
             for timeID in timesID :
@@ -140,7 +159,11 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
     images = [output_dir + '/' + str(f) for f in clipped_files]
-    to_geotiff(to_vrt(images))
+    pattern = r'V1.0'
+    # Replace all occurrences of character s with an empty string
+    images  = [ re.sub(pattern, '', s ) for s in images ]
+    print(images)
+    to_geotiff(to_vrt(sort_nicely(images)))
     return
 
 def main(argv):
