@@ -121,7 +121,11 @@ def generate_urls(variables, timesID):
                     url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_" + bio + "_"+ str(timeID) + "_V1.0.tif"
                     urls.append(url)
 
-    else: raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
+    else:
+        not_implemented = set(variables) - set(variables).intersection(set(implemented))
+        raise ValueError(" ".join([str(i) for i in not_implemented]) + " not implemented. Implemented CHELSA variables are: " + " ".join([str(i) for i in implemented]))
+
+    # Post condition: at least one workable URL
     assert len(urls) > 0 , "Unable to generate URL."
     return urls
 
