@@ -51,7 +51,7 @@ def clip(inputFile, shape, outputFile):
                      "height": out_image.shape[1],
                      "width": out_image.shape[2],
                      "transform": out_transform})
-
+    source.close()
     with rasterio.open(outputFile, "w", **out_meta) as dest:
         dest.write(out_image)
 
@@ -66,9 +66,9 @@ def download(url, output_dir):
     """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
     """
     #  Retrievethe filename from the URL so we have a local file to write to
-    filename = output_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
+    filename = output_dir + "/" + get_filename(url)
     path = Path(filename)
-    resume_byte = path.stat().st_size
+    resume_byte = path.stat().st_size if path.is_file() else 0
 
     try:
         with open(filename, 'ab') as file:
@@ -155,12 +155,13 @@ def create_folders_if_dont_exist(output_dir, clipped_dir):
 def bounds_to_polygon(shapefile, margin):
     shapes = fiona.open(shapefile)
     bbox = to_polygon(*shapes.bounds, margin)
+    shapes.close()
     return bbox
 
 def read_urls(inputFile):
-    input = open(inputFile, 'r')
-    urls = input.readlines()
-    return [url.strip() for url in urls]
+    with open(inputFile, 'r') as input:
+        urls = input.readlines()
+        return [url.strip() for url in urls]
 
 def get_filename(url):
     #  splits the url into a list, starting from the right and get last element
