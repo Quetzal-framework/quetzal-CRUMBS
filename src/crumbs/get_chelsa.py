@@ -176,7 +176,7 @@ def remove_chelsa_dir_if_empty(output_dir):
         print("Directory", output_dir, "is not empty and will not be deleted.")
     return
 
-def get_chelsa(inputFile, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir=None, clip_dir=None, geotiff=None, cleanup=False):
+def get_chelsa(inputFile, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA', clip_dir='CHELSA_clipped', geotiff='stacked.tif', cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
