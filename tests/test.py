@@ -46,8 +46,8 @@ class TestTiff(unittest.TestCase):
         # Projection
         raster.GetProjection()
         # Dimensions
-        self.assertEqual(raster.RasterXSize, 240)
-        self.assertEqual(raster.RasterYSize, 168)
+        self.assertEqual(raster.RasterXSize, 216)
+        self.assertEqual(raster.RasterYSize, 144)
         # Number of bands
         self.assertEqual(raster.RasterCount, 1)
         # Read the raster band as separate variable
