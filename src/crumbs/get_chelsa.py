@@ -175,7 +175,6 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
 def get_variables_args(option, opt, value, parser):
     setattr(parser.values, option.dest, value.split(','))
 
-
 def get_timesID_args(option, opt, value, parser, type='float'):
     setattr(parser.values, option.dest, [float(s) for s in value.split(',')])
 
