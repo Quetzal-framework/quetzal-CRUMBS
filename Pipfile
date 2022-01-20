@@ -11,6 +11,9 @@ rasterio = "*"
 matplotlib = "*"
 imageio = "*"
 imageio-ffmpeg = "*"
+pyproj = "*"
+shapely = "*"
+fiona = "*"
 
 [dev-packages]
 

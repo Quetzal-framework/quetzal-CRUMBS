@@ -105,7 +105,7 @@ of generations of the simulation. Instead, iDDC studies have focused on using a 
 >
 > :gift: But because Quetzal-CoaTL embeds the GDAL library, it allows much more granularity in
 the way to represent the landscape. With the `interpolate` function, you can:  
-- assignexisting bands to the generations of your choice:
+- assign existing bands to the generations of your choice:
     - the first band must be assigned to 0
     - the last band is assigned to the integer *n* of you choice, *n* being the number of generations of the simulation
 - The crumbs will interpolate the missing layers

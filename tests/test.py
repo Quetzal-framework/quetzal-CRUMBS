@@ -109,5 +109,15 @@ class TestAnimate(unittest.TestCase):
         animate.animate("tests/data/EGG2_short_history.tif", 500)
         animate.animate("tests/data/EGG2_short_history.tif", 500, "animation.mp4")
 
+
+from crumbs import get_chelsa
+
+class TestGetChelsa(unittest.TestCase):
+    def SetUp(self):
+        pass
+
+    def test_get_chelsa(self):
+        get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp")
+
 if __name__=="__main__":
     unittest.main()

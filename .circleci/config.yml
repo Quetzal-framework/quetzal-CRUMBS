@@ -3,10 +3,10 @@ version: 2.1
 executors:
   executor-eggs:
     docker:
-      - image: arnaudbecheler/quetzal-eggs:latest
+      - image: arnaudbecheler/quetzal-nest:latest
   executor-crumbs:
     docker:
-      - image: arnaudbecheler/quetzal-crumbs:latest
+      - image: arnaudbecheler/quetzal-nest:latest
 
 jobs:
 
