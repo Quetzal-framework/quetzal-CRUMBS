@@ -4,7 +4,7 @@ from crumbs import sequence, bpp, sample, get_successful_simulations_rowids
 from crumbs import get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
 from crumbs import retrieve_parameters
 from crumbs import animate
-
+import numpy as np
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -59,8 +59,8 @@ class TestTiff(unittest.TestCase):
         band.GetMetadata()
         # Print only selected metadata:
         self.assertEqual(band.GetNoDataValue(), -3.4e+38)
-        self.assertEqual(band.GetMinimum(), 0.1104118)
-        self.assertEqual(band.GetMaximum(), 0.7852693)
+        np.testing.assert_almost_equal(band.GetMinimum(), 0.1104118, 6)
+        np.testing.assert_almost_equal(band.GetMaximum(), 0.7852693, 6)
 
     def test_sample_latlon(self):
         latlon = sample.uniform_latlon("tests/data/suitability.tif")
