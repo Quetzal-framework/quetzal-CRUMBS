@@ -62,7 +62,7 @@ def resume_download(fileurl, resume_byte_pos):
     resume_header = {'Range': 'bytes=%d-' % resume_byte_pos}
     return requests.get(fileurl, headers=resume_header, stream=True,  verify=True, allow_redirects=True)
 
-def get_chelsa(url, output_dir):
+def download(url, output_dir):
     """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
     """
     #  Retrievethe filename from the URL so we have a local file to write to
@@ -93,29 +93,37 @@ def get_chelsa(url, output_dir):
         print(e)
     return
 
-def generate_url(variables, timesID):
+def generate_urls(variables, timesID):
     """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
     """
+    assert len(variables) > 0 , "Unable to generate URL fom an empty variables list"
+    assert len(timesID) > 0 , "Unable to generate URL from an empty timesID list"
+
     urls = []
-    implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19,1)]]
+    implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19, 1)]]
+
     if(set(variables).issubset(set(implemented))):
-        if(set('dem').issubset(set(variables))):
+
+        if(set(['dem']).issubset(set(variables))):
             for timeID in timesID :
                 url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_"+ str(timeID) + "_V1.0.tif"
                 urls.append(url)
-        if(set('glz').issubset(set(variables))):
+
+        if(set(['glz']).issubset(set(variables))):
             for timeID in timesID :
                 url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_glz_"+ str(timeID) + "_V1.0.tif"
                 urls.append(url)
+
         bioset = set(variables) - set(['dem','glz'])
-        if( len(bioset) >= 1 ) :
+        if( len(bioset) > 0 ) :
             for bio in bioset:
                 for timeID in timesID :
                     url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_" + bio + "_"+ str(timeID) + "_V1.0.tif"
                     urls.append(url)
-    else:
-        raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
-    return
+
+    else: raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
+    assert len(urls) > 0 , "Unable to generate URL."
+    return urls
 
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
@@ -140,8 +148,8 @@ def create_folders_if_dont_exist(output_dir, clipped_dir):
         os.makedirs(clipped_dir)
     return
 
-def bounds_to_polygon(shapefile):
-    shapes = fiona.open(points)
+def bounds_to_polygon(shapefile, margin):
+    shapes = fiona.open(shapefile)
     bbox = to_polygon(*shapes.bounds, margin)
     return bbox
 
@@ -155,42 +163,48 @@ def get_filename(url):
     filename = url.rsplit('/', 1)[-1].strip()
     return filename
 
-def download(url, output_dir, clip_shape, clipped_file, cleanup):
-    downloaded = get_chelsa(url, output_dir)
+def download_and_clip(url, output_dir, clip_shape, clipped_file, cleanup):
+    downloaded = download(url, output_dir)
     clip(downloaded, clip_shape, clipped_file)
-    os.remove(downloaded) if cleanup
+    if cleanup is True: os.remove(downloaded)
     return
 
-def remove_empty_chelsa_dir(output_dir):
+def remove_chelsa_dir_if_empty(output_dir):
     if len(os.listdir(output_dir)) == 0:
         os.rmdir(output_dir)
     else:
         print("Directory", output_dir, "is not empty and will not be deleted.")
     return
 
-def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, outputGeotiff=None, variable_string=None, cleanup=False):
+def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, chelsa_dir=None, clip_dir=None, geotiff=None, cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
-    if points is not None bounding_box = bounds_to_polygon(points)
+    if points is not None: bounding_box = bounds_to_polygon(points, margin)
 
-    create_folders_if_dont_exist(output_dir, clipped_dir):
+    create_folders_if_dont_exist(chelsa_dir, clip_dir)
 
-    urls = generate_url(variables, timesID) if inputFile is None else read_urls(inputFile)
+    urls = []
+    if inputFile is None:
+        urls = generate_urls(variables, timesID)
+    else:
+        urls = read_urls(inputFile)
 
+    assert len(urls) != 0 , "no URL generated or read in file."
+
+    clip_files = []
     for url in urls:
-        clipped_file = clipped_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
-        print(clipped_file)
-        if not exists(clipped_file):
-            download(url, output_dir, bounding_box, clipped_file, cleanup)
+        clip_file = clip_dir + "/" + get_filename(url)
+        clip_files.append(clip_file)
+        if not exists(clip_file): download_and_clip(url, chelsa_dir, bounding_box, clip_file, cleanup)
 
-    remove_empty_chelsa_dir(output_dir) if cleanup
+    if cleanup is True: remove_chelsa_dir_if_empty(output_dir)
 
-    clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
-    #clipped_files = [url.rsplit('/', 1)[-1].strip() for url in generate_url(variables, timesID)]
-    images = [clipped_dir + '/' + str(f) for f in clipped_files]
-    to_geotiff(to_vrt(sort_nicely(images)), outputGeotiff)
-
+    for variable in variables:
+        matching = [s for s in clip_files if variable in s]
+        filename = geotiff.rsplit('.', 1)[-2]  + "_" + variable
+        VRT = to_vrt(sort_nicely(matching), filename + ".vrt"  )
+        to_geotiff(VRT,  filename + ".tif")
 
 def get_variables_args(option, opt, value, parser):
     setattr(parser.values, option.dest, value.split(','))
@@ -220,9 +234,9 @@ def main(argv):
 
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
-    parser.add_option("-d", "--dir", type="str", dest="output_dir", default = "CHELSA", help="Output directory for CHELSA files. Default: CHELSA.")
-    parser.add_option("-c", "--clipped_dir", type="str", dest="clipped_dir", default = "CHELSA_clipped", help="Output directory for clipped CHELSA files. Default: CHELSA_clipped.")
-    parser.add_option("-o", "--output-geotiff", type="str", dest="geotiff", default = "stacked.tiff", help="Produces a geotiff that ")
+    parser.add_option("-d", "--dir", type="str", dest="chelsa_dir", default = "CHELSA", help="Output directory for CHELSA files. Default: CHELSA.")
+    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "CHELSA_clipped", help="Output directory for clipped CHELSA files. Default: CHELSA_clipped.")
+    parser.add_option("-o", "--geotiff", type="str", dest="geotiff", default = "stacked.tiff", help="Produces a geotiff.")
     parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA files, but keep clipped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     (options, args) = parser.parse_args(argv)
@@ -233,9 +247,9 @@ def main(argv):
             timesID = options.timesID,
             points = options.points,
             margin = options.margin,
-            output_dir = options.output_dir,
-            clipped_dir = options.clipped_dir,
-            outputGeotiff = options.geotiff,
+            chelsa_dir = options.chelsa_dir,
+            clip_dir = options.clip_dir,
+            geotiff = options.geotiff,
             cleanup = options.cleanup)
     except Exception as e:
         print(e)
