@@ -43,15 +43,15 @@ def clip(inputFile, shape, outputFile):
     """ Clip the input file by the shape given, saving the output file
     """
     # read source
-    source = rasterio.open(inputFile)
-    out_image, out_transform = msk.mask(source, [shape], crop=True)
-    out_meta = source.meta
-    # udate metadata
-    out_meta.update({"driver": "GTiff",
-                     "height": out_image.shape[1],
-                     "width": out_image.shape[2],
-                     "transform": out_transform})
-    source.close()
+    with rasterio.open(inputFile) as source :
+        out_image, out_transform = msk.mask(source, [shape], crop=True)
+        out_meta = source.meta
+        # udate metadata
+        out_meta.update({"driver": "GTiff",
+                         "height": out_image.shape[1],
+                         "width": out_image.shape[2],
+                         "transform": out_transform})
+
     with rasterio.open(outputFile, "w", **out_meta) as dest:
         dest.write(out_image)
 
