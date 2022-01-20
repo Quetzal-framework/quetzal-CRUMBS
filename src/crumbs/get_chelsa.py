@@ -153,10 +153,9 @@ def create_folders_if_dont_exist(output_dir, clipped_dir):
     return
 
 def bounds_to_polygon(shapefile, margin):
-    shapes = fiona.open(shapefile)
-    bbox = to_polygon(*shapes.bounds, margin)
-    shapes.close()
-    return bbox
+    with fiona.open(shapefile) as shapes:
+        bbox = to_polygon(*shapes.bounds, margin)
+        return bbox
 
 def read_urls(inputFile):
     with open(inputFile, 'r') as input:
