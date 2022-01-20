@@ -64,7 +64,6 @@ def resume_download(fileurl, resume_byte_pos):
 def get_chelsa(url, output_dir):
     """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
     """
-
     #  Retrievethe filename from the URL so we have a local file to write to
     filename = output_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
     path = Path(filename)
@@ -91,6 +90,7 @@ def get_chelsa(url, output_dir):
         return filename
     except requests.RequestException as e:
         print(e)
+    return
 
 def generate_url(variables, timesID):
     """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
@@ -113,17 +113,16 @@ def generate_url(variables, timesID):
                     yield url
     else:
         raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
+    return
 
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
-    vrt_file = outputFile
-    images = inputFiles
-    gdal.BuildVRT(vrt_file, images, separate=True, callback=gdal.TermProgress_nocb)
+    gdal.BuildVRT(outputFile, inputFiles, separate=True, callback=gdal.TermProgress_nocb)
     vrt_options = gdal.BuildVRTOptions(separate=True, callback=gdal.TermProgress_nocb, resampleAlg='average')
-    my_vrt = gdal.BuildVRT(vrt_file, images , options=vrt_options)
+    my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
     my_vrt = None
-    return(vrt_file)
+    return(outputFile)
 
 def to_geotiff(vrt, outputFile='stacked.tif'):
     """ Converts the VRT files to a geotiff file
@@ -152,6 +151,7 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
         urls = input.readlines()
     else :
         # generate url from anticipated URL CHELSA pattern
+        print(timesID)
         urls = generate_url(variables, timesID)
 
     for url in urls:
@@ -168,15 +168,17 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
         print("Directory", output_dir, "is not empty and will not be deleted.")
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
-    images = [output_dir + '/' + str(f) for f in clipped_files]
+    print(clipped_files)
+    images = [clipped_dir + '/' + str(f) for f in clipped_files]
+    print(images)
     to_geotiff(to_vrt(sort_nicely(images)), outputGeotiff)
 
 
 def get_variables_args(option, opt, value, parser):
     setattr(parser.values, option.dest, value.split(','))
 
-def get_timesID_args(option, opt, value, parser, type='float'):
-    setattr(parser.values, option.dest, [float(s) for s in value.split(',')])
+def get_timesID_args(option, opt, value, parser, type='int'):
+    setattr(parser.values, option.dest, [int(s) for s in value.split(',')])
 
 def main(argv):
 
