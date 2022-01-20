@@ -151,11 +151,12 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
         urls = input.readlines()
     else :
         # generate url from anticipated URL CHELSA pattern
-        print(timesID)
         urls = generate_url(variables, timesID)
 
     for url in urls:
-        clipped_file = clipped_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
+        filename = url.rsplit('/', 1)[-1].strip()
+        print("filename", filename)
+        clipped_file = clipped_dir.strip() + "/" + filename
         if not exists(clipped_file):
             chelsafile = get_chelsa(url.strip(), output_dir.strip())
             clip(chelsafile, bbox, clipped_file)
@@ -168,9 +169,7 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
         print("Directory", output_dir, "is not empty and will not be deleted.")
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
-    print(clipped_files)
     images = [clipped_dir + '/' + str(f) for f in clipped_files]
-    print(images)
     to_geotiff(to_vrt(sort_nicely(images)), outputGeotiff)
 
 
