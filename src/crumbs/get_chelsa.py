@@ -10,7 +10,6 @@ from osgeo import gdal
 from pathlib import Path;
 from os import walk
 from os.path import exists
-
 import re
 
 def tryfloat(s):
@@ -133,7 +132,7 @@ def to_geotiff(vrt, outputFile='stacked.tif'):
     ds = gdal.Translate(outputFile, ds)
     ds = None
 
-def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, variable_string=None, cleanup=False):
+def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, outputGeotiff=None, variable_string=None, cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
@@ -170,19 +169,43 @@ def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_di
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
     images = [output_dir + '/' + str(f) for f in clipped_files]
-    to_geotiff(to_vrt(sort_nicely(images)))
+    to_geotiff(to_vrt(sort_nicely(images)), outputGeotiff)
+
+
+def get_variables_args(option, opt, value, parser):
+    setattr(parser.values, option.dest, value.split(','))
+
+
+def get_timesID_args(option, opt, value, parser, type='float'):
+    setattr(parser.values, option.dest, [float(s) for s in value.split(',')])
 
 def main(argv):
+
     parser = OptionParser()
+
     parser.add_option("-i", "--input", type="str", dest="input", help="Input urls file, one url by line")
-    parser.add_option("-v", "--variables", nargs="*", default=['dem'], type="str", dest="variables", help="CHELSA_TraCE21k_ variables to download: dem, glz, bio1-19")
-    parser.add_option("-t", "--timesID", nargs="*", default=range(20,-200,-1), type="int", dest="timesID", help="CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)")
-    parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a boundin box will be drawn to clip the CHELSA tif. Usually DNA samples coordinates, but can be a box too.")
-    parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees")
-    parser.add_option("-d", "--dir", type="str", dest="output_dir", default = "CHELSA", help="Output directory for CHELSA files")
-    parser.add_option("-c", "--clipped_dir", type="str", dest="clipped_dir", default = "CHELSA_clipped", help="Output directory for clipped CHELSA files")
-    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA files, but keep clipped files")
-    parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk")
+
+    parser.add_option("-v", "--variables",
+                        dest="variables",
+                        type='str',
+                        action='callback',
+                        callback=get_variables_args,
+                        help="If no input given, CHELSA TraCE21k variables to download. Possible options: dem, glz, bio1 to bio19")
+
+    parser.add_option("-t", "--timesID",
+                        dest="timesID",
+                        type='str',
+                        action='callback',
+                        callback=get_timesID_args,
+                        help="CHELSA_TraCE21k_ times IDs to download. Default: 20 (present) to -200 (LGM)")
+
+    parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
+    parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
+    parser.add_option("-d", "--dir", type="str", dest="output_dir", default = "CHELSA", help="Output directory for CHELSA files. Default: CHELSA.")
+    parser.add_option("-c", "--clipped_dir", type="str", dest="clipped_dir", default = "CHELSA_clipped", help="Output directory for clipped CHELSA files. Default: CHELSA_clipped.")
+    parser.add_option("-o", "--output-geotiff", type="str", dest="geotiff", default = "stacked.tiff", help="Produces a geotiff that ")
+    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA files, but keep clipped files.")
+    parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     (options, args) = parser.parse_args(argv)
     try:
         return get_chelsa(
@@ -193,6 +216,7 @@ def main(argv):
             margin = options.margin,
             output_dir = options.output_dir,
             clipped_dir = options.clipped_dir,
+            outputGeotiff = options.geotiff,
             cleanup = options.cleanup)
     except Exception as e:
         print(e)
