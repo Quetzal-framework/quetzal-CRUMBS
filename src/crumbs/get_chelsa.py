@@ -11,6 +11,7 @@ from pathlib import Path;
 from os import walk
 from os.path import exists
 import re
+import glob
 
 def tryfloat(s):
     try:
@@ -95,22 +96,23 @@ def get_chelsa(url, output_dir):
 def generate_url(variables, timesID):
     """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
     """
+    urls = []
     implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19,1)]]
     if(set(variables).issubset(set(implemented))):
         if(set('dem').issubset(set(variables))):
             for timeID in timesID :
                 url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_"+ str(timeID) + "_V1.0.tif"
-                yield url
+                urls.append(url)
         if(set('glz').issubset(set(variables))):
             for timeID in timesID :
                 url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_glz_"+ str(timeID) + "_V1.0.tif"
-                yield url
+                urls.append(url)
         bioset = set(variables) - set(['dem','glz'])
         if( len(bioset) >= 1 ) :
             for bio in bioset:
                 for timeID in timesID :
                     url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_" + bio + "_"+ str(timeID) + "_V1.0.tif"
-                    yield url
+                    urls.append(url)
     else:
         raise ValueError(variable_string, ": not implemented. Implemented CHELSA variables are:", implemented)
     return
@@ -131,44 +133,61 @@ def to_geotiff(vrt, outputFile='stacked.tif'):
     ds = gdal.Translate(outputFile, ds)
     ds = None
 
-def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, outputGeotiff=None, variable_string=None, cleanup=False):
-    """ Downloads bio and orog variables from CHELSA-TraCE21k –
-        1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
-    """
-    if(points is not None):
-        shapes = fiona.open(points)
-        bbox = to_polygon(*shapes.bounds, margin)
-
-    # Creating folders if does not exist
+def create_folders_if_dont_exist(output_dir, clipped_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     if not os.path.exists(clipped_dir):
         os.makedirs(clipped_dir)
+    return
 
-    if(inputFile is not None):
-        # read URLS from input file
-        input = open(inputFile, 'r')
-        urls = input.readlines()
-    else :
-        # generate url from anticipated URL CHELSA pattern
-        urls = generate_url(variables, timesID)
+def bounds_to_polygon(shapefile):
+    shapes = fiona.open(points)
+    bbox = to_polygon(*shapes.bounds, margin)
+    return bbox
 
-    for url in urls:
-        filename = url.rsplit('/', 1)[-1].strip()
-        print("filename", filename)
-        clipped_file = clipped_dir.strip() + "/" + filename
-        if not exists(clipped_file):
-            chelsafile = get_chelsa(url.strip(), output_dir.strip())
-            clip(chelsafile, bbox, clipped_file)
-            if cleanup == True: os.remove(chelsafile)
+def read_urls(inputFile):
+    input = open(inputFile, 'r')
+    urls = input.readlines()
+    return [url.strip() for url in urls]
 
-    # Removing empty directory if cleanup
+def get_filename(url):
+    #  splits the url into a list, starting from the right and get last element
+    filename = url.rsplit('/', 1)[-1].strip()
+    return filename
+
+def download(url, output_dir, clip_shape, clipped_file, cleanup):
+    downloaded = get_chelsa(url, output_dir)
+    clip(downloaded, clip_shape, clipped_file)
+    os.remove(downloaded) if cleanup
+    return
+
+def remove_empty_chelsa_dir(output_dir):
     if len(os.listdir(output_dir)) == 0:
         os.rmdir(output_dir)
     else:
         print("Directory", output_dir, "is not empty and will not be deleted.")
+    return
+
+def get_chelsa(inputFile, variables, timesID, points=None, margin=0.0, output_dir=None, clipped_dir=None, outputGeotiff=None, variable_string=None, cleanup=False):
+    """ Downloads bio and orog variables from CHELSA-TraCE21k –
+        1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
+    """
+    if points is not None bounding_box = bounds_to_polygon(points)
+
+    create_folders_if_dont_exist(output_dir, clipped_dir):
+
+    urls = generate_url(variables, timesID) if inputFile is None else read_urls(inputFile)
+
+    for url in urls:
+        clipped_file = clipped_dir.strip() + "/" + url.rsplit('/', 1)[-1].strip()
+        print(clipped_file)
+        if not exists(clipped_file):
+            download(url, output_dir, bounding_box, clipped_file, cleanup)
+
+    remove_empty_chelsa_dir(output_dir) if cleanup
 
     clipped_files = next(walk(clipped_dir), (None, None, []))[2]  # [] if no file
+    #clipped_files = [url.rsplit('/', 1)[-1].strip() for url in generate_url(variables, timesID)]
     images = [clipped_dir + '/' + str(f) for f in clipped_files]
     to_geotiff(to_vrt(sort_nicely(images)), outputGeotiff)
 
