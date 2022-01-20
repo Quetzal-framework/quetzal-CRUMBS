@@ -59,8 +59,8 @@ class TestTiff(unittest.TestCase):
         band.GetMetadata()
         # Print only selected metadata:
         self.assertEqual(band.GetNoDataValue(), -3.4e+38)
-        self.assertEqual(band.GetMinimum(), 0.15809911489487)
-        self.assertEqual(band.GetMaximum(), 0.78696364164352)
+        self.assertEqual(band.GetMinimum(), 0.1104118)
+        self.assertEqual(band.GetMaximum(), 0.7852693)
 
     def test_sample_latlon(self):
         latlon = sample.uniform_latlon("tests/data/suitability.tif")
@@ -118,7 +118,7 @@ class TestGetChelsa(unittest.TestCase):
 
     def test_get_chelsa(self):
         get_chelsa.get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp")
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", varialbes = ['dem','bio'], timesID = [20, 0, -199])
+        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio'], timesID = [20, 0, -199])
 
 if __name__=="__main__":
     unittest.main()
