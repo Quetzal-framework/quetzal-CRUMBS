@@ -118,7 +118,7 @@ class TestGetChelsa(unittest.TestCase):
 
     def test_get_chelsa(self):
         get_chelsa.get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp", timesID = [20, -199])
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio1'], timesID = [20, -199])
+        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio01'], timesID = [20, -199])
 
 if __name__=="__main__":
     unittest.main()
