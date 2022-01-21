@@ -101,7 +101,7 @@ def generate_urls(variables, timesID):
     assert len(timesID) > 0 , "Unable to generate URL from an empty timesID list"
 
     urls = []
-    implemented = ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
+    implemented = implemented_variables()
 
     if(set(variables).issubset(set(implemented))):
 
@@ -183,6 +183,16 @@ def remove_chelsa_dir_if_empty(output_dir):
         print("Directory", output_dir, "is not empty and will not be deleted.")
     return
 
+def implemented_variables():
+    return ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
+
+def retrieve_variables(urls):
+    matched = []
+    for variable in implemented_variables():
+        if any(variable in s for s in urls):
+            matched.append(variable)
+    return matched
+
 def get_chelsa(inputFile, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA', clip_dir='CHELSA_clipped', geotiff='stacked.tif', cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
@@ -191,11 +201,11 @@ def get_chelsa(inputFile, variables=None, timesID=None, points=None, margin=0.0,
 
     create_folders_if_dont_exist(chelsa_dir, clip_dir)
 
-    urls = []
     if inputFile is None:
         urls = generate_urls(variables, timesID)
     else:
         urls = read_urls(inputFile)
+        variables = retrieve_variables(urls)
 
     assert len(urls) != 0 , "no URL generated or read in file."
 
