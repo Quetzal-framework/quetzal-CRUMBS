@@ -193,7 +193,7 @@ def retrieve_variables(urls):
             matched.append(variable)
     return matched
 
-def get_chelsa(inputFile, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA', clip_dir='CHELSA_clipped', geotiff='stacked.tif', cleanup=False):
+def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA', clip_dir='CHELSA_clipped', geotiff='stacked.tif', cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
