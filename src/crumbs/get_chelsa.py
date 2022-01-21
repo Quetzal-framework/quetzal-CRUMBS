@@ -65,6 +65,7 @@ def resume_download(fileurl, resume_byte_pos):
 def download(url, output_dir):
     """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
     """
+    print(url)
     #  Retrievethe filename from the URL so we have a local file to write to
     filename = output_dir + "/" + get_filename(url)
     path = Path(filename)
@@ -100,7 +101,7 @@ def generate_urls(variables, timesID):
     assert len(timesID) > 0 , "Unable to generate URL from an empty timesID list"
 
     urls = []
-    implemented = ['dem', 'glz', *['bio' + str(i) for i in range(1, 19, 1)]]
+    implemented = ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
 
     if(set(variables).issubset(set(implemented))):
 
@@ -132,6 +133,7 @@ def generate_urls(variables, timesID):
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
+    print("- converting bands to VRT", outputFile)
     gdal.BuildVRT(outputFile, inputFiles, separate=True, callback=gdal.TermProgress_nocb)
     vrt_options = gdal.BuildVRTOptions(separate=True, callback=gdal.TermProgress_nocb, resampleAlg='average')
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
@@ -139,6 +141,7 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
     return(outputFile)
 
 def to_geotiff(vrt, outputFile='stacked.tif'):
+    print('- converting', vrt, 'to GeoTiff', outputFile)
     """ Converts the VRT files to a geotiff file
     """
     ds = gdal.Open(vrt)
