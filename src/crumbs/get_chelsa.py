@@ -117,6 +117,8 @@ def generate_urls(variables, timesID):
 
         bioset = set(variables) - set(['dem','glz'])
         if( len(bioset) > 0 ) :
+            if bioset == set(['bio']):
+                bioset = set(['bio' + str(i).zfill(2) for i in range(1, 19, 1)])
             for bio in bioset:
                 for timeID in timesID :
                     url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_" + bio + "_"+ str(timeID) + "_V1.0.tif"
@@ -240,7 +242,7 @@ def main(argv):
                         type='str',
                         action='callback',
                         callback=get_variables_args,
-                        help="If no input given, CHELSA TraCE21k variables to download. Possible options: dem, glz, bio1 to bio19")
+                        help="If no input given, CHELSA TraCE21k variables to download. Possible options: dem, glz, bio01 to bio19")
 
     parser.add_option("-t", "--timesID",
                         dest="timesID",

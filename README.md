@@ -7,11 +7,13 @@
 
 General utility scripts for the Quetzal framework projects and iDDC modeling (Integrated Distributional, Demographic, Coalescent models).
 
-## Usage in bash
-
 :warning: At the present moment the python interfaces are not very stable, and are not really
 meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
 when I'm doing ABC-inference or when I'm calibrating my simulations.
+
+:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
+
+:bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
 -------------------------------------------------------------------------------
 ### :game_die: Sampling model parameters in a prior distribution
@@ -25,10 +27,67 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
     * get longitude with `${latlon[1]}`
 
 -------------------------------------------------------------------------------
-### :clapper: Visualizing a dynamic landscape:
+### :inbox_tray: Get CHELSA-Trace21k: 1km climate time series since the LGM
+
+High resolution, downscaled climate model data are central to iDDC modeling. [The CHELSA-TraCE21k downscaling algorithm](https://chelsa-climate.org/chelsa-trace21k/) is particularly relevant to the iDDC modeling field, as it provides:
+
+- global monthly climatologies for temperature and precipitation at 30 arcsec spatial resolution in 100 year time steps for the last 21,000 years.
+- paleo orography at high spatial resolution for each timestep
+
+Quetzal-CRUMBS allows to download Geotiff files from this database, selecting the variables and timesteps of interest, possibly clipping the (heavy) worldwide data to the spatial extent of your choice to reduce disk usage, and assemble them into multi-band GeoTiff files than can be processed by other *crumbs* or by *Quetzal-EGGS* simulators :egg::egg::egg:
+
+#### General use using URL files
+
+Go to the [CHELSA-Trace21k website](https://envicloud.wsl.ch/#/?prefix=chelsa%2Fchelsa_V1%2Fchelsa_trace%2F), select multiple files via the checkboxes, download the URL file `envidatS3paths.txt`, then:
+
+  - :globe_with_meridians: **Get worlwide data**: \
+  `python3 -m crumbs.get_chelsa.py --input envidatS3paths.txt`
+  - :scissors: **Crop the data using the bounding box of your sampling points:** \
+  `python3 -m crumbs.get_chelsa.py -i envidatS3paths.txt --points points.shp`
+  - :framed_picture: **Same, but adds a buffer of 1 degree (111km) around the bounding box:** \
+  `python3 -m crumbs.get_chelsa.py -i envidatS3paths.txt -p points.shp --margin 1.0`
+  - :wastebasket: **Same, but erases intermediary worlwide files to save disk space** \
+  `python3 -m crumbs.get_chelsa.py -i envidatS3paths.txt -p points.shp -m 1.0 --cleanup`
+
+>:bulb: You can specify the directory where to save raw CHELSA datasets with the option `-d` or `--dir`. Default is `CHELSA`.
+>
+>:bulb: You can specify the directory where to save clipped CHELSA datasets with the option `-c` or `--clip_dir`. Default is `CHELSA_clipped`.
+>
+>:bulb: By default, the `get_chelsa` function produces `stacked.tif` multi-band GeoTiff files for each variable selected, ranked from the past (first band) to the present (last band). You can rename them using the `-o` or `--geotiff` option.
+
+#### :mountain: Digital Elevation Model ('dem')
+
+Digital Elevation Models allow to incorporate sea level variations in the landscape simulation, allowing for better explanation of the population dynamics and patterns of genetic variations near coastlines and islands systems:
+
+- **Download present time (timeID=20) and LGM (timeID=-199) data:**\
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ----variables dem -timesID 20,-199`
+- **Download a sequence of timesteps:**\
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem -t $(seq -s ',' -50 1 20)`
+
+#### :mountain_snow: Glacier elevation ('glz')
+
+When studying let's say alpine plants, embedding glacier dynamics into the simulation can provide important insights
+on the species past dynamics.
+
+- **Add glacier elevation to the list of variables:**\
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz -t $(seq -s ',' -50 1 20)`
+
+#### :sun_behind_rain_cloud: Bioclimatic variables ('bio')
+
+Bioclimatic variables are of fundamental importance for species distribution modeling, an important step of the iDDC method. You can use the present bioclimatic variables to model the niche of the species based on present distributional data, and then project the model on past bioclimatic values to get a sense of the probable suitable areas for the species.
+
+- **Add bio01 to the list of variables:**\
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz,bio01 -t $(seq -s ',' -50 1 20)`
+
+- **Add all bioclimatic variables to the list:**\
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz,bio -t $(seq -s ',' -50 1 20)`
+
+
+-------------------------------------------------------------------------------
+### :clapper: Visualizing the landscape dynamics
 
 This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
-- If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `crumbs.interpolate`),
+- If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
 you can easily perform a visual check of the landscape dynamics before to run the simulations
 - If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
 
@@ -139,6 +198,15 @@ Workflow from https://circleci.com/blog/publishing-a-python-package/.
 
  ---------------------------------------------------
 # References
+
+* Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann,
+N.E. (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data
+since the last glacial maximum. Geoscientific Model Development - Discussions
+
+* Version 1.0
+Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann, N.E.
+(2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data since
+the last glacial maximum. EnviDat.
 
 * Bocedi, G., Pe’er, G., Heikkinen, R. K., Matsinos, Y., & Travis, J. M. (2012). Projecting species’ range expansion dynamics: sources of systematic biases when scaling up patterns and processes. Methods in Ecology and Evolution, 3(6), 1008-1018.
 

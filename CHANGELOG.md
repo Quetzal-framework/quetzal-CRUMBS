@@ -104,4 +104,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - get CHELSA
 - rotate landscapes
 - rescale landscapes
-- tempoal interpolation
+- temporal interpolation
