@@ -70,12 +70,12 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 | --------------| --------------------|
 | Sea level rising on the North coast of Australia from -5000 to 1990. <br>
 <pre>
-python3 -m crumbs.get_chelsa.py   \ <br>
-&emsp;        -p my_sampling_points.shp \ br>
-&emsp;        -v dem                    \ <br>
-&emsp;        -t $(seq -s ',' -50 1 20) \ <br>
-&emsp;        --geotiff my_elevation.tif <br>
-python3 -m crumbs.animate my_elevation.tif -o my_dem.gif <br>
+python3 -m crumbs.get_chelsa.py   \
+&emsp;        -p my_sampling_points.shp \
+&emsp;        -v dem                    \
+&emsp;        -t $(seq -s ',' -50 1 20) \
+&emsp;        --geotiff my_elevation.tif
+python3 -m crumbs.animate my_elevation.tif -o my_dem.gif
 </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" height="250"/> |
 
 
