@@ -69,7 +69,12 @@ def download(url, output_dir):
     #  Retrievethe filename from the URL so we have a local file to write to
     filename = output_dir + "/" + get_filename(url)
     path = Path(filename)
-    resume_byte = path.stat().st_size if path.is_file() else 0
+    if path.is_file():
+        resume_byte = path.stat().st_size
+        print("File exists, resuming download to byte", resume_byte)
+    else:
+        print("File does not exist, starting download from scratch.")
+        resume_byte = 0.0
 
     try:
         with open(filename, 'ab') as file:
