@@ -122,6 +122,10 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 * **Change the output name:**  
 `python3 -m crumbs.circle_mask input.tif -o masked_output.tif`
 
+| Example | Output       |
+| --------------| --------------------|
+| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_elevation.tif  <br> python3 -m crumbs.circle_mask my_elevation.tif -o my_circle_landscape.tif <br>  python3 -m crumbs.animate my_circle_landscape.tif -o my_circle_landscape.mp4 <br> </pre> | [A circular landscape](https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circle_landscape.mp4) |
+
 --------------------------------------------------------------------------------
 ### :globe_with_meridians: Sampling spatial grid parameters
 
