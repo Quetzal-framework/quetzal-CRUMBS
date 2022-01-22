@@ -124,7 +124,7 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 
 | Example | Output       |
 | --------------| --------------------|
-| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_elevation.tif  <br> python3 -m crumbs.circle_mask my_elevation.tif -o my_circle_landscape.tif <br>  python3 -m crumbs.animate my_circle_landscape.tif -o my_circular_landscape.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif" width="250" height="250"/> |
+| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_dem.tif  <br> python3 -m crumbs.circle_mask my_dem.tif -o my_circle.tif <br>  python3 -m crumbs.animate my_circle.tif -o my_anim.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 ### :globe_with_meridians: Sampling spatial grid parameters
