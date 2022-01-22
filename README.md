@@ -66,7 +66,7 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 - **Download a sequence of timesteps:**\
 `python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem -t $(seq -s ',' -50 1 20)`
 
-![Sea level dynamics on the North coast of Australia](dem_dynamics.gif)
+![Sea level dynamics on the North coast of Australia](https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamics.gif)
 
 #### :mountain_snow: Glacier elevation ('glz')
 
