@@ -68,7 +68,7 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 
 | Example | Output       |
 | --------------| --------------------|
-| Sea level rising on the North coast of Australia from -5000 to 1990. <pre>
+| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> <br>
 python3 -m crumbs.get_chelsa.py    \
 &emsp;        -p my_sampling_points.shp \
 &emsp;        -v dem                    \
