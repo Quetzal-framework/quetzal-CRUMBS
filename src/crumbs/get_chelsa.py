@@ -108,7 +108,7 @@ def generate_urls(variables, timesID):
     urls = []
     implemented = implemented_variables()
 
-    if(set(variables).issubset(set(implemented))):
+    if( set(variables).issubset(set(implemented)) or set(variables) - set(['dem','glz']) == set(['bio'])  ) :
 
         if(set(['dem']).issubset(set(variables))):
             for timeID in timesID :
