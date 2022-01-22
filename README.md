@@ -62,11 +62,13 @@ Go to the [CHELSA-Trace21k website](https://envicloud.wsl.ch/#/?prefix=chelsa%2F
 Digital Elevation Models allow to incorporate sea level variations in the landscape simulation, allowing for better explanation of the population dynamics and patterns of genetic variations near coastlines and islands systems:
 
 - **Download present time (timeID=20) and LGM (timeID=-199) data:**\
-`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ----variables dem -timesID 20,-199`
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp --variables dem -timesID 20,-199`
 - **Download a sequence of timesteps:**\
-`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem -t $(seq -s ',' -50 1 20)`
+`python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp -v dem -t $(seq -s ',' -50 1 20)`
 
-![Sea level dynamics on the North coast of Australia](https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif)
+| Program | Demographic process       |
+| --------------| --------------------|
+| Sea level rising on the North coast of Australia from -5000 to 1990. Animated using `crumbs.animate` | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" width="250" height="250"/> |
 
 #### :mountain_snow: Glacier elevation ('glz')
 
