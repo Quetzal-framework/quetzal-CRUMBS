@@ -66,6 +66,8 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 - **Download a sequence of timesteps:**\
 `python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem -t $(seq -s ',' -50 1 20)`
 
+![Sea level dynamics on the North coast of Australia](dem_dynamics.gif)
+
 #### :mountain_snow: Glacier elevation ('glz')
 
 When studying let's say alpine plants, embedding glacier dynamics into the simulation can provide important insights
