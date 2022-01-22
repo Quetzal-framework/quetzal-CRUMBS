@@ -68,7 +68,7 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 
 | Program | Demographic process       |
 | --------------| --------------------|
-| Sea level rising on the North coast of Australia from -5000 to 1990. Animated using `crumbs.animate` | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" width="250" height="250"/> |
+| Sea level rising on the North coast of Australia from -5000 to 1990. Animated using `crumbs.animate` | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" height="250"/> |
 
 #### :mountain_snow: Glacier elevation ('glz')
 
