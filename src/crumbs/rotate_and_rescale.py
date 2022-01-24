@@ -28,37 +28,44 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
 
     ### Read input
-    source = rasterio.open(inputRaster)
-    assert source.crs == 'EPSG:4326', "Raster must have CRS=EPSG:4326, that is unprojected lon/lat (degree) relative to WGS84 datum"
-
-    # Display information
-    print("\nSource dataset:\n")
-    summary(source)
-
-    ### Rotate the affine about a pivot and rescale
-    pivot = get_center_pixel(source)
-    #pivot = None
-    print("\nPivot coordinates:", source.transform * pivot)
-    new_transform = source.transform * Affine.rotation(angle, pivot) * Affine.scale(scale)
-
-    # this is a 3D numpy array, with dimensions [band, row, col]
-    data = source.read(masked=True)
-    kwargs = source.meta
-    kwargs['transform'] = new_transform
-
-    with rasterio.open(outputRaster, 'w', **kwargs) as dst:
-        for i in range(1, source.count + 1):
-            reproject(
-                source=rasterio.band(source, i),
-                destination=rasterio.band(dst, i),
-                src_transform=source.transform,
-                src_crs=source.crs,
-                dst_transform=new_transform,
-                dst_crs=dst.crs,
-                resampling=Resampling.average)
+    with rasterio.open(inputRaster) as source:
+        assert source.crs == 'EPSG:4326', "Raster must have CRS=EPSG:4326, that is unprojected lon/lat (degree) relative to WGS84 datum"
 
         # Display information
-        print("\nNew rotated dataset:\n")
+        print("- Source dataset:")
+        summary(source)
+
+        ### Rotate the affine about a pivot and rescale
+        pivot = get_center_pixel(source)
+        print("\nPivot coordinates:", source.transform * pivot)
+
+        # Apply transformation
+        new_transform = source.transform*Affine.rotation(angle, pivot) * Affine.scale(scale)
+
+        # this is a 3D numpy array, with dimensions [band, row, col]
+        data = source.read(masked=True)
+        kwargs = source.meta.copy()
+        kwargs.update({
+            'crs': source.crs,
+            'transform': new_transform,
+            'width': int(source.width // scale),
+            'height': int(source.height // scale)
+            })
+
+        with rasterio.open(outputRaster, 'w', **kwargs) as dst:
+            for i in range(1, source.count + 1):
+                reproject(
+                    source=rasterio.band(source, i),
+                    destination=rasterio.band(dst, i),
+                    src_transform=source.transform,
+                    src_crs=source.crs,
+                    dst_transform=new_transform,
+                    dst_crs=dst.crs,
+                    resampling=Resampling.average
+                    )
+
+        # Display information
+        print("- New rotated dataset:")
         summary(dst)
 
     return
