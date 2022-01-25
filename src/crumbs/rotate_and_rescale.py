@@ -54,8 +54,12 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
             'crs': source.crs
             })
 
-        # Source data array
-        src_data = source.read(masked=True)
+        # Source data: use normal array because mask won't work with reproject
+        src_data = source.read()
+        source_type = src_data.dtype;
+        src_data=src_data.astype('float64')
+        src_data[src_data == source.nodata] = np.nan
+
         # Array to store destination data
         dst_shape=[source.count, new_height, new_width]
         dst_data = np.empty(dst_shape); dst_data[:] = np.nan
@@ -75,11 +79,10 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
                     dst_nodata=np.nan
                     )
 
-            # dst_data = np.nan_to_num(dst_data, source.nodata)
-            dst_data = np.ma.masked_where(np.isnan(dst_data), dst_data, copy=True)
+            dst_data[np.isnan(dst_data)] = source.nodata
+            dst_data=dst_data.astype(source_type)
             # Write to the output file
             dst.write(dst_data, indexes=range(1, source.count + 1))
-
         # Display information
         print("- New rotated dataset:")
         summary(dst)
