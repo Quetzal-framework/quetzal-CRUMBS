@@ -75,7 +75,8 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
                     dst_nodata=np.nan
                     )
 
-            dst_data = np.nan_to_num(dst_data, source.nodata)
+            # dst_data = np.nan_to_num(dst_data, source.nodata)
+            dst_data = np.ma.masked_where(np.isnan(dst_data), dst_data, copy=True)
             # Write to the output file
             dst.write(dst_data, indexes=range(1, source.count + 1))
 
