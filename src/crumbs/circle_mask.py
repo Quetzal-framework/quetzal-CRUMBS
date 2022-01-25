@@ -1,7 +1,6 @@
 #!/usr/bin/python
 from optparse import OptionParser
 import rasterio
-import numpy as np
 import math
 import rasterio.mask
 
