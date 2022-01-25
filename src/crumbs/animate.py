@@ -35,62 +35,50 @@ def plot3(fig):
     return(im)
 
 
-def get_global_max(source):
-
-    array = source.read()
-    # mask off no data values
-    m = (array != source.nodata)
-    return array[m].max()
-
-
-def animate(inputRaster, vmax=None, output=None):
+def animate(inputRaster, vmin=None, vmax=None, output=None):
     output = 'animation.gif' if output is None else output
 
-    source = rasterio.open(inputRaster)
+    with rasterio.open(inputRaster) as source:
+        source_data = source.read(masked=True)
 
-    if vmax is None:
-        vmax = get_global_max(source)
+        if vmax is None: vmax = source_data.max()
+        if vmin is None: vmin = source_data.min()
 
-    with imageio.get_writer(output, mode='I') as writer:
+        with imageio.get_writer(output, mode='I') as writer:
 
-        for bandId in tqdm(range(source.count)):
+            for bandID in tqdm(range(1, source.count + 1)):
+                fig, ax = pyplot.subplots()
+                # to get longitude/latitude axis
+                extent = numpy.asarray(source.bounds)[[0,2,1,3]]
+                # use imshow so that we have something to map the colorbar to
+                image_hidden = ax.imshow(source_data[bandID-1],
+                                         extent=extent,
+                                         cmap='viridis',
+                                         vmin=vmin,
+                                         vmax=vmax)
+                image_hidden.set_visible(False)
+                # plot on the same axis with rio.plot.show
+                image = rasterio.plot.show(source_data[bandID-1],
+                                      transform=source.transform,
+                                      ax=ax,
+                                      cmap='viridis',
+                                      vmin=vmin,
+                                      vmax=vmax)
 
-            bandId = bandId+1
-            band = source.read(bandId, masked=True)
+                # add colorbar using the now hidden image
+                fig.colorbar(image_hidden, ax=ax)
 
-            fig, ax = pyplot.subplots()
-
-            # to get longitude/latitude axis
-            extent = numpy.asarray(source.bounds)[[0,2,1,3]]
-
-            # use imshow so that we have something to map the colorbar to
-            image_hidden = ax.imshow(band,
-                                     extent=extent,
-                                     cmap='viridis',
-                                     vmin=0,
-                                     vmax=vmax)
-
-            # plot on the same axis with rio.plot.show
-            image = rasterio.plot.show(band,
-                                  transform=source.transform,
-                                  ax=ax,
-                                  cmap='viridis',
-                                  vmin=0,
-                                  vmax=vmax)
-
-            # add colorbar using the now hidden image
-            fig.colorbar(image_hidden, ax=ax)
-
-            writer.append_data(plot3(fig))
-            pyplot.close()
+                writer.append_data(plot3(fig))
+                pyplot.close()
 
 
 def main(argv):
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")
-    parser.add_option("-m", "--vmax", type="int", dest="vmax", help="max value in color scale")
+    parser.add_option("-m", "--min", type="float", dest="min", help="min value in color scale")
+    parser.add_option("-M", "--max", type="float", dest="max", help="max value in color scale")
     (options, args) = parser.parse_args(argv)
-    return animate(args[0], options.vmax, options.output)
+    return animate(args[0], options.min, options.max, options.output)
 
 if __name__ == '__main__':
     import sys
