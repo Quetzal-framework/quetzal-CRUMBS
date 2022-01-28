@@ -90,7 +90,7 @@ Bioclimatic variables are of fundamental importance for species distribution mod
 `python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz,bio -t $(seq -s ',' -50 1 20)`
 
 -------------------------------------------------------------------------------
-# Landscape manipulation
+# :art: Landscape manipulation
 
 ## :scissors: Cutting a circular landscape
 
