@@ -164,7 +164,19 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 >*Upsampling*: converting to higher resolution/smaller cells (scale > 1)  
     *Downsampling*: converting to lower resolution/larger cell (scale < 1)  
 
+
 --------------------------------------------------------------------------------
+## :desert: Species Distribution Modeling
+
+> :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
+is an important step of iDDC modeling. In its correlative version, these models
+use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over the landscape.  
+The main steps are generally the following:
+1. Sample environmental variables at the presence coordinates.
+2. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
+3. Map the species–environment relationship across the study area (interpolation).
+4. Project to past climates (extrapolation)
+
 ### :earth_africa: Get GBIF observational data
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
@@ -183,20 +195,8 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 * Fetch all occurrences between 1950 and 2022
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
 
---------------------------------------------------------------------------------
-### :desert: Species Distribution Modeling
-
-> :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
-is an important step of iDDC modeling. In its correlative version, these models
-use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over the landscape.  
-The main steps are generally the following:
-1. Sample environmental variables at the presence coordinates.
-2. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
-3. Map the species–environment relationship across the study area (interpolation).
-4. Project to past climates (extrapolation)
-
 --------------------------------------------
-### :hourglass_flowing_sand: Temporal interpolation
+## :hourglass_flowing_sand: Temporal interpolation
 
 > :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
 of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
@@ -219,7 +219,7 @@ the way to represent the landscape. With the `interpolate` function, you can:
 `python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
-### :rocket: Updating the package (tip note for the dev)
+## :rocket: Updating the package (tip note for the dev)
 
 
 * Create a `feature` branch, make updates to it.
@@ -237,8 +237,8 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 Workflow from https://circleci.com/blog/publishing-a-python-package/.
 
- ---------------------------------------------------
-# References
+---------------------------------------------------
+## References
 
 * Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann,
 N.E. (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data
