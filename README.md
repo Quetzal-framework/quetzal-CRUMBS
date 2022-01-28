@@ -89,9 +89,10 @@ Bioclimatic variables are of fundamental importance for species distribution mod
 - **Add all bioclimatic variables to the list:**\
 `python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz,bio -t $(seq -s ',' -50 1 20)`
 
-
 -------------------------------------------------------------------------------
-# :clapper: Visualizing the landscape dynamics
+# Landscape manipulation
+
+## :clapper: Visualizing the landscape dynamics
 
 This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
 - If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
@@ -110,9 +111,7 @@ you can easily perform a visual check of the landscape dynamics before to run th
 
 The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
 
---------------------
-
-# :scissors: Cutting a circular landscape
+## :scissors: Cutting a circular landscape
 
 > :bulb: When you begin to rotate and rescale landscapes, you can end up with quite counter-intuitive orientations that are not very convenient.  
 To facilitate landscape manipulation and analysis, we implemented a function that fits and cuts a circle with maximal radius around the landscape center:
@@ -126,8 +125,7 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 | --------------| --------------------|
 | Sea level rising on the North coast of Australia from -5000 to 1990. <pre>python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_dem.tif  <br>python3 -m crumbs.circle_mask my_dem.tif -o my_circle.tif <br>python3 -m crumbs.animate my_circle.tif -o my_anim.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif" width="250" height="250"/> |
 
---------------------------------------------------------------------------------
-# :globe_with_meridians: Sampling spatial grid parameters
+## :globe_with_meridians: Sampling spatial grid parameters
 
 > :bulb: In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)).  
 > * If the resolution is too low, biological processes may be misrepresented and important biases may plague the results.  
@@ -141,7 +139,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 (see e.g., [Baird and Santos 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02865.x?casa_token=LDz1BGeg5lgAAAAA:_cCFdutvABU0kUsKxQApztP_tU9Yulej32wRRM8vb8Q3pQxlysu7LITGpxlweX81QKhm0tfaiyzWBAE),
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
 
-## :arrows_counterclockwise: Rotating the spatial grid
+### :arrows_counterclockwise: Rotating the spatial grid
 
 * Sample a rotation angle about the center in a prior distribution:  
   `angle=$(python3 -m crumbs.sample "uniform_real" 0.0 360.0)`
@@ -151,7 +149,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
     * **Change the output name:**  
     `python3 -m crumbs.resample input.tif $angle $factor -o out.tif`
 
-## :mag_right: Rescaling the grid resolution
+### :mag_right: Rescaling the grid resolution
 
 * Sample a rescaling factor in a prior distribution:  
 `scale=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
@@ -164,8 +162,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 >*Upsampling*: converting to higher resolution/smaller cells (scale > 1)  
     *Downsampling*: converting to lower resolution/larger cell (scale < 1)  
 
---------------------------------------------
-# :hourglass_flowing_sand: Temporal interpolation
+## :hourglass_flowing_sand: Temporal interpolation
 
 > :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
 of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
