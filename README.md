@@ -92,25 +92,6 @@ Bioclimatic variables are of fundamental importance for species distribution mod
 -------------------------------------------------------------------------------
 # Landscape manipulation
 
-## :clapper: Visualizing the landscape dynamics
-
-This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
-- If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
-you can easily perform a visual check of the landscape dynamics before to run the simulations
-- If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
-
-- The `animate` function can be called with the following:
-    * **Default settings:** generates an animated gif    
-    `python3 animate.py input.tif`
-    * **Change the output format:** detects the mp4 extension and converts accordingly    
-    `python3 animate.py  input.tif -o "output.mp4"`
-    * **Change the colorbar cap value:** if none is given then the max value is inferred from the multiband raster):  
-    `python3 animate.py input.tif" --vmax 100`
-    * **Combination of the previous:**  
-    `python3 animate.py input.tif -o output.mp4 --vmax 100`
-
-The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
-
 ## :scissors: Cutting a circular landscape
 
 > :bulb: When you begin to rotate and rescale landscapes, you can end up with quite counter-intuitive orientations that are not very convenient.  
@@ -213,6 +194,26 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 -l 50 --year "1950,2022"`
 * Fetch all occurrences between 1950 and 2022
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
+
+-------------------------------------------------------------------------------
+# :film_strip: Visualizations
+
+This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
+- If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
+you can easily perform a visual check of the landscape dynamics before to run the simulations
+- If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
+
+- The `animate` function can be called with the following:
+    * **Default settings:** generates an animated gif    
+    `python3 animate.py input.tif`
+    * **Change the output format:** detects the mp4 extension and converts accordingly    
+    `python3 animate.py  input.tif -o "output.mp4"`
+    * **Change the colorbar cap value:** if none is given then the max value is inferred from the multiband raster):  
+    `python3 animate.py input.tif" --vmax 100`
+    * **Combination of the previous:**  
+    `python3 animate.py input.tif -o output.mp4 --vmax 100`
+
+The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
