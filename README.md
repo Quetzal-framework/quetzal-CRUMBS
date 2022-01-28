@@ -16,7 +16,7 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
 :bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
 -------------------------------------------------------------------------------
-## :game_die: Sampling model parameters in a prior distribution
+# :game_die: Sampling model parameters in a prior distribution
 
 
 * Sampling integers (*e.g.*, population size): `N=$(python3 -m crumbs.sample "uniform_integer" 10 1000)`
@@ -27,7 +27,7 @@ when I'm doing ABC-inference or when I'm calibrating my simulations.
     * get longitude with `${latlon[1]}`
 
 -------------------------------------------------------------------------------
-## :inbox_tray: Get CHELSA-Trace21k: 1km climate time series since the LGM
+# :inbox_tray: Get CHELSA-Trace21k: 1km climate time series since the LGM
 
 High resolution, downscaled climate model data are central to iDDC modeling. [The CHELSA-TraCE21k downscaling algorithm](https://chelsa-climate.org/chelsa-trace21k/) is particularly relevant to the iDDC modeling field, as it provides:
 
@@ -36,7 +36,7 @@ High resolution, downscaled climate model data are central to iDDC modeling. [Th
 
 Quetzal-CRUMBS allows to download Geotiff files from this database, selecting the variables and timesteps of interest, possibly clipping the (heavy) worldwide data to the spatial extent of your choice to reduce disk usage, and assemble them into multi-band GeoTiff files than can be processed by other *crumbs* or by *Quetzal-EGGS* simulators :egg::egg::egg:
 
-### Get times series URL files
+## Get times series URL files
 
 > :bulb: If manual selection of the data of interest is cumbersome (too many variables, too many timesteps), you may want to refer to further sections for dowloading entire variables for large time sequences
 
@@ -57,7 +57,7 @@ Go to the [CHELSA-Trace21k website](https://envicloud.wsl.ch/#/?prefix=chelsa%2F
 >
 >:bulb: By default, the `get_chelsa` function produces `stacked.tif` multi-band GeoTiff files for each variable selected, ranked from the past (first band) to the present (last band). You can rename them using the `-o` or `--geotiff` option.
 
-### :mountain: Get Digital Elevation Model ('dem')
+## :mountain: Get Digital Elevation Model ('dem')
 
 Digital Elevation Models allow to incorporate sea level variations in the landscape simulation, allowing for better explanation of the population dynamics and patterns of genetic variations near coastlines and islands systems:
 
@@ -71,7 +71,7 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 | Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_elevation.tif <br> python3 -m crumbs.animate my_elevation.tif -o my_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" width="250" height="250"/> |
 
 
-### :mountain_snow: Get Glacier Elevation ('glz')
+## :mountain_snow: Get Glacier Elevation ('glz')
 
 When studying let's say alpine plants, embedding glacier dynamics into the simulation can provide important insights
 on the species past dynamics.
@@ -79,7 +79,7 @@ on the species past dynamics.
 - **Add glacier elevation to the list of variables:**\
 `python3 -m crumbs.get_chelsa.py -p my_sampling_points.shp ---v dem,glz -t $(seq -s ',' -50 1 20)`
 
-### :sun_behind_rain_cloud: Get Bioclimatic variables ('bio')
+## :sun_behind_rain_cloud: Get Bioclimatic variables ('bio')
 
 Bioclimatic variables are of fundamental importance for species distribution modeling, an important step of the iDDC method. You can use the present bioclimatic variables to model the niche of the species based on present distributional data, and then project the model on past bioclimatic values to get a sense of the probable suitable areas for the species.
 
@@ -91,7 +91,7 @@ Bioclimatic variables are of fundamental importance for species distribution mod
 
 
 -------------------------------------------------------------------------------
-## :clapper: Visualizing the landscape dynamics
+# :clapper: Visualizing the landscape dynamics
 
 This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
 - If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
@@ -112,7 +112,7 @@ The quetzal-EGG program you are using is responsible for logging the parameter v
 
 --------------------
 
-## :scissors: Cutting a circular landscape
+# :scissors: Cutting a circular landscape
 
 > :bulb: When you begin to rotate and rescale landscapes, you can end up with quite counter-intuitive orientations that are not very convenient.  
 To facilitate landscape manipulation and analysis, we implemented a function that fits and cuts a circle with maximal radius around the landscape center:
@@ -127,7 +127,7 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 | Sea level rising on the North coast of Australia from -5000 to 1990. <pre>python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_dem.tif  <br>python3 -m crumbs.circle_mask my_dem.tif -o my_circle.tif <br>python3 -m crumbs.animate my_circle.tif -o my_anim.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
-## :globe_with_meridians: Sampling spatial grid parameters
+# :globe_with_meridians: Sampling spatial grid parameters
 
 > :bulb: In spatial dynamic models, resolution of the landscape is an issue (see e.g. [Bocedi et al. 2012](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.2041-210X.2012.00235.x)).  
 > * If the resolution is too low, biological processes may be misrepresented and important biases may plague the results.  
@@ -141,7 +141,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 (see e.g., [Baird and Santos 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02865.x?casa_token=LDz1BGeg5lgAAAAA:_cCFdutvABU0kUsKxQApztP_tU9Yulej32wRRM8vb8Q3pQxlysu7LITGpxlweX81QKhm0tfaiyzWBAE),
 [Estoup et al. 2010](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1755-0998.2010.02882.x?casa_token=R0ybkgcrDIAAAAAA:Et4XddaPhgFee8XEAJP_QS1G1O-Ocxw6dVZeAEra7ye91rLcxZ0QqZrr67smVkhns4TsTnf9134DDVs)).
 
-### :arrows_counterclockwise: Rotating the spatial grid
+## :arrows_counterclockwise: Rotating the spatial grid
 
 * Sample a rotation angle about the center in a prior distribution:  
   `angle=$(python3 -m crumbs.sample "uniform_real" 0.0 360.0)`
@@ -151,7 +151,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
     * **Change the output name:**  
     `python3 -m crumbs.resample input.tif $angle $factor -o out.tif`
 
-### :mag_right: Rescaling the grid resolution
+## :mag_right: Rescaling the grid resolution
 
 * Sample a rescaling factor in a prior distribution:  
 `scale=$(python3 -m crumbs.sample "uniform_real" 0.5 2)`
@@ -166,7 +166,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 
 
 --------------------------------------------------------------------------------
-## :desert: Species Distribution Modeling
+# :desert: Species Distribution Modeling
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 is an important step of iDDC modeling. In its correlative version, these models
@@ -177,7 +177,7 @@ The main steps are generally the following:
 3. Map the species–environment relationship across the study area (interpolation).
 4. Project to past climates (extrapolation)
 
-### :earth_africa: Get GBIF observational data
+## :earth_africa: Get GBIF observational data
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 is an important step of iDDC modeling and requires obsevational data to be mapped
@@ -196,7 +196,7 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
 
 --------------------------------------------
-## :hourglass_flowing_sand: Temporal interpolation
+# :hourglass_flowing_sand: Temporal interpolation
 
 > :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
 of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
@@ -219,7 +219,7 @@ the way to represent the landscape. With the `interpolate` function, you can:
 `python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
-## :rocket: Updating the package (tip note for the dev)
+# :rocket: Updating the package (tip note for the dev)
 
 
 * Create a `feature` branch, make updates to it.
@@ -238,7 +238,7 @@ the way to represent the landscape. With the `interpolate` function, you can:
 Workflow from https://circleci.com/blog/publishing-a-python-package/.
 
 ---------------------------------------------------
-## References
+# :books: References
 
 * Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann,
 N.E. (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data
