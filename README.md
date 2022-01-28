@@ -189,6 +189,27 @@ the way to represent the landscape. With the `interpolate` function, you can:
 `python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
+### :earth_africa::round_pushpin: Get GBIF observational data
+
+> :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
+is an important step of iDDC modeling and requires obsevational data to be mapped
+to environmental variables. Environmental data can be downloaded using `get_chelsa`
+module, while `get_gbif` can be used to fetch observations in the area and time period of your choice.
+
+* Interrogate for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything
+`python3 -m crumbs.get_gbif --species "Heteronotia binoei" --points sampling_points.shp --margin 2`
+* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file
+`python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --all`
+* Fetch a max of 50 occurrences that falls in the bounding box
+`python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --limit 50`
+* Fetch a max of 50 occurrences that falls in the bounding box in the time range specified
+`python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 -l 50 --year "1950,2022"`
+* Fetch all occurrences between 1950 and 2022
+`python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 ### :desert::desert_island: Species Distribution Modeling
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
