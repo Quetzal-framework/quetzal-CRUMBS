@@ -8,30 +8,35 @@ import geopandas    # for spatial operations
 from dotenv import load_dotenv   #for python-dotenv method
 
 
-def paginated_search(my_limit, *args, **kwargs):
-    # https://gist.github.com/niconoe/b9dcb6c468b996b6f77e18f51516e840#file-example_paginate_nameusage-py-L2
-    from pygbif import occurrences
-    from tqdm import tqdm
-
+def paginated_search(max_limit, *args, **kwargs):
+    """ In its current version, pygbif can not search more than 300 occurences at once: this solves a bit of the problem
+    """
+    MAX_LIMIT = max_limit
     PER_PAGE = 100
-    progress_bar = tqdm(total=my_limit, unit='iB', unit_scale=True)
-
     results = []
-    offset = 0
 
-    while offset <= my_limit:
-        #resp = occurrences.name_usage(*args, **kwargs, limit=PER_PAGE, offset=offset)
-        resp = occurrences.search(*args, **kwargs, limit=PER_PAGE, offset=offset)
-        results = results + resp['results']
-        progress_bar.update(len(resp['results']))
-        if resp['endOfRecords']:
-            break
-        else:
-            offset = offset + PER_PAGE
-    progress_bar.close()
-    return results
+    from pygbif import occurrences
 
-def to_polygon(long0, lat0, long1, lat1, margin=0.0):
+    if(MAX_LIMIT <= PER_PAGE):
+        resp = occurrences.search(*args, **kwargs, limit=MAX_LIMIT)
+        results = resp['results']
+    else :
+        from tqdm import tqdm
+        progress_bar = tqdm(total=MAX_LIMIT, unit='B', unit_scale=True, unit_divisor=1024)
+        offset = 0
+        while offset < MAX_LIMIT:
+            resp = occurrences.search(*args, **kwargs, limit=PER_PAGE, offset=offset)
+            results = results + resp['results']
+            progress_bar.update(len(resp['results']))
+            if resp['endOfRecords']:
+                progress_bar.close()
+                break
+            else:
+                offset = offset + PER_PAGE
+        progress_bar.close()
+    return results # list of dicts
+
+def to_polygon(long0, lat0, long1, lat1, margin=0.0, csv_file='occurrences.csv'):
     """ Convert the given points into a polygon, adding a margin.
     """
     from shapely.geometry import Polygon
@@ -41,21 +46,15 @@ def to_polygon(long0, lat0, long1, lat1, margin=0.0):
                     [long0 - margin , lat1 + margin]])
 
 def bounds_to_polygon(shapefile, margin):
+    """ Convert the given shapefiles points into a polygon, adding a margin.
+    """
     from shapely.geometry import shape
     import fiona
     with fiona.open(shapefile) as shapes:
         bbox = to_polygon(*shapes.bounds, margin)
-        return bbox
+    return bbox
 
-def create_folders_if_dont_exist(dir1, dir2):
-    import os
-    if not os.path.exists(dir1):
-        os.makedirs(dir1)
-    if not os.path.exists(dir2):
-        os.makedirs(dir2)
-    return
-
-def inspect_gbif(scientific_name, points, margin, limit=None):
+def inspect_gbif(scientific_name, points, margin, limit=None, csv_file="occurences.csv"):
     from pygbif import species as species
     from pygbif import occurrences
 
@@ -70,11 +69,22 @@ def inspect_gbif(scientific_name, points, margin, limit=None):
         print("    -", out['count'], "records identified with usable coordinates")
         return
     else:
-        results = paginated_search(taxonKey=key, geometry=bounding_box, hasCoordinate=True, my_limit=limit)
+        results = paginated_search(taxonKey=key, geometry=bounding_box, hasCoordinate=True, max_limit=int(limit))
         print("    -", len(results), "records retrieved")
-        print("\tLatitude\tLongitude\tYear")
-        for key in results:
-            print("\t", key['decimalLatitude'], "\t", key['decimalLongitude'], "\t", key['year'])
+        keys_all = set().union(*(d.keys() for d in results))
+        keys= ['decimalLatitude','decimalLongitude','year']
+        assert set(keys).issubset(keys_all)
+        to_csv = []
+        for dic in results:
+            to_csv.append(dict((k, dic[k]) for k in keys))
+        try:
+            import csv
+            with open(csv_file, 'w', newline='') as output_file:
+                dict_writer = csv.DictWriter(output_file, keys)
+                dict_writer.writeheader()
+                dict_writer.writerows(to_csv)
+        except IOError:
+            print("I/O error in writing occurrence to", csv_file)
     return
 
 def download_gbif(scientific_name, points, margin):
