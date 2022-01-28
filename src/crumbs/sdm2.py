@@ -54,7 +54,7 @@ def bounds_to_polygon(shapefile, margin):
         bbox = to_polygon(*shapes.bounds, margin)
     return bbox
 
-def inspect_gbif(scientific_name, points, margin, limit=None, csv_file="occurences.csv"):
+def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurences.csv", all=False, year=None):
     from pygbif import species as species
     from pygbif import occurrences
 
@@ -62,48 +62,47 @@ def inspect_gbif(scientific_name, points, margin, limit=None, csv_file="occurenc
     if points is not None: bounding_box = bounds_to_polygon(points, margin)
     print("    - Search in the bounding box provided by", points, "with margin", margin, "degrees")
     print("    - Bounding box used:", bounding_box)
-    key = species.name_suggest(q=scientific_name)[0]['key']
-    print("    - Name", scientific_name, "suggested GBIF taxon key", key)
-    if limit is None:
-        out = occurrences.search(taxonKey=key, geometry=bounding_box, hasCoordinate=True,limit=300)
-        print("    -", out['count'], "records identified with usable coordinates")
-        return
-    else:
-        results = paginated_search(taxonKey=key, geometry=bounding_box, hasCoordinate=True, max_limit=int(limit))
-        print("    -", len(results), "records retrieved")
-        keys_all = set().union(*(d.keys() for d in results))
-        keys= ['decimalLatitude','decimalLongitude','year']
-        assert set(keys).issubset(keys_all)
-        to_csv = []
-        for dic in results:
-            to_csv.append(dict((k, dic[k]) for k in keys))
-        try:
-            import csv
-            with open(csv_file, 'w', newline='') as output_file:
-                dict_writer = csv.DictWriter(output_file, keys)
-                dict_writer.writeheader()
-                dict_writer.writerows(to_csv)
-        except IOError:
-            print("I/O error in writing occurrence to", csv_file)
-    return
+    taxonKey = species.name_suggest(q=scientific_name)[0]['key']
+    print("    - For", scientific_name, "GBIF suggested the taxon key:", taxonKey)
 
-def download_gbif(scientific_name, points, margin):
-    print("    - Looking in GBIF database for", scientific_name)
-    if points is not None: bounding_box = bounds_to_polygon(points, margin)
-    print("    - Search in the bounding box provided by", points, "with margin", margin, "degrees")
-    print("    - Bounding box used:", bounding_box)
-    key = species.name_suggest(q=scientific_name)[0]['key']
-    print("    - Name", scientific_name, "suggested GBIF taxon key", key)
-    from pathlib import Path  # python3 only
-    env_path = Path('.') / '.env'
-    load_dotenv(dotenv_path=env_path)
-    print("    - Beginning download")
-    print("      - GBIF user name:", os.environ.get('GBIF_USER'))
-    print("      - GBIF user email:", os.environ.get('GBIF_EMAIL'))
-    print("      - GBIF user password:", "*"*len(os.environ.get('GBIF_PWD')))
-    res = occurrences.download(['taxonKey = ' + str(key), 'hasCoordinate = TRUE', 'geometry = '+ str(bounding_box)])
-    download_key = res[0]
-    occurrences.download_get(download_key)
+    LIMIT = limit
+
+    if LIMIT is None:
+        # Just printing information
+        out = occurrences.search(taxonKey=taxonKey, geometry=bounding_box, hasCoordinate=True, year=year)
+        print("    - We identified", out['count'], "records with coordinates (use option --all to fetch all, or --limit <i> t fetch only i records.).")
+        if all is True:
+            LIMIT = int(out['count'])
+            print("    - Fetching limit set at", LIMIT)
+        else:
+            return
+
+    try:
+        LIMIT += 1; LIMIT -= 1
+    except TypeError:
+        print("Something got wrong, LIMIT is", LIMIT)
+
+    results = paginated_search(taxonKey=taxonKey, geometry=bounding_box, hasCoordinate=True, max_limit=LIMIT, year=year)
+    print("    -", len(results), "records retrieved")
+
+    keys_all = set().union(*(dico.keys() for dico in results))
+    keys= ['decimalLatitude','decimalLongitude','year']
+    assert set(keys).issubset(keys_all), "Problem in fetching results: the required keys are not a subset of the results key."
+    to_csv = []
+    for big_dict in results:
+        small_dict = dict( (key, big_dict[key]) for key in keys)
+        to_csv.append(small_dict)
+
+    try:
+        import csv
+        with open(csv_file, 'w', newline='') as output_file:
+            dict_writer = csv.DictWriter(output_file, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(to_csv)
+    except IOError:
+        print("I/O error in writing occurrence to", csv_file)
+
+    return
 
 def main(argv):
     print(" - Quetzal-CRUMBS - Species Distribution Modeling for iDDC models")
@@ -111,26 +110,19 @@ def main(argv):
     parser.add_option("-s", "--species", type="str", dest="scientific_name", help="Species name for the SDM.")
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to perform SDM. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
-    parser.add_option("-l", "--limit", type="float", dest="limit", default=None, help="Maximum number of records to retrieve.")
-    parser.add_option("--download", dest="download", default = False, action = 'store_true', help="Download data using GBIF user information.")
-    parser.add_option("--no-download", dest="download", action = 'store_false', help="Inspect the GBIF database, with limitied output.")
+    parser.add_option("-l", "--limit", type="int", dest="limit", default=None, help="Maximum number of records to retrieve.")
+    parser.add_option("-y", "--year", type="str", dest="year", default=None, help="Year (eg. 1990) or range (e.g. 1900,2022) of the occurences to be retrieved")
+    parser.add_option("--all", dest="all", default = False, action = 'store_true', help="Download all available occurrences.")
+    parser.add_option("--no-all", dest="all", action = 'store_false', help="Only download a limited number of occurences.")
     (options, args) = parser.parse_args(argv)
-    try:
-        if options.download is not True:
-            return inspect_gbif(
-                scientific_name = options.scientific_name,
-                points = options.points,
-                margin = options.margin,
-                limit = options.limit
-                )
-        else :
-            return download_gbif(
-                scientific_name = options.scientific_name,
-                points = options.points,
-                margin = options.margin
-                )
-    except Exception as e:
-        print(e)
+    return search_gbif(
+        scientific_name = options.scientific_name,
+        points = options.points,
+        margin = options.margin,
+        limit = options.limit,
+        all = options.all,
+        year = options.year
+        )
 
 if __name__ == '__main__':
     import sys
