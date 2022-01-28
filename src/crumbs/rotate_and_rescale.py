@@ -2,7 +2,7 @@
 from optparse import OptionParser
 import rasterio
 from affine import Affine  # For easly manipulation of affine matrix
-from rasterio.warp import reproject, Resampling
+from rasterio.warp import reproject, Resampling, array_bounds, calculate_default_transform
 import numpy as np
 
 def summary(dataset):
@@ -13,6 +13,8 @@ def summary(dataset):
     pxsz, pysz = dataset.res
     print(" - pixel size X: \t", pxsz, "unit:", dataset.crs.linear_units)
     print(" - pixel size Y: \t", pysz, "unit:", dataset.crs.linear_units)
+    print(" - width: \t", dataset.width)
+    print(" - height: \t", dataset.height)
     return
 
 def get_center_pixel(dataset):

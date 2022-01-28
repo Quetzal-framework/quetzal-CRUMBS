@@ -43,17 +43,19 @@ def circle_mask(inputFile, outputFile=None):
     outputFile = 'disk.tif' if outputFile is None else outputFile
 
     with rasterio.open(inputFile) as source:
+        # Center in pixel coordinates
         c = source.width // 2
         r = source.height // 2
+        # Center in real world coordinates
         rc2xy = lambda r, c: source.transform * (c, r)
         x, y = rc2xy(r,c)
-        min(source.width*source.res[0], source.height*source.res[1])
+        # Getting minimal distance border to fit the circle
         bounds = source.bounds
         d_width = calc_distance(bounds.bottom, bounds.left, bounds.bottom, bounds.right)
         d_height = calc_distance(bounds.bottom, bounds.left, bounds.top, bounds.left)
-        print(d_width, d_height)
+        # Draw a circle (buffer) around the center coordinates
         b = geodesic_point_buffer(y, x, km=min(d_width, d_height)/2)
-        out_image, out_transform = rasterio.mask.mask(source, [Polygon(b)], crop=True)
+        out_image, out_transform = rasterio.mask.mask(source, [Polygon(b)], crop=True, pad=True)
         out_meta = source.meta
 
     with rasterio.open(outputFile, "w", **out_meta) as dest:

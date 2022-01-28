@@ -189,6 +189,18 @@ the way to represent the landscape. With the `interpolate` function, you can:
 `python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
+### :desert::desert_island: Species Distribution Modeling
+
+> :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
+is an important step of iDDC modeling. In its correlative version, these models
+use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over the landscape.  
+The main steps are generally the following:
+1. Sample environmental variables at the presence coordinates.
+2. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
+3. Map the species–environment relationship across the study area (interpolation).
+4. Project to past climates (extrapolation)
+
+--------------------------------------------------------------------------------
 ### :rocket: Updating the package (tip note for the dev)
 
 

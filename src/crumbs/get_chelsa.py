@@ -222,7 +222,7 @@ def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin
         clip_files.append(clip_file)
         if not exists(clip_file): download_and_clip(url, chelsa_dir, bounding_box, clip_file, cleanup)
 
-    if cleanup is True: remove_chelsa_dir_if_empty(output_dir)
+    if cleanup is True: remove_chelsa_dir_if_empty(chelsa_dir)
 
     for variable in variables:
         matching = [s for s in clip_files if variable in s]
