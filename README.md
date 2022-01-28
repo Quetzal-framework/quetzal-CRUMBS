@@ -164,6 +164,28 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
 >*Upsampling*: converting to higher resolution/smaller cells (scale > 1)  
     *Downsampling*: converting to lower resolution/larger cell (scale < 1)  
 
+--------------------------------------------
+# :hourglass_flowing_sand: Temporal interpolation
+
+> :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
+of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
+>
+>*e.g.*, using 3 bands: *present*, *past*, *distant_past* :black_large_square: :black_medium_square: :black_small_square: and mapping them to time periods
+>
+> :gift: But because Quetzal-CoaTL embeds the GDAL library, it allows much more granularity in
+the way to represent the landscape. With the `interpolate` function, you can:  
+- assign existing bands to the generations of your choice:
+    - the first band must be assigned to 0
+    - the last band is assigned to the integer *n* of you choice, *n* being the number of generations of the simulation
+- The crumbs will interpolate the missing layers
+- When it's done, you can simply pass the output to a Quetzal-EGG simulator: no painful mapping required!
+
+* To generate a `interpolated.tif` file with 10 bands (*i.e.*, 10 generations) from a raster with only 2 bands:   
+`python3 -m crumbs.interpolate input_with_2_bands.tif 0 9`
+* To generate a `interpolated.tif` file with 100 bands (*i.e.*, 100 generations) fom a raster with only 3 bands (the middle band being assigned to generation 42):  
+`python3 -m crumbs.interpolate input_with_3_bands.tif 0 42 99`
+* General mapping form, also changing the output name:
+`python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
 # :desert: Species Distribution Modeling
@@ -194,29 +216,6 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 -l 50 --year "1950,2022"`
 * Fetch all occurrences between 1950 and 2022
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
-
---------------------------------------------
-# :hourglass_flowing_sand: Temporal interpolation
-
-> :bulb: You typically don't have a raster whose number of bands (*i.e.*, layers) that conveniently matches the number
-of generations of the simulation. Instead, iDDC studies have focused on using a limited number of bands to represent the landscape temporal variance, mapping them to classes of events in a quite cumbersome way.
->
->*e.g.*, using 3 bands: *present*, *past*, *distant_past* :black_large_square: :black_medium_square: :black_small_square: and mapping them to time periods
->
-> :gift: But because Quetzal-CoaTL embeds the GDAL library, it allows much more granularity in
-the way to represent the landscape. With the `interpolate` function, you can:  
-- assign existing bands to the generations of your choice:
-    - the first band must be assigned to 0
-    - the last band is assigned to the integer *n* of you choice, *n* being the number of generations of the simulation
-- The crumbs will interpolate the missing layers
-- When it's done, you can simply pass the output to a Quetzal-EGG simulator: no painful mapping required!
-
-* To generate a `interpolated.tif` file with 10 bands (*i.e.*, 10 generations) from a raster with only 2 bands:   
-`python3 -m crumbs.interpolate input_with_2_bands.tif 0 9`
-* To generate a `interpolated.tif` file with 100 bands (*i.e.*, 100 generations) fom a raster with only 3 bands (the middle band being assigned to generation 42):  
-`python3 -m crumbs.interpolate input_with_3_bands.tif 0 42 99`
-* General mapping form, also changing the output name:
-`python3 -m crumbs.circle_mask input_n_band.tif <0 ... n-2 other values ... X> -o output_with_X_bands.tif`
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
