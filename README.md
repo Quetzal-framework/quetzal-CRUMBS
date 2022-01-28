@@ -34,13 +34,13 @@ High resolution, downscaled climate model data are central to iDDC modeling. [Th
 - global monthly climatologies for temperature and precipitation at 30 arcsec spatial resolution in 100 year time steps for the last 21,000 years.
 - paleo orography at high spatial resolution for each timestep
 
-Quetzal-CRUMBS allows to download Geotiff files from this database, selecting the variables and timesteps of interest, possibly clipping the (heavy) worldwide data to the spatial extent of your choice to reduce disk usage, and assemble them into multi-band GeoTiff files than can be processed by other *crumbs* or by *Quetzal-EGGS* simulators :egg::egg::egg:
+Quetzal-CRUMBS allows to download Geotiff files from this database, selecting the variables and time-steps of interest, possibly clipping the (heavy) worldwide data to the spatial extent of your choice to reduce disk usage, and assemble them into multi-band GeoTiff files than can be processed by other *crumbs* or by *Quetzal-EGGS* simulators :egg::egg::egg:
 
-## Get times series URL files
+## :spiral_notepad: Get times series using URL files
 
-> :bulb: If manual selection of the data of interest is cumbersome (too many variables, too many timesteps), you may want to refer to further sections for dowloading entire variables for large time sequences
+> :bulb: If manual selection of the data of interest is cumbersome (too many variables, too many timesteps), you may want to refer to further sections for downloading entire variables for large time sequences
 
-Go to the [CHELSA-Trace21k website](https://envicloud.wsl.ch/#/?prefix=chelsa%2Fchelsa_V1%2Fchelsa_trace%2F), select multiple files via the checkboxes, download the URL file `envidatS3paths.txt`. This file contains a list of URLs that point to the GeoTiff files you want to download. You could use `wget` bash tool, or if you want to use *crumbs* utilities, you can do the following:
+Go to the [CHELSA-Trace21k website](https://envicloud.wsl.ch/#/?prefix=chelsa%2Fchelsa_V1%2Fchelsa_trace%2F), select multiple files via the check-boxes, download the URL file `envidatS3paths.txt`. This file contains a list of URLs that point to the GeoTiff files you want to download. You could use `wget` bash tool, or if you want to use *crumbs* utilities, you can do the following:
 
   - :globe_with_meridians: **Get worlwide data**: \
   `python3 -m crumbs.get_chelsa.py --input envidatS3paths.txt`
