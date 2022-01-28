@@ -105,7 +105,7 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurence
     return
 
 def main(argv):
-    print(" - Quetzal-CRUMBS - Species Distribution Modeling for iDDC models")
+    print(" - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models")
     parser = OptionParser()
     parser.add_option("-s", "--species", type="str", dest="scientific_name", help="Species name for the SDM.")
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to perform SDM. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
