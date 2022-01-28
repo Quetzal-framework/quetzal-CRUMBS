@@ -165,7 +165,7 @@ the spatial resolution and grid orientation as parameters to be sampled and esti
     *Downsampling*: converting to lower resolution/larger cell (scale < 1)  
 
 --------------------------------------------------------------------------------
-### :earth_africa::round_pushpin: Get GBIF observational data
+### :earth_africa: Get GBIF observational data
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 is an important step of iDDC modeling and requires obsevational data to be mapped
@@ -184,7 +184,7 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
 
 --------------------------------------------------------------------------------
-### :desert::desert_island: Species Distribution Modeling
+### :desert: Species Distribution Modeling
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 is an important step of iDDC modeling. In its correlative version, these models
