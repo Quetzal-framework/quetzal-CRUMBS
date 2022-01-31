@@ -54,10 +54,10 @@ def bounds_to_polygon(shapefile, margin):
         bbox = to_polygon(*shapes.bounds, margin)
     return bbox
 
-def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurences.csv", all=False, year=None):
+def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurences.csv", shapefile="occurences.shp", all=False, year=None):
     from pygbif import species as species
     from pygbif import occurrences
-
+    assert points is not None
     print("    - Looking in GBIF database for", scientific_name)
     if points is not None: bounding_box = bounds_to_polygon(points, margin)
     print("    - Search in the bounding box provided by", points, "with margin", margin, "degrees")
@@ -102,6 +102,28 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurence
     except IOError:
         print("I/O error in writing occurrence to", csv_file)
 
+    try:
+        import fiona
+        # define schema
+        schema = {
+            'geometry':'Point',
+            'properties':[('Year','int')]
+        }
+        #open a fiona object
+        pointShp = fiona.open(shapefile, mode='w', driver='ESRI Shapefile', schema = schema, crs = "EPSG:4326")
+
+        #iterate over each row in the dataframe and save record
+        for small_dic in to_csv:
+            rowDict = {
+                'geometry' : {'type':'Point',
+                             'coordinates': (small_dic[keys[1]], small_dic[keys[0]])},
+                'properties': {'Year' : small_dic[keys[2]]},
+            }
+            pointShp.write(rowDict)
+        #close fiona object
+        pointShp.close()
+    except IOError:
+        print("I/O error in writing occurrence to", shape_file)
     return
 
 def main(argv):
