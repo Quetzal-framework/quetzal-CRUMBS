@@ -4,69 +4,9 @@ import io
 import rasterio.plot
 from rasterio.plot import show_hist
 
-from matplotlib import pyplot
 import imageio
 from tqdm import tqdm
 import numpy
-
-def plot(fig):
-    with io.BytesIO() as buff:
-        fig.savefig(buff, format='raw')
-        buff.seek(0)
-        data = numpy.frombuffer(buff.getvalue(), dtype=numpy.uint8)
-    w, h = fig.canvas.get_width_height()
-    im = data.reshape((int(h), int(w), -1))
-    return(im)
-
-
-def animate(inputRaster, vmin=None, vmax=None, output=None, gbif=None, DDD=False):
-    output = 'animation.gif' if output is None else output
-
-    with rasterio.open(inputRaster) as source:
-        source_data = source.read(masked=True)
-
-        if vmax is None: vmax = source_data.max()
-        if vmin is None: vmin = source_data.min()
-
-        with imageio.get_writer(output, mode='I') as writer:
-
-            for bandID in tqdm(range(1, source.count + 1)):
-
-                if DDD is not True:
-                    fig, ax = pyplot.subplots()
-                    # to get longitude/latitude axis
-                    extent = numpy.asarray(source.bounds)[[0,2,1,3]]
-                    # use imshow so that we have something to map the colorbar to
-                    image_hidden = ax.imshow(source_data[bandID-1],
-                                             extent=extent,
-                                             cmap='viridis',
-                                             vmin=vmin,
-                                             vmax=vmax)
-                    image_hidden.set_visible(False)
-                    # plot on the same axis with rio.plot.show
-                    image = rasterio.plot.show(source_data[bandID-1],
-                                          transform=source.transform,
-                                          ax=ax,
-                                          cmap='viridis',
-                                          vmin=vmin,
-                                          vmax=vmax)
-                    # add colorbar using the now hidden image
-                    fig.colorbar(image_hidden, ax=ax)
-                    writer.append_data(plot(fig))
-
-                if DDD is True:
-                    # Create the data
-                    Z = source_data[bandID-1].astype(float)
-                    if isinstance(Z, numpy.ma.MaskedArray):
-                        Z = Z.filled(numpy.nan)  # Set masked values to nan
-                    nrows, ncols = Z.shape
-                    x = numpy.linspace(source.bounds[0], source.bounds[2], ncols)
-                    y = numpy.linspace(source.bounds[1], source.bounds[3], nrows)
-                    X, Y = numpy.meshgrid(x, y)
-                    # Visualization
-                    from mayavi import mlab
-                    mlab.surf(Z, colormap='viridis', warp_scale=0.1)
-                    plot(mlab.figure)
 
 def get_band(Z, i):
     """ Return the ith band of the (possibly masked) Z 3D array: if masked, fills masked values with nan.
@@ -78,29 +18,24 @@ def get_band(Z, i):
 
 from mayavi import mlab
 
-def save_to_buffer(fig):
-    with io.BytesIO() as buff:
-        fig.savefig(buff, format='raw')
-        buff.seek(0)
-        data = numpy.frombuffer(buff.getvalue(), dtype=numpy.uint8)
-    w, h = fig.canvas.get_width_height()
-    im = data.reshape((int(h), int(w), -1))
-    return(im)
-
 @mlab.animate(delay=10, ui=False)
-def update_animation(Z, surface, writer, vmin, vmax):
+def update_animation(Z, surface, writer, vmin, vmax, DDD=False):
     f = mlab.gcf()
     t = 2.0
-    while t <= Z.shape[0]:
+    increment = 0.1 if DDD is True else 1.0
+    sequence = numpy.arange(2.0, float(Z.shape[0]), increment)
+    for i in tqdm(range(len(sequence))):
         # get the current lut manager
         lut_manager = mlab.colorbar(orientation='vertical')
         surface.module_manager.scalar_lut_manager.use_default_range = False
         surface.module_manager.scalar_lut_manager.data_range = numpy.array([vmin, vmax])
         surface.update_pipeline()
-        f.scene.camera.azimuth(1)
-        f.scene.render()
+        if(DDD is True):
+            f.scene.camera.azimuth(1)
+            f.scene.render()
+        t += increment
+
         surface.mlab_source.scalars = get_band(Z, int(t)-1)
-        t += 0.1
         writer.append_data(mlab.screenshot())
         yield
 
@@ -123,13 +58,15 @@ def animate2(inputRaster, vmin=None, vmax=None, output=None, gbif=None, DDD=Fals
 
             if(DDD is False):
                 surface = mlab.imshow(get_band(Z, 0), colormap='viridis')
+                # view along z axis
+                mlab.view(0,0)
             elif(DDD is True):
-                surface = mlab.surf(get_band(Z, 0), colormap='viridis', warp_scale=0.1)
+                surface = mlab.surf(get_band(Z, 0), colormap='viridis', warp_scale=warp_scale)
 
             # Sets nan pixels to white
             surface.module_manager.scalar_lut_manager.lut.nan_color = 0, 0, 0, 0
 
-            a = update_animation(Z, surface, writer, vmin, vmax)
+            a = update_animation(Z, surface, writer, vmin, vmax, DDD)
 
             mlab.show()
 
