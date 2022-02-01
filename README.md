@@ -224,14 +224,14 @@ landscape you are simulating! The `--DDD` options allows you to produce high-qua
 graphic that are automatically converted to a gif or a mp4.
 Because usually the elevation values (in meter) along the z axis are much higher than
 the values along the longitudinal and latitudinal axis (in degree), you may want
-to rescale the z axis by a factor using the `warp_factor` option.
+to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`).
 
  `python3 animate.py input.tif -o output.mp4 --DDD --warp_factor 0.3`
 
  | Examples | Output       |
  | --------------| --------------------|
  | 2D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
- | 3D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif --DDD --warp_scale 0.3 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_3D.gif" width="250" height="250"/> |
+ | 3D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif --DDD -w 0.3 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_3D.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
