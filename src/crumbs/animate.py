@@ -39,7 +39,7 @@ def update_animation(Z, surface, writer, vmin, vmax, DDD=False):
         writer.append_data(mlab.screenshot())
         yield
 
-def animate2(inputRaster, vmin=None, vmax=None, output=None, gbif=None, DDD=False, warp_scale=1.0):
+def animate(inputRaster, vmin=None, vmax=None, output=None, gbif=None, DDD=False, warp_scale=1.0):
     output = 'animation.gif' if output is None else output
 
     with rasterio.open(inputRaster) as source:
@@ -80,7 +80,7 @@ def main(argv):
     parser.add_option("--DDD", dest="DDD", default = False, action = 'store_true', help="Plot a 3 dimensional version of the data")
     parser.add_option("--no-DDD", dest="DDD", action = 'store_false', help="Normal 2 dimension plot.")
     (options, args) = parser.parse_args(argv)
-    return animate2(args[0],
+    return animate(args[0],
      vmin=options.min,
      vmax=options.max,
      output=options.output,

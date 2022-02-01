@@ -187,7 +187,7 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 
 * Interrogate for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything  
 `python3 -m crumbs.get_gbif --species "Heteronotia binoei" --points sampling_points.shp --margin 2`
-* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file  
+* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file and in a `occurences` shapefile
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --all`
 * Fetch a max of 50 occurrences that falls in the bounding box  
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --limit 50`
@@ -199,7 +199,9 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
 
-This `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
+## Simple 2D rendering
+
+>:bulb: The `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
 - If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
 you can easily perform a visual check of the landscape dynamics before to run the simulations
 - If you chose to log the demographic history from Quetzal-EGGS programs (option `log-history=history.tif` in the EGG configuration file), then you can convert it into an animation using CRUMBS.
@@ -215,6 +217,9 @@ you can easily perform a visual check of the landscape dynamics before to run th
     `python3 animate.py input.tif -o output.mp4 --vmax 100`
 
 The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
+
+### 3D rendering with Digital Elevation model
+
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
