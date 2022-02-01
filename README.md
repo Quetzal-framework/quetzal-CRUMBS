@@ -199,7 +199,12 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
 
-## Simple 2D rendering
+| Example | Output       |
+| --------------| --------------------|
+| 2D rendering of the sea level rising on the North coast of Australia from -20000 to 1990. <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
+| 2D rendering of the sea level rising on the North coast of Australia from -20000 to 1990. <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif --DDD --warp_scale 0.3 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_3D.gif" width="250" height="250"/> |
+
+## 2D rendering
 
 >:bulb: The `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
 - If you have a multi-band raster representing a dynamic landscape (*e.g.,* using `get_chelsa` or `crumbs.interpolate`),
@@ -216,10 +221,17 @@ you can easily perform a visual check of the landscape dynamics before to run th
     * **Combination of the previous:**  
     `python3 animate.py input.tif -o output.mp4 --vmax 100`
 
-The quetzal-EGG program you are using is responsible for logging the parameter values in the SQLite database. They can be retrieved later.
 
-### 3D rendering with Digital Elevation model
+## 3D rendering with Digital Elevation model
 
+>:bulb: There is nothing better than a 3D animation to get a better sense of the
+landscape you are simulating! The `--DDD` options allows you to produce high-quality
+graphic that are automatically converted to a gif or a mp4.
+Because usually the elevation values (in meter) along the z axis are much higher than
+the values along the longitudinal and latitudinal axis (in degree), you may want
+to rescale the z axis by a factor using the `warp_factor` option.
+
+ `python3 animate.py input.tif -o output.mp4 --DDD --warp_factor 0.3`
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
