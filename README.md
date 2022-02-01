@@ -199,11 +199,6 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
 
-| Example | Output       |
-| --------------| --------------------|
-| 2D rendering of the sea level rising on the North coast of Australia from -20000 to 1990. <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
-| 2D rendering of the sea level rising on the North coast of Australia from -20000 to 1990. <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif --DDD --warp_scale 0.3 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_3D.gif" width="250" height="250"/> |
-
 ## 2D rendering
 
 >:bulb: The `animate` function facilitates visual checks of the impact of landscape features or other parameters on the simulation:
@@ -232,6 +227,11 @@ the values along the longitudinal and latitudinal axis (in degree), you may want
 to rescale the z axis by a factor using the `warp_factor` option.
 
  `python3 animate.py input.tif -o output.mp4 --DDD --warp_factor 0.3`
+
+ | Examples | Output       |
+ | --------------| --------------------|
+ | 2D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
+ | 3D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif --DDD --warp_scale 0.3 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_3D.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
