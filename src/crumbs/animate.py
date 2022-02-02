@@ -49,7 +49,7 @@ def get_points(shapefile):
     return lons, lats, years
 
 def make_X_Y_Z(raster_src):
-    Z = raster_src.read(masked=True)
+    Z = raster_src.read(masked=True); Z=Z.filled(0.0)
     nrows, ncols = Z[0].shape
     # the value returned by bounds is a tuple: (lower left x, lower left y, upper right x, upper right y)
     x = numpy.linspace(raster_src.bounds[0], raster_src.bounds[2], ncols)
@@ -79,9 +79,9 @@ def decorate(surface, vmin, vmax):
     surface.update_pipeline()
 
 @mlab.animate(delay=10, ui=False)
-def update_animation(Z, surface, points, writer, vmin, vmax, DDD=False):
+def update_animation(Z, surface, writer, DDD=False):
 
-    f = mlab.gcf()
+    figure = mlab.gcf()
     t = 2.0
 
     increment = 0.1 if DDD is True else 1.0
@@ -89,12 +89,10 @@ def update_animation(Z, surface, points, writer, vmin, vmax, DDD=False):
     sequence = numpy.arange(t, float(Z.shape[0]), increment)
 
     for i in tqdm(range(len(sequence))):
-        mlab.points3d(points[0], points[1], points[2])
-        decorate(surface, vmin, vmax)
 
         if(DDD is True):
-            f.scene.camera.azimuth(1)
-            f.scene.render()
+            figure.scene.camera.azimuth(1)
+            figure.scene.render()
 
         t += increment
         surface.mlab_source.scalars = get_band(Z, int(t)-1)
@@ -110,6 +108,7 @@ def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=Non
         # Elevation surface
         X, Y, Z = make_X_Y_Z(source)
 
+        # Fix value extent across time dimension
         if vmax is None: vmax = numpy.amax(Z)
         if vmin is None: vmin = numpy.amin(Z)
 
@@ -118,24 +117,39 @@ def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=Non
 
         extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin/warp_scale, vmax/warp_scale]
 
-        with imageio.get_writer(output, mode='I') as writer:
+        writer = imageio.get_writer(output, mode='I')
 
-            if DDD is True:
-                surface = mlab.surf(get_band(Z, 0), colormap='viridis', representation='wireframe', extent = extent)
-                decorate(surface, vmin, vmax)
-                points_zs = [ Z[Z.shape[0]-1, points_ys[i], points_xs[i]]/warp_scale for i in range(len(points_xs)) ]
-                print(points_zs)
-            else:
-                surface = mlab.imshow(get_band(Z, 0), colormap='viridis', extent = extent)
-                decorate(surface, vmin, vmax)
-                # view surface along z axis (2D)
-                mlab.view(0,0)
-                # Observational points have no elevation
-                points_zs = [0] * len(points_xs)
+        fig = mlab.figure(1, bgcolor=(1, 1, 1))
 
-            points = [points_xs, points_ys, points_zs]
-            a = update_animation(Z, surface, points, writer,  vmin, vmax, DDD)
-            mlab.show()
+        data = get_band(Z, 0)
+        data = mlab.pipeline.array2d_source(data)
+        # Use a greedy_terrain_decimation to created a decimated mesh
+        terrain = mlab.pipeline.greedy_terrain_decimation(data)
+        terrain.filter.error_measure = 'number_of_triangles'
+        terrain.filter.number_of_triangles = 50000
+        terrain.filter.compute_normals = True
+        # Plot it black the lines of the mesh
+        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe')
+        # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
+        lines.actor.actor.scale = [1, 1, 0.2]
+        # Display the surface itself.
+        surf = mlab.pipeline.surface(terrain, colormap='viridis', extent = extent)
+        surf.actor.actor.scale = [1, 1, 0.2]
+        # if DDD is True:
+        #     surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
+        #     points_zs = [ Z[Z.shape[0]-1, points_ys[i], points_xs[i]]/warp_scale for i in range(len(points_xs)) ]
+        # else:
+        #     surface = mlab.imshow(get_band(Z, 0), colormap='viridis', extent = extent)
+        #     # Observational points have no elevation
+        #     points_zs = [0] * len(points_xs)
+        #     # view surface along z axis (2D)
+        #     mlab.view(0,0)
+
+        # points = [points_xs, points_ys, points_zs]
+        # decorate(surface, vmin, vmax)
+        # mlab.points3d(points[0], points[1], points[2])
+        # a = update_animation(Z, surface, writer,  DDD)
+        mlab.show()
 
 def main(argv):
     parser = OptionParser()
