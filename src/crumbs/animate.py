@@ -126,10 +126,10 @@ def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=Non
         # Use a greedy_terrain_decimation to created a decimated mesh
         terrain = mlab.pipeline.greedy_terrain_decimation(data)
         terrain.filter.error_measure = 'number_of_triangles'
-        terrain.filter.number_of_triangles = 50000
+        terrain.filter.number_of_triangles = 10000
         terrain.filter.compute_normals = True
         # Plot it black the lines of the mesh
-        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe')
+        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent = extent)
         # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
         lines.actor.actor.scale = [1, 1, 0.2]
         # Display the surface itself.
