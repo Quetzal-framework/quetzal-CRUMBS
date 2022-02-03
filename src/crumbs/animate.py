@@ -49,7 +49,7 @@ def get_points(shapefile):
     return lons, lats, years
 
 def make_X_Y_Z(raster_src):
-    Z = raster_src.read(masked=True); Z=Z.filled(0.0)
+    Z = raster_src.read(masked=True); Z=Z.filled(-1.0)
     nrows, ncols = Z[0].shape
     # the value returned by bounds is a tuple: (lower left x, lower left y, upper right x, upper right y)
     x = numpy.linspace(raster_src.bounds[0], raster_src.bounds[2], ncols)
@@ -115,26 +115,41 @@ def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=Non
         lons, lats, years = get_points(gbif_occurrences)
         points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
 
-        extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin/warp_scale, vmax/warp_scale]
+        extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin, vmax]
 
         writer = imageio.get_writer(output, mode='I')
 
         fig = mlab.figure(1, bgcolor=(1, 1, 1))
 
-        data = get_band(Z, 0)
-        data = mlab.pipeline.array2d_source(data)
+        array_2d = get_band(Z, 0)
+        data = mlab.pipeline.array2d_source(array_2d)
         # Use a greedy_terrain_decimation to created a decimated mesh
         terrain = mlab.pipeline.greedy_terrain_decimation(data)
         terrain.filter.error_measure = 'number_of_triangles'
         terrain.filter.number_of_triangles = 10000
         terrain.filter.compute_normals = True
         # Plot it black the lines of the mesh
-        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent = extent)
+        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
         # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
-        lines.actor.actor.scale = [1, 1, 0.2]
+        lines.actor.actor.scale = [1, 1, warp_scale]
         # Display the surface itself.
-        surf = mlab.pipeline.surface(terrain, colormap='viridis', extent = extent)
-        surf.actor.actor.scale = [1, 1, 0.2]
+        surf = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
+        surf.actor.actor.scale = [1, 1, warp_scale]
+        # Plot the occurrences
+        print(surf.mlab_source)
+        points_zs = [ array_2d[points_ys[i], points_xs[i]] for i in range(len(points_xs)) ]
+        #points = mlab.points3d(points_xs, points_ys, points_zs, extent=extent)
+        for i in range(len(points_zs)):
+            xx = [points_xs[i], points_xs[i]]
+            yy = [points_ys[i], points_ys[i]]
+            zz = [vmin, vmax*warp_scale]
+            mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
+        # Get current_scene
+        s = mlab.get_engine().current_scene
+        # Set the scene to an isometrwarp_scaleic view.
+        s.scene.isometric_view()
+
+
         # if DDD is True:
         #     surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
         #     points_zs = [ Z[Z.shape[0]-1, points_ys[i], points_xs[i]]/warp_scale for i in range(len(points_xs)) ]
