@@ -261,8 +261,7 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
 
   | Examples | Output       |
   | --------------| --------------------|
-  | 2D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
-  | GBIF occurrences over time in a triangulated landscape<pre>python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
+  | GBIF occurrences over time in a triangulated landscape<pre>python3 -m crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
