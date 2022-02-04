@@ -242,7 +242,7 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
 > :bulb: For presentation, blogging, tweeting or broader communication purposes, it's always nice to give to your audience an
 > intuition of the observations dynamics over space and time. We implemented some
 > utilities for this purpose!  
-> The `animate` function can be called on an **elevation file** (see `crumbs.get_chelsa`) and an **occurrences file** (see `crumbs.get_gbif`) with the option `--gbif` (`-g`)
+> The `animate` function can be called on an **elevation file** (see `crumbs.get_chelsa`) and an **occurrences file** (see `crumbs.get_gbif`) with the option `--gbif` (short option `-g`)
 
  * **Default settings:** generates a 2D animation of the elevation and observations through time, older observations fading over time:\
  `python3 -m crumbs.animate dem.tif -g occurrences.shp`
@@ -252,9 +252,9 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
     * Performs a 2D delaunay triangulation of the surface (for a smoother surface) and
  displays the GBIF observations on top of it:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
-    * the elevation values can be rescaled with `--warp_scale` (`-w`):\
+    * the elevation values can be rescaled with `--warp_scale`, `-w`:\
     `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
-    * the number of triangles for the triangulation can be adjusted with `--triangles` (`-t`):\
+    * the number of triangles for the triangulation can be adjusted with `--triangles`, `-t`:\
     `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
  * **Combination of the previous:** \
  `python3 animate.py dem.tif -g occurences.shp -o output.mp4 -w 0.1 -t 5000`
