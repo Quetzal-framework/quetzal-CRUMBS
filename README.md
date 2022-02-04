@@ -184,15 +184,15 @@ the way to represent the landscape. With the `interpolate` function, you can:
 > `get_gbif` function can be used to fetch observations that fall in the area of your choice (generally specified by the extent
 > of your sampling points plus a margin), in time period of your choice.
 
-* Look for for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything
+* Look for for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything:\
 `python3 -m crumbs.get_gbif --species "Heteronotia binoei" --points sampling_points.shp --margin 2`
-* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file (for human reading) and in a `occurences.shp` shapefile (for further geospatial processing)
+* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file (for human reading) and in a `occurences.shp` shapefile (for further geospatial processing):\
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --all`
-* Fetch a max of 50 occurrences that falls in the bounding box  
+* Fetch a max of 50 occurrences that falls in the bounding box:\
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --limit 50`
-* Fetch a max of 50 occurrences that falls in the bounding box in the time range specified  
+* Fetch a max of 50 occurrences that falls in the bounding box in the time range specified:\
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 -l 50 --year "1950,2022"`
-* Fetch all occurrences between 1950 and 2022  
+* Fetch all occurrences between 1950 and 2022:\
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
 
 <div align="center">
@@ -244,18 +244,18 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
  > utilities for this purpose!
 
  - The `animate` function can be called on an elevation file and an occurrences file (generated with crumbs `get_gbif` function) with the option `--gbif` (or short, `-g`):
-     * **Default settings:** generates a 2D gif of the elevation and obervations through time, older observations fading over time.
+     * **Default settings:** generates a 2D gif of the elevation and obervations through time, older observations fading over time:\
      `python3 -m crumbs.animate dem.tif -g occurrences.shp`
-     * **Change the output format:** detects the mp4 extension and converts accordingly    
+     * **Change the output format:** detects the mp4 extension and converts accordingly:\
      `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
      * **3D visualization:** Performs a 2D delaunay triangulation of the surface (for a smoother surface) and
-     displays the GBIF observations on top of it:
+     displays the GBIF observations on top of it:\
       `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
-        * the elevation values can be rescaled:  
+        * the elevation values can be rescaled:\
         `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
-        * the number of triangles for the triangulation can be adjusted:  
+        * the number of triangles for the triangulation can be adjusted:\
         `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
-     * **Combination of the previous:**  
+     * **Combination of the previous:** \
      `python3 animate.py dem.tif -g occurences.shp -o output.mp4 -w 0.1 -t 5000`
 
   | Examples | Output       |
