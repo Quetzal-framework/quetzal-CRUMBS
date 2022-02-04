@@ -199,7 +199,7 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="350" height="350"/> |
 |:--:|
-| [*Animation generated with quetzal-CRUMBS animate*](#displaying-gbif-observational-data) |
+| [*Animation generated with quetzal-CRUMBS animate*](#animating-gbif-data) |
 
 </div>
 
