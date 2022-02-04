@@ -200,7 +200,7 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 
 | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="350" height="350"/> |
 |:--:|
-| [*Animation generated with quetzal-CRUMBS*](#displaying-gbif-observational-data) |
+| [*Animation generated with quetzal-CRUMBS animate*](#displaying-gbif-observational-data) |
 
 </div>
 
