@@ -180,14 +180,13 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 ## :earth_africa: Get presence data with GBIF
 
-> :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
-is an important step of iDDC modeling and requires obsevational data to be mapped
-to environmental variables. Environmental data can be downloaded using `get_chelsa`
-module, while `get_gbif` can be used to fetch observations in the area and time period of your choice.
+> :bulb: Obtaining observational data are the first step of any SDM/ENM. For conveniency, the crumbs
+> `get_gbif` function can be used to fetch observations that fall in the area of your choice (generally specified by the extent
+> of your sampling points plus a margin), in time period of your choice.
 
-* Interrogate for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything  
+* Look for for occurrences that falls in the bounding box defined by spatial points (plus a margin of 2 degrees), but don't fetch anything
 `python3 -m crumbs.get_gbif --species "Heteronotia binoei" --points sampling_points.shp --margin 2`
-* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file and in a `occurences.shp` shapefile
+* Fetch all occurrences that falls in the bounding box and save the data of interest (longitude, latitude, year) in a `occurrences.csv` file (for human reading) and in a `occurences.shp` shapefile (for further geospatial processing)
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --all`
 * Fetch a max of 50 occurrences that falls in the bounding box  
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p sampling_points.shp -m 2 --limit 50`
@@ -240,14 +239,24 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
 
 ## Displaying GBIF observational data
 
- >:bulb: There is nothing better than a 3D animation to get a better sense of the
- landscape you are simulating! The `--DDD` options allows you to produce high-quality
- graphic that are automatically converted to a gif or a mp4.
- Because usually the elevation values (in meter) along the z axis are much higher than
- the values along the longitudinal and latitudinal axis (in degree), you may want
- to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`).
+ >:bulb: For presentation, blogging, tweeting or broader communication purposes, it's always nice to give to your audience an
+ > intuition of the observations dynamics over space and time. We implemented some
+ > utilities for this purpose!
 
-  `python3 animate.py dem.tif -o output.mp4 --DDD --warp_factor 0.3`
+ - The `animate` function can be called on an elevation file and an occurrences file (generated with crumbs `get_gbif` function) with the option `--gbif` (or short, `-g`):
+     * **Default settings:** generates a 2D gif of the elevation and obervations through time, older observations fading over time.
+     `python3 -m crumbs.animate dem.tif -g occurrences.shp`
+     * **Change the output format:** detects the mp4 extension and converts accordingly    
+     `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
+     * **3D visualization:** Performs a 2D delaunay triangulation of the surface (for a smoother surface) and
+     displays the GBIF observations on top of it:
+      `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
+        * the elevation values can be rescaled:  
+        `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
+        * the number of triangles for the triangulation can be adjusted:  
+        `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
+     * **Combination of the previous:**  
+     `python3 animate.py dem.tif -g occurences.shp -o output.mp4 -w 0.1 -t 5000`
 
   | Examples | Output       |
   | --------------| --------------------|
