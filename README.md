@@ -248,7 +248,7 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
      `python3 -m crumbs.animate dem.tif -g occurrences.shp`
      * **Change the output format:** detects the mp4 extension and converts accordingly:\
      `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
-     * **3D visualization:** \
+     * **3D visualization:**  
         * Performs a 2D delaunay triangulation of the surface (for a smoother surface) and
      displays the GBIF observations on top of it:\
       `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
