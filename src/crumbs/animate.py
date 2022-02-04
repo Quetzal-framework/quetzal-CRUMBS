@@ -99,6 +99,9 @@ def update_animation(Z, surface, writer, DDD=False):
         writer.append_data(mlab.screenshot())
         yield
 
+def feature_scaling(x, xmin, xmax):
+    return (x - xmin) / (xmax -xmin)
+
 @mlab.animate(delay=10, ui=False)
 def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
 
@@ -107,21 +110,49 @@ def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
     sorted_tuples = sorted(zipped, key=lambda x: x[3])
 
     figure = mlab.gcf()
+    title = mlab.title(str(sorted_years[0]), color=(0,0,0), line_width=1, size=0.5)
+    azimuth = 0.0
+    tubes_dict = dict.fromkeys(sorted_years, [])
+
     with imageio.get_writer(output, mode='I') as writer:
+
         for year in tqdm(sorted_years):
-            # Plot the occurrences
+
+            # Update title
+            title.remove()
+            title = mlab.title(str(year), color=(0,0,0), line_width=1, size= 0.5)
+
+            # Fade others tubes a bit more
+            for time, tubes in tubes_dict.items():
+                for tube in tubes:
+                    tube.actor.property.opacity = max(0, tube.actor.property.opacity - 0.1)
+
+            # Plot the occurrences while rotating
             for i in sorted_tuples:
+
                 if i[3] == year:
+
                     xx = [i[0], i[0]]
                     yy = [i[1], i[1]]
                     zz = [vmin, vmax*warp_scale]
-                    # title_text = "Observational data against elevation for the period" + str(sorted_years[0]) + "-" + str(sorted_years[-1])
-                    # mlab.title(title_text, color=(0,0,0), line_width=1)
-                    mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
-                    mlab.title(str(year), color=(0,0,0), line_width=1)
+
+                    # Update current year observations with max opacity
+                    new_tube = mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5, opacity=1)
+                    tubes_dict[year].append(new_tube)
+
+                    # rotate the figure for each new tube
                     figure.scene.camera.azimuth(1)
+                    azimuth += 1.0
                     figure.scene.render()
                     writer.append_data(mlab.screenshot())
+                    yield
+
+        while azimuth < 360.0:
+            # continue rotating
+            figure.scene.camera.azimuth(1)
+            azimuth += 1.0
+            figure.scene.render()
+            writer.append_data(mlab.screenshot())
             yield
 
 def animate_gbif(demRaster, gbif_occurrences, output=None, warp_scale=1.0):
