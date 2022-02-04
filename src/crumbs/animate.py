@@ -99,29 +99,56 @@ def update_animation(Z, surface, writer, DDD=False):
         writer.append_data(mlab.screenshot())
         yield
 
-def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0):
-    output = 'animation.gif' if output is None else output
-    with rasterio.open(inputRaster) as source:
-        print("- Source dataset:", inputRaster)
-        summary(source)
+@mlab.animate(delay=10, ui=False)
+def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
 
+    sorted_years = sorted(set(years))
+    zipped = zip(xs, ys, zs, years)
+    sorted_tuples = sorted(zipped, key=lambda x: x[3])
+
+    figure = mlab.gcf()
+    with imageio.get_writer(output, mode='I') as writer:
+        for year in tqdm(sorted_years):
+            # Plot the occurrences
+            for i in sorted_tuples:
+                if i[3] == year:
+                    xx = [i[0], i[0]]
+                    yy = [i[1], i[1]]
+                    zz = [vmin, vmax*warp_scale]
+                    mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
+                    figure.scene.camera.azimuth(1)
+                    figure.scene.render()
+                    writer.append_data(mlab.screenshot())
+            yield
+
+def animate_gbif(demRaster, gbif_occurrences, output=None, warp_scale=1.0):
+    """Peforms a Delaunay 2D triangulation of the elevation surface before to plot the points for each year recorded.
+    """
+    import numpy
+    import rasterio
+    output = 'animation_occurrence.gif' if output is None else output
+
+    with rasterio.open(demRaster) as source:
+        print("- Elevation source dataset:", demRaster)
+        summary(source)
         # Elevation surface
         X, Y, Z = make_X_Y_Z(source)
 
-        # Fix value extent across time dimension
-        if vmax is None: vmax = numpy.amax(Z)
-        if vmin is None: vmin = numpy.amin(Z)
-
-        lons, lats, years = get_points(gbif_occurrences)
-        points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
-
+        vmax = numpy.amax(Z)
+        vmin = numpy.amin(Z)
         extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin, vmax]
 
-        writer = imageio.get_writer(output, mode='I')
-
+        # initialize the figure
         fig = mlab.figure(1, bgcolor=(1, 1, 1))
-
+        # initialize data source
         array_2d = get_band(Z, 0)
+
+        # Retrieve GBIF occurrences to plot
+        lons, lats, years = get_points(gbif_occurrences)
+        points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
+        points_zs = [ array_2d[points_ys[i], points_xs[i]] for i in range(len(points_xs)) ]
+
+        # initialize data source
         data = mlab.pipeline.array2d_source(array_2d)
         # Use a greedy_terrain_decimation to created a decimated mesh
         terrain = mlab.pipeline.greedy_terrain_decimation(data)
@@ -133,38 +160,87 @@ def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=Non
         # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
         lines.actor.actor.scale = [1, 1, warp_scale]
         # Display the surface itself.
-        surf = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
-        surf.actor.actor.scale = [1, 1, warp_scale]
-        # Plot the occurrences
-        print(surf.mlab_source)
-        points_zs = [ array_2d[points_ys[i], points_xs[i]] for i in range(len(points_xs)) ]
-        #points = mlab.points3d(points_xs, points_ys, points_zs, extent=extent)
-        for i in range(len(points_zs)):
-            xx = [points_xs[i], points_xs[i]]
-            yy = [points_ys[i], points_ys[i]]
-            zz = [vmin, vmax*warp_scale]
-            mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
+        surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
+        surface.actor.actor.scale = [1, 1, warp_scale]
+
         # Get current_scene
         s = mlab.get_engine().current_scene
         # Set the scene to an isometrwarp_scaleic view.
         s.scene.isometric_view()
-
-
-        # if DDD is True:
-        #     surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
-        #     points_zs = [ Z[Z.shape[0]-1, points_ys[i], points_xs[i]]/warp_scale for i in range(len(points_xs)) ]
-        # else:
-        #     surface = mlab.imshow(get_band(Z, 0), colormap='viridis', extent = extent)
-        #     # Observational points have no elevation
-        #     points_zs = [0] * len(points_xs)
-        #     # view surface along z axis (2D)
-        #     mlab.view(0,0)
-
-        # points = [points_xs, points_ys, points_zs]
-        # decorate(surface, vmin, vmax)
-        # mlab.points3d(points[0], points[1], points[2])
-        # a = update_animation(Z, surface, writer,  DDD)
+        a = update_gbif_animation(output, points_xs, points_ys, points_zs, years, vmin, vmax, warp_scale)
         mlab.show()
+
+def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0):
+    output = 'animation.gif' if output is None else output
+
+    if gbif_occurrences is not None:
+        animate_gbif(demRaster = inputRaster, gbif_occurrences = gbif_occurrences, output = output, warp_scale = warp_scale)
+
+    else :
+        with rasterio.open(inputRaster) as source:
+            print("- Source dataset:", inputRaster)
+            summary(source)
+
+            # Elevation surface
+            X, Y, Z = make_X_Y_Z(source)
+
+            # Fix value extent across time dimension
+            if vmax is None: vmax = numpy.amax(Z)
+            if vmin is None: vmin = numpy.amin(Z)
+
+            lons, lats, years = get_points(gbif_occurrences)
+            points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
+
+            extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin, vmax]
+
+            writer = imageio.get_writer(output, mode='I')
+
+            fig = mlab.figure(1, bgcolor=(1, 1, 1))
+
+            array_2d = get_band(Z, 0)
+            data = mlab.pipeline.array2d_source(array_2d)
+            # Use a greedy_terrain_decimation to created a decimated mesh
+            terrain = mlab.pipeline.greedy_terrain_decimation(data)
+            terrain.filter.error_measure = 'number_of_triangles'
+            terrain.filter.number_of_triangles = 10000
+            terrain.filter.compute_normals = True
+            # Plot it black the lines of the mesh
+            lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
+            # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
+            lines.actor.actor.scale = [1, 1, warp_scale]
+            # Display the surface itself.
+            surf = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
+            surf.actor.actor.scale = [1, 1, warp_scale]
+            # Plot the occurrences
+            print(surf.mlab_source)
+            points_zs = [ array_2d[points_ys[i], points_xs[i]] for i in range(len(points_xs)) ]
+            #points = mlab.points3d(points_xs, points_ys, points_zs, extent=extent)
+            for i in range(len(points_zs)):
+                xx = [points_xs[i], points_xs[i]]
+                yy = [points_ys[i], points_ys[i]]
+                zz = [vmin, vmax*warp_scale]
+                mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
+            # Get current_scene
+            s = mlab.get_engine().current_scene
+            # Set the scene to an isometrwarp_scaleic view.
+            s.scene.isometric_view()
+            #writer.append_data(mlab.screenshot())
+            mlab.show()
+            # if DDD is True:
+            #     surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
+            #     points_zs = [ Z[Z.shape[0]-1, points_ys[i], points_xs[i]]/warp_scale for i in range(len(points_xs)) ]
+            # else:
+            #     surface = mlab.imshow(get_band(Z, 0), colormap='viridis', extent = extent)
+            #     # Observational points have no elevation
+            #     points_zs = [0] * len(points_xs)
+            #     # view surface along z axis (2D)
+            #     mlab.view(0,0)
+
+            # points = [points_xs, points_ys, points_zs]
+            # decorate(surface, vmin, vmax)
+            # mlab.points3d(points[0], points[1], points[2])
+            # a = update_animation(Z, surface, writer,  DDD)
+            # mlab.show()
 
 def main(argv):
     parser = OptionParser()
