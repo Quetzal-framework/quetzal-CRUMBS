@@ -237,7 +237,7 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
  `python3 animate.py input.tif -o output.mp4 --DDD --warp_factor 0.3`
 
 
-## Displaying GBIF observational data
+## Animating GBIF data
 
 > :bulb: For presentation, blogging, tweeting or broader communication purposes, it's always nice to give to your audience an
 > intuition of the observations dynamics over space and time. We implemented some
