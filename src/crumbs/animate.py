@@ -115,6 +115,7 @@ def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
                     xx = [i[0], i[0]]
                     yy = [i[1], i[1]]
                     zz = [vmin, vmax*warp_scale]
+                    title("Observational data against elevation for the period" + str(sorted_years[0]) + "-", sorted_years[-1])
                     mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5)
                     figure.scene.camera.azimuth(1)
                     figure.scene.render()
