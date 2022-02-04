@@ -244,25 +244,25 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
 > utilities for this purpose!  
 > The `animate` function can be called on an **elevation file** (see `crumbs.get_chelsa`) and an **occurrences file** (see `crumbs.get_gbif`) with the option `--gbif` (short option `-g`)
 
- * **Default settings:** generates a 2D animation of the elevation and observations through time, older observations fading over time:\
+* **2D rendering:**  
+  * **Defaults:** plot observations through time on a 2D landscape, older observations fading over time:\
  `python3 -m crumbs.animate dem.tif -g occurrences.shp`
- * **Change the output format:** detects the mp4 extension and converts accordingly:\
+  * **Change the output format:** detects the mp4 extension and converts accordingly:\
  `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
- * **3D visualization:**  
-    * Performs a 2D delaunay triangulation of the surface (for a smoother surface) and
- displays the GBIF observations on top of it:\
+* **3D rendering:**  
+  * Performs a triangulation of the elevation (smoother surface) and displays the GBIF observations on top of it:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
-    * the elevation values can be rescaled with `--warp_scale`, `-w`:\
-    `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
-    * the number of triangles for the triangulation can be adjusted with `--triangles`, `-t`:\
-    `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
- * **Combination of the previous:** \
- `python3 animate.py dem.tif -g occurences.shp -o output.mp4 -w 0.1 -t 5000`
+  * the elevation values can be rescaled with `--warp_scale`, `-w`:\
+  `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
+  * the number of triangles for the triangulation can be adjusted with `--triangles`, `-t`:\
+  `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
+  * **Combination of the previous:** \
+  `python3 animate.py dem.tif -g occurences.shp -o output.mp4 --DDD -w 0.1 -t 5000`
 
   | Examples | Output       |
   | --------------| --------------------|
   | 2D rendering of a Digital Elevation model from the LGM to today <pre>python3 -m crumbs.animate dem.tif -o 2D_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_2D.gif" width="250" height="250"/> |
-  | GBIF occurrences over time in a triangulated landscape<pre>python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD -w 0.1 -t 5000<br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
+  | GBIF occurrences over time in a triangulated landscape<pre>python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
