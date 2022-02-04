@@ -203,6 +203,7 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 | [*Animation generated with quetzal-CRUMBS*](#displaying-gbif-observational-data) |
 
 </center>
+
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
 
