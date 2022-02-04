@@ -196,8 +196,11 @@ module, while `get_gbif` can be used to fetch observations in the area and time 
 * Fetch all occurrences between 1950 and 2022  
 `python3 -m crumbs.get_gbif -s "Heteronotia binoei" -p spatial_points.shp -m 2 --year "1950,2022" --all`
 
-![GBIF data visualization with quetzal-CRUMBS](https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif)
-> :film_strip: [Do you want to produce similar animations? It's here!](#displaying-gbif-observational-data)
+
+| <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="350" height="350"/> |
+|:--:|
+| [Animation generated with quetzal-CRUMBS](#displaying-gbif-observational-data) |
+
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
 
