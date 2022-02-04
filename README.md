@@ -169,14 +169,14 @@ the way to represent the landscape. With the `interpolate` function, you can:
 # :desert: Species Distribution Modeling
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
-is an important step of iDDC modeling. In its correlative version, these models
-use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over the landscape.  
-The main steps are generally the following:
-1. Retrieve observational (presence) data (longitude/latitude)
-2. Sample environmental variables at the presence coordinates.
-3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
-4. Map the species–environment relationship across the study area (interpolation).
-5. Project to past climates (extrapolation)
+> is an important step of iDDC modeling. In its correlative version, these models
+> use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, > soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over > > the landscape.  
+> The main steps are generally the following:
+> 1. Retrieve observational (presence) data (longitude/latitude)
+> 2. Sample environmental variables at the presence coordinates.
+> 3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment > > preferences
+> 4. Map the species–environment relationship across the study area (interpolation).
+> 5. Project to past climates (extrapolation)
 
 ## :earth_africa: Get presence data with GBIF
 
@@ -238,7 +238,7 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
  `python3 animate.py input.tif -o output.mp4 --DDD --warp_factor 0.3`
 
 
-### Displaying GBIF observational data
+## Displaying GBIF observational data
 
  >:bulb: There is nothing better than a 3D animation to get a better sense of the
  landscape you are simulating! The `--DDD` options allows you to produce high-quality
