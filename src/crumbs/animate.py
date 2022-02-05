@@ -192,6 +192,7 @@ def animate_gbif_2D(inputRaster, gbif_occurrences, vmin=None, vmax=None, output=
 
                 # add colorbar using the now hidden image
                 fig.colorbar(image_hidden, ax=ax)
+                pyplot.title(str(year), color=(0,0,0), line_width=1, size=0.5)
 
                 # Plot the occurrences while rotating
                 for i in sorted_tuples:
@@ -199,7 +200,6 @@ def animate_gbif_2D(inputRaster, gbif_occurrences, vmin=None, vmax=None, output=
                         # Add latitude/longitude points
                         pyplot.scatter(i[0], i[1], c='r', s=40, zorder=3)
                         writer.append_data(plot_to_buffer(fig))
-
                 pyplot.close()
 
 @mlab.animate(delay=10, ui=False)
