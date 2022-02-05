@@ -221,7 +221,6 @@ def update_gbif_3D_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
     with imageio.get_writer(output, mode='I') as writer:
 
         for year in tqdm(sorted_years):
-
             # Update title
             title.remove()
             title = mlab.title(str(year), color=(0,0,0), line_width=1, size= 0.5, height=0.9)
@@ -235,10 +234,8 @@ def update_gbif_3D_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
             for i in sorted_tuples:
 
                 if i[3] == year:
-
                     xx = [i[0], i[0]]
                     yy = [i[1], i[1]]
-
                     zz = [vmin, vmax*warp_scale]
                     # Update current year observations with max opacity
                     new_tube = mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5, opacity=1)
@@ -246,13 +243,12 @@ def update_gbif_3D_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
                     figure.scene.camera.azimuth(1)
                     azimuth += 1.0
                     figure.scene.render()
-
                     tubes_dict[year].append(new_tube)
                     writer.append_data(mlab.screenshot())
                     yield
 
+        # Finish figure by continuing rotating
         while azimuth < 360.0:
-            # continue rotating
             figure.scene.camera.azimuth(1)
             azimuth += 1.0
             figure.scene.render()
@@ -271,16 +267,15 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
         summary(source)
 
         # Triangulation is impossible with nan or masked values
-        fill = -1.0 if nb_triangles is None else np.nan
+        fill = 0.0 if nb_triangles is not None else np.nan
         X, Y, Z = make_X_Y_Z(source, fill=fill)
 
         vmax = np.amax(Z)
         vmin = np.amin(Z)
         extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin, vmax]
 
-        # Retrieve GBIF occurrences to plot
+        # Retrieve GBIF occurrences to plot, transform to pixel coordinates
         lons, lats, years = get_points(gbif_occurrences)
-        # To pixels
         points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
 
         # initialize data source at the last time (layer)
@@ -292,16 +287,12 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
         # initialize the figure
         fig = mlab.figure(1, bgcolor=(1, 1, 1), size=(600,600))
 
-        # Get current_scene
-        s = mlab.get_engine().current_scene
-        # Set the scene to an isometric view.
-        s.scene.isometric_view()
-
         if nb_triangles is None:
             surface = mlab.surf(array_2d, colormap='viridis', extent = extent)
             surface.actor.actor.scale = [1, 1, warp_scale]
 
         elif nb_triangles is not None:
+            print("heyo")
             # initialize data source
             data = mlab.pipeline.array2d_source(array_2d)
             # Use a greedy_terrain_decimation to created a decimated mesh
@@ -316,6 +307,10 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
             # Display the surface itself.
             surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
             surface.actor.actor.scale = [1, 1, warp_scale]
+            # Get current_scene
+            s = mlab.get_engine().current_scene
+            # Set the scene to an isometric view.
+            s.scene.isometric_view()
 
         a = update_gbif_3D_animation(output, points_xs, points_ys, points_zs, years, vmin, vmax, warp_scale)
         mlab.show()
