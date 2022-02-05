@@ -1,8 +1,9 @@
 #!/usr/bin/python
-from optparse import OptionParser
+from mayavi import mlab
 
-
-def plot3(fig):
+def plot_to_buffer(fig):
+    """ Save figure to a virtual file. Used to append data to gif or mp4 in animate 2D functions.
+    """
     import io
     import numpy as np
     with io.BytesIO() as buff:
@@ -13,51 +14,9 @@ def plot3(fig):
     im = data.reshape((int(h), int(w), -1))
     return(im)
 
-def animate_gbif_2D(inputRaster, vmax=None, output='animation.gif'):
-    import rasterio
-    import imageio
-    from tqdm import tqdm
-
-    source = rasterio.open(inputRaster)
-
-    if vmax is None:
-        vmax = get_global_max(source)
-
-    with imageio.get_writer(output, mode='I') as writer:
-
-        for bandId in tqdm(range(source.count)):
-
-            bandId = bandId+1
-            band = source.read(bandId, masked=True)
-
-            fig, ax = pyplot.subplots()
-
-            # to get longitude/latitude axis
-            extent = numpy.asarray(source.bounds)[[0,2,1,3]]
-
-            # use imshow so that we have something to map the colorbar to
-            image_hidden = ax.imshow(band,
-                                     extent=extent,
-                                     cmap='viridis',
-                                     vmin=0,
-                                     vmax=vmax)
-
-            # plot on the same axis with rio.plot.show
-            image = rasterio.plot.show(band,
-                                  transform=source.transform,
-                                  ax=ax,
-                                  cmap='viridis',
-                                  vmin=0,
-                                  vmax=vmax)
-
-            # add colorbar using the now hidden image
-            fig.colorbar(image_hidden, ax=ax)
-
-            writer.append_data(plot3(fig))
-            pyplot.close()
-
-
 def summary(dataset):
+    """ Print most important informations of a geoTiff file.
+    """
     print(" - no data value: \t", dataset.nodata )
     print(" - crs:\t", dataset.crs)
     print(" - ", dataset.bounds)
@@ -71,14 +30,15 @@ def summary(dataset):
 def get_band(Z, i):
     """ Return the ith band of the (possibly masked) Z 3D array: if masked, fills masked values with nan.
     """
+    import numpy as np
     z = Z[i].astype(float)
-    if isinstance(z, numpy.ma.MaskedArray):
-        z = z.filled(numpy.nan)  # Set masked values to nan
+    if isinstance(z, np.ma.MaskedArray):
+        z = z.filled(np.nan)  # Set masked values to nan
     return z
 
-from mayavi import mlab
-
 def get_points(shapefile):
+    """ Read Point features in a shapefile with a 'Year' property, returning a tuple of lists (lons, lats, years)
+    """
     from shapely.geometry import shape
     import fiona
     lons, lats, years = ([] for i in range(3))
@@ -104,9 +64,9 @@ def make_X_Y_Z(raster_src, fill):
         Z=Z.filled(fill)
     nrows, ncols = Z[0].shape
     # the value returned by bounds is a tuple: (lower left x, lower left y, upper right x, upper right y)
-    x = numpy.linspace(raster_src.bounds[0], raster_src.bounds[2], ncols)
-    y = numpy.linspace(raster_src.bounds[1], raster_src.bounds[3], nrows)
-    X, Y = numpy.meshgrid(x, y)
+    x = np.linspace(raster_src.bounds[0], raster_src.bounds[2], ncols)
+    y = np.linspace(raster_src.bounds[1], raster_src.bounds[3], nrows)
+    X, Y = np.meshgrid(x, y)
     return X, Y, Z
 
 def plot_axes():
@@ -119,6 +79,7 @@ def plot_axes():
     mlab.plot3d(xx, xy + lensoffset, xz, line_width=10, tube_radius=10)
 
 def decorate(surface, vmin, vmax):
+    import numpy as np
     # Custom axes because mayavi defaults suck
     plot_axes()
     # Vertical colorbar
@@ -127,37 +88,126 @@ def decorate(surface, vmin, vmax):
     surface.module_manager.scalar_lut_manager.lut.nan_color = 0, 0, 0, 0
     # Fix colorbar to global max/min
     surface.module_manager.scalar_lut_manager.use_default_range = False
-    surface.module_manager.scalar_lut_manager.data_range = numpy.array([vmin, vmax])
+    surface.module_manager.scalar_lut_manager.data_range = np.array([vmin, vmax])
     surface.update_pipeline()
 
-@mlab.animate(delay=10, ui=False)
-def update_raster_animation(Z, surface, writer, DDD):
-    from tqdm import tqdm
+def feature_scaling(x, xmin, xmax):
+    return (x - xmin) / (xmax -xmin)
 
+def animate_raster_2D(inputRaster, vmin=None, vmax=None, output=None):
+    """ Animate a multi-band geotiff raster into a gif or mp4, where every band is a frame.
+    """
+    import rasterio.plot
+    import imageio
+    from tqdm import tqdm
+    import numpy as np
+    from matplotlib import pyplot
+
+    output = 'animation.gif' if output is None else output
+
+    with rasterio.open(inputRaster) as source:
+        source_data = source.read(masked=True)
+
+        # Fix value extent across time dimension
+        if vmax is None: vmax = np.amax(source_data)
+        if vmin is None: vmin = np.amin(source_data)
+
+        with imageio.get_writer(output, mode='I') as writer:
+
+            for bandID in tqdm(range(1, source.count + 1)):
+                fig, ax = pyplot.subplots()
+                # to get longitude/latitude axis
+                extent = np.asarray(source.bounds)[[0,2,1,3]]
+                # use imshow so that we have something to map the colorbar to
+                image_hidden = ax.imshow(source_data[bandID-1],
+                                         extent=extent,
+                                         cmap='viridis',
+                                         vmin=vmin,
+                                         vmax=vmax)
+                image_hidden.set_visible(False)
+                # plot on the same axis with rio.plot.show
+                image = rasterio.plot.show(source_data[bandID-1],
+                                      transform=source.transform,
+                                      ax=ax,
+                                      cmap='viridis',
+                                      vmin=vmin,
+                                      vmax=vmax)
+
+                # add colorbar using the now hidden image
+                fig.colorbar(image_hidden, ax=ax)
+
+                writer.append_data(plot_to_buffer(fig))
+                pyplot.close()
+
+def animate_gbif_2D(inputRaster, vmin=None, vmax=None, output=None):
+    """ Animates spatio-temporal dynamics of GBIF observations on top of the last band of a multi-band raster.
+    """
+    import rasterio.plot
+    import imageio
+    from tqdm import tqdm
+    import numpy as np
+    from matplotlib import pyplot
+
+    output = 'animation.gif' if output is None else output
+
+    with rasterio.open(inputRaster) as source:
+        source_data = source.read(masked=True)
+
+        # Fix value extent across time dimension
+        if vmax is None: vmax = np.amax(source_data)
+        if vmin is None: vmin = np.amin(source_data)
+
+        with imageio.get_writer(output, mode='I') as writer:
+
+            for bandID in tqdm(range(1, source.count + 1)):
+                fig, ax = pyplot.subplots()
+                # to get longitude/latitude axis
+                extent = np.asarray(source.bounds)[[0,2,1,3]]
+                # use imshow so that we have something to map the colorbar to
+                image_hidden = ax.imshow(source_data[bandID-1],
+                                         extent=extent,
+                                         cmap='viridis',
+                                         vmin=vmin,
+                                         vmax=vmax)
+                image_hidden.set_visible(False)
+                # plot on the same axis with rio.plot.show
+                image = rasterio.plot.show(source_data[bandID-1],
+                                      transform=source.transform,
+                                      ax=ax,
+                                      cmap='viridis',
+                                      vmin=vmin,
+                                      vmax=vmax)
+
+                # add colorbar using the now hidden image
+                fig.colorbar(image_hidden, ax=ax)
+
+                writer.append_data(plot3(fig))
+                pyplot.close()
+
+@mlab.animate(delay=10, ui=False)
+def update_raster_3D_animation(Z, surface, writer):
+    from tqdm import tqdm
+    import numpy as np
     figure = mlab.gcf()
     t = 2.0
+    increment = 0.1
 
-    increment = 0.1 if DDD is True else 1.0
-
-    sequence = numpy.arange(t, float(Z.shape[0]), increment)
+    sequence = np.arange(t, float(Z.shape[0]), increment)
 
     for i in tqdm(range(len(sequence))):
 
-        if(DDD is True):
-            figure.scene.camera.azimuth(1)
-            figure.scene.render()
+        figure.scene.camera.azimuth(1)
+        figure.scene.render()
 
         t += increment
         surface.mlab_source.scalars = get_band(Z, int(t)-1)
         writer.append_data(mlab.screenshot())
         yield
 
-def feature_scaling(x, xmin, xmax):
-    return (x - xmin) / (xmax -xmin)
-
 @mlab.animate(delay=10, ui=False)
-def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale, DDD):
+def update_gbif_3D_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
     from tqdm import tqdm
+    import imageio
 
     sorted_years = sorted(set(years))
     zipped = zip(xs, ys, zs, years)
@@ -189,33 +239,28 @@ def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale, DDD
                     xx = [i[0], i[0]]
                     yy = [i[1], i[1]]
 
-                    if DDD is True:
-                        zz = [vmin, vmax*warp_scale]
-                        # Update current year observations with max opacity
-                        new_tube = mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5, opacity=1)
-                        # rotate the figure for each new tube
-                        figure.scene.camera.azimuth(1)
-                        azimuth += 1.0
-                        figure.scene.render()
-                    else:
-                        zs = [1.0]*len(xs)
-                        new_tube = mlab.points3d(xs, ys, zs, mode='2dcircle', opacity=1)
+                    zz = [vmin, vmax*warp_scale]
+                    # Update current year observations with max opacity
+                    new_tube = mlab.plot3d(xx, yy, zz, line_width=5, tube_radius=5, opacity=1)
+                    # rotate the figure for each new tube
+                    figure.scene.camera.azimuth(1)
+                    azimuth += 1.0
+                    figure.scene.render()
 
                     tubes_dict[year].append(new_tube)
                     writer.append_data(mlab.screenshot())
                     yield
 
-        if DDD is True:
-            while azimuth < 360.0:
-                # continue rotating
-                figure.scene.camera.azimuth(1)
-                azimuth += 1.0
-                figure.scene.render()
-                writer.append_data(mlab.screenshot())
-                yield
+        while azimuth < 360.0:
+            # continue rotating
+            figure.scene.camera.azimuth(1)
+            azimuth += 1.0
+            figure.scene.render()
+            writer.append_data(mlab.screenshot())
+            yield
 
-def animate_gbif(demRaster, gbif_occurrences, output=None, DDD=False, warp_scale=1.0, nb_triangles=None):
-    """Peforms a Delaunay 2D triangulation of the elevation surface before to plot the points for each year recorded.
+def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb_triangles=None):
+    """ Plot the observation points for each year recorded, possibly performs a Delaunay 2D triangulation of the elevation surface.
     """
     import numpy as np
     import rasterio
@@ -247,47 +292,40 @@ def animate_gbif(demRaster, gbif_occurrences, output=None, DDD=False, warp_scale
         # initialize the figure
         fig = mlab.figure(1, bgcolor=(1, 1, 1), size=(600,600))
 
-        if DDD is False:
-            surface = mlab.imshow(array_2d, colormap='viridis', extent=extent)
-            # view surface along z axis (2D)
-            mlab.view(0,0)
-            # Sets nan pixels to white
-            surface.module_manager.scalar_lut_manager.lut.nan_color = 0, 0, 0, 0
+        # Get current_scene
+        s = mlab.get_engine().current_scene
+        # Set the scene to an isometric view.
+        s.scene.isometric_view()
 
-        elif DDD is True:
+        if nb_triangles is None:
+            surface = mlab.surf(array_2d, colormap='viridis', extent = extent)
+            surface.actor.actor.scale = [1, 1, warp_scale]
 
-            # Get current_scene
-            s = mlab.get_engine().current_scene
-            # Set the scene to an isometric view.
-            s.scene.isometric_view()
+        elif nb_triangles is not None:
+            # initialize data source
+            data = mlab.pipeline.array2d_source(array_2d)
+            # Use a greedy_terrain_decimation to created a decimated mesh
+            terrain = mlab.pipeline.greedy_terrain_decimation(data)
+            terrain.filter.error_measure = 'number_of_triangles'
+            terrain.filter.number_of_triangles = nb_triangles
+            terrain.filter.compute_normals = True
+            # Plot it black the lines of the mesh
+            lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
+            # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
+            lines.actor.actor.scale = [1, 1, warp_scale]
+            # Display the surface itself.
+            surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
+            surface.actor.actor.scale = [1, 1, warp_scale]
 
-            if nb_triangles is not None:
-                # initialize data source
-                data = mlab.pipeline.array2d_source(array_2d)
-                # Use a greedy_terrain_decimation to created a decimated mesh
-                terrain = mlab.pipeline.greedy_terrain_decimation(data)
-                terrain.filter.error_measure = 'number_of_triangles'
-                terrain.filter.number_of_triangles = nb_triangles
-                terrain.filter.compute_normals = True
-                # Plot it black the lines of the mesh
-                lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
-                # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
-                lines.actor.actor.scale = [1, 1, warp_scale]
-                # Display the surface itself.
-                surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
-                surface.actor.actor.scale = [1, 1, warp_scale]
-
-            elif nb_triangles is None:
-                surface = mlab.surf(array_2d, colormap='viridis', extent = extent)
-                surface.actor.actor.scale = [1, 1, warp_scale]
-
-        a = update_gbif_animation(output, points_xs, points_ys, points_zs, years, vmin, vmax, warp_scale, DDD)
+        a = update_gbif_3D_animation(output, points_xs, points_ys, points_zs, years, vmin, vmax, warp_scale)
         mlab.show()
 
-def animate_raster(inputRaster, vmin=None, vmax=None, output=None, DDD=False, warp_scale=1.0):
+def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale=1.0):
     """ Animate an elevational raster with values changing over time
     """
     import numpy as np
+    import imageio
+
     with rasterio.open(inputRaster) as source:
         print("- Source dataset:", inputRaster)
         summary(source)
@@ -306,30 +344,30 @@ def animate_raster(inputRaster, vmin=None, vmax=None, output=None, DDD=False, wa
 
         writer = imageio.get_writer(output, mode='I')
 
-        if DDD is True:
-            surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
-            surface.actor.actor.scale = [1, 1, warp_scale]
-            s = mlab.get_engine().current_scene
-            s.scene.isometric_view()
-        elif DDD is False:
-            surface = mlab.imshow(get_band(Z, 0), colormap='viridis', extent = extent)
-            # view surface along z axis (2D)
-            mlab.view(0,0)
-            # Sets nan pixels to white
-            surface.module_manager.scalar_lut_manager.lut.nan_color = 0, 0, 0, 0
+        surface = mlab.surf(get_band(Z, 0), colormap='viridis', extent = extent)
+        surface.actor.actor.scale = [1, 1, warp_scale]
+        s = mlab.get_engine().current_scene
+        s.scene.isometric_view()
 
-        a = update_raster_animation(Z, surface, writer, DDD)
+        a = update_raster_3D_animation(Z, surface, writer, DDD)
         mlab.show()
 
-def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
+def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
     output = 'animation.gif' if output is None else output
 
     if gbif_occurrences is not None:
-        animate_gbif(demRaster=inputRaster, gbif_occurrences=gbif_occurrences, output=output, DDD=DDD, warp_scale=warp_scale, nb_triangles=nb_triangles)
+        if DDD is True:
+            animate_gbif_3D(demRaster=inputRaster, gbif_occurrences=gbif_occurrences, output=output, warp_scale=warp_scale, nb_triangles=nb_triangles)
+        elif DDD is False:
+            animate_gbif_2D(inputRaster, output=output)
     else :
-        animate_raster(inputRaster, vmin=vmin, vmax=vmax, output=output, DDD=DDD, warp_scale=warp_scale)
+        if DDD is True:
+            animate_raster_3D(inputRaster, vmin=vmin, vmax=vmax, output=output, warp_scale=warp_scale)
+        elif DDD is False:
+            animate_raster_2D(inputRaster, vmin=vmin, vmax=vmax, output=output, warp_scale=warp_scale)
 
 def main(argv):
+    from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")
     parser.add_option("-m", "--min", type="float", default=None, dest="min", help="min value in color scale")
@@ -340,7 +378,7 @@ def main(argv):
     parser.add_option("--DDD", dest="DDD", default = False, action = 'store_true', help="Plot a 3 dimensional version of the data")
     parser.add_option("--no-DDD", dest="DDD", action = 'store_false', help="Normal 2 dimension plot.")
     (options, args) = parser.parse_args(argv)
-    return animate(args[0],
+    return chose_method(args[0],
      vmin=options.min,
      vmax=options.max,
      output=options.output,
