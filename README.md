@@ -252,9 +252,9 @@ CHELSA layer (ie, modern times) of the tiff file is used to display the obsevati
   * **Change the output format:** detects the mp4 extension and converts accordingly:\
  `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
 * **3D rendering:**  
-  *  and displays the GBIF observations on top of it:\
+  * Plot the raw elevation data and displays the GBIF observations on top of it:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
-  * the elevation values can be rescaled with `--warp_scale`, `-w`:\
+  * The elevation values can be rescaled with `--warp_scale`, `-w`:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
   * Performs a triangulation of the elevation surface using n triangles given by the `--triangles`, `-t` options for a smoother surface:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
