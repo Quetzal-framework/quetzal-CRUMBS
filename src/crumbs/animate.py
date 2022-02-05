@@ -139,7 +139,7 @@ def animate_raster_2D(inputRaster, vmin=None, vmax=None, output=None):
                 writer.append_data(plot_to_buffer(fig))
                 pyplot.close()
 
-def animate_gbif_2D(inputRaster, vmin=None, vmax=None, output=None):
+def animate_gbif_2D(inputRaster, gbif_occurrences, vmin=None, vmax=None, output=None):
     """ Animates spatio-temporal dynamics of GBIF observations on top of the last band of a multi-band raster.
     """
     import rasterio.plot
@@ -151,37 +151,55 @@ def animate_gbif_2D(inputRaster, vmin=None, vmax=None, output=None):
     output = 'animation.gif' if output is None else output
 
     with rasterio.open(inputRaster) as source:
-        source_data = source.read(masked=True)
+
+        # Retrieve GBIF occurrences to plot, transform to pixel coordinates
+        lons, lats, years = get_points(gbif_occurrences)
+
+        sorted_years = sorted(set(years))
+        zipped = zip(lons, lats, years)
+        sorted_tuples = sorted(zipped, key=lambda x: x[2])
+
+        Z = source.read(masked=True)
 
         # Fix value extent across time dimension
-        if vmax is None: vmax = np.amax(source_data)
-        if vmin is None: vmin = np.amin(source_data)
+        if vmax is None: vmax = np.amax(Z)
+        if vmin is None: vmin = np.amin(Z)
+
+        # initialize data source at the last time (layer)
+        array_2d = get_band(Z, Z.shape[0] - 1)
 
         with imageio.get_writer(output, mode='I') as writer:
-
-            for bandID in tqdm(range(1, source.count + 1)):
+            for year in tqdm(sorted_years):
                 fig, ax = pyplot.subplots()
                 # to get longitude/latitude axis
                 extent = np.asarray(source.bounds)[[0,2,1,3]]
                 # use imshow so that we have something to map the colorbar to
-                image_hidden = ax.imshow(source_data[bandID-1],
+                image_hidden = ax.imshow(array_2d,
                                          extent=extent,
                                          cmap='viridis',
                                          vmin=vmin,
-                                         vmax=vmax)
+                                         vmax=vmax,
+                                         zorder=1)
                 image_hidden.set_visible(False)
                 # plot on the same axis with rio.plot.show
-                image = rasterio.plot.show(source_data[bandID-1],
+                image = rasterio.plot.show(array_2d,
                                       transform=source.transform,
                                       ax=ax,
                                       cmap='viridis',
                                       vmin=vmin,
-                                      vmax=vmax)
+                                      vmax=vmax,
+                                      zorder=2)
 
                 # add colorbar using the now hidden image
                 fig.colorbar(image_hidden, ax=ax)
 
-                writer.append_data(plot3(fig))
+                # Plot the occurrences while rotating
+                for i in sorted_tuples:
+                    if i[2] == year:
+                        # Add latitude/longitude points
+                        pyplot.scatter(i[0], i[1], c='r', s=40, zorder=3)
+                        writer.append_data(plot_to_buffer(fig))
+
                 pyplot.close()
 
 @mlab.animate(delay=10, ui=False)
@@ -354,12 +372,12 @@ def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrence
         if DDD is True:
             animate_gbif_3D(demRaster=inputRaster, gbif_occurrences=gbif_occurrences, output=output, warp_scale=warp_scale, nb_triangles=nb_triangles)
         elif DDD is False:
-            animate_gbif_2D(inputRaster, output=output)
+            animate_gbif_2D(inputRaster, gbif_occurrences=gbif_occurrences, output=output)
     else :
         if DDD is True:
             animate_raster_3D(inputRaster, vmin=vmin, vmax=vmax, output=output, warp_scale=warp_scale)
         elif DDD is False:
-            animate_raster_2D(inputRaster, vmin=vmin, vmax=vmax, output=output, warp_scale=warp_scale)
+            animate_raster_2D(inputRaster, vmin=vmin, vmax=vmax, output=output)
 
 def main(argv):
     from optparse import OptionParser
