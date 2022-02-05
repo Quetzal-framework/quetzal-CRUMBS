@@ -250,17 +250,18 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
   * **Change the output format:** detects the mp4 extension and converts accordingly:\
  `python3 animate.py  crumbs.animate dem.tif -g occurrences.shp -o "output.mp4"`
 * **3D rendering:**  
-  * Performs a triangulation of the elevation (smoother surface) and displays the GBIF observations on top of it:\
+  *  and displays the GBIF observations on top of it:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD`
   * the elevation values can be rescaled with `--warp_scale`, `-w`:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --warp_scale 0.1`
-  * the number of triangles for the triangulation can be adjusted with `--triangles`, `-t`:\
+  * Performs a triangulation of the elevation surface using n triangles given by the `--triangles`, `-t` options for a smoother surface:\
   `python3 -m crumbs.animate dem.tif -g occurrences.shp --DDD --triangles 5000`
   * **Combination of the previous:** \
   `python3 animate.py dem.tif -g occurences.shp -o output.mp4 --DDD -w 0.1 -t 5000`
 
   | Examples | Output       |
   | --------------| --------------------|
+  | GBIF occurrences over time<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D_no_triangle.gif" width="250" height="250"/> |
   | GBIF occurrences over time in a triangulated landscape<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
