@@ -242,7 +242,9 @@ to rescale the z axis by a factor using the `--warp-scale` option (shorter `-w`)
 > :bulb: For presentation, blogging, tweeting or broader communication purposes, it's always nice to give to your audience an
 > intuition of the observations dynamics over space and time. We implemented some
 > utilities for this purpose!  
-> The `animate` function can be called on an **elevation file** (see `crumbs.get_chelsa`) and an **occurrences file** (see `crumbs.get_gbif`) with the option `--gbif` (short option `-g`)
+> The `animate` function can be called with an **elevation file** (see `crumbs.get_chelsa`, DEM) and an **occurrences file** (see `crumbs.get_gbif`) with the option `--gbif` (short option `-g`). Since relevant GBIF data are
+most of the time modern, the elevation is considered constant during the animation, and only the last
+CHELSA layer (ie, modern times) of the tiff file is used to display the obsevations.
 
 * **2D rendering:**  
   * **Defaults:** plot observations through time on a 2D landscape, older observations fading over time:\
