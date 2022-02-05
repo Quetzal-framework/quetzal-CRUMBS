@@ -158,10 +158,10 @@ def update_gbif_animation(output, xs, ys, zs, years, vmin, vmax, warp_scale):
             writer.append_data(mlab.screenshot())
             yield
 
-def animate_gbif(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb_triangles=1000):
+def animate_gbif(demRaster, gbif_occurrences, output=None, DDD=False, warp_scale=1.0, nb_triangles=None):
     """Peforms a Delaunay 2D triangulation of the elevation surface before to plot the points for each year recorded.
     """
-    import numpy
+    import numpy as np
     import rasterio
     output = 'animation_occurrence.gif' if output is None else output
 
@@ -169,36 +169,44 @@ def animate_gbif(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb_tr
         print("- Elevation source dataset:", demRaster)
         summary(source)
         # Elevation surface
-        X, Y, Z = make_X_Y_Z(source, fill=-1.0)
+        fill = -1.0 if nb_triangles is None else np.nan
+        X, Y, Z = make_X_Y_Z(source, fill=fill)
 
-        vmax = numpy.amax(Z)
-        vmin = numpy.amin(Z)
+        vmax = np.amax(Z)
+        vmin = np.amin(Z)
         extent = [0, Z.shape[2] - 1, 0, Z.shape[1] - 1, vmin, vmax]
 
         # initialize the figure
         fig = mlab.figure(1, bgcolor=(1, 1, 1), size=(600,600))
-        # initialize data source
-        array_2d = get_band(Z, 0)
+        # initialize data source at the last time (layer)
+        array_2d = get_band(Z, Z.shape[0] - 1)
 
         # Retrieve GBIF occurrences to plot
         lons, lats, years = get_points(gbif_occurrences)
         points_ys, points_xs = rasterio.transform.rowcol(transform=source.transform, xs=lons, ys=lats)
         points_zs = [ array_2d[points_ys[i], points_xs[i]] for i in range(len(points_xs)) ]
 
-        # initialize data source
-        data = mlab.pipeline.array2d_source(array_2d)
-        # Use a greedy_terrain_decimation to created a decimated mesh
-        terrain = mlab.pipeline.greedy_terrain_decimation(data)
-        terrain.filter.error_measure = 'number_of_triangles'
-        terrain.filter.number_of_triangles = nb_triangles
-        terrain.filter.compute_normals = True
-        # Plot it black the lines of the mesh
-        lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
-        # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
-        lines.actor.actor.scale = [1, 1, warp_scale]
-        # Display the surface itself.
-        surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
-        surface.actor.actor.scale = [1, 1, warp_scale]
+        if nb_triangles is not None:
+            # initialize data source
+            data = mlab.pipeline.array2d_source(array_2d)
+            # Use a greedy_terrain_decimation to created a decimated mesh
+            terrain = mlab.pipeline.greedy_terrain_decimation(data)
+            terrain.filter.error_measure = 'number_of_triangles'
+            terrain.filter.number_of_triangles = nb_triangles
+            terrain.filter.compute_normals = True
+            # Plot it black the lines of the mesh
+            lines = mlab.pipeline.surface(terrain, color=(0, 0, 0), representation='wireframe', extent=extent)
+            # The terrain decimator has done the warping. We control the warping scale via the actor's scale.
+            lines.actor.actor.scale = [1, 1, warp_scale]
+            # Display the surface itself.
+            surface = mlab.pipeline.surface(terrain, colormap='viridis', extent=extent)
+            surface.actor.actor.scale = [1, 1, warp_scale]
+
+        elif nb_triangles is None:
+            surface = mlab.surf(array_2d, colormap='viridis', extent = extent)
+            surface.actor.actor.scale = [1, 1, warp_scale]
+            s = mlab.get_engine().current_scene
+            s.scene.isometric_view()
 
         # Get current_scene
         s = mlab.get_engine().current_scene
@@ -244,11 +252,11 @@ def animate_raster(inputRaster, vmin=None, vmax=None, output=None, DDD=False, wa
         a = update_raster_animation(Z, surface, writer, DDD)
         mlab.show()
 
-def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=1000):
+def animate(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
     output = 'animation.gif' if output is None else output
 
     if gbif_occurrences is not None:
-        animate_gbif(demRaster = inputRaster, gbif_occurrences = gbif_occurrences, output = output, warp_scale = warp_scale, nb_triangles=nb_triangles)
+        animate_gbif(demRaster=inputRaster, gbif_occurrences=gbif_occurrences, output=output, DDD=DDD, warp_scale=warp_scale, nb_triangles=nb_triangles)
     else :
         animate_raster(inputRaster, vmin=vmin, vmax=vmax, output=output, DDD=DDD, warp_scale=warp_scale)
 
@@ -259,7 +267,7 @@ def main(argv):
     parser.add_option("-M", "--max", type="float", default=None, dest="max", help="max value in color scale")
     parser.add_option("-g", "--gbif", type="string", default=None, dest="gbif", help="Occurence file gotten from get_gbif")
     parser.add_option("-w", "--warp-scale", type="float", default=1.0, dest="warp_scale", help="Warp scale for the vertical axis.")
-    parser.add_option("-t", "--triangles", type="int", default=1000, dest="nb_triangles", help="Number of triangles for the delaunay tiangulation if -g is defined")
+    parser.add_option("-t", "--triangles", type="int", default=None, dest="nb_triangles", help="Number of triangles for the delaunay tiangulation if -g is defined")
     parser.add_option("--DDD", dest="DDD", default = False, action = 'store_true', help="Plot a 3 dimensional version of the data")
     parser.add_option("--no-DDD", dest="DDD", action = 'store_false', help="Normal 2 dimension plot.")
     (options, args) = parser.parse_args(argv)
