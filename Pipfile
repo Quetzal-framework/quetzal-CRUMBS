@@ -11,13 +11,7 @@ rasterio = "*"
 matplotlib = "*"
 imageio = "*"
 imageio-ffmpeg = "*"
-pyproj = "*"
-shapely = "*"
-fiona = "*"
-scikit-learn ="*"
-pyimpute ="*"
-geopandas ="*"
-pygbif = "*"
+
 [dev-packages]
 
 [requires]

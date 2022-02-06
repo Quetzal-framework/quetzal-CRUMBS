@@ -4,7 +4,7 @@ from crumbs import sequence, bpp, sample, get_successful_simulations_rowids
 from crumbs import get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
 from crumbs import retrieve_parameters
 from crumbs import animate
-import numpy as np
+
 from osgeo import gdal
 
 class TestSequence(unittest.TestCase):
@@ -46,8 +46,8 @@ class TestTiff(unittest.TestCase):
         # Projection
         raster.GetProjection()
         # Dimensions
-        self.assertEqual(raster.RasterXSize, 216)
-        self.assertEqual(raster.RasterYSize, 144)
+        self.assertEqual(raster.RasterXSize, 240)
+        self.assertEqual(raster.RasterYSize, 168)
         # Number of bands
         self.assertEqual(raster.RasterCount, 1)
         # Read the raster band as separate variable
@@ -59,8 +59,8 @@ class TestTiff(unittest.TestCase):
         band.GetMetadata()
         # Print only selected metadata:
         self.assertEqual(band.GetNoDataValue(), -3.4e+38)
-        np.testing.assert_almost_equal(band.GetMinimum(), 0.1104118, 6)
-        np.testing.assert_almost_equal(band.GetMaximum(), 0.7852693, 6)
+        self.assertEqual(band.GetMinimum(), 0.15809911489487)
+        self.assertEqual(band.GetMaximum(), 0.78696364164352)
 
     def test_sample_latlon(self):
         latlon = sample.uniform_latlon("tests/data/suitability.tif")
@@ -108,18 +108,6 @@ class TestAnimate(unittest.TestCase):
         animate.animate("tests/data/EGG2_short_history.tif")
         animate.animate("tests/data/EGG2_short_history.tif", 500)
         animate.animate("tests/data/EGG2_short_history.tif", 500, "animation.mp4")
-
-
-from crumbs import get_chelsa
-
-class TestGetChelsa(unittest.TestCase):
-    def SetUp(self):
-        pass
-
-    def test_get_chelsa(self):
-        get_chelsa.get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp")
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio01'], timesID = [20, -199])
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio'], timesID = [20])
 
 if __name__=="__main__":
     unittest.main()

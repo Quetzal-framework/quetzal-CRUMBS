@@ -40,9 +40,11 @@ def resample(inputRaster, resample_factor, outputRaster=None):
 
 def main(argv):
     parser = OptionParser()
+    parser.add_option("-i", "--input", type="str", dest="input", help="Geotiff multiband file")
     parser.add_option("-o", "--output", type="str", dest="output", help="Rotated output raster name")
+    parser.add_option("-f", "--factor", type="float", dest="factor", help="resampling factor: >1: upsample, <1: downsample")
     (options, args) = parser.parse_args(argv)
-    return resample(args[0], float(args[1]), options.output)
+    return resample(options.input, options.factor, options.output)
 
 if __name__ == '__main__':
     import sys
