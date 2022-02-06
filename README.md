@@ -5,6 +5,8 @@
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal_crumbs/home)
 [![PyPI version](https://badge.fury.io/py/quetzal-crumbs.svg)](https://badge.fury.io/py/quetzal-crumbs)
 
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Becheler&show_icons=true)
+
 General utility scripts for the Quetzal framework projects and iDDC modeling (Integrated Distributional, Demographic, Coalescent models).
 
 :warning: At the present moment the python interfaces are not very stable, and are not really
