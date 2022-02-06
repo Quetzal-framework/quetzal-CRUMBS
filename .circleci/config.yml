@@ -3,10 +3,10 @@ version: 2.1
 executors:
   executor-eggs:
     docker:
-      - image: arnaudbecheler/quetzal-eggs:latest
+      - image: arnaudbecheler/quetzal-nest:latest
   executor-crumbs:
     docker:
-      - image: arnaudbecheler/quetzal-crumbs:latest
+      - image: arnaudbecheler/quetzal-nest:latest
 
 jobs:
 
@@ -59,7 +59,7 @@ jobs:
           name: Create a source distribution and a shareable wheel
           command: |
             python3 -m build
-            pip3 install dist/quetzal_crumbs-0.0.15-py3-none-any.whl
+            pip3 install dist/quetzal_crumbs-0.0.16-py3-none-any.whl
       - run:
           name: Run tests
           command: python3 tests/test.py

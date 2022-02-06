@@ -96,3 +96,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - animate module
+
+## [0.0.16] - 2022-01-21
+
+### Added
+
+- get CHELSA
+- rotate landscapes
+- rescale landscapes
+- temporal interpolation
