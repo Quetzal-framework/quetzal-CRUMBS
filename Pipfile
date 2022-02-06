@@ -18,6 +18,7 @@ scikit-learn ="*"
 pyimpute ="*"
 geopandas ="*"
 pygbif = "*"
+mayavi = "*"
 [dev-packages]
 
 [requires]
