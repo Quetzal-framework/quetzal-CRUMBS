@@ -196,6 +196,8 @@ def animate_gbif_2D(inputRaster, gbif_occurrences, vmin=None, vmax=None, output=
 
                 # Plot the occurrences while rotating
                 for i in sorted_tuples:
+                    if i[2] < year:
+                        pyplot.scatter(i[0], i[1], c='r', s=40, zorder=3, alpha = 0.5)
                     if i[2] == year:
                         # Add latitude/longitude points
                         pyplot.scatter(i[0], i[1], c='r', s=40, zorder=3)
