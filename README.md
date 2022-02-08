@@ -5,9 +5,18 @@
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/pages/quetzal_crumbs/home)
 [![PyPI version](https://badge.fury.io/py/quetzal-crumbs.svg)](https://badge.fury.io/py/quetzal-crumbs)
 
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=Becheler&show_icons=true)
+This python library is meant to be used along other softwares from the Quetzal
+framework to perform iDDC modeling and inference.
 
-General utility scripts for the Quetzal framework projects and iDDC modeling (Integrated Distributional, Demographic, Coalescent models).
+iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
+methodology for statistical phylogeography. It heavily relies on spatial models
+and methods to explain how past processes (sea level change, glaciers dynamics, climate modifications)
+shaped the present spatial distribution of genetic lineages.
+
+> :books: **What is iDDC, and what is Quetzal?**
+> - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
+>
+> - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
 
 :warning: At the present moment the python interfaces are not very stable, and are not really
 meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
