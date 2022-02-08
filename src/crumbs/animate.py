@@ -280,6 +280,7 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
     """
     import numpy as np
     import rasterio
+    mlab.options.offscreen = True
     output = 'animation_occurrence.gif' if output is None else output
 
     with rasterio.open(demRaster) as source:
@@ -340,7 +341,7 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
     """
     import numpy as np
     import imageio
-
+    mlab.options.offscreen = True
     with rasterio.open(inputRaster) as source:
         print("- Source dataset:", inputRaster)
         summary(source)
