@@ -334,7 +334,7 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
             s.scene.isometric_view()
 
         a = update_gbif_3D_animation(output, points_xs, points_ys, points_zs, years, vmin, vmax, warp_scale)
-        mlab.show()
+        #mlab.show()
 
 def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale=1.0):
     """ Animate an elevational raster with values changing over time
@@ -366,7 +366,7 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
         s.scene.isometric_view()
 
         a = update_raster_3D_animation(Z, surface, writer, DDD)
-        mlab.show()
+        #mlab.show()
 
 def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
     output = 'animation.gif' if output is None else output
