@@ -1,4 +1,9 @@
 #!/usr/bin/python
+from pyvirtualdisplay import Display
+import os
+display = Display(visible=0, size=(1280, 1024))
+display.start()
+
 from mayavi import mlab
 
 def plot_to_buffer(fig):
