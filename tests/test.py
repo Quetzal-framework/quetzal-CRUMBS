@@ -3,7 +3,7 @@ from pathlib import Path
 from crumbs import sequence, bpp, sample, get_successful_simulations_rowids
 from crumbs import get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
 from crumbs import retrieve_parameters
-# from crumbs import animate
+from crumbs import animate
 import numpy as np
 from osgeo import gdal
 
@@ -100,14 +100,14 @@ class TestConvertPhylipToArlequin(unittest.TestCase):
         with open('test.arlequin', 'r') as f:
             print(f.read())
 
-# class TestAnimate(unittest.TestCase):
-#     def SetUp(self):
-#         pass
-#
-#     def test_animate(self):
-#         animate.animate("tests/data/EGG2_short_history.tif")
-#         animate.animate("tests/data/EGG2_short_history.tif", 500)
-#         animate.animate("tests/data/EGG2_short_history.tif", 500, "animation.mp4")
+class TestAnimate(unittest.TestCase):
+    def SetUp(self):
+        pass
+
+    def test_animate(self):
+        animate.animate("tests/data/EGG2_short_history.tif")
+        animate.animate("tests/data/EGG2_short_history.tif", 500)
+        animate.animate("tests/data/EGG2_short_history.tif", 500, "animation.mp4")
 
 
 from crumbs import get_chelsa
