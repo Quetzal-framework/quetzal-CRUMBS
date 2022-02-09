@@ -102,6 +102,7 @@ def feature_scaling(x, xmin, xmax):
 def animate_raster_2D(inputRaster, vmin=None, vmax=None, output=None):
     """ Animate a multi-band geotiff raster into a gif or mp4, where every band is a frame.
     """
+    import rasterio
     import rasterio.plot
     import imageio
     from tqdm import tqdm
@@ -346,6 +347,8 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
     """
     import numpy as np
     import imageio
+    import rasterio
+
     mlab.options.offscreen = True
     with rasterio.open(inputRaster) as source:
         print("- Source dataset:", inputRaster)
