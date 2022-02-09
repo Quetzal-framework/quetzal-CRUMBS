@@ -105,10 +105,24 @@ class TestAnimate(unittest.TestCase):
         pass
 
     def test_animate(self):
-        animate.animate_raster_2D("tests/data/EGG2_short_history.tif")
-        animate.animate_raster_2D("tests/data/EGG2_short_history.tif", vmax=500)
-        animate.animate_raster_2D("tests/data/EGG2_short_history.tif", vmax=500, output="animation.mp4")
 
+        demographic_tiff = "tests/data/EGG2_short_history.tif"
+        elevation_tiff = "tests/data/stacked_dem_final.tif"
+        gbif occurences = "tests/data/occurences.shp"
+
+        # 2D demographic animation
+        animate.chose_method(inputRaster=demographic_tiff)
+        animate.chose_method(inputRaster=demographic_tiff, vmax=500)
+        animate.chose_method(inputRaster=demographic_tiff, vmax=500, output="animation.mp4")
+
+        # 3D elevation defaults
+        chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=True, warp_scale=1.0, nb_triangles=None)
+        # 3D elevation z rescaled
+        chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=True, warp_scale=0.1, nb_triangles=None)
+        # 3D elevation rescaled & triangulated
+        chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=True, warp_scale=0.1, nb_triangles=1000)
+        # 3D elevation rescaled & triangulated & Gbif
+        chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=gbif_occurrences, DDD=True, warp_scale=0.1, nb_triangles=1000)
 
 from crumbs import get_chelsa
 
