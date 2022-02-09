@@ -105,9 +105,9 @@ class TestAnimate(unittest.TestCase):
         pass
 
     def test_animate(self):
-        animate.animate("tests/data/EGG2_short_history.tif")
-        animate.animate("tests/data/EGG2_short_history.tif", 500)
-        animate.animate("tests/data/EGG2_short_history.tif", 500, "animation.mp4")
+        animate.animate_raster_2D("tests/data/EGG2_short_history.tif")
+        animate.animate_raster_2D("tests/data/EGG2_short_history.tif", vmax=500)
+        animate.animate_raster_2D("tests/data/EGG2_short_history.tif", vmax=500, output="animation.mp4")
 
 
 from crumbs import get_chelsa
