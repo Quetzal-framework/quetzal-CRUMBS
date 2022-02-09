@@ -107,7 +107,7 @@ class TestAnimate(unittest.TestCase):
     def test_animate(self):
 
         demographic_tiff = "tests/data/EGG2_short_history.tif"
-        elevation_tiff = "tests/data/stacked_dem_final.tif"
+        elevation_tiff = "tests/data/DEM_5_bands.tif"
         gbif_occurences = "tests/data/occurences.shp"
 
         # 2D demographic animation
