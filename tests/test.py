@@ -108,7 +108,7 @@ class TestAnimate(unittest.TestCase):
 
         demographic_tiff = "tests/data/EGG2_short_history.tif"
         elevation_tiff = "tests/data/DEM_5_bands.tif"
-        gbif_occurrences = "tests/data/occurences.shp"
+        gbif_files = "tests/data/occurences.shp"
 
         # 2D demographic animation
         animate.chose_method(inputRaster=demographic_tiff)
@@ -122,7 +122,7 @@ class TestAnimate(unittest.TestCase):
         # 3D elevation rescaled & triangulated
         animate.chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=True, warp_scale=0.1, nb_triangles=1000)
         # 3D elevation rescaled & triangulated & Gbif
-        animate.chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=gbif_occurrences, DDD=True, warp_scale=0.1, nb_triangles=1000)
+        animate.chose_method(inputRaster=elevation_tiff, vmin=None, vmax=None, output=None, gbif_occurrences=gbif_files, DDD=True, warp_scale=0.1, nb_triangles=1000)
 
 from crumbs import get_chelsa
 
