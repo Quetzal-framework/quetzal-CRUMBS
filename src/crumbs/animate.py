@@ -373,7 +373,7 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
         s = mlab.get_engine().current_scene
         s.scene.isometric_view()
 
-        a = update_raster_3D_animation(Z, surface, writer, DDD)
+        a = update_raster_3D_animation(Z, surface, writer)
         #mlab.show()
 
 def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
