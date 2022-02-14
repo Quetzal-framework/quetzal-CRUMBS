@@ -1,4 +1,4 @@
-# Quetzal-CRUMBS <img align="right" width="200" src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/quetzal-crumbs.png">
+# Quetzal-CRUMBS <img align="right" width="200" src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/quetzal-crumbs.png?raw=True">
 
 [![Becheler](https://circleci.com/gh/Becheler/quetzal-CRUMBS.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -79,7 +79,7 @@ Digital Elevation Models allow to incorporate sea level variations in the landsc
 
 | Example | Output       |
 | --------------| --------------------|
-| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_elevation.tif <br> python3 -m crumbs.animate my_elevation.tif -o my_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif" width="250" height="250"/> |
+| Sea level rising on the North coast of Australia from -5000 to 1990. <pre> python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_elevation.tif <br> python3 -m crumbs.animate my_elevation.tif -o my_dem.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/dem_dynamic.gif?raw=True" width="250" height="250"/> |
 
 
 ## :mountain_snow: Get Glacier Elevation ('glz')
@@ -115,7 +115,7 @@ To facilitate landscape manipulation and analysis, we implemented a function tha
 
 | Example | Output       |
 | --------------| --------------------|
-| Sea level rising on the North coast of Australia from -5000 to 1990. <pre>python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_dem.tif  <br>python3 -m crumbs.circle_mask my_dem.tif -o my_circle.tif <br>python3 -m crumbs.animate my_circle.tif -o my_anim.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif" width="250" height="250"/> |
+| Sea level rising on the North coast of Australia from -5000 to 1990. <pre>python3 -m crumbs.get_chelsa.py    \ <br> &emsp;        -p my_sampling_points.shp \ <br> &emsp;        -v dem                    \ <br> &emsp;        -t $(seq -s ',' -50 1 20) \ <br> &emsp;        --geotiff my_dem.tif  <br>python3 -m crumbs.circle_mask my_dem.tif -o my_circle.tif <br>python3 -m crumbs.animate my_circle.tif -o my_anim.gif <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/my_circular_landscape.gif?raw=True" width="250" height="250"/> |
 
 ## :globe_with_meridians: Sampling spatial grid parameters
 
@@ -208,7 +208,7 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 <div align="center">
 
-| <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="350" height="350"/> |
+| <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif?raw=True" width="350" height="350"/> |
 |:--:|
 | [*Animation generated with quetzal-CRUMBS animate*](#animating-gbif-data) |
 
@@ -274,9 +274,9 @@ CHELSA layer (ie, modern times) of the tiff file is used to display the obsevati
 
   | Examples | Output       |
   | --------------| --------------------|
-  | Elevation and GBIF occurrences over time<pre>crumbs.animate dem.tif -g occurences.shp <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_2D.gif" width="250" height="250"/> |
-  | Same, but 3D and rescaled<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D_no_triangle.gif" width="250" height="250"/> |
-  | Same, but triangulated<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif" width="250" height="250"/> |
+  | Elevation and GBIF occurrences over time<pre>crumbs.animate dem.tif -g occurences.shp <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_2D.gif?raw=True" width="250" height="250"/> |
+  | Same, but 3D and rescaled<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D_no_triangle.gif?raw=True" width="250" height="250"/> |
+  | Same, but triangulated<pre>crumbs.animate dem.tif -g occ.shp --DDD -w 0.1 -t 5000 <br> </pre> | <img src="https://github.com/Becheler/quetzal-CRUMBS/blob/media/animation_dem_gbif_3D.gif?raw=True" width="250" height="250"/> |
 
 --------------------------------------------------------------------------------
 # :rocket: Updating the package (tip note for the dev)
