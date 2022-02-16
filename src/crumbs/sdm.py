@@ -6,19 +6,14 @@ def present_geopanda(pa):
     print("- coordinate reference system: {}".format(pa.crs))
     print("- {} observations with {} columns".format(*pa.shape))
 
-def read_shapefile(inputFile):
+def to_geopanda_dataframe(shapefile):
     """ Read presence points from a shapefile and adds a CLASS = 1 for observation status (1 for observed, 0 for absent)
     """
     import geopandas as gpd
-    gdf = gpd.GeoDataFrame.from_file(inputFile)
+    gdf = gpd.GeoDataFrame.from_file(shapefile)
     gdf.insert(0, 'CLASS', 1, True )
     return gdf
 
-def plot(pa, ax):
-    import geopandas as gpd
-    pa[pa.CLASS == 1].plot(marker='*', color='green', markersize=8)
-    pa[pa.CLASS == 0].plot(marker='+', color='black', markersize=4)
-    return ax
 
 def spatial_plot(x, title, cmap="Blues"):
     from pylab import plt
@@ -87,6 +82,9 @@ def plot_model_average():
     spatial_plot(distr_averaged, "Joshua Tree Range, averaged", cmap="Greens")
 
 def random_sample_from_masked_array(masked, nb_sample):
+    """ Sample indices uniformely at random in a masked array, ignoring masked values.
+        Returns a tuple (idx,idy)
+    """
     import numpy as np
      #Assign False = 0, True = 1
     weights =~ masked.mask + 0
@@ -97,12 +95,13 @@ def random_sample_from_masked_array(masked, nb_sample):
         replace=False,
         p=normalized
     )
-    idx, idy = np.unravel_index(index, masked.shape)
+    idy, idx = np.unravel_index(index, masked.shape)
     return idx, idy
 
 def sample_background(demRaster, nb_sample=30):
-    """ If presence-only data are given (e.g., from GBIF): need some form of absence points.
-        Here random background points are sampled from contemporary DEM band.
+    """ If presence-only data are given (e.g., from GBIF) then some form of absence points is needed.
+        Random background points are sampled uniformely at random from contemporary DEM band.
+        Returns a geopandas dataframe, with a CLASS column filled with 0 values (absence)
     """
     import rasterio
     import geopandas
@@ -110,7 +109,7 @@ def sample_background(demRaster, nb_sample=30):
         Z = src.read(1, masked=True)
         cols, rows = random_sample_from_masked_array(Z, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
-        geometry=geopandas.points_from_xy(xs, ys)
+        geometry=geopandas.points_from_xy(xs, ys, crs=src.crs)
         d = {'CLASS': [0]*len(xs), 'geometry': geometry}
         gdf = geopandas.GeoDataFrame(d, crs=src.crs)
         return gdf
@@ -122,14 +121,24 @@ def species_distribution_model(presence_shp, variables):
     import matplotlib.pyplot as plt
     import geopandas
     import pandas
-    presence = read_shapefile(presence_shp)
-    fig, ax = plt.subplots(figsize=(10, 10))
-    get_chelsa.get_chelsa(variables = variables, timesID = [20], points = presence_shp, clip_dir = "sdm_input")
-    demFile = "stacked_dem.tif"
-    pseudo_absence = sample_background(demFile, 30000)
+
+    # Presence data
+    presence = to_geopanda_dataframe(presence_shp)
+
+    # Generate pseudo-absence
+    get_chelsa.get_chelsa(variables = variables, timesID = [20], points = presence_shp)
+    pseudo_absence = sample_background("stacked_dem.tif", 3000)
+    print(pseudo_absence.sample(5))
+
+    # Presence-absence
     pa = pandas.concat([presence, pseudo_absence],  axis=0, ignore_index=True, join="inner")
-    print(pa)
-    plot(pa, ax)
+    present_geopanda(pa)
+    print(pa.sample(10))
+
+    fig = plt.figure()
+    ax = fig.gca()
+    pa[pa.CLASS == 1].plot(marker='*', color='green', markersize=8, ax=ax)
+    pa[pa.CLASS == 0].plot(marker='+', color='black', markersize=4, ax=ax)
     plt.show()
     # Define the known data points or "training" data
     # explanatory_fields = fields.split()
