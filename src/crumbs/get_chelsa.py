@@ -247,7 +247,7 @@ def main(argv):
                         type='str',
                         action='callback',
                         callback=get_variables_args,
-                        help="If no input given, CHELSA TraCE21k variables to download. Possible options: dem, glz, bio01 to bio19")
+                        help="If no input given, comma-separated CHELSA TraCE21k variables to download. Possible options: dem, glz, bio01 to bio19 or bio for all")
 
     parser.add_option("-t", "--timesID",
                         dest="timesID",
