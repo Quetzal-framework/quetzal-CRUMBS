@@ -1,4 +1,4 @@
-# Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
+#!/usr/bin/python
 
 def present_geopanda(gdf):
     print("        - number of duplicates: ", gdf.duplicated(subset='geometry', keep='first').sum())
@@ -64,11 +64,11 @@ def plot(pa):
 
 def spatial_plot(x, title, cmap="Blues"):
     from pylab import plt
-    plt.imshow(x, cmap=cmap, interpolation='nearest')
+    plt.imshow(x, cmap=cmap)
     plt.colorbar()
     plt.title(title, fontweight = 'bold')
     plt.show()
-    
+
 def get_ML_classifiers():
     """ Imports a bunch of machine learning classifiers
     """
@@ -84,32 +84,34 @@ def get_ML_classifiers():
         }
     return class_map
 
-def fit_models(train_xs, train_y, target_xs, raster_info):
-
+def fit_models(train_xs, train_y, target_xs, raster_info, outdir):
+    """ Models fitting and spatial range prediction
+    """
     from pyimpute import impute
     from sklearn import model_selection
+    from pathlib import Path
 
-    import os
-    os.mkdir("outputs")
-    # import classifiers
     class_map = get_ML_classifiers()
 
-    # model fitting and spatial range prediction
     for model_name, (model) in class_map.items():
-
+        print('   ... ', model_name, 'classifier:')
+        print('        - k-fold cross validation for accuracy scores (displayed as a percentage)')
         # k-fold cross validation for accuracy scores (displayed as a percentage)
         k = 5
         kf = model_selection.KFold(n_splits=k)
         accuracy_scores = model_selection.cross_val_score(model, train_xs, train_y, cv=kf, scoring='accuracy', error_score='raise')
-        print(
+        print('        - ' +
             model_name + " %d-fold Cross Validation Accuracy: %0.2f (+/- %0.2f)"
             % (k, accuracy_scores.mean() * 100, accuracy_scores.std() * 200)
             )
 
-        # spatial prediction
+        print('        - fitting model ... ')
         model.fit(train_xs, train_y)
-        os.mkdir('outputs/' + model_name + '-images')
-        impute(target_xs, model, raster_info, outdir='outputs/' + model_name + '-images', class_prob=True, certainty=True)
+
+        path = Path(outdir + '/' + model_name + '-images').mkdir(parents=True, exist_ok=True)
+
+        print('        - predicting suitability ...')
+        impute(target_xs, model, raster_info, outdir=str(path), class_prob=True, certainty=True)
 
 
 def drop_ocean_cells(gdf, rasterFile):
@@ -125,41 +127,74 @@ def drop_ocean_cells(gdf, rasterFile):
         gdf.reset_index(inplace=True)
     return gdf
 
-def clean_dataset(df):
-    import geopandas as gpd
+def ocean_cells_to_nodata(demRaster, rasters):
+    import rasterio
     import numpy as np
-    assert isinstance(df, gpd.GeoDataFrame), "df needs to be a gpd.GeoDataFrame"
-    df.dropna(inplace=True)
-    indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
-    return df[indices_to_keep].astype(np.float64)
+    from matplotlib import pyplot
 
+    with rasterio.open(demRaster) as dem:
+        Z_dem = dem.read(1, masked=True)
 
-def species_distribution_model(presence_shp, variables):
+        for raster in rasters:
+            meta = None
+
+            with rasterio.open(raster, 'r') as src:
+                Z = src.read(1)
+                meta = src.meta.copy()
+
+            masked_img = np.ma.masked_where(np.ma.getmask(Z_dem), Z)
+
+            meta.update(fill_value = dem.nodata)
+            meta.update({'nodata' : dem.nodata})
+            with rasterio.open(raster, "w", **meta) as dst:
+                dst.nodata = dem.nodata
+                dst.write(masked_img.filled(fill_value=dem.nodata), 1)
+
+def species_distribution_model(presence_shp, variables, background_points=1000):
+    # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     import get_chelsa
     import sample
     import rasterio
     import geopandas as gpd
     import pandas as pd
+    from pathlib import Path
 
-    elevation_file = "stacked_dem.tif"
-    nb_background = 3000
+    current_dir = str(Path().resolve())
+    in_dir = Path(current_dir + '/' + 'sdm_inputs').mkdir(parents=True, exist_ok=True)
+    out_dir = Path(current_dir + '/' + 'sdm_outputs').mkdir(parents=True, exist_ok=True)
+
+    # We need DEM for marine/terrestial filter
+    s = set(variables); s.add('dem')
+    variables = list(s)
+
+    get_chelsa.get_chelsa(
+        inputFile=None,
+        variables=variables,
+        timesID=[20],
+        points=presence_shp,
+        margin=0.0,
+        chelsa_dir='CHELSA_world',
+        clip_dir='CHELSA_cropped',
+        geotiff=current_dir + '/' + 'sdm_inputs/chelsa_20.tif',
+        cleanup=False)
+
+    elevation_file =  current_dir + '/' + "sdm_inputs/chelsa_20_dem.tif"
 
     # Presence data
     print('    ... reading occurrence:')
     presence = to_geopanda_dataframe(presence_shp)
     present_geopanda(presence)
 
-    print('    ... after removing duplicates:')
+    print('    ... after removing duplicated occurrences:')
     presence.drop_duplicates(subset='geometry', inplace=True)
     present_geopanda(presence)
 
-    print('    ... after removing ocean (NA, -inf, +inf) cells:')
+    print('    ... after removing occurrences falling in ocean cells (NA, -inf, +inf):')
     presence = drop_ocean_cells(presence, elevation_file)
     present_geopanda(presence)
 
     # Generate pseudo-absence
-    get_chelsa.get_chelsa(variables = variables, timesID = [20], points = presence_shp)
-    pseudo_absence = sample_background(elevation_file, nb_background)
+    pseudo_absence = sample_background(elevation_file, background_points)
 
     # Presence-absence
     pa = pd.concat([presence, pseudo_absence],  axis=0, ignore_index=True, join="inner")
@@ -167,26 +202,32 @@ def species_distribution_model(presence_shp, variables):
     present_geopanda(pa)
     pa = pa.reset_index()
     plot(pa)
-    #pa = clean_dataset(pa)
 
     import glob
-    explanatory_rasters = sorted(glob.glob('CHELSA_cropped/*.tif'))
-    print('    ... reading', len(explanatory_rasters), 'raster features.')
+    explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
+    print('    ... there are', len(explanatory_rasters), 'raster features')
 
-    from pyimpute import load_training_vector
-    from pyimpute import load_targets
+    print('    ... masking ocean cells to dem nodata value for all raster features')
+    ocean_cells_to_nodata(elevation_file, explanatory_rasters)
 
-    response_data = pa
-    train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
-    target_xs, raster_info = load_targets(explanatory_rasters)
-    print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
+    # from pyimpute import load_training_vector
+    # from pyimpute import load_targets
+    #
+    # print('    ... loading training vector')
+    # train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
+    # print('    ... loading explanatory rasters')
+    # target_xs, raster_info = load_targets(explanatory_rasters)
+    #
+    # print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
+    #
+    # print('    ... preparing to fit models')
+    # fit_models(train_xs, train_y, target_xs, raster_info, str(out_dir))
 
-    fit_models(train_xs, train_y, target_xs, raster_info)
-
-    distr_rf = rasterio.open("outputs/rf-images/probability_1.tif").read(1)
-    distr_et = rasterio.open("outputs/et-images/probability_1.tif").read(1)
-    distr_xgb =  rasterio.open("outputs/xgb-images/probability_1.tif").read(1)
-    distr_lgbm =  rasterio.open("outputs/lgbm-images/probability_1.tif").read(1)
+    print('    ... model averaging')
+    distr_rf = rasterio.open("sdm_outputs/rf-images/probability_1.tif").read(1, masked=True)
+    distr_et = rasterio.open("sdm_outputs/et-images/probability_1.tif").read(1, masked=True)
+    distr_xgb =  rasterio.open("sdm_outputs/xgb-images/probability_1.tif").read(1, masked=True)
+    distr_lgbm =  rasterio.open("sdm_outputs/lgbm-images/probability_1.tif").read(1, masked=True)
     distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
     spatial_plot(distr_averaged, "Heteronotia binoei range, averaged", cmap='viridis')
 
@@ -198,6 +239,8 @@ def main(argv):
 
     parser.add_option("-p", "--presence", type="str", dest="presence_points", help="Presence points shapefile.")
 
+    parser.add_option("-b", "--background", type="int", default=1000, dest="background_points", help="Number of backgound points.")
+
     parser.add_option("-v", "--variables",
                         dest="variables",
                         type='str',
@@ -208,7 +251,8 @@ def main(argv):
     (options, args) = parser.parse_args(argv)
     return species_distribution_model(
         presence_shp = options.presence_points,
-        variables = options.variables
+        variables = options.variables,
+        background_points = options.background_points
         )
 
 if __name__ == '__main__':
