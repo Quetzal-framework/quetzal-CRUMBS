@@ -166,7 +166,7 @@ def generate_urls(variables, timesID):
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
-    print("- converting bands to VRT file:", outputFile)
+    print("    ... converting bands to VRT file:", outputFile)
     gdal.BuildVRT(outputFile, inputFiles, separate=True, callback=gdal.TermProgress_nocb)
     vrt_options = gdal.BuildVRTOptions(separate=True, callback=gdal.TermProgress_nocb, resampleAlg='average')
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
@@ -176,7 +176,7 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
 def to_geotiff(vrt, outputFile='stacked.tif'):
     """ Converts the VRT files to a geotiff file
     """
-    print('- converting', vrt, 'to GeoTiff file:', outputFile)
+    print('    ... converting', vrt, 'to GeoTiff file:', outputFile)
     ds = gdal.Open(vrt)
     ds = gdal.Translate(outputFile, ds)
     ds = None
@@ -226,10 +226,10 @@ def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
-    print("- CHELSA-TraCE21k data access...")
+    print("- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling")
     if points is not None:
         bounding_box = bounds_to_polygon(points, margin)
-        print('- rasters will be cropped to bounding box infered from points:', bounding_box)
+        print('    ... rasters will be cropped to bounding box infered from points:', bounding_box)
 
     create_folders_if_dont_exist(chelsa_dir, clip_dir)
 

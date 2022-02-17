@@ -58,22 +58,22 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrenc
     from pygbif import species as species
     from pygbif import occurrences
     assert points is not None
-    print("    - Looking in GBIF database for", scientific_name)
+    print("    ... Looking in GBIF database for", scientific_name)
     if points is not None: bounding_box = bounds_to_polygon(points, margin)
-    print("    - Search in the bounding box provided by", points, "with margin", margin, "degrees")
-    print("    - Bounding box used:", bounding_box)
+    print("    ... Search in the bounding box provided by", points, "with margin", margin, "degrees")
+    print("    ... Bounding box used:", bounding_box)
     taxonKey = species.name_suggest(q=scientific_name)[0]['key']
-    print("    - For", scientific_name, "GBIF suggested the taxon key:", taxonKey)
+    print("    ... For", scientific_name, "GBIF suggested the taxon key:", taxonKey)
 
     LIMIT = limit
 
     if LIMIT is None:
         # Just printing information
         out = occurrences.search(taxonKey=taxonKey, geometry=bounding_box, hasCoordinate=True, year=year)
-        print("    - We identified", out['count'], "records with coordinates (use option --all to fetch all, or --limit <i> t fetch only i records.).")
+        print("    ... We identified", out['count'], "records with coordinates (use option --all to fetch all, or --limit <i> t fetch only i records.).")
         if all is True:
             LIMIT = int(out['count'])
-            print("    - Fetching limit set at", LIMIT)
+            print("    ... Fetching limit set at", LIMIT)
         else:
             return
 
@@ -83,7 +83,7 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrenc
         print("Something got wrong, LIMIT is", LIMIT)
 
     results = paginated_search(taxonKey=taxonKey, geometry=bounding_box, hasCoordinate=True, max_limit=LIMIT, year=year)
-    print("    -", len(results), "records retrieved")
+    print("    ...", len(results), "records retrieved")
 
     keys_all = set().union(*(dico.keys() for dico in results))
     keys= ['decimalLatitude','decimalLongitude','year']
