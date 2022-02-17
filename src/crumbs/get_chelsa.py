@@ -74,6 +74,7 @@ def clip(inputFile, shape, outputFile):
     with rasterio.open(inputFile) as source :
         out_image, out_transform = msk.mask(source, [shape], crop=True)
         out_meta = source.meta
+        print(out_meta)
         # udate metadata
         out_meta.update({"driver": "GTiff",
                          "height": out_image.shape[1],
@@ -181,7 +182,7 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
         #callback=gdal.TermProgress_nocb
         )
     vrt_options = gdal.BuildVRTOptions(separate=True,
-                                        #callback=gdal.TermProgress_nocb, 
+                                        #callback=gdal.TermProgress_nocb,
                                         resampleAlg='average')
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
     my_vrt = None
@@ -213,6 +214,7 @@ def get_filename(url):
     return filename
 
 def download_and_clip(url, output_dir, clip_shape, clipped_file, cleanup):
+    import rasterio
     downloaded = download(url, output_dir)
     clip(downloaded, clip_shape, clipped_file)
     if cleanup is True: os.remove(downloaded)

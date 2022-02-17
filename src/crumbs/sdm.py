@@ -125,34 +125,24 @@ def drop_ocean_cells(gdf, rasterFile):
         gdf.reset_index(inplace=True)
     return gdf
 
-def clean_dataset(df):
-    import geopandas as gpd
-    import numpy as np
-    assert isinstance(df, gpd.GeoDataFrame), "df needs to be a gpd.GeoDataFrame"
-    df.dropna(inplace=True)
-    indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
-    return df[indices_to_keep].astype(np.float64)
+def ocean_cells_to_nodata(demRaster, rasters):
+    import rasterio
+    with rasterio.open(demRaster) as dem_src:
+        Z_dem = dem_src.read(1)
+        Z_dem[Z_dem>0]=1
+        for raster in rasters:
+            with rasterio.open(raster, 'r+') as src:
+                Z = src.read(1)
+                Z = Z_dem*Z
+                src.nodata = dem_src.nodata
+                src.write(Z, 1)
 
-# def check_transform(rasters):
-#     import rasterio
-#     transform = None
-#     previous_raster = None
-#     previous_transform = None
-#     for raster in rasters:
-#         with rasterio.open(raster) as src:
-#             # First iteration, fransform is None
-#             if transform is None:
-#                 transform = src.transform
-#             else:
-#                 if transform != src.transform:
-#                     if transform.almost_equals(src.transform):
-#                         meta = src.meta.copy()
-#                         meta.update({'transform' : src.transform})
-#                     print(raster + ' and ' + previous + 'have different transforms: ')
-#                     print(previous, ':\n', transform)
-#                     print(raster, ':\n', src.transform)
-#         previous_raster = raster
-#         previous_transform = transform
+def summarize(rasters):
+    import rasterio
+    for raster in rasters:
+        with rasterio.open(raster) as src:
+            meta = src.meta.copy()
+            print(meta)
 
 def species_distribution_model(presence_shp, variables, background_points=1000):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
@@ -206,22 +196,22 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     present_geopanda(pa)
     pa = pa.reset_index()
     plot(pa)
-    #pa = clean_dataset(pa)
 
     import glob
     explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
     print('    ... there are', len(explanatory_rasters), 'raster features:')
-    #check_transform(explanatory_rasters)
+    ocean_cells_to_nodata(elevation_file, explanatory_rasters)
+    summarize(explanatory_rasters)
 
     from pyimpute import load_training_vector
     from pyimpute import load_targets
 
     response_data = pa
-    import warnings
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
-        target_xs, raster_info = load_targets(explanatory_rasters)
+    # import warnings
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore")
+    train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
+    target_xs, raster_info = load_targets(explanatory_rasters)
 
     print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
 
