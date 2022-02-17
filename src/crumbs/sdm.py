@@ -128,7 +128,7 @@ def drop_ocean_cells(gdf, rasterFile):
         gdf['value'] = [x for x in src.sample(coord_list)]
         gdf.dropna(inplace=True, axis=0)
         #gdf = gdf[np.isfinite(gdf.value)]
-        gdf = gdf[gdf['value'] >= 0.0]
+        gdf = gdf.loc[gdf['value'] >= 0.0].copy()
         gdf.drop(labels='value', axis=1, inplace=True)
         gdf.reset_index(inplace=True)
     return gdf
