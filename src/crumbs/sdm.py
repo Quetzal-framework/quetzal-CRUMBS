@@ -88,6 +88,7 @@ def fit_models(train_xs, train_y, target_xs, raster_info):
     from pyimpute import impute
     from sklearn import model_selection
     import os
+    os.mkdir("outputs")
     # import classifiers
     class_map = get_ML_classifiers()
 
