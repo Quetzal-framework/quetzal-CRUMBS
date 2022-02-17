@@ -31,6 +31,32 @@ def sort_nicely(l):
     l.sort(key=alphanum_key)
     return l
 
+
+def bounds_to_polygon(shapefile, margin):
+    """ Computes a bounding box around points in the shapefile, adding a margin.
+        Returns a spatial polygon.
+    """
+    import fiona
+    import numpy as np
+    with fiona.open(shapefile) as file:
+        shapes = list(file)
+        coords = [p['geometry']['coordinates'] for p in shapes]
+        bot_left_x, bot_left_y, top_right_x, top_right_y = bounding_box_naive(coords)
+        bbox = to_polygon(bot_left_x, bot_left_y, top_right_x, top_right_y, margin)
+        return bbox
+
+def bounding_box_naive(points):
+    """returns a list containing the bottom left and the top right
+    points in the sequence.
+    Here, we use min and max four times over the collection of points.
+    """
+    bot_left_x = min(point[0] for point in points)
+    bot_left_y = min(point[1] for point in points)
+    top_right_x = max(point[0] for point in points)
+    top_right_y = max(point[1] for point in points)
+
+    return bot_left_x, bot_left_y, top_right_x, top_right_y
+
 def to_polygon(long0, lat0, long1, lat1, margin=0.0):
     """ Convert the given points into a polygon, adding a margin.
     """
@@ -40,7 +66,7 @@ def to_polygon(long0, lat0, long1, lat1, margin=0.0):
                     [long0 - margin , lat1 + margin]])
 
 def clip(inputFile, shape, outputFile):
-    """ Clip the input file by the shape given, saving the output file
+    """ Clip the input file by the shape given, saving the output file.
     """
     # read source
     with rasterio.open(inputFile) as source :
@@ -140,7 +166,7 @@ def generate_urls(variables, timesID):
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
-    print("- converting bands to VRT", outputFile)
+    print("    ... converting bands to VRT file:", outputFile)
     gdal.BuildVRT(outputFile, inputFiles, separate=True, callback=gdal.TermProgress_nocb)
     vrt_options = gdal.BuildVRTOptions(separate=True, callback=gdal.TermProgress_nocb, resampleAlg='average')
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
@@ -148,9 +174,9 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
     return(outputFile)
 
 def to_geotiff(vrt, outputFile='stacked.tif'):
-    print('- converting', vrt, 'to GeoTiff', outputFile)
     """ Converts the VRT files to a geotiff file
     """
+    print('    ... converting', vrt, 'to GeoTiff file:', outputFile)
     ds = gdal.Open(vrt)
     ds = gdal.Translate(outputFile, ds)
     ds = None
@@ -161,11 +187,6 @@ def create_folders_if_dont_exist(output_dir, clipped_dir):
     if not os.path.exists(clipped_dir):
         os.makedirs(clipped_dir)
     return
-
-def bounds_to_polygon(shapefile, margin):
-    with fiona.open(shapefile) as shapes:
-        bbox = to_polygon(*shapes.bounds, margin)
-        return bbox
 
 def read_urls(inputFile):
     with open(inputFile, 'r') as input:
@@ -187,7 +208,8 @@ def remove_chelsa_dir_if_empty(output_dir):
     if len(os.listdir(output_dir)) == 0:
         os.rmdir(output_dir)
     else:
-        print("Directory", output_dir, "is not empty and will not be deleted.")
+        import warnings
+        warnings.warn("Directory", output_dir, "is not empty and will not be deleted.")
     return
 
 def implemented_variables():
@@ -200,11 +222,14 @@ def retrieve_variables(urls):
             matched.append(variable)
     return matched
 
-def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA', clip_dir='CHELSA_clipped', geotiff='stacked.tif', cleanup=False):
+def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA_world', clip_dir='CHELSA_cropped', geotiff='chelsa_stack.tif', cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
-    if points is not None: bounding_box = bounds_to_polygon(points, margin)
+    print("- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling")
+    if points is not None:
+        bounding_box = bounds_to_polygon(points, margin)
+        print('    ... rasters will be cropped to bounding box infered from points:', bounding_box)
 
     create_folders_if_dont_exist(chelsa_dir, clip_dir)
 
@@ -258,10 +283,10 @@ def main(argv):
 
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
-    parser.add_option("-d", "--dir", type="str", dest="chelsa_dir", default = "CHELSA", help="Output directory for CHELSA files. Default: CHELSA.")
-    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "CHELSA_clipped", help="Output directory for clipped CHELSA files. Default: CHELSA_clipped.")
-    parser.add_option("-o", "--geotiff", type="str", dest="geotiff", default = "stacked.tiff", help="Produces a geotiff.")
-    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA files, but keep clipped files.")
+    parser.add_option("-d", "--dir", type="str", dest="chelsa_dir", default = "CHELSA_world", help="Output directory for CHELSA files. Default: CHELSA_world.")
+    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "CHELSA_cropped", help="Output directory for clipped CHELSA files. Default: CHELSA_cropped.")
+    parser.add_option("-o", "--geotiff", type="str", dest="geotiff", default = "chelsa_stack.tif", help="Produces a geotiff.")
+    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     (options, args) = parser.parse_args(argv)
     try:

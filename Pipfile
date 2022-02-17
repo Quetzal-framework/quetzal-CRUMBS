@@ -19,6 +19,8 @@ pyimpute ="*"
 geopandas ="*"
 pygbif = "*"
 mayavi = "*"
+xgboost = "*"
+lightgbm = "*"
 [dev-packages]
 
 [requires]
