@@ -67,7 +67,8 @@ def spatial_plot(x, title, cmap="Blues"):
     plt.imshow(x, cmap=cmap, interpolation='nearest')
     plt.colorbar()
     plt.title(title, fontweight = 'bold')
-
+    plt.show()
+    
 def get_ML_classifiers():
     """ Imports a bunch of machine learning classifiers
     """
@@ -87,6 +88,7 @@ def fit_models(train_xs, train_y, target_xs, raster_info):
 
     from pyimpute import impute
     from sklearn import model_selection
+
     import os
     os.mkdir("outputs")
     # import classifiers
@@ -108,16 +110,6 @@ def fit_models(train_xs, train_y, target_xs, raster_info):
         model.fit(train_xs, train_y)
         os.mkdir('outputs/' + model_name + '-images')
         impute(target_xs, model, raster_info, outdir='outputs/' + model_name + '-images', class_prob=True, certainty=True)
-
-
-def plot_model_average():
-    import rasterio
-    distr_rf = rasterio.open("outputs/rf-images/probability_1.0.tif").read(1)
-    distr_et = rasterio.open("outputs/et-images/probability_1.0.tif").read(1)
-    distr_xgb =  rasterio.open("outputs/xgb-images/probability_1.0.tif").read(1)
-    distr_lgbm =  rasterio.open("outputs/lgbm-images/probability_1.0.tif").read(1)
-    distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
-    spatial_plot(distr_averaged, "Joshua Tree Range, averaged", cmap="Greens")
 
 
 def drop_ocean_cells(gdf, rasterFile):
@@ -191,6 +183,12 @@ def species_distribution_model(presence_shp, variables):
 
     fit_models(train_xs, train_y, target_xs, raster_info)
 
+    distr_rf = rasterio.open("outputs/rf-images/probability_1.tif").read(1)
+    distr_et = rasterio.open("outputs/et-images/probability_1.tif").read(1)
+    distr_xgb =  rasterio.open("outputs/xgb-images/probability_1.tif").read(1)
+    distr_lgbm =  rasterio.open("outputs/lgbm-images/probability_1.tif").read(1)
+    distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
+    spatial_plot(distr_averaged, "Heteronotia binoei range, averaged", cmap='viridis')
 
 def main(argv):
     from optparse import OptionParser
