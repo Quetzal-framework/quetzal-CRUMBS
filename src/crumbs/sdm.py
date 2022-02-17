@@ -84,32 +84,34 @@ def get_ML_classifiers():
         }
     return class_map
 
-def fit_models(train_xs, train_y, target_xs, raster_info):
-
+def fit_models(train_xs, train_y, target_xs, raster_info, outdir):
+    """ Models fitting and spatial range prediction
+    """
     from pyimpute import impute
     from sklearn import model_selection
+    from pathlib import Path
 
-    import os
-    os.mkdir("outputs")
-    # import classifiers
     class_map = get_ML_classifiers()
 
-    # model fitting and spatial range prediction
     for model_name, (model) in class_map.items():
-
+        print('   ... ', model_name, 'classifier:')
+        print('        - k-fold cross validation for accuracy scores (displayed as a percentage)')
         # k-fold cross validation for accuracy scores (displayed as a percentage)
         k = 5
         kf = model_selection.KFold(n_splits=k)
         accuracy_scores = model_selection.cross_val_score(model, train_xs, train_y, cv=kf, scoring='accuracy', error_score='raise')
-        print(
+        print('        - ' +
             model_name + " %d-fold Cross Validation Accuracy: %0.2f (+/- %0.2f)"
             % (k, accuracy_scores.mean() * 100, accuracy_scores.std() * 200)
             )
 
-        # spatial prediction
+        print('        - fitting model ... ')
         model.fit(train_xs, train_y)
-        os.mkdir('outputs/' + model_name + '-images')
-        impute(target_xs, model, raster_info, outdir='outputs/' + model_name + '-images', class_prob=True, certainty=True)
+
+        path = Path(outdir + '/' + model_name + '-images').mkdir(parents=True, exist_ok=True)
+
+        print('        - predicting suitability ...')
+        impute(target_xs, model, raster_info, outdir=str(path), class_prob=True, certainty=True)
 
 
 def drop_ocean_cells(gdf, rasterFile):
@@ -127,22 +129,16 @@ def drop_ocean_cells(gdf, rasterFile):
 
 def ocean_cells_to_nodata(demRaster, rasters):
     import rasterio
+    import numpy as np
     with rasterio.open(demRaster) as dem_src:
-        Z_dem = dem_src.read(1)
-        Z_dem[Z_dem>0]=1
+        Z_dem = dem_src.read(1, masked=True)
         for raster in rasters:
             with rasterio.open(raster, 'r+') as src:
                 Z = src.read(1)
-                Z = Z_dem*Z
+                new_Z = np.ma.masked_where(np.ma.getmask(Z_dem), Z)
                 src.nodata = dem_src.nodata
-                src.write(Z, 1)
+                src.write(new_Z, 1)
 
-def summarize(rasters):
-    import rasterio
-    for raster in rasters:
-        with rasterio.open(raster) as src:
-            meta = src.meta.copy()
-            print(meta)
 
 def species_distribution_model(presence_shp, variables, background_points=1000):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
@@ -151,11 +147,11 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     import rasterio
     import geopandas as gpd
     import pandas as pd
-
     from pathlib import Path
+
     current_dir = str(Path().resolve())
-    Path(current_dir + '/' + 'sdm_inputs').mkdir(parents=True, exist_ok=True)
-    Path(current_dir + '/' + 'sdm_outputs').mkdir(parents=True, exist_ok=True)
+    in_dir = Path(current_dir + '/' + 'sdm_inputs').mkdir(parents=True, exist_ok=True)
+    out_dir = Path(current_dir + '/' + 'sdm_outputs').mkdir(parents=True, exist_ok=True)
 
     # We need DEM for marine/terrestial filter
     s = set(variables); s.add('dem')
@@ -179,11 +175,11 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     presence = to_geopanda_dataframe(presence_shp)
     present_geopanda(presence)
 
-    print('    ... after removing duplicates:')
+    print('    ... after removing duplicated occurrences:')
     presence.drop_duplicates(subset='geometry', inplace=True)
     present_geopanda(presence)
 
-    print('    ... after removing ocean (NA, -inf, +inf) cells:')
+    print('    ... after removing occurrences falling in ocean cells (NA, -inf, +inf):')
     presence = drop_ocean_cells(presence, elevation_file)
     present_geopanda(presence)
 
@@ -199,28 +195,29 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
 
     import glob
     explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
-    print('    ... there are', len(explanatory_rasters), 'raster features:')
+    print('    ... there are', len(explanatory_rasters), 'raster features')
+
+    print('    ... masking ocean cells to dem nodata value for all features')
     ocean_cells_to_nodata(elevation_file, explanatory_rasters)
-    summarize(explanatory_rasters)
 
     from pyimpute import load_training_vector
     from pyimpute import load_targets
 
-    response_data = pa
-    # import warnings
-    # with warnings.catch_warnings():
-    #     warnings.simplefilter("ignore")
-    train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
+    print('    ... loading training vector')
+    train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
+    print('    ... loading explanatory rasters')
     target_xs, raster_info = load_targets(explanatory_rasters)
 
     print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
 
-    fit_models(train_xs, train_y, target_xs, raster_info)
+    print('    ... preparing to fit models')
+    fit_models(train_xs, train_y, target_xs, raster_info, str(out_dir))
 
-    distr_rf = rasterio.open("outputs/rf-images/probability_1.tif").read(1)
-    distr_et = rasterio.open("outputs/et-images/probability_1.tif").read(1)
-    distr_xgb =  rasterio.open("outputs/xgb-images/probability_1.tif").read(1)
-    distr_lgbm =  rasterio.open("outputs/lgbm-images/probability_1.tif").read(1)
+    print('    ... model averaging')
+    distr_rf = rasterio.open("sdm_outputs/rf-images/probability_1.tif").read(1)
+    distr_et = rasterio.open("sdm_outputs/et-images/probability_1.tif").read(1)
+    distr_xgb =  rasterio.open("sdm_outputs/xgb-images/probability_1.tif").read(1)
+    distr_lgbm =  rasterio.open("sdm_outputs/lgbm-images/probability_1.tif").read(1)
     distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
     spatial_plot(distr_averaged, "Heteronotia binoei range, averaged", cmap='viridis')
 
