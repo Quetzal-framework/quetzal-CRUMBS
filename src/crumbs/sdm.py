@@ -64,7 +64,7 @@ def plot(pa):
 
 def spatial_plot(x, title, cmap="Blues"):
     from pylab import plt
-    plt.imshow(x, cmap=cmap, interpolation='nearest')
+    plt.imshow(x, cmap=cmap)
     plt.colorbar()
     plt.title(title, fontweight = 'bold')
     plt.show()
@@ -130,15 +130,25 @@ def drop_ocean_cells(gdf, rasterFile):
 def ocean_cells_to_nodata(demRaster, rasters):
     import rasterio
     import numpy as np
-    with rasterio.open(demRaster) as dem_src:
-        Z_dem = dem_src.read(1, masked=True)
-        for raster in rasters:
-            with rasterio.open(raster, 'r+') as src:
-                Z = src.read(1)
-                new_Z = np.ma.masked_where(np.ma.getmask(Z_dem), Z)
-                src.nodata = dem_src.nodata
-                src.write(new_Z, 1)
+    from matplotlib import pyplot
 
+    with rasterio.open(demRaster) as dem:
+        Z_dem = dem.read(1, masked=True)
+
+        for raster in rasters:
+            meta = None
+
+            with rasterio.open(raster, 'r') as src:
+                Z = src.read(1)
+                meta = src.meta.copy()
+
+            masked_img = np.ma.masked_where(np.ma.getmask(Z_dem), Z)
+
+            meta.update(fill_value = dem.nodata)
+            meta.update({'nodata' : dem.nodata})
+            with rasterio.open(raster, "w", **meta) as dst:
+                dst.nodata = dem.nodata
+                dst.write(masked_img.filled(fill_value=dem.nodata), 1)
 
 def species_distribution_model(presence_shp, variables, background_points=1000):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
@@ -197,27 +207,27 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
     print('    ... there are', len(explanatory_rasters), 'raster features')
 
-    print('    ... masking ocean cells to dem nodata value for all features')
+    print('    ... masking ocean cells to dem nodata value for all raster features')
     ocean_cells_to_nodata(elevation_file, explanatory_rasters)
 
-    from pyimpute import load_training_vector
-    from pyimpute import load_targets
-
-    print('    ... loading training vector')
-    train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
-    print('    ... loading explanatory rasters')
-    target_xs, raster_info = load_targets(explanatory_rasters)
-
-    print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
-
-    print('    ... preparing to fit models')
-    fit_models(train_xs, train_y, target_xs, raster_info, str(out_dir))
+    # from pyimpute import load_training_vector
+    # from pyimpute import load_targets
+    #
+    # print('    ... loading training vector')
+    # train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
+    # print('    ... loading explanatory rasters')
+    # target_xs, raster_info = load_targets(explanatory_rasters)
+    #
+    # print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
+    #
+    # print('    ... preparing to fit models')
+    # fit_models(train_xs, train_y, target_xs, raster_info, str(out_dir))
 
     print('    ... model averaging')
-    distr_rf = rasterio.open("sdm_outputs/rf-images/probability_1.tif").read(1)
-    distr_et = rasterio.open("sdm_outputs/et-images/probability_1.tif").read(1)
-    distr_xgb =  rasterio.open("sdm_outputs/xgb-images/probability_1.tif").read(1)
-    distr_lgbm =  rasterio.open("sdm_outputs/lgbm-images/probability_1.tif").read(1)
+    distr_rf = rasterio.open("sdm_outputs/rf-images/probability_1.tif").read(1, masked=True)
+    distr_et = rasterio.open("sdm_outputs/et-images/probability_1.tif").read(1, masked=True)
+    distr_xgb =  rasterio.open("sdm_outputs/xgb-images/probability_1.tif").read(1, masked=True)
+    distr_lgbm =  rasterio.open("sdm_outputs/lgbm-images/probability_1.tif").read(1, masked=True)
     distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
     spatial_plot(distr_averaged, "Heteronotia binoei range, averaged", cmap='viridis')
 
