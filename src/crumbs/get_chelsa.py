@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import requests
 import os
 import rasterio
@@ -125,6 +127,13 @@ def download(url, output_dir):
         print(e)
     return
 
+def expand_bio(variables):
+    bioset = set(variables) - set(['dem','glz'])
+    if( len(bioset) > 0 ) :
+        if bioset == set(['bio']):
+            bioset = set(['bio' + str(i).zfill(2) for i in range(1, 19, 1)])
+    return list(bioset.union(set(variables)) - set(['bio']))
+
 def generate_urls(variables, timesID):
     """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
     """
@@ -167,8 +176,13 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
     print("    ... converting bands to VRT file:", outputFile)
-    gdal.BuildVRT(outputFile, inputFiles, separate=True, callback=gdal.TermProgress_nocb)
-    vrt_options = gdal.BuildVRTOptions(separate=True, callback=gdal.TermProgress_nocb, resampleAlg='average')
+    gdal.BuildVRT(outputFile, inputFiles,
+        separate=True,
+        #callback=gdal.TermProgress_nocb
+        )
+    vrt_options = gdal.BuildVRTOptions(separate=True,
+                                        #callback=gdal.TermProgress_nocb, 
+                                        resampleAlg='average')
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
     my_vrt = None
     return(outputFile)
@@ -234,6 +248,7 @@ def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin
     create_folders_if_dont_exist(chelsa_dir, clip_dir)
 
     if inputFile is None:
+        variables = expand_bio(variables)
         urls = generate_urls(variables, timesID)
     else:
         urls = read_urls(inputFile)

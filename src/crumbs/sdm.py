@@ -1,4 +1,4 @@
-# Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
+#!/usr/bin/python
 
 def present_geopanda(gdf):
     print("        - number of duplicates: ", gdf.duplicated(subset='geometry', keep='first').sum())
@@ -68,7 +68,7 @@ def spatial_plot(x, title, cmap="Blues"):
     plt.colorbar()
     plt.title(title, fontweight = 'bold')
     plt.show()
-    
+
 def get_ML_classifiers():
     """ Imports a bunch of machine learning classifiers
     """
@@ -133,16 +133,56 @@ def clean_dataset(df):
     indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
     return df[indices_to_keep].astype(np.float64)
 
+# def check_transform(rasters):
+#     import rasterio
+#     transform = None
+#     previous_raster = None
+#     previous_transform = None
+#     for raster in rasters:
+#         with rasterio.open(raster) as src:
+#             # First iteration, fransform is None
+#             if transform is None:
+#                 transform = src.transform
+#             else:
+#                 if transform != src.transform:
+#                     if transform.almost_equals(src.transform):
+#                         meta = src.meta.copy()
+#                         meta.update({'transform' : src.transform})
+#                     print(raster + ' and ' + previous + 'have different transforms: ')
+#                     print(previous, ':\n', transform)
+#                     print(raster, ':\n', src.transform)
+#         previous_raster = raster
+#         previous_transform = transform
 
-def species_distribution_model(presence_shp, variables):
+def species_distribution_model(presence_shp, variables, background_points=1000):
+    # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     import get_chelsa
     import sample
     import rasterio
     import geopandas as gpd
     import pandas as pd
 
-    elevation_file = "stacked_dem.tif"
-    nb_background = 3000
+    from pathlib import Path
+    current_dir = str(Path().resolve())
+    Path(current_dir + '/' + 'sdm_inputs').mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + 'sdm_outputs').mkdir(parents=True, exist_ok=True)
+
+    # We need DEM for marine/terrestial filter
+    s = set(variables); s.add('dem')
+    variables = list(s)
+
+    get_chelsa.get_chelsa(
+        inputFile=None,
+        variables=variables,
+        timesID=[20],
+        points=presence_shp,
+        margin=0.0,
+        chelsa_dir='CHELSA_world',
+        clip_dir='CHELSA_cropped',
+        geotiff=current_dir + '/' + 'sdm_inputs/chelsa_20.tif',
+        cleanup=False)
+
+    elevation_file =  current_dir + '/' + "sdm_inputs/chelsa_20_dem.tif"
 
     # Presence data
     print('    ... reading occurrence:')
@@ -158,8 +198,7 @@ def species_distribution_model(presence_shp, variables):
     present_geopanda(presence)
 
     # Generate pseudo-absence
-    get_chelsa.get_chelsa(variables = variables, timesID = [20], points = presence_shp)
-    pseudo_absence = sample_background(elevation_file, nb_background)
+    pseudo_absence = sample_background(elevation_file, background_points)
 
     # Presence-absence
     pa = pd.concat([presence, pseudo_absence],  axis=0, ignore_index=True, join="inner")
@@ -170,15 +209,20 @@ def species_distribution_model(presence_shp, variables):
     #pa = clean_dataset(pa)
 
     import glob
-    explanatory_rasters = sorted(glob.glob('CHELSA_cropped/*.tif'))
-    print('    ... reading', len(explanatory_rasters), 'raster features.')
+    explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
+    print('    ... there are', len(explanatory_rasters), 'raster features:')
+    #check_transform(explanatory_rasters)
 
     from pyimpute import load_training_vector
     from pyimpute import load_targets
 
     response_data = pa
-    train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
-    target_xs, raster_info = load_targets(explanatory_rasters)
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        train_xs, train_y = load_training_vector(response_data, explanatory_rasters, response_field='CLASS')
+        target_xs, raster_info = load_targets(explanatory_rasters)
+
     print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
 
     fit_models(train_xs, train_y, target_xs, raster_info)
@@ -198,6 +242,8 @@ def main(argv):
 
     parser.add_option("-p", "--presence", type="str", dest="presence_points", help="Presence points shapefile.")
 
+    parser.add_option("-b", "--background", type="int", default=1000, dest="background_points", help="Number of backgound points.")
+
     parser.add_option("-v", "--variables",
                         dest="variables",
                         type='str',
@@ -208,7 +254,8 @@ def main(argv):
     (options, args) = parser.parse_args(argv)
     return species_distribution_model(
         presence_shp = options.presence_points,
-        variables = options.variables
+        variables = options.variables,
+        background_points = options.background_points
         )
 
 if __name__ == '__main__':
