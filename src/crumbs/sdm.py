@@ -87,32 +87,42 @@ def get_ML_classifiers():
 def fit_models(train_xs, train_y, target_xs, raster_info, outdir):
     """ Models fitting and spatial range prediction
     """
-    from pyimpute import impute
-    from sklearn import model_selection
-    from pathlib import Path
+    import warnings
+    with warnings.catch_warnings():
 
-    class_map = get_ML_classifiers()
+        warnings.filterwarnings("ignore", category=UserWarning)
+        warnings.filterwarnings("ignore", category=FutureWarning)
 
-    for model_name, (model) in class_map.items():
-        print('   ... ', model_name, 'classifier:')
-        print('        - k-fold cross validation for accuracy scores (displayed as a percentage)')
-        # k-fold cross validation for accuracy scores (displayed as a percentage)
-        k = 5
-        kf = model_selection.KFold(n_splits=k)
-        accuracy_scores = model_selection.cross_val_score(model, train_xs, train_y, cv=kf, scoring='accuracy', error_score='raise')
-        print('        - ' +
-            model_name + " %d-fold Cross Validation Accuracy: %0.2f (+/- %0.2f)"
-            % (k, accuracy_scores.mean() * 100, accuracy_scores.std() * 200)
-            )
+        from pyimpute import impute
+        from sklearn import model_selection
+        from pathlib import Path
 
-        print('        - fitting model ... ')
-        model.fit(train_xs, train_y)
+        class_map = get_ML_classifiers()
+        output_images = []
 
-        path = Path(outdir + '/' + model_name + '-images').mkdir(parents=True, exist_ok=True)
+        for model_name, (model) in class_map.items():
+            print('   ... ', model_name, 'classifier:')
 
-        print('        - predicting suitability ...')
-        impute(target_xs, model, raster_info, outdir=str(path), class_prob=True, certainty=True)
+            print('        - k-fold cross validation for accuracy scores (displayed as a percentage)')
+            k = 5
+            kf = model_selection.KFold(n_splits=k)
+            accuracy_scores = model_selection.cross_val_score(model, train_xs, train_y, cv=kf, scoring='accuracy')
+            print('        - ' +
+                model_name + " %d-fold Cross Validation Accuracy: %0.2f (+/- %0.2f)"
+                % (k, accuracy_scores.mean() * 100, accuracy_scores.std() * 200)
+                )
 
+            print('        - fitting model ... ')
+            model.fit(train_xs, train_y)
+
+            out = outdir + '/' + model_name
+            Path(out).mkdir(parents=True, exist_ok=True)
+
+            print('        - predicting suitability ...')
+            impute(target_xs, model, raster_info, outdir=out, class_prob=True, certainty=True)
+            output_images.append(out  +'/' + 'probability_1.tif')
+
+        return output_images
 
 def drop_ocean_cells(gdf, rasterFile):
     import rasterio
@@ -160,9 +170,13 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     from pathlib import Path
 
     current_dir = str(Path().resolve())
-    in_dir = Path(current_dir + '/' + 'sdm_inputs').mkdir(parents=True, exist_ok=True)
-    out_dir = Path(current_dir + '/' + 'sdm_outputs').mkdir(parents=True, exist_ok=True)
+    in_dir  = current_dir + '/' + 'sdm_inputs'
+    out_dir = current_dir + '/' + 'sdm_outputs'
+    Path(in_dir).mkdir(parents=True, exist_ok=True)
+    Path(out_dir).mkdir(parents=True, exist_ok=True)
 
+    print('    ... SDM inputs will be saved to:', in_dir)
+    print('    ... SDM output will be saved to:', out_dir)
     # We need DEM for marine/terrestial filter
     s = set(variables); s.add('dem')
     variables = list(s)
@@ -207,29 +221,29 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
     print('    ... there are', len(explanatory_rasters), 'raster features')
 
-    print('    ... masking ocean cells to dem nodata value for all raster features')
+    print('    ... masking ocean cells to dem nodata value for all explanatory rasters')
     ocean_cells_to_nodata(elevation_file, explanatory_rasters)
 
-    # from pyimpute import load_training_vector
-    # from pyimpute import load_targets
-    #
-    # print('    ... loading training vector')
-    # train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
-    # print('    ... loading explanatory rasters')
-    # target_xs, raster_info = load_targets(explanatory_rasters)
-    #
-    # print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
-    #
-    # print('    ... preparing to fit models')
-    # fit_models(train_xs, train_y, target_xs, raster_info, str(out_dir))
+    from pyimpute import load_training_vector
+    from pyimpute import load_targets
+
+    print('    ... loading training vector')
+    train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
+    print('    ... loading explanatory rasters')
+    target_xs, raster_info = load_targets(explanatory_rasters)
+
+    print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
+
+    print('    ... preparing to fit models')
+    proba_rasters = fit_models(train_xs, train_y, target_xs, raster_info, out_dir)
+
+    print('    ... masking ocean cells to dem no data value for all probability_1 rasters')
+    ocean_cells_to_nodata(elevation_file, proba_rasters)
 
     print('    ... model averaging')
-    distr_rf = rasterio.open("sdm_outputs/rf-images/probability_1.tif").read(1, masked=True)
-    distr_et = rasterio.open("sdm_outputs/et-images/probability_1.tif").read(1, masked=True)
-    distr_xgb =  rasterio.open("sdm_outputs/xgb-images/probability_1.tif").read(1, masked=True)
-    distr_lgbm =  rasterio.open("sdm_outputs/lgbm-images/probability_1.tif").read(1, masked=True)
-    distr_averaged = (distr_rf + distr_et + distr_xgb + distr_lgbm)/4
-    spatial_plot(distr_averaged, "Heteronotia binoei range, averaged", cmap='viridis')
+    imgs = [ rasterio.open(r).read(1, masked=True) for r in proba_rasters]
+    averaged = sum(imgs)/len(imgs)
+    spatial_plot(averaged, "Heteronotia binoei range, averaged", cmap='viridis')
 
 def main(argv):
     from optparse import OptionParser
