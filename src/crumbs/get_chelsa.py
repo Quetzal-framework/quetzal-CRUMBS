@@ -74,7 +74,6 @@ def clip(inputFile, shape, outputFile):
     with rasterio.open(inputFile) as source :
         out_image, out_transform = msk.mask(source, [shape], crop=True)
         out_meta = source.meta
-        print(out_meta)
         # udate metadata
         out_meta.update({"driver": "GTiff",
                          "height": out_image.shape[1],
@@ -100,9 +99,9 @@ def download(url, output_dir):
     path = Path(filename)
     if path.is_file():
         resume_byte = path.stat().st_size
-        print("File exists, resuming download to byte", resume_byte)
+        print("World file exists, resuming download to byte", resume_byte)
     else:
-        print("File does not exist, starting download from scratch.")
+        print("World file does not exist, starting download from scratch.")
         resume_byte = 0.0
 
     try:
