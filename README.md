@@ -200,13 +200,17 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 > is an important step of iDDC modeling. In its correlative version, these models
-> use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, > soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over > > the landscape.  
-> The main steps are generally the following:
-> 1. Retrieve observational (presence) data (longitude/latitude)
-> 2. Sample environmental variables at the presence coordinates.
-> 3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment > > preferences
-> 4. Map the species–environment relationship across the study area (interpolation).
-> 5. Project to past climates (extrapolation)
+> use presence locations of a species to draw correlations between these coordinates
+> and the value of environmental variables (climate, soil type, vegetation type)
+> at these positions. The end result generally consists of some prediction of
+> the habitat suitability over the landscape.
+
+The main steps are generally the following:
+1. Retrieve observational (presence) data (longitude/latitude)
+2. Sample environmental variables at the presence coordinates.
+3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
+4. Map the species–environment relationship across the study area (interpolation).
+5. Project to past climates (extrapolation)
 
 ## :earth_africa: Get presence data with GBIF
 
@@ -232,6 +236,23 @@ the way to represent the landscape. With the `interpolate` function, you can:
 | [*Animation generated with quetzal-CRUMBS animate*](#animating-gbif-data) |
 
 </div>
+
+## :checkered_flag: Perform full SDM analysis
+
+For example, to :
+1. Estimate the current habitat of a species
+2. Reconstruct the high-resolution habitat dynamics along the last 21.000 years
+3. Average the results across 4 different ML classifiers
+4. Get a nice visualization at the end,
+you can simply use this bash commands:
+
+```bash
+python3 -m crumbs.sdm \
+      --points occurrences.shp \
+      --variables bio \
+      --background 1000 \
+      --times $(seq -s ',' -199 1 20)
+```
 
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
