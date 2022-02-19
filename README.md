@@ -18,14 +18,33 @@ shaped the present spatial distribution of genetic lineages.
 >
 > - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
 
-:warning: At the present moment the python interfaces are not very stable, and are not really
-meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
-when I'm doing ABC-inference or when I'm calibrating my simulations.
 
 :boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
 
 :bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
+## What problem does this library solve?
+
+iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things a lot.
+
+For example, to estimate the current habitat of a species and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with a nice visualization at the end, you can simply use these 3 bash commands:
+
+```bash
+python3 -m crumbs.get_gbif \
+      --species "Heteronotia binoei" \
+      --points test_points/test_points.shp \
+      --all \
+      --year "1950,2022" \
+      --margin 2.0
+
+python3 -m crumbs.sdm \
+      --points occurrences.shp \
+      --variables bio \
+      --background 1000 \
+      --times $(seq -s ',' -50 1 20)
+
+python3 -m crumbs.animate sdm_outputs/suitability.tiff
+```
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
 
@@ -181,13 +200,17 @@ the way to represent the landscape. With the `interpolate` function, you can:
 
 > :bulb: Species Distribution Modeling (SDM, also known as ENM: Environmental Niche Modeling)
 > is an important step of iDDC modeling. In its correlative version, these models
-> use presence locations of a species to draw correlations between these coordinates and the value of environmental variables (climate, > soil type, vegetation type) at these positions. The end result generally consists of some prediction of the habitat suitability over > > the landscape.  
-> The main steps are generally the following:
-> 1. Retrieve observational (presence) data (longitude/latitude)
-> 2. Sample environmental variables at the presence coordinates.
-> 3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment > > preferences
-> 4. Map the species–environment relationship across the study area (interpolation).
-> 5. Project to past climates (extrapolation)
+> use presence locations of a species to draw correlations between these coordinates
+> and the value of environmental variables (climate, soil type, vegetation type)
+> at these positions. The end result generally consists of some prediction of
+> the habitat suitability over the landscape.
+
+The main steps are generally the following:
+1. Retrieve observational (presence) data (longitude/latitude)
+2. Sample environmental variables at the presence coordinates.
+3. Use a statistical model (e.g., SK-Learn classifiers) to build a mathematical relationship between the species and its environment preferences
+4. Map the species–environment relationship across the study area (interpolation).
+5. Project to past climates (extrapolation)
 
 ## :earth_africa: Get presence data with GBIF
 
@@ -213,6 +236,23 @@ the way to represent the landscape. With the `interpolate` function, you can:
 | [*Animation generated with quetzal-CRUMBS animate*](#animating-gbif-data) |
 
 </div>
+
+## :checkered_flag: Perform full SDM analysis
+
+For example, to :
+1. Estimate the current habitat of a species
+2. Reconstruct the high-resolution habitat dynamics along the last 21.000 years
+3. Average the results across 4 different ML classifiers
+4. Get a nice visualization at the end,
+you can simply use this bash commands:
+
+```bash
+python3 -m crumbs.sdm \
+      --points occurrences.shp \
+      --variables bio \
+      --background 1000 \
+      --times $(seq -s ',' -199 1 20)
+```
 
 -------------------------------------------------------------------------------
 # :film_strip: Visualizations
