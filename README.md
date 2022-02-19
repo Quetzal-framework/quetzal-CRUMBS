@@ -18,14 +18,33 @@ shaped the present spatial distribution of genetic lineages.
 >
 > - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
 
-:warning: At the present moment the python interfaces are not very stable, and are not really
-meant to be used directly. I prefer to use Quetzal-CRUMBS in bash scripts
-when I'm doing ABC-inference or when I'm calibrating my simulations.
 
 :boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
 
 :bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
+## What problem does this library solve?
+
+iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things a lot.
+
+For example, to estimate the current habitat of a species and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with a nice visualization at the end, you can simply use these 3 bash commands:
+
+```bash
+python3 -m crumbs.get_gbif \
+      --species "Heteronotia binoei" \
+      --points test_points/test_points.shp \
+      --all \
+      --year "1950,2022" \
+      --margin 2.0
+
+python3 -m crumbs.sdm \
+      --points occurrences.shp \
+      --variables bio \
+      --background 1000 \
+      --times $(seq -s ',' -50 1 20)
+
+python3 -m crumbs.animate sdm_outputs/suitability.tiff
+```
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
 
