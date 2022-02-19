@@ -79,7 +79,7 @@ def get_ML_classifiers():
     class_map = {
         'rf': (RandomForestClassifier()),
         'et': (ExtraTreesClassifier()),
-        'xgb': (XGBClassifier()),
+        'xgb': (XGBClassifier(verbosity = 0)),
         'lgbm': (LGBMClassifier())
         }
     return class_map
@@ -101,7 +101,7 @@ def fit_models(train_xs, train_y, target_xs, raster_info, outdir):
         output_images = []
 
         for model_name, (model) in class_map.items():
-            print('   ... ', model_name, 'classifier:')
+            print('    ...', 'Classifier', model_name)
 
             print('        - k-fold cross validation for accuracy scores (displayed as a percentage)')
             k = 5
@@ -115,14 +115,7 @@ def fit_models(train_xs, train_y, target_xs, raster_info, outdir):
             print('        - fitting model ... ')
             model.fit(train_xs, train_y)
 
-            out = outdir + '/' + model_name
-            Path(out).mkdir(parents=True, exist_ok=True)
-
-            print('        - predicting suitability ...')
-            impute(target_xs, model, raster_info, outdir=out, class_prob=True, certainty=True)
-            output_images.append(out  +'/' + 'probability_1.tif')
-
-        return output_images
+        return output_images, class_map
 
 def drop_ocean_cells(gdf, rasterFile):
     import rasterio
@@ -160,7 +153,7 @@ def ocean_cells_to_nodata(demRaster, rasters):
                 dst.nodata = dem.nodata
                 dst.write(masked_img.filled(fill_value=dem.nodata), 1)
 
-def species_distribution_model(presence_shp, variables, background_points=1000):
+def species_distribution_model(presence_shp, variables, timesID, background_points=1000, margin=0.0):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     import get_chelsa
     import sample
@@ -168,31 +161,48 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     import geopandas as gpd
     import pandas as pd
     from pathlib import Path
+    import glob
 
     current_dir = str(Path().resolve())
-    in_dir  = current_dir + '/' + 'sdm_inputs'
-    out_dir = current_dir + '/' + 'sdm_outputs'
-    Path(in_dir).mkdir(parents=True, exist_ok=True)
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
 
-    print('    ... SDM inputs will be saved to:', in_dir)
-    print('    ... SDM output will be saved to:', out_dir)
+    world_dir  = 'CHELSA_world'
+    in_dir     = 'sdm_inputs'
+    out_dir    = 'sdm_outputs'
+    average_dir    = 'averaged'
+    stack_dir = in_dir + '/' + 'CHELSA_multiband'
+    crop_dir   = in_dir + '/' + 'CHELSA_cropped'
+
+    Path(current_dir + '/' + world_dir).mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + in_dir).mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + out_dir).mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + stack_dir).mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + crop_dir).mkdir(parents=True, exist_ok=True)
+    Path(current_dir + '/' + out_dir + '/' + average_dir).mkdir(parents=True, exist_ok=True)
+
+    print('    - CHELSA raw world files will be saved to  ' , current_dir + '/' + world_dir)
+    print('    - CHELSA cropped files will be saved to    ' , current_dir + '/' + crop_dir)
+    print('    - CHELSA multibands files will be saved to ' , current_dir + '/' + stack_dir)
+    print('    - SDM inputs will be saved to              ' , current_dir + '/' + in_dir)
+    print('    - SDM output will be saved to              ' , current_dir + '/' + out_dir)
+
     # We need DEM for marine/terrestial filter
-    s = set(variables); s.add('dem')
-    variables = list(s)
+    v = set(variables); v.add('dem')
+    variables = list(v)
+    t = set(timesID); t.add('20')
+    timesID = list(t)
 
     get_chelsa.get_chelsa(
         inputFile=None,
         variables=variables,
-        timesID=[20],
+        timesID=timesID,
         points=presence_shp,
-        margin=0.0,
-        chelsa_dir='CHELSA_world',
-        clip_dir='CHELSA_cropped',
-        geotiff=current_dir + '/' + 'sdm_inputs/chelsa_20.tif',
+        margin=margin,
+        chelsa_dir=world_dir,
+        clip_dir=crop_dir,
+        geotiff=stack_dir + '/' + 'multiband.tif',
         cleanup=False)
 
-    elevation_file =  current_dir + '/' + "sdm_inputs/chelsa_20_dem.tif"
+    current_elevation_file =  crop_dir + '/' + 'CHELSA_TraCE21k_dem_20_V1.0.tif'
 
     # Presence data
     print('    ... reading occurrence:')
@@ -204,11 +214,11 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     present_geopanda(presence)
 
     print('    ... after removing occurrences falling in ocean cells (NA, -inf, +inf):')
-    presence = drop_ocean_cells(presence, elevation_file)
+    presence = drop_ocean_cells(presence, current_elevation_file)
     present_geopanda(presence)
 
     # Generate pseudo-absence
-    pseudo_absence = sample_background(elevation_file, background_points)
+    pseudo_absence = sample_background(current_elevation_file, background_points)
 
     # Presence-absence
     pa = pd.concat([presence, pseudo_absence],  axis=0, ignore_index=True, join="inner")
@@ -217,33 +227,58 @@ def species_distribution_model(presence_shp, variables, background_points=1000):
     pa = pa.reset_index()
     plot(pa)
 
-    import glob
-    explanatory_rasters = sorted(glob.glob('sdm_inputs/*.tif'))
-    print('    ... there are', len(explanatory_rasters), 'raster features')
+    explanatory_rasters = sorted(glob.glob(crop_dir + '/*_20_*.tif'))
+    print('    ... there are', len(explanatory_rasters), 'explanatory rasters features')
 
     print('    ... masking ocean cells to dem nodata value for all explanatory rasters')
-    ocean_cells_to_nodata(elevation_file, explanatory_rasters)
+    ocean_cells_to_nodata(current_elevation_file, explanatory_rasters)
 
     from pyimpute import load_training_vector
     from pyimpute import load_targets
 
     print('    ... loading training vector')
     train_xs, train_y = load_training_vector(pa, explanatory_rasters, response_field='CLASS')
+
     print('    ... loading explanatory rasters')
     target_xs, raster_info = load_targets(explanatory_rasters)
 
-    print(train_xs.shape, train_y.shape) # check shape, does it match the size above of the observations?
+    # check shape, does it match the size above of the observations?
+    assert train_xs.shape[0] == train_y.shape[0]
 
-    print('    ... preparing to fit models')
-    proba_rasters = fit_models(train_xs, train_y, target_xs, raster_info, out_dir)
+    proba_rasters, models_map = fit_models(train_xs, train_y, target_xs, raster_info, out_dir)
 
-    print('    ... masking ocean cells to dem no data value for all probability_1 rasters')
-    ocean_cells_to_nodata(elevation_file, proba_rasters)
+    print('    ... projection to current and past climates')
 
-    print('    ... model averaging')
-    imgs = [ rasterio.open(r).read(1, masked=True) for r in proba_rasters]
-    averaged = sum(imgs)/len(imgs)
-    spatial_plot(averaged, "Heteronotia binoei range, averaged", cmap='viridis')
+    for t in timesID:
+        print('    ... projection to time ' + str(t))
+        new_explanatory_rasters = sorted(glob.glob(crop_dir + '/*_' + str(t) +'_*.tif'))
+        new_elevation_file =  crop_dir + '/' + 'CHELSA_TraCE21k_dem_' + str(t) + '_V1.0.tif'
+
+        print('        - loading target explanatory raster data')
+        target_xs, raster_info = load_targets(new_explanatory_rasters)
+
+        output_images = []
+        for model_name, (model) in models_map.items():
+            print("        - Classifier", model_name)
+            from pyimpute import impute
+            out = out_dir + '/' + model_name + '/' + str(t)
+            impute(target_xs, model, raster_info, outdir=out, linechunk=400, class_prob=True, certainty=True)
+            img = out  +'/' + 'probability_1.tif'
+            output_images.append(img)
+
+        print('    ... masking ocean cells to dem no data value for all probability_1 rasters')
+        ocean_cells_to_nodata(new_elevation_file, output_images)
+
+        print('    ... averaging models for climate conditions at CHELSA time', t)
+        imgs = [ rasterio.open(r).read(1, masked=True) for r in output_images]
+        averaged_img = sum(imgs)/len(imgs)
+        spatial_plot(averaged_img, "Heteronotia binoei range, averaged", cmap='viridis')
+        dst_raster = out_dir + '/' + average_dir + '/' + 'suitability_' + str(t) + '.tif'
+        with rasterio.open(new_elevation_file) as mask:
+            meta = mask.meta.copy()
+            with rasterio.open(dst_raster, "w", **meta) as dst:
+                dst.write(averaged_img, 1)
+
 
 def main(argv):
     from optparse import OptionParser
@@ -262,11 +297,21 @@ def main(argv):
                         callback=get_chelsa.get_variables_args,
                         help="Comma-separated list of explanatory variables from CHELSA. Possible options: dem, glz, bio01 to bio19 or bio for all.")
 
+    parser.add_option("-t", "--timesID",
+                        dest="timesID",
+                        type='str',
+                        action='callback',
+                        callback=get_chelsa.get_timesID_args,
+                        help="CHELSA_TraCE21k_ times IDs to download for projection to past climates. Default: 20 (present) to -200 (LGM)")
+    parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
+
     (options, args) = parser.parse_args(argv)
     return species_distribution_model(
         presence_shp = options.presence_points,
         variables = options.variables,
-        background_points = options.background_points
+        timesID = options.timesID,
+        background_points = options.background_points,
+        margin = options.margin
         )
 
 if __name__ == '__main__':
