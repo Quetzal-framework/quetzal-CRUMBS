@@ -153,7 +153,7 @@ def ocean_cells_to_nodata(demRaster, rasters):
                 dst.nodata = dem.nodata
                 dst.write(masked_img.filled(fill_value=dem.nodata), 1)
 
-def species_distribution_model(presence_shp, variables, timesID, background_points=1000, margin=0.0):
+def species_distribution_model(presence_shp, variables, timesID, cleanup, background_points=1000, margin=0.0):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     import get_chelsa
     import sample
@@ -200,7 +200,7 @@ def species_distribution_model(presence_shp, variables, timesID, background_poin
         chelsa_dir=world_dir,
         clip_dir=crop_dir,
         geotiff=stack_dir + '/' + 'multiband.tif',
-        cleanup=False)
+        cleanup=cleanup)
 
     current_elevation_file =  crop_dir + '/' + 'CHELSA_TraCE21k_dem_20_V1.0.tif'
 
@@ -248,7 +248,7 @@ def species_distribution_model(presence_shp, variables, timesID, background_poin
     proba_rasters, models_map = fit_models(train_xs, train_y, target_xs, raster_info, out_dir)
 
     print('    ... projection to current and past climates')
-
+    raster_list = []
     for t in timesID:
         print('    ... projection to time ' + str(t))
         new_explanatory_rasters = sorted(glob.glob(crop_dir + '/*_' + str(t) +'_*.tif'))
@@ -274,11 +274,14 @@ def species_distribution_model(presence_shp, variables, timesID, background_poin
         averaged_img = sum(imgs)/len(imgs)
         spatial_plot(averaged_img, "Heteronotia binoei range, averaged", cmap='viridis')
         dst_raster = out_dir + '/' + average_dir + '/' + 'suitability_' + str(t) + '.tif'
-        with rasterio.open(new_elevation_file) as mask:
+        raster_list.append(dst_raster)
+        with rasterio.open(output_images[0]) as mask:
             meta = mask.meta.copy()
             with rasterio.open(dst_raster, "w", **meta) as dst:
                 dst.write(averaged_img, 1)
 
+    VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + '/' + "suitability.vrt"  )
+    get_chelsa.to_geotiff(VRT,  out_dir + '/' + "suitability.tif")
 
 def main(argv):
     from optparse import OptionParser
@@ -304,14 +307,16 @@ def main(argv):
                         callback=get_chelsa.get_timesID_args,
                         help="CHELSA_TraCE21k_ times IDs to download for projection to past climates. Default: 20 (present) to -200 (LGM)")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
-
+    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
+    parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     (options, args) = parser.parse_args(argv)
     return species_distribution_model(
         presence_shp = options.presence_points,
         variables = options.variables,
         timesID = options.timesID,
         background_points = options.background_points,
-        margin = options.margin
+        margin = options.margin,
+        cleanup = options.cleanup
         )
 
 if __name__ == '__main__':
