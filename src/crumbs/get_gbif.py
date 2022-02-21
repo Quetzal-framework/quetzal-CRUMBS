@@ -1,12 +1,4 @@
-from optparse import OptionParser
-
-import os
-import sklearn # machine learning
-import pyimpute     # spatial classification
-import rasterio     # reads and writes geospatial rasters
-import geopandas    # for spatial operations
-from dotenv import load_dotenv   #for python-dotenv method
-
+#!/usr/bin/python
 
 def paginated_search(max_limit, *args, **kwargs):
     """ In its current version, pygbif can not search more than 300 occurrences at once: this solves a bit of the problem
@@ -133,6 +125,8 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrenc
     return
 
 def main(argv):
+    from optparse import OptionParser
+
     print(" - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models")
     parser = OptionParser()
     parser.add_option("-s", "--species", type="str", dest="scientific_name", help="Species name for the SDM.")
