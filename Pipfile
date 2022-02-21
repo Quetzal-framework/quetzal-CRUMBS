@@ -21,6 +21,7 @@ pygbif = "*"
 mayavi = "*"
 xgboost = "*"
 lightgbm = "*"
+requests-cache="*"
 [dev-packages]
 
 [requires]
