@@ -20,7 +20,7 @@ def uniform_latlon_above_minimum(raster_path, band):
 
     with rasterio.open(raster_path) as src:
         masked = src.read(1, masked=True)
-        assert band < src.count 'Dataset has only' + src.count 'bands. Can not sample band index ' + band
+        assert band < src.count, 'Dataset has only' + src.count 'bands. Can not sample band index ' + band
         nb_sample = 1
         cols, rows = random_sample_from_masked_array(masked, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
