@@ -108,7 +108,7 @@ class TestAnimate(unittest.TestCase):
 
         demographic_tiff = "tests/data/EGG2_short_history.tif"
         elevation_tiff = "tests/data/DEM_5_bands.tif"
-        gbif_files = "tests/data/occurences.shp"
+        gbif_files = "tests/data/occurrences.shp"
 
         # 2D demographic animation
         animate.chose_method(inputRaster=demographic_tiff)
