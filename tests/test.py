@@ -135,5 +135,16 @@ class TestGetChelsa(unittest.TestCase):
         get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio01'], timesID = [20, -199])
         get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem','bio'], timesID = [20])
 
+from crumbs import get_gbif
+
+class TestGetGbif(unittest.TestCase):
+    def SetUp(self):
+        pass
+
+    def test_get_bif(self):
+        get_gbif.search_gbif(scientific_name='Heteronotia binoei', points="tests/data/test_points/test_points.shp", margin=1.0, limit=50, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year=None, output=None)
+        get_gbif.search_gbif(scientific_name='Heteronotia binoei', points="tests/data/test_points/test_points.shp", margin=1.0, limit=50, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year='1950,2022', output=None)
+
+
 if __name__=="__main__":
     unittest.main()
