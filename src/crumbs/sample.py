@@ -13,6 +13,9 @@ from osgeo import gdal
 import numpy as np
 
 def uniform_latlon_above_minimum(raster_path):
+    from os.path import exists
+    assert exists(path_to_file), 'File doest not exists:' + raster_path
+
     raster = gdal.Open(raster_path, gdal.GA_ReadOnly)
     band = raster.GetRasterBand(1)
     array = band.ReadAsArray().astype(float)
