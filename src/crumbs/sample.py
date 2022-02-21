@@ -16,7 +16,7 @@ def uniform_latlon_above_minimum(raster_path, band):
     from os.path import exists
     import rasterio
     assert exists(path_to_file), 'File doest not exists:' + raster_path
-    assert band >= 0 'Band index must be integer >= 0'
+    assert band >= 0, 'Band index must be integer >= 0'
 
     with rasterio.open(raster_path) as src:
         masked = src.read(1, masked=True)
