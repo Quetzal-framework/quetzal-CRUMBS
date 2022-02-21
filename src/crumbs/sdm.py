@@ -153,7 +153,7 @@ def ocean_cells_to_nodata(demRaster, rasters):
                 dst.nodata = dem.nodata
                 dst.write(masked_img.filled(fill_value=dem.nodata), 1)
 
-def species_distribution_model(presence_shp, variables, timesID, cleanup, background_points=1000, margin=0.0):
+def species_distribution_model(presence_shp, variables, timesID, cleanup, background_points=1000, margin=0.0, output='suitability.tif'):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     import get_chelsa
     import sample
@@ -272,16 +272,16 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, backgr
         print('    ... averaging models for climate conditions at CHELSA time', t)
         imgs = [ rasterio.open(r).read(1, masked=True) for r in output_images]
         averaged_img = sum(imgs)/len(imgs)
-        spatial_plot(averaged_img, "Heteronotia binoei range, averaged", cmap='viridis')
-        dst_raster = out_dir + '/' + average_dir + '/' + 'suitability_' + str(t) + '.tif'
+        spatial_plot(averaged_img, "Species range, averaged", cmap='viridis')
+        dst_raster = out_dir + '/' + average_dir + '/' + output + '_' + str(t) + '.tif'
         raster_list.append(dst_raster)
         with rasterio.open(output_images[0]) as mask:
             meta = mask.meta.copy()
             with rasterio.open(dst_raster, "w", **meta) as dst:
                 dst.write(averaged_img, 1)
 
-    VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + '/' + "suitability.vrt"  )
-    get_chelsa.to_geotiff(VRT,  out_dir + '/' + "suitability.tif")
+    VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + '/' + output + ".vrt"  )
+    get_chelsa.to_geotiff(VRT,  out_dir + '/' + output + ".tif")
 
 def main(argv):
     from optparse import OptionParser
@@ -309,6 +309,7 @@ def main(argv):
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
     parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
+    parser.add_option("-o", "--output", type="str", dest="output", help="Output suitability geotiff name.")
     (options, args) = parser.parse_args(argv)
     return species_distribution_model(
         presence_shp = options.presence_points,
