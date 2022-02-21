@@ -162,6 +162,9 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, backgr
     import pandas as pd
     from pathlib import Path
     import glob
+    import os
+
+    output = os.path.splitext(output)[0]
 
     current_dir = str(Path().resolve())
 
