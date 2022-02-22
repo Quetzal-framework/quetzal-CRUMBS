@@ -319,7 +319,6 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
             surface.actor.actor.scale = [1, 1, warp_scale]
 
         elif nb_triangles is not None:
-            print("heyo")
             # initialize data source
             data = mlab.pipeline.array2d_source(array_2d)
             # Use a greedy_terrain_decimation to created a decimated mesh

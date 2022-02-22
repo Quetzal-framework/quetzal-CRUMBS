@@ -1,12 +1,4 @@
-from optparse import OptionParser
-
-import os
-import sklearn # machine learning
-import pyimpute     # spatial classification
-import rasterio     # reads and writes geospatial rasters
-import geopandas    # for spatial operations
-from dotenv import load_dotenv   #for python-dotenv method
-
+#!/usr/bin/python
 
 def paginated_search(max_limit, *args, **kwargs):
     """ In its current version, pygbif can not search more than 300 occurrences at once: this solves a bit of the problem
@@ -54,7 +46,13 @@ def bounds_to_polygon(shapefile, margin):
         bbox = to_polygon(*shapes.bounds, margin)
     return bbox
 
-def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year=None):
+def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year=None, output=None):
+    import os
+    if output is not None:
+        filename = os.path.splitext(output)[0]
+        csv_file = filename + '.csv'
+        shapefile = filename + 'shp'
+
     from pygbif import species as species
     from pygbif import occurrences
     assert points is not None
@@ -127,12 +125,15 @@ def search_gbif(scientific_name, points, margin, limit=None, csv_file="occurrenc
     return
 
 def main(argv):
+    from optparse import OptionParser
+
     print(" - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models")
     parser = OptionParser()
     parser.add_option("-s", "--species", type="str", dest="scientific_name", help="Species name for the SDM.")
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to perform SDM. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
     parser.add_option("-l", "--limit", type="int", dest="limit", default=None, help="Maximum number of records to retrieve.")
+    parser.add_option("-o", "--output", type="str", dest="output", help="Output shapefile name. A csv file with same name will also be generated for human readibility.")
     parser.add_option("-y", "--year", type="str", dest="year", default=None, help="Year (eg. 1990) or range (e.g. 1900,2022) of the occurrences to be retrieved")
     parser.add_option("--all", dest="all", default = False, action = 'store_true', help="Download all available occurrences.")
     parser.add_option("--no-all", dest="all", action = 'store_false', help="Only download a limited number of occurrences.")
@@ -143,7 +144,8 @@ def main(argv):
         margin = options.margin,
         limit = options.limit,
         all = options.all,
-        year = options.year
+        year = options.year,
+        output = options.output
         )
 
 if __name__ == '__main__':
