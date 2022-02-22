@@ -38,7 +38,7 @@ def uniform_latlon(raster_path, band):
         cols, rows = random_sample_from_masked_array(masked, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
 
-    latlon = list(ys, xs)
+    latlon = [ys, xs]
     print(latlon)
 
 commands = {
