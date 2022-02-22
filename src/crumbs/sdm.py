@@ -16,24 +16,6 @@ def to_geopanda_dataframe(shapefile):
     return gdf
 
 
-def random_sample_from_masked_array(masked, nb_sample):
-    """ Sample indices uniformely at random in a masked array, ignoring masked values.
-        Returns a tuple (idx,idy)
-    """
-    import numpy as np
-     #Assign False = 0, True = 1
-    weights =~ masked.mask + 0
-    normalized = weights.ravel()/float(weights.sum())
-    index = np.random.choice(
-        masked.size,
-        size=nb_sample,
-        replace=False,
-        p=normalized
-    )
-    idy, idx = np.unravel_index(index, masked.shape)
-    return idx, idy
-
-
 def sample_background(demRaster, nb_sample=30):
     """ If presence-only data are given (e.g., from GBIF) then some form of absence points is needed.
         Random background points are sampled uniformely at random from contemporary DEM band.
@@ -41,9 +23,10 @@ def sample_background(demRaster, nb_sample=30):
     """
     import rasterio
     import geopandas
+    import utils
     with rasterio.open(demRaster) as src:
         Z = src.read(1, masked=True)
-        cols, rows = random_sample_from_masked_array(Z, nb_sample)
+        cols, rows = utils.random_sample_from_masked_array(Z, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
         geometry=geopandas.points_from_xy(xs, ys, crs=src.crs)
         d = {'CLASS': [0]*len(xs), 'geometry': geometry}

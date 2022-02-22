@@ -1,18 +1,15 @@
 #!/usr/bin/python
-import os.path
-import sys
-import random
 
 def uniform_integer(min, max):
+    import random
     print(random.randint(int(min), int(max)))
 
 def uniform_real(min, max):
+    import random
     print(random.uniform(float(min), float(max)))
 
-
-
 def uniform_latlon(raster_path, band):
-    import sdm
+    import utils
     from os.path import exists
     import rasterio
     assert exists(raster_path), 'File doest not exists:' + raster_path
@@ -22,11 +19,11 @@ def uniform_latlon(raster_path, band):
         masked = src.read(1, masked=True)
         assert band < src.count, 'Dataset has only' + src.count + 'bands. Can not sample band index ' + band
         nb_sample = 1
-        cols, rows = sdm.random_sample_from_masked_array(masked, nb_sample)
+        cols, rows = utils.random_sample_from_masked_array(masked, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
 
     latlon = list(ys, xs)
-    return latlon
+    print(latlon)
 
 commands = {
     'uniform_integer': uniform_integer,
