@@ -12,7 +12,7 @@ def uniform_real(min, max):
 from osgeo import gdal
 import numpy as np
 
-def uniform_latlon_above_minimum(raster_path, band):
+def uniform_latlon(raster_path, band):
     from os.path import exists
     import rasterio
     assert exists(path_to_file), 'File doest not exists:' + raster_path
@@ -27,9 +27,6 @@ def uniform_latlon_above_minimum(raster_path, band):
 
     latlon = list(ys, xs)
     return latlon
-
-def uniform_latlon(raster_path):
-    print(uniform_latlon_above_minimum(raster_path))
 
 commands = {
     'uniform_integer': uniform_integer,

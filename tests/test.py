@@ -63,7 +63,7 @@ class TestTiff(unittest.TestCase):
         np.testing.assert_almost_equal(band.GetMaximum(), 0.7852693, 6)
 
     def test_sample_latlon(self):
-        latlon = sample.uniform_latlon("tests/data/suitability.tif")
+        latlon = sample.uniform_latlon("tests/data/suitability.tif", 0)
 
 class TestGetSimulation(unittest.TestCase):
     def SetUp(self):
