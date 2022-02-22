@@ -23,10 +23,10 @@ def sample_background(demRaster, nb_sample=30):
     """
     import rasterio
     import geopandas
-    from utils import random_sample_from_masked_array
+    from raster_utils import random_sample_from_masked_array
     with rasterio.open(demRaster) as src:
         Z = src.read(1, masked=True)
-        cols, rows = utils.random_sample_from_masked_array(Z, nb_sample)
+        cols, rows = random_sample_from_masked_array(Z, nb_sample)
         xs, ys = rasterio.transform.xy(src.transform, rows, cols)
         geometry=geopandas.points_from_xy(xs, ys, crs=src.crs)
         d = {'CLASS': [0]*len(xs), 'geometry': geometry}
