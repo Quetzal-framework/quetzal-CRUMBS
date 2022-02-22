@@ -15,7 +15,7 @@ import numpy as np
 def uniform_latlon(raster_path, band):
     from os.path import exists
     import rasterio
-    assert exists(path_to_file), 'File doest not exists:' + raster_path
+    assert exists(raster_path), 'File doest not exists:' + raster_path
     assert band >= 0, 'Band index must be integer >= 0'
 
     with rasterio.open(raster_path) as src:
