@@ -286,7 +286,6 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
     """
     import numpy as np
     import rasterio
-    import raster_utils
     mlab.options.offscreen = True
     output = 'animation_occurrence.gif' if output is None else output
 
