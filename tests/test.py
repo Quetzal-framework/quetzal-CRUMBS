@@ -73,22 +73,22 @@ class TestGetSimulation(unittest.TestCase):
     def test_database_IDS(self):
         from crumbs import get_successful_simulations_rowids, get_failed_simulations_rowids
         # Open the file:
-        success_rowids = get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
+        success_rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
         self.assertEqual(success_rowids, list(range(1,31)))
         print(success_rowids)
-        failed_rowids = get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1")
+        failed_rowids = get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1")
         self.assertEqual(failed_rowids, list(range(1,31)))
 
     def test_simulate_phylip(self):
         from crumbs import get_successful_simulations_rowids, retrieve_parameters, simulate_phylip_sequences
-        rowids = get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
+        rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
         sequence_size = 100
         scale_tree = 0.000025
         print(rowids[0])
-        simulate_phylip_sequences("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl", "sim_test_temp")
-        a = retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0])
-        b = retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], True)
-        c = retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], False)
+        simulate_phylip_sequences.simulate_phylip_sequences("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], sequence_size, scale_tree, "sim_test.phyl", "sim_test_temp")
+        a = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0])
+        b = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], True)
+        c = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], False)
         self.assertEqual(a,b)
         print("With header:\n", a)
         print("No header:\n", c)
@@ -100,7 +100,7 @@ class TestConvertPhylipToArlequin(unittest.TestCase):
     def test_phylip_to_alequin(self):
         from crumbs import phylip2arlequin
         output = "test.arlequin"
-        phylip2arlequin("tests/data/seq.phyl", "tests/data/imap.txt", output)
+        phylip2arlequin.phylip2arlequin("tests/data/seq.phyl", "tests/data/imap.txt", output)
         with open('test.arlequin', 'r') as f:
             print(f.read())
 
