@@ -23,7 +23,7 @@ def sample_background(demRaster, nb_sample=30):
     """
     import rasterio
     import geopandas
-    import utils
+    from utils import random_sample_from_masked_array
     with rasterio.open(demRaster) as src:
         Z = src.read(1, masked=True)
         cols, rows = utils.random_sample_from_masked_array(Z, nb_sample)

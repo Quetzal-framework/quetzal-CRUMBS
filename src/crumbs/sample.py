@@ -9,7 +9,7 @@ def uniform_real(min, max):
     print(random.uniform(float(min), float(max)))
 
 def uniform_latlon(raster_path, band):
-    import utils
+    from utils import random_sample_from_masked_array
     from os.path import exists
     import rasterio
     assert exists(raster_path), 'File doest not exists:' + raster_path
