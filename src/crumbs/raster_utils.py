@@ -16,5 +16,3 @@ def random_sample_from_masked_array(masked, nb_sample):
     )
     idy, idx = np.unravel_index(index, masked.shape)
     return idx, idy
-
-    

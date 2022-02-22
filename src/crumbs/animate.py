@@ -286,6 +286,7 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
     """
     import numpy as np
     import rasterio
+    import raster_utils
     mlab.options.offscreen = True
     output = 'animation_occurrence.gif' if output is None else output
 
@@ -319,7 +320,6 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
             surface.actor.actor.scale = [1, 1, warp_scale]
 
         elif nb_triangles is not None:
-            print("heyo")
             # initialize data source
             data = mlab.pipeline.array2d_source(array_2d)
             # Use a greedy_terrain_decimation to created a decimated mesh
