@@ -4,6 +4,7 @@ from crumbs import sequence, bpp, sample, get_successful_simulations_rowids
 from crumbs import get_failed_simulations_rowids, simulate_phylip_sequences, phylip2arlequin
 from crumbs import retrieve_parameters
 from crumbs import animate
+from crumbs import utils
 import numpy as np
 from osgeo import gdal
 
