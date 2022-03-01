@@ -117,8 +117,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - animate 3D landscapes + triangulation
 - animate 3D landscapes + GBIF observations
 
-## [1.0.00] - 2022-02-22
+## [1.0.1] - 2022-02-22
 
 ### Added
 
 - some output renaming options
+
+## [1.0.2] - 2022-03-01
+
+### Fixed
+
+- Bug when outputing gbif shapefiles 
