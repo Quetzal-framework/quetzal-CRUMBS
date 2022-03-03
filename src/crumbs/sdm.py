@@ -154,8 +154,8 @@ def ocean_cells_to_nodata(demRaster, rasters):
 
 def species_distribution_model(presence_shp, variables, timesID, cleanup, background_points=1000, margin=0.0, output='suitability.tif'):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
-    import get_chelsa
-    import sample
+    from . import get_chelsa
+    from . import sample
     import rasterio
     import geopandas as gpd
     import pandas as pd
@@ -287,7 +287,7 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, backgr
 
 def main(argv):
     from optparse import OptionParser
-    import get_chelsa
+    from . import get_chelsa
     print("- Quetzal-CRUMBS - Species Distribution Models for iDDC modeling")
     parser = OptionParser()
 
