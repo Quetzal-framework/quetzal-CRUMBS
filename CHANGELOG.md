@@ -127,4 +127,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- Bug when outputing gbif shapefiles 
+- Bug when outputing gbif shapefiles
+
+## [1.0.3] - 2022-03-02
+
+### Fixed
+
+- Bug with implicit relative import in sdm.py
