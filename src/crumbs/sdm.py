@@ -152,7 +152,7 @@ def ocean_cells_to_nodata(demRaster, rasters):
                 dst.nodata = dem.nodata
                 dst.write(masked_img.filled(fill_value=dem.nodata), 1)
 
-def species_distribution_model(presence_shp, variables, timesID, cleanup, background_points=1000, margin=0.0, output='suitability.tif'):
+def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_dir=None, background_points=1000, margin=0.0, output='suitability.tif'):
     # Inspire by Daniel Furman, https://daniel-furman.github.io/Python-species-distribution-modeling/
     from . import get_chelsa
     from . import sample
@@ -172,7 +172,8 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, backgr
     out_dir    = 'sdm_outputs'
     average_dir    = 'averaged'
     stack_dir = in_dir + '/' + 'CHELSA_multiband'
-    crop_dir   = in_dir + '/' + 'CHELSA_cropped'
+    if crop_dir is None:
+        crop_dir   = in_dir + '/' + 'CHELSA_cropped'
 
     Path(current_dir + '/' + world_dir).mkdir(parents=True, exist_ok=True)
     Path(current_dir + '/' + in_dir).mkdir(parents=True, exist_ok=True)
@@ -308,6 +309,9 @@ def main(argv):
                         action='callback',
                         callback=get_chelsa.get_timesID_args,
                         help="CHELSA_TraCE21k_ times IDs to download for projection to past climates. Default: 20 (present) to -200 (LGM)")
+
+    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "CHELSA_cropped", help="Output directory for clipped CHELSA files. Default: CHELSA_cropped.")
+
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
     parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
