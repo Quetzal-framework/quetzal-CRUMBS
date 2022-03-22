@@ -61,12 +61,12 @@ def plot(pa):
     plt.savefig('presences-pseudo-absences.png')
 
 
-def spatial_plot(x, title, cmap="Blues"):
+def spatial_plot(x, title, timeID, cmap="Blues"):
     from pylab import plt
     plt.imshow(x, cmap=cmap)
     plt.colorbar()
-    plt.title(title, fontweight = 'bold')
-    plt.savefig('averaged-species-range.png')
+    plt.title(title + ', ' str(timeID), fontweight = 'bold')
+    plt.savefig('averaged-species-range' + str(timeID) + '.png')
 
 def get_ML_classifiers():
     """ Imports a bunch of machine learning classifiers
@@ -251,8 +251,11 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
     proba_rasters, models_map = fit_models(train_xs, train_y, target_xs, raster_info, out_dir)
 
     print('    ... projection to current and past climates')
+
     raster_list = []
+
     for t in timesID:
+
         print('    ... projection to time ' + str(t))
         new_explanatory_rasters = sorted(glob.glob(crop_dir + '/*_' + str(t) +'_*.tif'))
         new_elevation_file =  crop_dir + '/' + 'CHELSA_TraCE21k_dem_' + str(t) + '_V1.0.tif'
@@ -261,6 +264,7 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
         target_xs, raster_info = load_targets(new_explanatory_rasters)
 
         output_images = []
+
         for model_name, (model) in models_map.items():
             print("        - Classifier", model_name)
             from pyimpute import impute
@@ -274,8 +278,11 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
 
         print('    ... averaging models for climate conditions at CHELSA time', t)
         imgs = [ rasterio.open(r).read(1, masked=True) for r in output_images]
-        averaged_img = sum(imgs)/len(imgs)
-        spatial_plot(averaged_img, "Species range, averaged", cmap='viridis')
+        averaged_img = np.ma.array(imgs).mean(axis=0)
+        #averaged_img = sum(imgs)/len(imgs)
+
+        spatial_plot(averaged_img, "Species range, averaged", timeID=t, cmap='viridis')
+
         dst_raster = out_dir + '/' + average_dir + '/' + output + '_' + str(t) + '.tif'
         raster_list.append(dst_raster)
         with rasterio.open(output_images[0]) as mask:
