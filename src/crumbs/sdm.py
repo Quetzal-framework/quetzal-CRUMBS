@@ -58,7 +58,7 @@ def plot(pa):
     ax = fig.gca()
     pa[pa.CLASS == 1].plot(marker='*', color='green', markersize=8, ax=ax)
     pa[pa.CLASS == 0].plot(marker='+', color='black', markersize=2, ax=ax)
-    plt.show()
+    plt.savefig('presences-pseudo-absences.png')
 
 
 def spatial_plot(x, title, cmap="Blues"):
@@ -66,7 +66,7 @@ def spatial_plot(x, title, cmap="Blues"):
     plt.imshow(x, cmap=cmap)
     plt.colorbar()
     plt.title(title, fontweight = 'bold')
-    plt.show()
+    plt.savefig('averaged-species-range.png')
 
 def get_ML_classifiers():
     """ Imports a bunch of machine learning classifiers
