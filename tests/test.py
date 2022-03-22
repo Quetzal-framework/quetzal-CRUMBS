@@ -150,6 +150,11 @@ class TestGetGbif(unittest.TestCase):
         get_gbif.search_gbif(scientific_name='Heteronotia binoei', points="tests/data/test_points/test_points.shp", margin=1.0, limit=50, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year=None, output=None)
         get_gbif.search_gbif(scientific_name='Heteronotia binoei', points="tests/data/test_points/test_points.shp", margin=1.0, limit=50, csv_file="occurrences.csv", shapefile="occurrences.shp", all=False, year='1950,2022', output=None)
 
+from crumbs import sdm
+
+class TestSDM(unittest.TestCase):
+    def SetUp(self):
+        pass
 
 if __name__=="__main__":
     unittest.main()
