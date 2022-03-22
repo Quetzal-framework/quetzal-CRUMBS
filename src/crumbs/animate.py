@@ -349,7 +349,7 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
 
     mlab.options.offscreen = True
     with rasterio.open(inputRaster) as source:
-        print("- Source dataset:", inputRaster)
+        print("   ... using source dataset:", inputRaster)
         summary(source)
 
         # Elevation surface
