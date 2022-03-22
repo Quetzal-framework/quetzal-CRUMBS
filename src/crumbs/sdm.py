@@ -65,7 +65,7 @@ def spatial_plot(x, title, timeID, cmap="Blues"):
     from pylab import plt
     plt.imshow(x, cmap=cmap)
     plt.colorbar()
-    plt.title(title + ', ' str(timeID), fontweight = 'bold')
+    plt.title(title + ', ' + str(timeID), fontweight = 'bold')
     plt.savefig('averaged-species-range' + str(timeID) + '.png')
 
 def get_ML_classifiers():
