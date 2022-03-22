@@ -22,14 +22,14 @@ def plot_to_buffer(fig):
 def summary(dataset):
     """ Print most important informations of a geoTiff file.
     """
-    print(" - no data value: \t", dataset.nodata )
-    print(" - crs:\t", dataset.crs)
-    print(" - ", dataset.bounds)
+    print("        - no data value: \t", dataset.nodata )
+    print("        - crs:\t", dataset.crs)
+    print("        - ", dataset.bounds)
     pxsz, pysz = dataset.res
-    print(" - pixel size X: \t", pxsz, "unit:", dataset.crs.linear_units)
-    print(" - pixel size Y: \t", pysz, "unit:", dataset.crs.linear_units)
-    print(" - width: \t", dataset.width)
-    print(" - height: \t", dataset.height)
+    print("        - pixel size X: \t", pxsz, "unit:", dataset.crs.linear_units)
+    print("        - pixel size Y: \t", pysz, "unit:", dataset.crs.linear_units)
+    print("        - width: \t", dataset.width)
+    print("        - height: \t", dataset.height)
     return
 
 def get_band(Z, i):
@@ -289,7 +289,7 @@ def animate_gbif_3D(demRaster, gbif_occurrences, output=None, warp_scale=1.0, nb
     output = 'animation_occurrence.gif' if output is None else output
 
     with rasterio.open(demRaster) as source:
-        print("- Elevation source dataset:", demRaster)
+        print("    ... using elevation source dataset", demRaster)
         summary(source)
 
         # Triangulation is impossible with nan or masked values
@@ -389,6 +389,7 @@ def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrence
             animate_raster_2D(inputRaster, vmin=vmin, vmax=vmax, output=output)
 
 def main(argv):
+    print(" - Quetzal-CRUMBS - Dynamic visualizations for iDDC models")
     from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")
