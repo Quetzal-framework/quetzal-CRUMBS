@@ -140,3 +140,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Output for animate
+
+## [1.0.5] - 2022-03-22
+
+### Fixed
+
+- Warning message in case of non-empty CHELSA dir for cleanup

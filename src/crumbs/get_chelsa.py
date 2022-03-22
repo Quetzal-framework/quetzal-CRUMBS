@@ -224,7 +224,7 @@ def remove_chelsa_dir_if_empty(output_dir):
         os.rmdir(output_dir)
     else:
         import warnings
-        warnings.warn("Directory", output_dir, "is not empty and will not be deleted.")
+        warnings.warn("Directory " + output_dir + " is not empty and will not be deleted.")
     return
 
 def implemented_variables():
