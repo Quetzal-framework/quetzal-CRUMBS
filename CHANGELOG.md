@@ -134,3 +134,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Bug with implicit relative import in sdm.py
+
+## [1.0.4] - 2022-03-22
+
+### Fixed
+
+- Output for animate
