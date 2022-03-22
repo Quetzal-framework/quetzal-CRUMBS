@@ -48,7 +48,6 @@ def get_points(shapefile):
     import fiona
     lons, lats, years = ([] for i in range(3))
     with fiona.open(shapefile, mode='r') as source:
-        print(source.crs)
         for feature in source:
             try:
                 g = feature["geometry"]
