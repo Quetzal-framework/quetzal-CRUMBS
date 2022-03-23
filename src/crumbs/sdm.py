@@ -290,7 +290,7 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
         with rasterio.open(output_images[0]) as mask:
             meta = mask.meta.copy()
             with rasterio.open(dst_raster, "w", **meta) as dst:
-                dst.write(averaged.filled(fill_value=meta.nodata), 1)
+                dst.write(averaged.filled(fill_value=mask.nodata), 1)
 
     VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + '/' + output + ".vrt"  )
     get_chelsa.to_geotiff(VRT,  out_dir + '/' + output + ".tif")
