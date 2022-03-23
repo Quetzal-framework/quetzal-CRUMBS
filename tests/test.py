@@ -134,11 +134,11 @@ class TestGetChelsa(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def test_get_chelsa(self):
-        from crumbs import get_chelsa
-        get_chelsa.get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp")
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['bio01'], timesID = [20, -199])
-        get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem'], timesID = [20])
+    # def test_get_chelsa(self):
+    #     from crumbs import get_chelsa
+    #     get_chelsa.get_chelsa(inputFile = "tests/data/chelsa_url_test.txt", points = "tests/data/test_points/test_points.shp")
+    #     get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['bio01'], timesID = [20, -199])
+    #     get_chelsa.get_chelsa(points = "tests/data/test_points/test_points.shp", variables = ['dem'], timesID = [20])
 
 from crumbs import get_gbif
 
