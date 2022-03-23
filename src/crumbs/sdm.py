@@ -280,17 +280,17 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
         print('    ... averaging models for climate conditions at CHELSA time', t)
         imgs = [ rasterio.open(r).read(1, masked=True) for r in output_images]
         import numpy.ma as ma
-        averaged_img = ma.array(imgs).mean(axis=0)
-        #averaged_img = sum(imgs)/len(imgs)
+        averaged = ma.array(imgs).mean(axis=0)
 
-        spatial_plot(averaged_img, "Species range, averaged", timeID=t, cmap='viridis')
+        #spatial_plot(averaged, "Species range, averaged", timeID=t, cmap='viridis')
 
         dst_raster = out_dir + '/' + average_dir + '/' + output + '_' + str(t) + '.tif'
         raster_list.append(dst_raster)
+
         with rasterio.open(output_images[0]) as mask:
             meta = mask.meta.copy()
             with rasterio.open(dst_raster, "w", **meta) as dst:
-                dst.write(averaged_img, 1)
+                dst.write(averaged.filled(fill_value=meta.nodata), 1)
 
     VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + '/' + output + ".vrt"  )
     get_chelsa.to_geotiff(VRT,  out_dir + '/' + output + ".tif")
