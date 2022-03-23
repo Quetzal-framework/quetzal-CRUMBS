@@ -163,7 +163,7 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
     import glob
     import os
     import numpy as np
-    
+
     output = os.path.splitext(output)[0]
 
     current_dir = str(Path().resolve())
@@ -279,7 +279,8 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
 
         print('    ... averaging models for climate conditions at CHELSA time', t)
         imgs = [ rasterio.open(r).read(1, masked=True) for r in output_images]
-        averaged_img = np.ma.array(imgs).mean(axis=0)
+        import numpy.ma as ma
+        averaged_img = ma.array(imgs).mean(axis=0)
         #averaged_img = sum(imgs)/len(imgs)
 
         spatial_plot(averaged_img, "Species range, averaged", timeID=t, cmap='viridis')
