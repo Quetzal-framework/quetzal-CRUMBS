@@ -11,30 +11,6 @@ def convert_size(size_bytes):
     s = round(size_bytes / p, 2)
     return "%s %s" % (s, size_name[i])
 
-def fast_interp(z):
-    # see https://stackoverflow.com/a/52699059/10360134
-    # fast interpolator that use the regular grid structure (x and y are 1D arrays)
-    z = z_masked.filled(np.nan)
-    from scipy.interpolate import RegularGridInterpolator
-    zinterp = RegularGridInterpolator((x, y), z.T)
-
-    # new grid to interpolate on
-    X2, Y2 = np.meshgrid(x2, y2)
-    newpoints = np.array((X2, Y2)).T
-
-    # actual interpolation
-    z2 = zinterp(newpoints)
-    z2_masked = np.ma.array(z2, mask=np.isnan(z2))
-
-
-def pad(data):
-    import numpy as np
-    good = np.isfinite(data)
-    interpolated = np.interp(x = np.arange(data.shape[0]),
-                             xp = np.flatnonzero(good),
-                             fp = data[good])
-    return interpolated
-
 
 def masked_interpolation(data, x, xp, propagate_mask=True):
     import math
@@ -43,17 +19,16 @@ def masked_interpolation(data, x, xp, propagate_mask=True):
 
     # The x-coordinates (missing times) at which to evaluate the interpolated values.
     assert len(x) >= 1
-
     # The x-coordinates (existing times) of the data points (where returns a tuple because each element of the tuple refers to a dimension.)
     assert len(xp) >= 2
-
     # The y-coordinates (value at existing times) of the data points, that is the valid entries
     fp = np.take(data, xp)
     assert len(fp) >= 2
 
     # Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.
     new_y = np.interp(x, xp, fp.filled(np.nan))
-
+    np.nan_to_num(new_y, copy=False)
+    
     # interpolate mask & apply to interpolated data
     if propagate_mask:
         new_mask = data.mask[:]
@@ -132,7 +107,10 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
         # Writing the new raster
         new_meta = source.meta
-        new_meta.update({'count' : new_shape[0] })
+        print(new_meta)
+        new_meta.update({'count' : new_shape[0],
+                         'nodata' : source.nodata  })
+        print(new_meta)
         assert interpolated.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
 
         with rasterio.open(outputFile, "w", **new_meta) as dst:
