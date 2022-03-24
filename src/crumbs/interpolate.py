@@ -28,7 +28,7 @@ def masked_interpolation(data, x, xp, propagate_mask=True):
     # Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.
     new_y = np.interp(x, xp, fp.filled(np.nan))
     np.nan_to_num(new_y, copy=False)
-    
+
     # interpolate mask & apply to interpolated data
     if propagate_mask:
         new_mask = data.mask[:]
@@ -107,10 +107,8 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
         # Writing the new raster
         new_meta = source.meta
-        print(new_meta)
         new_meta.update({'count' : new_shape[0],
                          'nodata' : source.nodata  })
-        print(new_meta)
         assert interpolated.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
 
         with rasterio.open(outputFile, "w", **new_meta) as dst:
