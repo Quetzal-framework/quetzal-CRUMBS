@@ -42,11 +42,9 @@ def masked_interpolation(data, x, xp, propagate_mask=True):
     import numpy.ma as ma
 
     # The x-coordinates (missing times) at which to evaluate the interpolated values.
-    #x = np.where(data.mask == False)[0]
     assert len(x) >= 1
 
     # The x-coordinates (existing times) of the data points (where returns a tuple because each element of the tuple refers to a dimension.)
-    #xp = np.where(data.mask == True)[0]
     assert len(xp) >= 2
 
     # The y-coordinates (value at existing times) of the data points, that is the valid entries
@@ -66,7 +64,38 @@ def masked_interpolation(data, x, xp, propagate_mask=True):
         new_mask = np.interp(x, xp, new_fp)
         new_y = np.ma.masked_array(new_y, new_mask > 0.5)
 
-    return new_y
+    data[x] = new_y
+    return data
+
+
+def missing_years_known_years(band_to_yearBP):
+    start = band_to_yearBP[0]
+    end = band_to_yearBP[-1] + 1
+    step = 1
+    known_years = set(band_to_yearBP)
+    all_years = set(range(start, end, step))
+    missing_years = all_years - known_years
+    return list(missing_years), list(known_years)
+
+
+def number_of_missing_bands(band_to_yearBP):
+    sum = 0
+    for i in range(len(band_to_yearBP) - 1):
+        left = band_to_yearBP[i]
+        right = band_to_yearBP[i+1]
+        sum += right - left - 1
+    return sum
+
+
+def fill_known_bands(new_array, known_array, band_to_yearBP):
+    # Filling the data shape with existing bands
+    i = 0
+    for yearBP in band_to_yearBP:
+        new_array[yearBP,:,:] = known_array[i]
+        print("        - band ", i, "assigned to year BP ", yearBP)
+        i += 1
+    return new_array
+
 
 def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
     import numpy as np
@@ -76,60 +105,38 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
     import rasterio
     with rasterio.open(inputFile) as source:
-        print('    ... reading multiband raster ' + inputFile)
+
+        print('    ... reading multiband raster', source.name )
         print('        - number of existing bands is', source.count)
         assert source.count > 1, "Need at least 2 bands in raster to interpolate."
         print('        - bands will be macthed against (in years BP):', band_to_yearBP)
         assert source.count==len(band_to_yearBP), 'incorrect number of existing bands, or incorrect mapping {band number -> year BP}.'
-
-        sum = 0
-        for i in range(len(band_to_yearBP) - 1):
-            left = band_to_yearBP[i]
-            right = band_to_yearBP[i+1]
-            sum += right - left - 1
-
-        print('        - number of missing bands is', sum)
+        print('        - number of missing bands is', number_of_missing_bands(band_to_yearBP))
 
         # this is a 3D numpy array, with dimensions [band, row, col]
-        src_data = source.read(masked=True)
-        src_shape = src_data.shape
-        last_yearBP = band_to_yearBP[-1]
+        src_array = source.read(masked=True)
+        new_shape = (band_to_yearBP[-1]+1, src_array.shape[1], src_array.shape[2])
+
+        # Predicting requested memory
+        size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize
+        print('        - request memory allocation', convert_size(size_bytes))
 
         print('    ... creating new array')
+        new_array = fill_known_bands(ma.zeros(new_shape, dtype=src_array.dtype), src_array, band_to_yearBP)
 
-        # Building a fully masked 3D array
-        dst_shape = (last_yearBP + 1, src_shape[1], src_shape[2])
-        dst_data = ma.zeros(dst_shape)
-        #dst_data = np.full(dst_shape, np.nan)
-        size_bytes = dst_data.size * dst_data.itemsize
-        print('        - memory allocation needed is ', convert_size(size_bytes))
-
-        # Filling the data shape with existing bands
-        i = 0
-        for yearBP in band_to_yearBP:
-            dst_data[yearBP] = src_data[i]
-            print("        - band ", i, "assigned to year BP ", yearBP)
-            i += 1
-
-        # Interpolating the missing bands
-        start = band_to_yearBP[0]
-        end = band_to_yearBP[-1] + 1
-        step = 1
-        known_years = set(band_to_yearBP)
-        all_years = set(range(start, end, step))
-        missing_years = all_years - known_years
-        new = ma.apply_along_axis(func1d=masked_interpolation, axis=0, arr=dst_data, x=list(missing_years), xp=list(known_years))
+        print('    ... interpolating missing bands')
+        missing_years, known_years = missing_years_known_years(band_to_yearBP)
+        interpolated = ma.apply_along_axis(func1d=masked_interpolation, axis=0, arr=new_array, x=missing_years, xp=known_years)
+        #interpolated = new_array
+        assert interpolated.dtype == src_array.dtype
 
         # Writing the new raster
-        meta = source.meta
-        meta.update({'count' : dst_shape[0] })
-        meta.update({'nodata' : source.nodata})
-        meta.update(fill_value = source.nodata)
-        print(new.shape)
-        print(meta)
-        assert new.shape == (meta['count'],meta['height'],meta['width'])
-        with rasterio.open(outputFile, "w", **meta) as dst:
-            dst.write(new.filled(fill_value=source.nodata))
+        new_meta = source.meta
+        new_meta.update({'count' : new_shape[0] })
+        assert interpolated.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
+
+        with rasterio.open(outputFile, "w", **new_meta) as dst:
+            dst.write(interpolated.filled(fill_value=source.nodata))
 
     return
 
