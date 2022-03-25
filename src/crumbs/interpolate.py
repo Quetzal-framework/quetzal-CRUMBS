@@ -21,6 +21,7 @@ def masked_interpolation(data, x, xp, propagate_mask=True):
     assert len(x) >= 1
     # The x-coordinates (existing times) of the data points (where returns a tuple because each element of the tuple refers to a dimension.)
     assert len(xp) >= 2
+    assert np.all(np.diff(xp) > 0) , 'Sequence of yearsBP must be increasning'
     # The y-coordinates (value at existing times) of the data points, that is the valid entries
     fp = np.take(data, xp)
     assert len(fp) >= 2
@@ -85,7 +86,8 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         print('        - number of existing bands is', source.count)
         assert source.count > 1, "Need at least 2 bands in raster to interpolate."
         print('        - bands will be macthed against (in years BP):', band_to_yearBP)
-        assert source.count==len(band_to_yearBP), 'incorrect number of existing bands, or incorrect mapping {band number -> year BP}.'
+        assert source.count==len(band_to_yearBP), 'Incorrect number of existing bands, or incorrect mapping {band number -> year BP}.'
+        assert np.all(np.diff(band_to_yearBP) > 0) , 'Incorrect mapping: sequence of yearsBP must be strictly increasing.'
         print('        - number of missing bands is', number_of_missing_bands(band_to_yearBP))
 
         # this is a 3D numpy array, with dimensions [band, row, col]
