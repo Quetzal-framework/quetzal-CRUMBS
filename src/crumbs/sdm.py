@@ -192,7 +192,7 @@ def species_distribution_model(presence_shp, variables, timesID, cleanup, crop_d
     # We need DEM for marine/terrestial filter
     v = set(variables); v.add('dem')
     variables = list(v)
-    t = set(timesID); t.add('20')
+    t = set(timesID); t.add(20)
     timesID = list(t)
 
     get_chelsa.get_chelsa(
