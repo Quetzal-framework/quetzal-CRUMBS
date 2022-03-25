@@ -146,3 +146,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Warning message in case of non-empty CHELSA dir for cleanup
+
+## [1.0.14] - 2022-03-25
+
+### Fixed
+
+- Interpolation bug, now works as expected
+- SDM extra layer for present time
