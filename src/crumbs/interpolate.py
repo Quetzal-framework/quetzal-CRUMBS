@@ -159,7 +159,7 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         print('    ... creating new array')
         big_array = fill_known_bands(new_shape, src_array, band_to_yearBP)
         print(big_array)
-
+        big_array.visualize()
         print('    ... interpolating missing bands')
         missing_years, known_years = missing_years_known_years(band_to_yearBP)
         interpolated = da.apply_along_axis(func1d=masked_interpolation,
