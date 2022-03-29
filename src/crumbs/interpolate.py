@@ -139,7 +139,6 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
                                            x=missing_years,
                                            xp=known_years)
 
-        print(arr_interpolated.shape, mask_interpolated.shape)
         interpolated = da.ma.masked_array(arr_interpolated, mask_interpolated)
         filled = da.ma.filled(interpolated, fill_value=source.nodata)
 
@@ -147,8 +146,6 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         new_meta = source.meta
         new_meta.update({'count' : new_shape[0], 'nodata' : source.nodata  })
 
-        print(filled.dtype, src_array.dtype)
-        print(filled.shape, new_meta)
         assert filled.dtype == src_array.dtype
         assert filled.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
 
