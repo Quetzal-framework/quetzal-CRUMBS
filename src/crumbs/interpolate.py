@@ -63,6 +63,11 @@ def masked_interpolation(data, x, xp, *args, **kwargs):
     import numpy as np
     import dask
     import dask.array as da
+
+    if data.shape[0] == 1 and data[0] == 1. :
+        print('in dash test')
+        return np.ones(len(x)+len(xp))
+
     # The x-coordinates (missing times) at which to evaluate the interpolated values.
     assert len(x) >= 1
     print('x',x)
@@ -77,7 +82,7 @@ def masked_interpolation(data, x, xp, *args, **kwargs):
     print('fp',fp)
 
     # Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.
-    new_y = np.interp(x, xp, fp.filled(np.nan))
+    new_y = np.interp(x, xp, da.ma.filled(fp, np.nan))
     np.nan_to_num(new_y, copy=False)
 
     # interpolate mask & apply to interpolated data
@@ -114,26 +119,22 @@ def number_of_missing_bands(band_to_yearBP):
     return sum
 
 
-def make_dash_array(shape, known_array, band_to_yearBP):
-    import dask
-    import dask.array as da
+def make_masked_array(shape, known_ma_array, band_to_yearBP):
     import numpy as np
-    chunk_shape = (8, shape[1], shape[2])
-    new_array = np.zeros(shape)
-    # Filling the data shape with existing bands
+    import numpy.ma as ma
+    ma_array = ma.zeros(shape)
+    #Filling the data shape with existing bands
     i = 0
     for yearBP in band_to_yearBP:
-        new_array[yearBP,:,:] = known_array[i]
+        ma_array[yearBP,:,:] = known_ma_array[i]
         print("        - band ", i, "assigned to year BP ", yearBP)
         i += 1
-    return da.from_array(new_array, chunks=chunk_shape)
-
+    return ma_array
 
 def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
     import numpy as np
     import dask
     import dask.array as da
-    from dask.dataframe.utils import make_meta
     from dask_rasterio import read_raster, write_raster
 
     outputFile = 'interpolated.tif' if outputFile is None else outputFile
@@ -157,31 +158,37 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize
         print('        - memory allocation request would be: ', convert_size(size_bytes))
 
-        print('    ... creating dash array')
-        big_array = make_dash_array(new_shape, src_array, band_to_yearBP)
-        print(big_array)
-        big_array.visualize()
+        print('    ... creating new array')
+        ma_arr = make_masked_array(new_shape, src_array, band_to_yearBP)
+        print(ma_arr)
 
         print('    ... interpolating missing bands')
         missing_years, known_years = missing_years_known_years(band_to_yearBP)
+
+        da_ma_arr = da.from_array(ma_arr, chunks=(1,10000,10000))
+        print(da_ma_arr); da_ma_arr.visualize()
         interpolated = da.apply_along_axis(func1d=masked_interpolation,
                                            axis=0,
-                                           arr=big_array,
-                                           shape=make_meta(big_array).shape,
-                                           dtype=make_meta(big_array).dtype,
-                                           x=missing_years, xp=known_years)
+                                           arr=da_ma_arr,
+                                           shape=(da_ma_arr.shape[0], 1, 1),
+                                           dtype=da_ma_arr.dtype,
+                                           x=missing_years,
+                                           xp=known_years)
+
+        interpolated.visualize()
 
         # Writing the new raster
         new_meta = source.meta
         new_meta.update({'count' : new_shape[0], 'nodata' : source.nodata  })
 
-        assert interpolated.dtype == src_array.dtype
-        assert interpolated.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
+        # assert interpolated.dtype == src_array.dtype
+        #  assert interpolated.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
 
         # with rasterio.open(outputFile, "w", **new_meta) as dst:
         #     dst.write(interpolated.filled(fill_value=source.nodata))
 
-        filled = interpolated.filled(fill_value=source.nodata)
+        filled = da.ma.filled(interpolated, fill_value=source.nodata)
+        filled.compute()
         write_raster('processed_image.tif', filled, **new_meta)
         filled.visualize()
     return
