@@ -61,13 +61,10 @@ def test_preconditions(data, x, xp):
     import numpy as np
     # The x-coordinates (missing times) at which to evaluate the interpolated values.
     assert len(x) >= 1
-    print('x',x)
     # The x-coordinates (existing times) of the data points (where returns a tuple because each element of the tuple refers to a dimension.)
     assert len(xp) >= 2
     assert np.all(np.diff(xp) > 0) , 'Sequence of yearsBP must be increasing'
-    print('xp',xp)
-    # The y-coordinates (value at existing times) of the data points, that is the valid entrie
-    print('data',data)
+
 
 def unmasked_interpolation(data, x, xp, *args, **kwargs):
     import numpy as np
@@ -80,14 +77,14 @@ def unmasked_interpolation(data, x, xp, *args, **kwargs):
 
     fp = np.take(data, xp)
     assert len(fp) >= 2
-    print('fp',fp)
 
     # Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.
-    new_y = np.interp(x, xp, da.ma.filled(fp, np.nan))
+    new_y = np.interp(x, xp, fp)
     np.nan_to_num(new_y, copy=False)
     data[x] = new_y
 
     return data
+
 
 def mask_interpolation(mask, x, xp, *args, **kwargs):
     import numpy as np
@@ -181,7 +178,7 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
         arr_interpolated = da.apply_along_axis(func1d=unmasked_interpolation,
                                            axis=0,
-                                           arr=da_ma_arr,
+                                           arr=da.ma.filled(da_ma_arr, np.nan),
                                            shape=(da_ma_arr.shape[0], 1, 1),
                                            dtype=da_ma_arr.dtype,
                                            x=missing_years,
