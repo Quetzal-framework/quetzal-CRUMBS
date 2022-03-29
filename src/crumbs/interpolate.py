@@ -57,17 +57,8 @@ def convert_size(size_bytes):
     s = round(size_bytes / p, 2)
     return "%s %s" % (s, size_name[i])
 
-
-def masked_interpolation(data, x, xp, *args, **kwargs):
-    import math
+def test_preconditions(data, x, xp):
     import numpy as np
-    import dask
-    import dask.array as da
-
-    if data.shape[0] == 1 and data[0] == 1. :
-        print('in dash test')
-        return np.ones(len(x)+len(xp))
-
     # The x-coordinates (missing times) at which to evaluate the interpolated values.
     assert len(x) >= 1
     print('x',x)
@@ -77,6 +68,16 @@ def masked_interpolation(data, x, xp, *args, **kwargs):
     print('xp',xp)
     # The y-coordinates (value at existing times) of the data points, that is the valid entrie
     print('data',data)
+
+def unmasked_interpolation(data, x, xp, *args, **kwargs):
+    import numpy as np
+
+    if data.shape[0] == 1 and data[0] == 1. :
+        print('in dash test')
+        return np.ones(len(x)+len(xp))
+
+    test_preconditions(data, x, xp)
+
     fp = np.take(data, xp)
     assert len(fp) >= 2
     print('fp',fp)
@@ -84,19 +85,29 @@ def masked_interpolation(data, x, xp, *args, **kwargs):
     # Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.
     new_y = np.interp(x, xp, da.ma.filled(fp, np.nan))
     np.nan_to_num(new_y, copy=False)
-
-    # interpolate mask & apply to interpolated data
-    new_mask = data.mask[:]
-    new_mask[new_mask]  = 1
-    new_mask[~new_mask] = 0
-    # the mask y values at existing times
-    new_fp = np.take(new_mask, xp)
-    new_mask = np.interp(x, xp, new_fp)
-    new_y = da.ma.masked_array(new_y, new_mask > 0.5)
-
     data[x] = new_y
+
     return data
 
+def mask_interpolation(mask, x, xp, *args, **kwargs):
+    import numpy as np
+
+    if mask.shape[0] == 1 and mask[0] == 1. :
+        print('in dash test')
+        return np.ones(len(x)+len(xp))
+
+    # The x-coordinates (missing times) at which to evaluate the interpolated values.
+    test_preconditions(mask, x, xp)
+
+    mask[mask]  = 1
+    mask[~mask] = 0
+
+    # the mask y values at existing times
+    fp = np.take(mask, xp)
+    assert len(fp) >= 2
+
+    new_y = np.interp(x, xp, fp)
+    return new_y > 0.5
 
 def missing_years_known_years(band_to_yearBP):
     assert all(band_to_yearBP[i] <= band_to_yearBP[i+1] for i in range(len(band_to_yearBP) - 1))
@@ -161,13 +172,14 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         print('    ... creating new array')
         ma_arr = make_masked_array(new_shape, src_array, band_to_yearBP)
         print(ma_arr)
-
+        print(ma_arr.mask)
         print('    ... interpolating missing bands')
         missing_years, known_years = missing_years_known_years(band_to_yearBP)
 
         da_ma_arr = da.from_array(ma_arr, chunks=(1,10000,10000))
         print(da_ma_arr); da_ma_arr.visualize()
-        interpolated = da.apply_along_axis(func1d=masked_interpolation,
+
+        arr_interpolated = da.apply_along_axis(func1d=unmasked_interpolation,
                                            axis=0,
                                            arr=da_ma_arr,
                                            shape=(da_ma_arr.shape[0], 1, 1),
@@ -175,7 +187,18 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
                                            x=missing_years,
                                            xp=known_years)
 
-        interpolated.visualize()
+        mask_interpolated = da.apply_along_axis(func1d=mask_interpolation,
+                                           axis=0,
+                                           arr=ma_arr.mask,
+                                           shape=(da_ma_arr.shape[0], 1, 1),
+                                           dtype=da_ma_arr.dtype,
+                                           x=missing_years,
+                                           xp=known_years)
+
+        interpolated = da.ma.masked_array(arr_interpolated, mask_interpolated)
+        # for raster writing
+        filled = da.ma.filled(interpolated, fill_value=source.nodata)
+        filled.visualize()
 
         # Writing the new raster
         new_meta = source.meta
@@ -187,10 +210,10 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         # with rasterio.open(outputFile, "w", **new_meta) as dst:
         #     dst.write(interpolated.filled(fill_value=source.nodata))
 
-        filled = da.ma.filled(interpolated, fill_value=source.nodata)
         filled.compute()
         write_raster('processed_image.tif', filled, **new_meta)
         filled.visualize()
+
     return
 
 def get_times_args(option, opt, value, parser, type='float'):
