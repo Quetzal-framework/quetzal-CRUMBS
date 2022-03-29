@@ -58,7 +58,7 @@ def convert_size(size_bytes):
     return "%s %s" % (s, size_name[i])
 
 
-def masked_interpolation(data, x, xp):
+def masked_interpolation(data, x, xp, *args, **kwargs):
     import math
     import numpy as np
     import dask
@@ -114,11 +114,11 @@ def number_of_missing_bands(band_to_yearBP):
     return sum
 
 
-def fill_known_bands(shape, known_array, band_to_yearBP):
+def make_dash_array(shape, known_array, band_to_yearBP):
     import dask
     import dask.array as da
     import numpy as np
-    chunk_shape = (shape[0],100,100)
+    chunk_shape = (8, shape[1], shape[2])
     new_array = np.zeros(shape)
     # Filling the data shape with existing bands
     i = 0
@@ -133,7 +133,8 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
     import numpy as np
     import dask
     import dask.array as da
-    # from dask_rasterio import read_raster, write_raster
+    from dask.dataframe.utils import make_meta
+    from dask_rasterio import read_raster, write_raster
 
     outputFile = 'interpolated.tif' if outputFile is None else outputFile
 
@@ -154,19 +155,22 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
         # Predicting requested memory
         size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize
-        print('        - request memory allocation', convert_size(size_bytes))
+        print('        - memory allocation request would be: ', convert_size(size_bytes))
 
-        print('    ... creating new array')
-        big_array = fill_known_bands(new_shape, src_array, band_to_yearBP)
+        print('    ... creating dash array')
+        big_array = make_dash_array(new_shape, src_array, band_to_yearBP)
         print(big_array)
         big_array.visualize()
+
         print('    ... interpolating missing bands')
         missing_years, known_years = missing_years_known_years(band_to_yearBP)
         interpolated = da.apply_along_axis(func1d=masked_interpolation,
                                            axis=0,
                                            arr=big_array,
-                                           shape=big_array.shape, dtype=big_array.dtype,
-                                           x=missing_years, xp=known_years).compute()
+                                           shape=make_meta(big_array).shape,
+                                           dtype=make_meta(big_array).dtype,
+                                           x=missing_years, xp=known_years)
+
         # Writing the new raster
         new_meta = source.meta
         new_meta.update({'count' : new_shape[0], 'nodata' : source.nodata  })
@@ -177,9 +181,9 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         # with rasterio.open(outputFile, "w", **new_meta) as dst:
         #     dst.write(interpolated.filled(fill_value=source.nodata))
 
-        # filled = interpolated.filled(fill_value=source.nodata)
-        # write_raster('processed_image.tif', filled, **new_meta)
-
+        filled = interpolated.filled(fill_value=source.nodata)
+        write_raster('processed_image.tif', filled, **new_meta)
+        filled.visualize()
     return
 
 def get_times_args(option, opt, value, parser, type='float'):
