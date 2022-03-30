@@ -15,7 +15,7 @@ shaped the present spatial distribution of genetic lineages.
 
 ## What problem does this library solve?
 
-iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things a lot.
+iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things quite a lot.
 
 For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run this script:
 
@@ -95,11 +95,11 @@ python3 -m crumbs.animate $suitability -o suitability.gif
 
 yearsBP=$(chelsaTimeToYearBP $chelsaTimes)
 
-# Real case will not work on your laptop because 7000 bands need 33GB RAM: check quetzal_on_OSG
+# Real case may not work on your laptop, check quetzal_on_OSG
 # python3 -m crumbs.interpolate $suitability --timesID $yearsBP -o interpolated.tif
 
-# Kinder but incorrect remaping (only 10 yBP, that is only 2 bands to interpolate)
-python3 -m crumbs.interpolate $suitability --timesID 0,2,4 -o suitability-interpolated.tif
+# Kinder but incorrect remapping (only 10 yBP, that is only 18 bands to interpolate)
+python3 -m crumbs.interpolate $suitability --timesID 0,10,20 -o suitability-interpolated.tif
 python3 -m crumbs.animate suitability-interpolated.tif -o suitability-interpolated.gif
 
 python3 -m crumbs.circle_mask suitability-interpolated.tif -o suitability-circular.tif
@@ -114,17 +114,18 @@ python3 -m crumbs.animate suitability-rescaled.tif -o suitability-rescaled.gif
 What is nice is that you can leverage these long computations for publication analyses using dHTC (distributed Hight Throughput Computing)
 and distribute this load on a cluster grid: check out [quetzal_on_OSG](https://github.com/Becheler/quetzal_on_OSG)!
 
-# Contact
+# Contact and troubleshooting
+
+:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
+
+:bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
+
+# Resources for iDDC modeling
 
 > :books: **What is iDDC, and what is Quetzal?**
 > - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
 >
 > - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
-
-
-:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
-
-:bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
