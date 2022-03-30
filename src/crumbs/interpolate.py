@@ -156,6 +156,7 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
 
         ProgressBar().register()
         result = xr.DataArray(filled, dims=["band", "y", "x"])
+        result.rio.write_crs(x_array.rio.crs, inplace=True)
         result.rio.to_raster(outputFile, lock=threading.Lock())
 
     return
