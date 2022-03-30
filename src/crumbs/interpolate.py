@@ -94,11 +94,13 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
     import dask.array as da
     import rasterio
     from dask.diagnostics import ProgressBar
+    import xarray as xr
+    import rioxarray
+    import threading
 
     outputFile = 'interpolated.tif' if outputFile is None else outputFile
 
     with rasterio.open(inputFile) as source:
-
         print('    ... reading multiband raster', source.name )
         print('        - number of existing bands is', source.count)
         assert source.count > 1, "Need at least 2 bands in raster to interpolate."
@@ -107,13 +109,16 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         assert np.all(np.diff(band_to_yearBP) > 0) , 'Incorrect mapping: sequence of yearsBP must be strictly increasing.'
         print('        - number of missing bands is', number_of_missing_bands(band_to_yearBP))
 
-        # this is a 3D numpy array, with dimensions [band, row, col]
-        src_array = source.read(masked=True)
+        # chaunks is provided & lock is False: ensure that reading and operating on your data happen in parallel.
+        x_array = rioxarray.open_rasterio(inputFile, masked=True, chunks = (1,'auto','auto'), lock=False)
+        # Create a view
+        src_array = x_array.to_masked_array(copy=False)
+        # src_array = source.read(masked=True)
         new_shape = (band_to_yearBP[-1]+1, src_array.shape[1], src_array.shape[2])
 
         # Predicting requested memory
-        size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize
-        print('        - memory allocation request would be: ', convert_size(size_bytes))
+        # size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize
+        # print('        - memory allocation request would be: ', convert_size(size_bytes))
 
         print('    ... creating new array')
         ma_arr = make_masked_array(new_shape, src_array, band_to_yearBP)
@@ -150,10 +155,8 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         assert filled.shape == (new_meta['count'], new_meta['height'], new_meta['width'])
 
         ProgressBar().register()
-        filled.compute()
-
-        with rasterio.open(outputFile, "w", **new_meta) as dst:
-            dst.write(filled)
+        result = xr.DataArray(filled, dims=["band", "y", "x"])
+        result.rio.to_raster(outputFile, lock=threading.Lock())
 
     return
 
