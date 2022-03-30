@@ -13,16 +13,6 @@ methodology for statistical phylogeography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics, climate modifications)
 shaped the present spatial distribution of genetic lineages.
 
-> :books: **What is iDDC, and what is Quetzal?**
-> - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
->
-> - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
-
-
-:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
-
-:bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
-
 ## What problem does this library solve?
 
 iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things a lot.
@@ -123,6 +113,18 @@ python3 -m crumbs.animate suitability-rescaled.tif -o suitability-rescaled.gif
 
 What is nice is that you can leverage these long computations for publication analyses using dHTC (distributed Hight Throughput Computing)
 and distribute this load on a cluster grid: check out [quetzal_on_OSG](https://github.com/Becheler/quetzal_on_OSG)!
+
+# Contact
+
+> :books: **What is iDDC, and what is Quetzal?**
+> - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
+>
+> - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
+
+
+:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
+
+:bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
