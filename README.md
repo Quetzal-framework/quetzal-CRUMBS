@@ -15,12 +15,25 @@ shaped the present spatial distribution of genetic lineages.
 
 ## What problem does this library solve?
 
+> :books: **What is iDDC, what is Quetzal?**
+> - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
+>
+> - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
+
+
 iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things quite a lot.
 
-For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run this script:
+For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run this script (you will need a `sampling-points/sampling-points.shp` file to start the analysis):
 
 ```bash
 #!/bin/bash
+
+# Pull the docker image with all the dependencies
+docker pull becheler/quetzal-nest:latest
+# Run the docker image synchronizing you working directory
+docker run --user $(id -u):$(id -g) --rm=true -it \
+  -v $(pwd):/srv -w /srv \
+  becheler/quetzal-nest:latest /bin/bash
 
 joinByChar() {
   local IFS="$1"
@@ -40,7 +53,7 @@ chelsaTimeToYearBP() {
   joinByChar , "${yearBP[@]}"
 }
 
-sample='../input-files/sampling-points/sampling-points.shp'
+sample='sampling-points/sampling-points.shp'
 # for present to LGM analysis (but much longer computations) use instead:
 # chelsaTimes=$(seq -s ',' -200 1 20)
 chelsaTimes=20,0,-50
@@ -119,13 +132,6 @@ and distribute this load on a cluster grid: check out [quetzal_on_OSG](https://g
 :boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
 
 :bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
-
-# Resources for iDDC modeling
-
-> :books: **What is iDDC, and what is Quetzal?**
-> - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
->
-> - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
 
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
