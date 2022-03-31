@@ -6,45 +6,139 @@
 [![PyPI version](https://badge.fury.io/py/quetzal-crumbs.svg)](https://badge.fury.io/py/quetzal-crumbs)
 
 This python library is meant to be used along other softwares from the Quetzal
-framework to perform iDDC modeling and inference.
+framework (or not! Go checkout [Splatche3](https://www.splatche.com/splatche3) and [slendr](https://github.com/bodkan/slendr)!) to perform iDDC modeling and inference.
 
 iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
-methodology for statistical phylogeography. It heavily relies on spatial models
+methodology for statistical phylogeography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics, climate modifications)
 shaped the present spatial distribution of genetic lineages.
 
-> :books: **What is iDDC, and what is Quetzal?**
+## What problem does this library solve?
+
+> :books: **What is iDDC, what is Quetzal?**
 > - For an informal introduction to iDDC modeling and the resources I develop, see [my research post](https://becheler.github.io/who-am-i/).
 >
 > - For a more formal presentation of the field, see this excellent review by [Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.](https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys)
 
 
+iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things quite a lot.
+
+For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run the following (you will need a `sampling-points/sampling-points.shp` shapefile in your woking directory to start the analysis):
+
+
+```bash
+# Pull the docker image with all the dependencies
+docker pull arnaudbecheler/quetzal-nest:latest
+# Run the docker image synchronizing you working directory
+docker run --user $(id -u):$(id -g) --rm=true -it \
+  -v $(pwd):/srv -w /srv \
+  becheler/quetzal-nest:latest /bin/bash
+```
+This will start your docker container. Once inside, copy/paste the following code in a `script.sh` file,
+and then run it with `chmod u+x script.sh && ./script.sh`.
+
+```bash
+#!/bin/bash
+# Just an helper function
+joinByChar() {
+  local IFS="$1"
+  shift
+  echo "$*"
+}
+
+# Just another helper function
+chelsaTimeToYearBP() {
+  chelsaTimes=$1
+  # # From comma delimited to space separated
+  yearBP=(${chelsaTimes//,/ })
+  # from chelsa times to yBP
+  for i in "${!yearBP[@]}"; do
+      yearBP[$i]=$((20*100-yearBP[$i]*100))
+  done
+  # From space delimited to comma separated
+  joinByChar , "${yearBP[@]}"
+}
+
+sample='sampling-points/sampling-points.shp'
+# for present to LGM analysis (but much longer computations) use instead:
+# chelsaTimes=$(seq -s ',' -200 1 20)
+chelsaTimes=20,0,-50
+present=20
+# spatial buffer around sampling points (in degree)
+margin=2.0
+biovars=dem,bio01
+
+python3 -m crumbs.get_gbif \
+      --species "Heteronotia binoei" \
+      --points $sample \
+      --limit 30 \
+      --year "1950,2022" \
+      --margin $margin \
+      --output occurrences.shp
+
+mkdir -p occurrences
+mv occurrences.* occurrences/
+
+python3 -m crumbs.get_chelsa \
+      --points $sample \
+      --variables dem \
+      --timesID $present \
+      --margin $margin
+
+python3 -m crumbs.animate chelsa_stack_dem.tif \
+      --gbif occurrences/occurrences.shp \
+      --no-DDD \
+      --output occurrences.gif
+
+python3 -m crumbs.get_chelsa \
+      --points $sample \
+      --variables $biovars \
+      --timesID $chelsaTimes \
+      --margin $margin \
+      --cleanup
+
+rm *.vrt
+rm *.tif
+
+python3 -m crumbs.sdm \
+      --presence occurrences/occurrences.shp \
+      --variables $biovars \
+      --background 200 \
+      --times $chelsaTimes \
+      --margin $margin \
+      --cleanup \
+      --output suitability.tif
+
+suitability=sdm_outputs/suitability.tif
+python3 -m crumbs.animate $suitability -o suitability.gif
+
+yearsBP=$(chelsaTimeToYearBP $chelsaTimes)
+
+# Real case may not work on your laptop, check quetzal_on_OSG
+# python3 -m crumbs.interpolate $suitability --timesID $yearsBP -o interpolated.tif
+
+# Kinder but incorrect remapping (only 10 yBP, that is only 18 bands to interpolate)
+python3 -m crumbs.interpolate $suitability --timesID 0,10,20 -o suitability-interpolated.tif
+python3 -m crumbs.animate suitability-interpolated.tif -o suitability-interpolated.gif
+
+python3 -m crumbs.circle_mask suitability-interpolated.tif -o suitability-circular.tif
+python3 -m crumbs.animate suitability-circular.tif -o suitability-circular.gif
+
+angle=42.0
+scale=0.6
+python3 -m crumbs.rotate_and_rescale suitability-circular.tif $angle $scale -o suitability-rescaled.tif
+python3 -m crumbs.animate suitability-rescaled.tif -o suitability-rescaled.gif
+```
+
+What is nice is that you can leverage these long computations for publication analyses using dHTC (distributed Hight Throughput Computing)
+and distribute this load on a cluster grid: check out [quetzal_on_OSG](https://github.com/Becheler/quetzal_on_OSG)!
+
+# Contact and troubleshooting
+
 :boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening an issue or sending me an email so I can fix this! :rescue_worker_helmet:
 
 :bellhop_bell: In need of assistance about this project? Just want to chat? Let me know and let's have a zoom meeting!
 
-## What problem does this library solve?
-
-iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things a lot.
-
-For example, to estimate the current habitat of a species and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with a nice visualization at the end, you can simply use these 3 bash commands:
-
-```bash
-python3 -m crumbs.get_gbif \
-      --species "Heteronotia binoei" \
-      --points test_points/test_points.shp \
-      --all \
-      --year "1950,2022" \
-      --margin 2.0
-
-python3 -m crumbs.sdm \
-      --points occurrences.shp \
-      --variables bio \
-      --background 1000 \
-      --times $(seq -s ',' -50 1 20)
-
-python3 -m crumbs.animate sdm_outputs/suitability.tiff
-```
 -------------------------------------------------------------------------------
 # :game_die: Sampling model parameters in a prior distribution
 

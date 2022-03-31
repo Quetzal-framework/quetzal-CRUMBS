@@ -153,3 +153,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Interpolation bug, now works as expected
 - SDM extra layer for present time
+
+## [1.0.15] - 2022-03-31
+
+### Fixed
+
+- Interpolation using dask for parallel computation and larger-than-memory data
