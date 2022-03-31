@@ -23,24 +23,30 @@ shaped the present spatial distribution of genetic lineages.
 
 iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things quite a lot.
 
-For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run this script (you will need a `sampling-points/sampling-points.shp` file to start the analysis):
+For example, to estimate the current habitat of a species using CHELSA-Trace21k model and reconstruct its high-resolution dynamics along the last 21.000 years (averaged across 4 different ML classifiers), with nice visualizations and GIS operations at the end, you can just run the following (you will need a `sampling-points/sampling-points.shp` shapefile in your woking directory to start the analysis):
+
 
 ```bash
-#!/bin/bash
-
 # Pull the docker image with all the dependencies
-docker pull becheler/quetzal-nest:latest
+docker pull arnaudbecheler/quetzal-nest:latest
 # Run the docker image synchronizing you working directory
 docker run --user $(id -u):$(id -g) --rm=true -it \
   -v $(pwd):/srv -w /srv \
   becheler/quetzal-nest:latest /bin/bash
+```
+This will start your docker container. Once inside, copy/paste the following code in a `script.sh` file,
+and then run it with `chmod u+x script.sh && ./script.sh`.
 
+```bash
+#!/bin/bash
+# Just an helper function
 joinByChar() {
   local IFS="$1"
   shift
   echo "$*"
 }
 
+# Just another helper function
 chelsaTimeToYearBP() {
   chelsaTimes=$1
   # # From comma delimited to space separated
