@@ -325,14 +325,17 @@ def main(argv):
     parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     parser.add_option("-o", "--output", type="str", dest="output", help="Output suitability geotiff name.")
+
     (options, args) = parser.parse_args(argv)
+    
     return species_distribution_model(
         presence_shp = options.presence_points,
         variables = options.variables,
         timesID = options.timesID,
         background_points = options.background_points,
         margin = options.margin,
-        cleanup = options.cleanup
+        cleanup = options.cleanup,
+        clip_dir = options.clip_dir
         )
 
 if __name__ == '__main__':

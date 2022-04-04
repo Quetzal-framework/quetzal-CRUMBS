@@ -159,3 +159,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Interpolation using dask for parallel computation and larger-than-memory data
+
+## [1.0.16] - 2022-04-04
+
+### Fixed
+
+- In SDM, clip_dir not specified defaulted to wrong value
