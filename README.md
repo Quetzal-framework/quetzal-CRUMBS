@@ -74,7 +74,7 @@ python3 -m crumbs.get_gbif \
       --limit 30 \
       --year "1950,2022" \
       --margin $margin \
-      --output occurrences.shp
+      --output occurrences
 
 mkdir -p occurrences
 mv occurrences.* occurrences/

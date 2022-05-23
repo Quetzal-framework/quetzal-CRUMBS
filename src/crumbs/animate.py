@@ -24,7 +24,7 @@ def summary(dataset):
     """
     print("        - no data value: \t", dataset.nodata )
     print("        - crs:\t", dataset.crs)
-    print("        - ", dataset.bounds)
+    print("        -", dataset.bounds)
     pxsz, pysz = dataset.res
     print("        - pixel size X: \t", pxsz, "unit:", dataset.crs.linear_units)
     print("        - pixel size Y: \t", pysz, "unit:", dataset.crs.linear_units)
@@ -375,6 +375,7 @@ def animate_raster_3D(inputRaster, vmin=None, vmax=None, output=None, warp_scale
         #mlab.show()
 
 def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrences=None, DDD=False, warp_scale=1.0, nb_triangles=None):
+    print(" - Quetzal-CRUMBS - Dynamic visualizations for iDDC models")
     output = 'animation.gif' if output is None else output
 
     if gbif_occurrences is not None:
@@ -389,7 +390,6 @@ def chose_method(inputRaster, vmin=None, vmax=None, output=None, gbif_occurrence
             animate_raster_2D(inputRaster, vmin=vmin, vmax=vmax, output=output)
 
 def main(argv):
-    print(" - Quetzal-CRUMBS - Dynamic visualizations for iDDC models")
     from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-o", "--output", type="str", dest="output", help="output animation name")

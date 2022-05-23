@@ -12,7 +12,7 @@ class TestGetGbif(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def test_get_bif(self):
+    def test_get_gbif(self):
 
         get_gbif.search_gbif(scientific_name='Heteronotia binoei',
                              points="data/test_points/test_points.shp",

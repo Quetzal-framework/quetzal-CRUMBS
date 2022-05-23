@@ -141,6 +141,8 @@ def search_gbif(scientific_name: str,
     from pygbif import species as species
     from pygbif import occurrences
 
+    print(" - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models")
+
     # Retrieve the taxon key
     taxonKey = species.name_suggest(q=scientific_name)[0]['key']
 
@@ -178,8 +180,6 @@ def search_gbif(scientific_name: str,
 
 def main(argv):
     from optparse import OptionParser
-
-    print(" - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models")
 
     parser = OptionParser()
 
@@ -238,8 +238,8 @@ def main(argv):
         limit = options.limit,
         all = options.all,
         year = options.year,
-        csv_file = output + ".csv",
-        shapefile = output + ".shp"
+        csv_file = options.output + ".csv",
+        shapefile = options.output + ".shp"
         )
 
 if __name__ == '__main__':

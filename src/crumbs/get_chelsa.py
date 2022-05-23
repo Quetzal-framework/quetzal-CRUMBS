@@ -99,9 +99,9 @@ def download(url, output_dir):
     path = Path(filename)
     if path.is_file():
         resume_byte = path.stat().st_size
-        print("World file exists, resuming download to byte", resume_byte)
+        print("    ... World file exists, resuming download to byte", resume_byte)
     else:
-        print("World file does not exist, starting download from scratch.")
+        print("    ... World file does not exist, starting download from scratch.")
         resume_byte = 0.0
 
     try:
@@ -175,7 +175,7 @@ def generate_urls(variables, timesID):
 def to_vrt(inputFiles, outputFile='stacked.vrt'):
     """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
     """
-    print("    ... converting bands to VRT file:", outputFile)
+    print("    ... Converting bands to VRT file:", outputFile)
     gdal.BuildVRT(outputFile, inputFiles,
         separate=True,
         #callback=gdal.TermProgress_nocb
@@ -190,7 +190,7 @@ def to_vrt(inputFiles, outputFile='stacked.vrt'):
 def to_geotiff(vrt, outputFile='stacked.tif'):
     """ Converts the VRT files to a geotiff file
     """
-    print('    ... converting', vrt, 'to GeoTiff file:', outputFile)
+    print('    ... Converting', vrt, 'to GeoTiff file:', outputFile)
     ds = gdal.Open(vrt)
     ds = gdal.Translate(outputFile, ds)
     ds = None
@@ -237,7 +237,7 @@ def retrieve_variables(urls):
             matched.append(variable)
     return matched
 
-def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='CHELSA_world', clip_dir='CHELSA_cropped', geotiff='chelsa_stack.tif', cleanup=False):
+def get_chelsa(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='chelsa-world', clip_dir='chelsa-cropped', geotiff='chelsa-stacked.tif', cleanup=False):
     """ Downloads bio and orog variables from CHELSA-TraCE21k –
         1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
     """
@@ -299,10 +299,10 @@ def main(argv):
 
     parser.add_option("-p", "--points", type="str", dest="points", default=None, help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
     parser.add_option("-m", "--margin", type="float", dest="margin", default=0.0, help="Margin to add around the bounding box, in degrees.")
-    parser.add_option("-d", "--dir", type="str", dest="chelsa_dir", default = "CHELSA_world", help="Output directory for CHELSA files. Default: CHELSA_world.")
-    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "CHELSA_cropped", help="Output directory for clipped CHELSA files. Default: CHELSA_cropped.")
-    parser.add_option("-o", "--geotiff", type="str", dest="geotiff", default = "chelsa_stack.tif", help="Produces a geotiff.")
-    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep clipped files.")
+    parser.add_option("-d", "--dir", type="str", dest="chelsa_dir", default = "chelsa-world", help="Output directory for CHELSA files.")
+    parser.add_option("-c", "--clip_dir", type="str", dest="clip_dir", default = "chelsa-cropped", help="Output directory for cropped CHELSA files.")
+    parser.add_option("-o", "--geotiff", type="str", dest="geotiff", default = "chelsa-stacked.tif", help="Produces a geotiff stackin variables at all times.")
+    parser.add_option("--cleanup", dest="cleanup", default = False, action = 'store_true', help="Remove downloaded CHELSA world files, but keep cropped files.")
     parser.add_option("--no-cleanup", dest="cleanup", action = 'store_false', help="Keep downloaded CHELSA files on disk.")
     (options, args) = parser.parse_args(argv)
     try:
