@@ -1,6 +1,7 @@
 import sqlite3, pyvolve, os
 from optparse import OptionParser
-from crumbs.sequence import fasta_to_phylip
+
+from . import sequence
 
 def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output, temporary_prefix):
     temporaries = []
@@ -18,7 +19,7 @@ def newick_list_to_phylip_simulation(newicks, sequence_size, scale_tree, output,
         # simulating
         my_evolver(seqfile=fasta_seqfile, seqfmt = "fasta", ratefile = None, infofile = None)
         # converting
-        fasta_to_phylip(fasta_seqfile, phylip_seqfile)
+        sequence.fasta_to_phylip(fasta_seqfile, phylip_seqfile)
     # concatening all sequences into a bigger file
     with open(output, 'w') as outfile:
         for fname in temporaries:
