@@ -3,8 +3,16 @@ import unittest
 import sys
 sys.path.append("..")
 
-from src.crumbs import sdm_fit
-from src.crumbs import get_gbif
+def delete_folder(pth) :
+    import pathlib
+
+    for sub in pth.iterdir() :
+        if sub.is_dir() :
+            delete_folder(sub)
+        else :
+            sub.unlink()
+    pth.rmdir() # if you just want to delete the dir content but not the dir itself, remove this line
+
 
 class TestSDM(unittest.TestCase):
 
@@ -17,7 +25,10 @@ class TestSDM(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def test_get_chelsa_with_input_file(self):
+    def test_fitting_classifiers(self):
+
+        from src.crumbs import sdm_fit
+        from src.crumbs import get_gbif
 
         get_gbif.search_gbif(scientific_name='Heteronotia binoei',
                              points=self.sampling_points,
@@ -40,8 +51,34 @@ class TestSDM(unittest.TestCase):
             crop_dir = self.cropped_file_dir
             )
 
+    def test_extrapolating_trained_classifiers_to_past():
+        from src.crumbs import sdm
 
+        # sdm.extrapolate_model(joblib, ...)
+        sdm.extrapolate_model_to_past_climates(
+            model_files=self.model_files,
+            timesID = [20,19,18]
+            variables = ["dem","bio01"],
+            margin = 1.0,
+            output = "suitability.tif",
+            )
 
+    def tearDown(self):
+        from pathlib import Path
+        import glob
+
+        # Removing all occurrences files generated
+        for p in Path(".").glob( self.occurrences_filename + ".*"):
+            p.unlink()
+
+        # Removing all persistence files generated
+        for p in Path(".").glob( "persist-" + "*.joblib"):
+            p.unlink()
+
+        # Removing SDM input and outputs folder
+        delete_folder(Path("sdm_inputs"))
+        delete_folder(Path("sdm_outputs"))
+        delete_folder(Path(self.cropped_file_dir))
 
 if __name__=="__main__":
     unittest.main()
