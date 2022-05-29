@@ -16,21 +16,15 @@ def delete_folder(pth) :
 
 class TestSDM(unittest.TestCase):
 
-    sampling_points = "data/test_points/test_points.shp"
-    occurrences_filename = "occurrences"
-    output_filename = "chelsa-stacked"
-    world_file_dir = "chelsa-world"
-    cropped_file_dir = "chelsa-cropped"
+    def setUp(self):
 
-    def SetUp(self):
-        pass
+        from src.crumbs.sdm import SDM
+        from src.crumbs.get_gbif import search_gbif
 
-    def test_fitting_classifiers(self):
+        self.sampling_points = "data/test_points/test_points.shp"
+        self.occurrences_filename = "occurrences"
 
-        from src.crumbs import sdm_fit
-        from src.crumbs import get_gbif
-
-        get_gbif.search_gbif(scientific_name='Heteronotia binoei',
+        search_gbif(scientific_name='Heteronotia binoei',
                              points=self.sampling_points,
                              margin=1.0,
                              all=False,
@@ -39,29 +33,22 @@ class TestSDM(unittest.TestCase):
                              csv_file= self.occurrences_filename + ".csv",
                              shapefile= self.occurrences_filename + ".shp")
 
-        sdm_fit.fit_species_distribution_model(
-            presence_shp = self.occurrences_filename + ".shp",
-            background_points = 30,
-            timeID = 20,
-            variables = ["dem","bio01"],
-            margin = 1.0,
-            output = "suitability.tif",
-            persist = True,
-            cleanup = True,
-            crop_dir = self.cropped_file_dir
+
+        self.sdm = SDM(
+            scientific_name='Heteronotia binoei',
+            presence_shapefile = self.occurrences_filename + ".shp",
+            nb_background_points = 30,
+            variables = ['dem','bio01'],
+            chelsa_time_IDs = [20,19],
+            buffer = 1.0
             )
 
-    def test_extrapolating_trained_classifiers_to_past():
-        from src.crumbs import sdm
+    def test_fit_sdm(self):
+        self.sdm.fit_on_present_data()
 
-        # sdm.extrapolate_model(joblib, ...)
-        sdm.extrapolate_model_to_past_climates(
-            model_files=self.model_files,
-            timesID = [20,19,18]
-            variables = ["dem","bio01"],
-            margin = 1.0,
-            output = "suitability.tif",
-            )
+    def test_extrapolate(self):
+        self.sdm.load_classifiers_and_extrapolate(20)
+        self.sdm.load_classifiers_and_extrapolate(19)
 
     def tearDown(self):
         from pathlib import Path
@@ -76,9 +63,9 @@ class TestSDM(unittest.TestCase):
             p.unlink()
 
         # Removing SDM input and outputs folder
-        delete_folder(Path("sdm_inputs"))
-        delete_folder(Path("sdm_outputs"))
-        delete_folder(Path(self.cropped_file_dir))
+        # delete_folder(Path("sdm_inputs"))
+        # delete_folder(Path("sdm_outputs"))
+        # delete_folder(Path(self.cropped_file_dir))
 
 if __name__=="__main__":
     unittest.main()
