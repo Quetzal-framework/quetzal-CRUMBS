@@ -1,11 +1,9 @@
-# from https://github.com/ammaraskar/sphinx-action-test/blob/master/.github/workflows/default.yml
 name: CI
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches:    
+      - master
 
 jobs:
   build:
@@ -18,6 +16,11 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
+    # Example of using a custom build-command.
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        build-command: "sphinx-build -b html . _build"
+        docs-folder: "docs2/"
     # Grabbing custom dependencies and building as a pdf.
     - uses: ammaraskar/sphinx-action@master
       with:
