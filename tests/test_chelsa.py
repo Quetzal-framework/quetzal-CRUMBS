@@ -1,9 +1,10 @@
 # avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
 import unittest
 import sys
-sys.path.append("..")
 
-from src.crumbs import get_chelsa
+from . context import crumbs
+
+from crumbs.chelsa.request import request
 
 class TestGetChelsa(unittest.TestCase):
 
@@ -15,16 +16,16 @@ class TestGetChelsa(unittest.TestCase):
         pass
 
     def test_get_chelsa_with_input_file(self):
-        get_chelsa.get_chelsa(inputFile = "data/chelsa_url_test.txt",
-                              points = "data/test_points/test_points.shp")
+        request(inputFile = "tests/data/chelsa_url_test.txt",
+                              points = "tests/data/test_points/test_points.shp")
 
     def test_get_chelsa_with_no_input_file(self):
-        get_chelsa.get_chelsa(points = "data/test_points/test_points.shp",
+        request(points = "tests/data/test_points/test_points.shp",
                               variables = ['dem'],
                               timesID = [20])
 
     def test_get_chelsa_with_time_range(self):
-        get_chelsa.get_chelsa(points = "data/test_points/test_points.shp",
+        request(points = "tests/data/test_points/test_points.shp",
                               variables = ['bio01'],
                               timesID = [0, -1])
 

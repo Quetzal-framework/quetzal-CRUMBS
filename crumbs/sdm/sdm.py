@@ -88,7 +88,7 @@ class SDM:
                 % (k, accuracy_scores.mean() * 100, accuracy_scores.std() * 200)
                 )
 
-                print('        - fitting model ... ')
+                print('        - fitting model')
                 model.fit(train_xs, train_y)
 
                 print('        - trained model will be saved to', self.joblib_dir + '/' + model_name + '.joblib')
@@ -155,9 +155,9 @@ class SDM:
     def _download_chelsa_variables_at_time(self, timeID) -> None :
         """Download chelsa datasets in order to fit and extrapolate classifiers"""
 
-        from src.crumbs import get_chelsa
+        from crumbs.chelsa.utils import request
 
-        get_chelsa.get_chelsa(
+        request(
         inputFile   =   None,
         variables   =   self.variables,
         timesID     =   [timeID],
@@ -165,7 +165,7 @@ class SDM:
         margin      =   self.buffer,
         chelsa_dir  =   self.world_dir,
         clip_dir    =   self.landscape_dir,
-        geotiff     =   'multiband.tif',
+        geotiff     =   None,
         cleanup     =   self.cleanup )
 
         return None
@@ -263,7 +263,8 @@ class SDM:
 
                     masked_img = np.ma.masked_where(np.ma.getmask(Z_dem), Z)
 
-                    meta.update(fill_value = dem.nodata)
+                    # Avoid WARNING:CPLE_NotSupported in driver GTiff does not support creation option FILL_VALUE
+                    # meta.update(fill_value = dem.nodata)
                     meta.update({'nodata' : dem.nodata})
 
                     with rasterio.open(raster, "w", **meta) as dst:
@@ -300,7 +301,7 @@ class SDM:
 
         for model_name in class_map.keys():
 
-            print("        - Loading persisted classifier", model_name)
+            print("        - loading persisted classifier", model_name)
 
             model = joblib.load(self.joblib_dir + '/' + model_name + '.joblib')
 
@@ -319,8 +320,6 @@ class SDM:
         import numpy.ma as ma
         import rasterio
         from pathlib import Path
-
-        print('    ... averaging imputed rasters for climate conditions at CHELSA time', timeID)
 
         rasters = [ rasterio.open(r).read(1, masked=True) for r in imputed_images]
 
@@ -347,23 +346,24 @@ class SDM:
         """
         from pyimpute import load_targets
 
-        self._download_chelsa_variables_at_time(timeID)
-
+        print("- Quetzal-CRUMBS - Species Distribution Modeling for iDDC modeling")
         print('    ... projection to time ' + str(timeID))
 
+        self._download_chelsa_variables_at_time(timeID)
         explanatory_rasters = self._get_paths_of_explanatory_rasters_at_time(timeID)
 
         print('        - loading target explanatory raster data')
         target_xs, raster_info = load_targets(explanatory_rasters)
 
+        print('        - loading persisted classifiers and imputing')
         imputed_images = self._load_classifiers_and_impute(timeID, target_xs, raster_info)
 
         print('    ... masking ocean cells to dem no data value for all probability_1 rasters')
-
         elevation_file = self._find_digital_elevation_raster(timeID)
 
         self._ocean_cells_to_nodata(elevation_file, imputed_images)
 
+        print('    ... averaging imputed rasters for climate conditions at CHELSA time', timeID)
         self._average_and_save_imputed_rasters(timeID, imputed_images)
 
         return None

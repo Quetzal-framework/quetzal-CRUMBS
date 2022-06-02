@@ -2,21 +2,21 @@
 import unittest
 import sys
 
-from .context import src.crumbs
-from .utils import delete_folder
+from . context import crumbs
+
+from . utils import delete_folder
 
 class TestSDM(unittest.TestCase):
 
     def setUp(self):
-        self.sampling_points = "data/test_points/test_points.shp"
+        self.sampling_points = "tests/data/test_points/test_points.shp"
         self.occurrences_filename = "occurrences"
 
     def test_fit_and_extrapolate(self):
 
-        from src.crumbs.sdm import SDM
-        from src.crumbs.get_gbif import search_gbif
-
-
+        from crumbs.sdm.sdm import SDM
+        from crumbs.get_gbif import search_gbif
+        import pickle
 
         search_gbif(scientific_name='Heteronotia binoei',
                              points=self.sampling_points,
@@ -27,8 +27,7 @@ class TestSDM(unittest.TestCase):
                              csv_file= self.occurrences_filename + ".csv",
                              shapefile= self.occurrences_filename + ".shp")
 
-
-        sdm = SDM(
+        my_sdm = SDM(
             scientific_name='Heteronotia binoei',
             presence_shapefile = self.occurrences_filename + ".shp",
             nb_background_points = 30,
@@ -37,9 +36,15 @@ class TestSDM(unittest.TestCase):
             buffer = 1.0
             )
 
-        sdm.fit_on_present_data()
-        sdm.load_classifiers_and_extrapolate(20)
-        sdm.load_classifiers_and_extrapolate(19)
+        my_sdm.fit_on_present_data()
+
+        with open("my_sdm.bin","wb") as f:
+            pickle.dump(my_sdm, f)
+
+        with open("my_sdm.bin","rb") as f:
+            my_saved_sdm = pickle.load(f)
+            my_saved_sdm.load_classifiers_and_extrapolate(20)
+            my_saved_sdm.load_classifiers_and_extrapolate(19)
 
     def tearDown(self):
         from pathlib import Path
@@ -49,15 +54,12 @@ class TestSDM(unittest.TestCase):
         for p in Path(".").glob( self.occurrences_filename + ".*"):
             p.unlink()
 
-        # Removing all persistence files generated
-        for p in Path(".").glob( "model-persistence" + "*.joblib"):
-            p.unlink()
-
-        # Removing all landscape files generated
-        for p in Path(".").glob( "chelsa-landscape" + "*.tif"):
-            p.unlink()
+        # Removing sdm pickled
+        Path("my_sdm.bin").unlink()
 
         # Removing SDM input and outputs folder
+        delete_folder(Path("chelsa-landscape"))
+        delete_folder(Path("model-persistence"))
         delete_folder(Path("model-averaging"))
         delete_folder(Path("model-imputation"))
 

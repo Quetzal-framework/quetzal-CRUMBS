@@ -4,18 +4,20 @@ import sys
 sys.path.append("..")
 # from src.crumbs import my_module
 
-from src.crumbs import get_gbif
+from . context import crumbs
+
+from crumbs.get_gbif import search_gbif
 
 class TestGetGbif(unittest.TestCase):
-    output_filename = "occurrences"
+    output_filename = "tests/occurrences"
 
     def SetUp(self):
         pass
 
     def test_get_gbif(self):
 
-        get_gbif.search_gbif(scientific_name='Heteronotia binoei',
-                             points="data/test_points/test_points.shp",
+        search_gbif(scientific_name='Heteronotia binoei',
+                             points="tests/data/test_points/test_points.shp",
                              margin=1.0,
                              all=False,
                              limit=50,
@@ -23,8 +25,8 @@ class TestGetGbif(unittest.TestCase):
                              csv_file= self.output_filename + ".csv",
                              shapefile= self.output_filename + ".shp")
 
-        get_gbif.search_gbif(scientific_name='Heteronotia binoei',
-                             points="data/test_points/test_points.shp",
+        search_gbif(scientific_name='Heteronotia binoei',
+                             points="tests/data/test_points/test_points.shp",
                              margin=1.0,
                              all=False,
                              year='1950,2022',

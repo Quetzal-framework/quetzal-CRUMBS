@@ -1,10 +1,8 @@
 # avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
 import unittest
 import sys
-sys.path.append("..")
-# from src.crumbs import my_module
 
-from src.crumbs import get_gbif
+from . context import crumbs
 
 class TestTiff(unittest.TestCase):
 
@@ -16,7 +14,7 @@ class TestTiff(unittest.TestCase):
         from osgeo import gdal
         import numpy as np
 
-        raster = gdal.Open(r'data/suitability.tif')
+        raster = gdal.Open(r'tests/data/suitability.tif')
 
         # Check type of the variable 'raster'
         type(raster)
@@ -47,8 +45,8 @@ class TestTiff(unittest.TestCase):
         np.testing.assert_almost_equal(band.GetMaximum(), 0.7852693, 6)
 
     def test_sample_latlon(self):
-        from src.crumbs import sample
-        latlon = sample.uniform_latlon("data/suitability.tif", 0)
+        from crumbs import sample
+        latlon = sample.uniform_latlon("tests/data/suitability.tif", 0)
 
 if __name__=="__main__":
     unittest.main()
