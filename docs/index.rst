@@ -7,7 +7,7 @@
    Home page <self>
    API reference <_autosummary/crumbs>
 
-Welcome to Quetzal-crumbs documentation
+Welcome to the Quetzal-crumbs' documentation
 =====================================================
 
 Introduction
