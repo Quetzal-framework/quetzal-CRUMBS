@@ -6,13 +6,24 @@
 [![PyPI version](https://badge.fury.io/py/quetzal-crumbs.svg)](https://badge.fury.io/py/quetzal-crumbs)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CRUMBS)
 
-This python library is meant to be used along other softwares from the Quetzal
-framework (or not! Go checkout [Splatche3](https://www.splatche.com/splatche3) and [slendr](https://github.com/bodkan/slendr)!) to perform iDDC modeling and inference.
+This python library is meant to be used along other software from the Quetzal
+framework to perform iDDC modeling and inference.
 
 iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
 methodology for statistical phylogeography. It relies heavily on spatial models
-and methods to explain how past processes (sea level change, glaciers dynamics, climate modifications)
-shaped the present spatial distribution of genetic lineages.
+and methods to explain how past processes (sea level change, glaciers dynamics,
+climate modifications) shaped the present spatial distribution of genetic lineages.
+
+In short:
+
+1. Access the high resolution paleoclimatic database CHELSA to download world files
+2. Fit a Species Distribution model and save (persist) the fitted model
+3. Distribute the fitted model on cluster nodes and reconstruct landscape habitability dynamics across millennia.
+4. Assemble the layers and prepare the dynamic landscape for simulation-based inference
+5. If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data
+6. Use Decrypt to perform robustness analysis of species delimitation methods.
+
+> :bulb: If you need other simulators, go checkout [Splatche3](https://www.splatche.com/splatche3) and [slendr](https://github.com/bodkan/slendr)!)
 
 ## What problem does this library solve?
 
