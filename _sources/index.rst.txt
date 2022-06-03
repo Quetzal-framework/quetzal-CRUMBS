@@ -7,7 +7,6 @@ Some words.
 
 .. autosummary::
   :toctree: _autosummary
-  :recursive:
 
   crumbs.sdm.sdm
   crumbs.sdm.extrapolate
@@ -23,4 +22,3 @@ Some words.
   crumbs.raster.resample
   crumbs.raster.rotate_and_rescale
   crumbs.raster.utils
-  
