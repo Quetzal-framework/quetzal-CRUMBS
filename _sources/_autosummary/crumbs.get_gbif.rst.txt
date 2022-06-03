@@ -1,0 +1,38 @@
+crumbs.get\_gbif
+================
+
+.. automodule:: crumbs.get_gbif
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      bounds_to_polygon
+      main
+      paginated_search
+      preprocess
+      search_gbif
+      to_csv
+      to_polygon
+      to_shapefile
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

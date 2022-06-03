@@ -1,0 +1,32 @@
+crumbs.retrieve\_parameters
+===========================
+
+.. automodule:: crumbs.retrieve_parameters
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+      retrieve_parameters
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

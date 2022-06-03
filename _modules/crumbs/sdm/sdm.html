@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>crumbs.sdm.sdm &mdash; Quetzal-CRUMBS  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Quetzal-CRUMBS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/crumbs.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Quetzal-CRUMBS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>crumbs.sdm.sdm</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for crumbs.sdm.sdm</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module declaring the base class for Species Distribution Modeling.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SDM"><a class="viewcode-back" href="../../../_autosummary/crumbs.sdm.sdm.SDM.html#crumbs.sdm.sdm.SDM">[docs]</a><span class="k">class</span> <span class="nc">SDM</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences</span>
+<span class="sd">    and fit classifiers, saving fitted models for later extrapolations to past time periods</span>
+<span class="sd">    with dHTC.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">scientific_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">presence_shapefile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">nb_background_points</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bio&#39;</span><span class="p">],</span>
+    <span class="n">chelsa_time_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">19</span><span class="p">],</span>
+    <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Species Distribution Model constuctor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scientific_name</span>    <span class="o">=</span> <span class="n">scientific_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span> <span class="o">=</span> <span class="n">presence_shapefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_background_points</span>  <span class="o">=</span> <span class="n">nb_background_points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chelsa_time_IDs</span>    <span class="o">=</span> <span class="n">chelsa_time_IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>          <span class="o">=</span> <span class="n">variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span>             <span class="o">=</span> <span class="n">buffer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span>            <span class="o">=</span> <span class="n">cleanup</span>
+
+        <span class="c1"># File system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span>          <span class="o">=</span> <span class="s1">&#39;chelsa-world&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span>      <span class="o">=</span> <span class="s1">&#39;chelsa-landscape&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span>         <span class="o">=</span> <span class="s1">&#39;model-persistence&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span>         <span class="o">=</span> <span class="s1">&#39;model-imputation&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span>  <span class="o">=</span> <span class="s1">&#39;model-averaging&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_20_V1.0.tif&#39;</span>
+
+        <span class="c1"># We need to download Digital Elevation Model for marine/terrestial filter</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+        <span class="n">v</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;dem&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_ML_classifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Imports a bunch of machine learning classifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+        <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">ExtraTreesClassifier</span>
+        <span class="kn">from</span> <span class="nn">xgboost</span> <span class="kn">import</span> <span class="n">XGBClassifier</span>
+        <span class="kn">from</span> <span class="nn">lightgbm</span> <span class="kn">import</span> <span class="n">LGBMClassifier</span>
+
+        <span class="n">class_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rf&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">()),</span>
+        <span class="s1">&#39;et&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">ExtraTreesClassifier</span><span class="p">()),</span>
+        <span class="s1">&#39;xgb&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">XGBClassifier</span><span class="p">(</span><span class="n">verbosity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)),</span>
+        <span class="s1">&#39;lgbm&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">LGBMClassifier</span><span class="p">())</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">class_map</span>
+
+    <span class="k">def</span> <span class="nf">_train_and_save_classifiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fitting classifiers from target data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">model_selection</span>
+        <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span>
+        <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+        <span class="kn">import</span> <span class="nn">warnings</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+            <span class="n">class_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ML_classifiers</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="n">class_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ...&#39;</span><span class="p">,</span> <span class="s1">&#39;Classifier&#39;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - k-fold cross validation for accuracy scores (displayed as a percentage)&#39;</span><span class="p">)</span>
+
+                <span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="n">kfold</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+                <span class="n">accuracy_scores</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">kfold</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - &#39;</span> <span class="o">+</span>
+                <span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot; </span><span class="si">%d</span><span class="s2">-fold Cross Validation Accuracy: </span><span class="si">%0.2f</span><span class="s2"> (+/- </span><span class="si">%0.2f</span><span class="s2">)&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">accuracy_scores</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">accuracy_scores</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - fitting model&#39;</span><span class="p">)</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
+
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - trained model will be saved to&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_random_sample_from_masked_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">masked</span><span class="p">,</span> <span class="n">nb_sample</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sample indices uniformely at random in a masked array, ignoring masked values.</span>
+<span class="sd">        Returns a tuple (idx,idy)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="c1">#Assign False = 0, True = 1</span>
+        <span class="n">weights</span> <span class="o">=~</span> <span class="n">masked</span><span class="o">.</span><span class="n">mask</span> <span class="o">+</span> <span class="mi">0</span>
+        <span class="n">normalized</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">masked</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">nb_sample</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">normalized</span><span class="p">)</span>
+        <span class="n">idy</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">masked</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">idx</span><span class="p">,</span> <span class="n">idy</span>
+
+    <span class="k">def</span> <span class="nf">_present_geopanda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - number of duplicates: &quot;</span><span class="p">,</span> <span class="n">gdf</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - number of NA&#39;s: &quot;</span><span class="p">,</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - coordinate reference system: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">crs</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - </span><span class="si">{}</span><span class="s2"> observations with </span><span class="si">{}</span><span class="s2"> columns&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">gdf</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_to_geopanda_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapefile</span><span class="p">)</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Read presence points from a shapefile and adds a CLASS = 1 for observation status (1 for observed, 0 for absent)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">shapefile</span><span class="p">)</span>
+        <span class="n">gdf</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;CLASS&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gdf</span>
+
+    <span class="k">def</span> <span class="nf">_sample_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">demRaster</span><span class="p">,</span> <span class="n">nb_sample</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If presence-only data are given (e.g., from GBIF) then some form of absence points is needed.</span>
+<span class="sd">        Random background points are sampled uniformely at random from contemporary DEM band.</span>
+<span class="sd">        Returns a geopandas dataframe, with a CLASS column filled with 0 values (absence)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">rasterio</span>
+        <span class="kn">import</span> <span class="nn">geopandas</span>
+
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">demRaster</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_random_sample_from_masked_array</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">nb_sample</span><span class="p">)</span>
+
+            <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">xy</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">)</span>
+
+            <span class="n">geometry</span><span class="o">=</span><span class="n">geopandas</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;CLASS&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="n">geometry</span><span class="p">}</span>
+
+            <span class="n">gdf</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">crs</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gdf</span>
+
+    <span class="k">def</span> <span class="nf">_download_chelsa_variables_at_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Download chelsa datasets in order to fit and extrapolate classifiers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">crumbs.chelsa.utils</span> <span class="kn">import</span> <span class="n">request</span>
+
+        <span class="n">request</span><span class="p">(</span>
+        <span class="n">inputFile</span>   <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
+        <span class="n">variables</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
+        <span class="n">timesID</span>     <span class="o">=</span>   <span class="p">[</span><span class="n">timeID</span><span class="p">],</span>
+        <span class="n">points</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span><span class="p">,</span>
+        <span class="n">margin</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+        <span class="n">chelsa_dir</span>  <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span><span class="p">,</span>
+        <span class="n">clip_dir</span>    <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span><span class="p">,</span>
+        <span class="n">geotiff</span>     <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cleanup</span>     <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_spatial_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">timeID</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">plt</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">),</span> <span class="n">fontweight</span> <span class="o">=</span> <span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;averaged-species-range&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_drop_ocean_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">rasterFile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Drop coordinates of a geopandadataframe that happen to fall in the ocean cells</span>
+<span class="sd">        of a digital elevation model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">rasterio</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">rasterFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+            <span class="n">coord_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="p">,</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">)]</span>
+            <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">src</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">coord_list</span><span class="p">)]</span>
+            <span class="n">gdf</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1">#gdf = gdf[np.isfinite(gdf.value)]</span>
+            <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">gdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">gdf</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gdf</span>
+
+    <span class="k">def</span> <span class="nf">_read_and_clean_presence_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a presence dataset, drop duplicates and remove points falling in ocean cells</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... reading presence shapefile datatsets:&#39;</span><span class="p">)</span>
+        <span class="n">presences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_geopanda_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_present_geopanda</span><span class="p">(</span><span class="n">presences</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... after removing duplicated occurrences:&#39;</span><span class="p">)</span>
+        <span class="n">presences</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_present_geopanda</span><span class="p">(</span><span class="n">presences</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... after removing occurrences falling in ocean cells (NA, -inf, +inf):&#39;</span><span class="p">)</span>
+        <span class="n">presences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drop_ocean_cells</span><span class="p">(</span><span class="n">presences</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_present_geopanda</span><span class="p">(</span><span class="n">presences</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">presences</span>
+
+    <span class="k">def</span> <span class="nf">_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">filename</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;presences-pseudo-absences.png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot presences and absences on top of each others.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+        <span class="n">pa</span><span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">CLASS</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">pa</span><span class="p">[</span><span class="n">pa</span><span class="o">.</span><span class="n">CLASS</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_build_presence_absence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presence</span><span class="p">,</span> <span class="n">pseudo_absence</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate presence and pseudo-absence geopanda dataframes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pandas</span>
+
+        <span class="n">pa</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">presence</span><span class="p">,</span> <span class="n">pseudo_absence</span><span class="p">],</span>  <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... building presence/absence dataset:&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_present_geopanda</span><span class="p">(</span><span class="n">pa</span><span class="p">)</span>
+
+        <span class="n">pa</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">plot</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plot</span><span class="p">(</span><span class="n">pa</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pa</span>
+
+    <span class="k">def</span> <span class="nf">_ocean_cells_to_nodata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">demRaster</span><span class="p">,</span> <span class="n">rasters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transfer the notdata values from a Digital Elevation Model raster to a list</span>
+<span class="sd">        of rasters of similar metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">rasterio</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">demRaster</span><span class="p">)</span> <span class="k">as</span> <span class="n">dem</span><span class="p">:</span>
+            <span class="n">Z_dem</span> <span class="o">=</span> <span class="n">dem</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">raster</span> <span class="ow">in</span> <span class="n">rasters</span><span class="p">:</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">raster</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+                    <span class="n">Z</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">meta</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                    <span class="n">masked_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">getmask</span><span class="p">(</span><span class="n">Z_dem</span><span class="p">),</span> <span class="n">Z</span><span class="p">)</span>
+
+                    <span class="c1"># Avoid WARNING:CPLE_NotSupported in driver GTiff does not support creation option FILL_VALUE</span>
+                    <span class="c1"># meta.update(fill_value = dem.nodata)</span>
+                    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;nodata&#39;</span> <span class="p">:</span> <span class="n">dem</span><span class="o">.</span><span class="n">nodata</span><span class="p">})</span>
+
+                    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+                        <span class="n">dst</span><span class="o">.</span><span class="n">nodata</span> <span class="o">=</span> <span class="n">dem</span><span class="o">.</span><span class="n">nodata</span>
+                        <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">masked_img</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="n">dem</span><span class="o">.</span><span class="n">nodata</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_get_paths_of_explanatory_rasters_at_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns paths to all expplanatory rasters and mask their ocean cells using DEM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+        <span class="n">explanatory_rasters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/*_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_*.tif&#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... there are&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">),</span> <span class="s1">&#39;explanatory rasters features&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">explanatory_rasters</span>
+
+    <span class="k">def</span> <span class="nf">_mask_ocean_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explanatory_rasters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">        Mask ocean cells of raster using DEM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... masking ocean cells to DEM nodata value for all explanatory rasters&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ocean_cells_to_nodata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span><span class="p">,</span> <span class="n">explanatory_rasters</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">explanatory_rasters</span>
+
+    <span class="k">def</span> <span class="nf">_find_digital_elevation_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_V1.0.tif&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_load_classifiers_and_impute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">,</span> <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">joblib</span>
+        <span class="kn">import</span> <span class="nn">pyimpute</span>
+        <span class="n">class_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ML_classifiers</span><span class="p">()</span>
+
+        <span class="n">imputed_images</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">model_name</span> <span class="ow">in</span> <span class="n">class_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - loading persisted classifier&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+
+            <span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
+
+            <span class="n">outdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
+
+            <span class="n">pyimpute</span><span class="o">.</span><span class="n">impute</span><span class="p">(</span><span class="n">target_xs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="n">outdir</span><span class="p">,</span> <span class="n">linechunk</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">class_prob</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">certainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">imputed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outdir</span>  <span class="o">+</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;probability_1.tif&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">imputed_images</span>
+
+    <span class="k">def</span> <span class="nf">_average_and_save_imputed_rasters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">,</span> <span class="n">imputed_images</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Opens raster images imputed by different classifiers and average</span>
+<span class="sd">        them, saving the averaged raster.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+        <span class="kn">import</span> <span class="nn">rasterio</span>
+        <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+        <span class="n">rasters</span> <span class="o">=</span> <span class="p">[</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">imputed_images</span><span class="p">]</span>
+
+        <span class="n">averaged</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rasters</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">dst_raster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span> <span class="o">+</span> <span class="s1">&#39;/suitability_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tif&#39;</span>
+
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">imputed_images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">mask</span><span class="p">:</span>
+
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dst_raster</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+
+                <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">averaged</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">fill_value</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">nodata</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SDM.load_classifiers_and_extrapolate"><a class="viewcode-back" href="../../../_autosummary/crumbs.sdm.sdm.SDM.html#crumbs.sdm.sdm.SDM.load_classifiers_and_extrapolate">[docs]</a>    <span class="k">def</span> <span class="nf">load_classifiers_and_extrapolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the classifiers from joblib files and project them to present</span>
+<span class="sd">        and past climates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pyimpute</span> <span class="kn">import</span> <span class="n">load_targets</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Quetzal-CRUMBS - Species Distribution Modeling for iDDC modeling&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... projection to time &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_download_chelsa_variables_at_time</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
+        <span class="n">explanatory_rasters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_paths_of_explanatory_rasters_at_time</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - loading target explanatory raster data&#39;</span><span class="p">)</span>
+        <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span> <span class="o">=</span> <span class="n">load_targets</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - loading persisted classifiers and imputing&#39;</span><span class="p">)</span>
+        <span class="n">imputed_images</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_classifiers_and_impute</span><span class="p">(</span><span class="n">timeID</span><span class="p">,</span> <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... masking ocean cells to dem no data value for all probability_1 rasters&#39;</span><span class="p">)</span>
+        <span class="n">elevation_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_digital_elevation_raster</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ocean_cells_to_nodata</span><span class="p">(</span><span class="n">elevation_file</span><span class="p">,</span> <span class="n">imputed_images</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... averaging imputed rasters for climate conditions at CHELSA time&#39;</span><span class="p">,</span> <span class="n">timeID</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average_and_save_imputed_rasters</span><span class="p">(</span><span class="n">timeID</span><span class="p">,</span> <span class="n">imputed_images</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="SDM.fit_on_present_data"><a class="viewcode-back" href="../../../_autosummary/crumbs.sdm.sdm.SDM.html#crumbs.sdm.sdm.SDM.fit_on_present_data">[docs]</a>    <span class="k">def</span> <span class="nf">fit_on_present_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use presences and modern DEM to generate pseudo-absence, then fit the classifiers</span>
+<span class="sd">        and generate joblib files for model persistence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pyimpute</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="n">load_training_vector</span><span class="p">,</span>
+            <span class="n">load_targets</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_download_chelsa_variables_at_time</span><span class="p">(</span><span class="n">timeID</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="n">presence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_and_clean_presence_dataset</span><span class="p">()</span>
+
+        <span class="n">absence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_background</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_background_points</span><span class="p">)</span>
+
+        <span class="n">presence_absence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_presence_absence</span><span class="p">(</span><span class="n">presence</span><span class="p">,</span> <span class="n">absence</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">explanatory_rasters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_paths_of_explanatory_rasters_at_time</span><span class="p">(</span><span class="n">timeID</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading training vector&#39;</span><span class="p">)</span>
+        <span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">load_training_vector</span><span class="p">(</span><span class="n">presence_absence</span><span class="p">,</span> <span class="n">explanatory_rasters</span><span class="p">,</span> <span class="n">response_field</span><span class="o">=</span><span class="s1">&#39;CLASS&#39;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading explanatory rasters&#39;</span><span class="p">)</span>
+        <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span> <span class="o">=</span> <span class="n">load_targets</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">)</span>
+
+        <span class="c1"># check shape, does it match the size above of the observations?</span>
+        <span class="k">assert</span> <span class="n">train_xs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">train_y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... fitting classifiers on training data&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_train_and_save_classifiers</span><span class="p">(</span><span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+    <span class="c1"># def build_virtual_suitability():</span>
+    <span class="c1">#     VRT = get_chelsa.to_vrt(get_chelsa.sort_nicely(raster_list), out_dir + &#39;/&#39; + output + &quot;.vrt&quot;  )</span>
+    <span class="c1">#     get_chelsa.to_geotiff(VRT,  out_dir + &#39;/&#39; + output + &quot;.tif&quot;)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

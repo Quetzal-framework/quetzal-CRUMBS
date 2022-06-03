@@ -1,0 +1,6 @@
+crumbs.bpp.nb\_species\_posterior\_probabilities
+================================================
+
+.. currentmodule:: crumbs.bpp
+
+.. autofunction:: nb_species_posterior_probabilities

@@ -1,4 +1,4 @@
-crumbs
+﻿crumbs
 ======
 
 .. automodule:: crumbs
@@ -20,4 +20,23 @@ crumbs
    
 
 
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.bpp
+   crumbs.chelsa
+   crumbs.fasta2phylip
+   crumbs.get_failed_simulations_rowids
+   crumbs.get_gbif
+   crumbs.get_successful_simulations_rowids
+   crumbs.phylip2arlequin
+   crumbs.raster
+   crumbs.retrieve_parameters
+   crumbs.sample
+   crumbs.sdm
+   crumbs.sequence
+   crumbs.simulate_phylip_sequences
 

@@ -1,0 +1,6 @@
+crumbs.raster.interpolate.make\_masked\_array
+=============================================
+
+.. currentmodule:: crumbs.raster.interpolate
+
+.. autofunction:: make_masked_array

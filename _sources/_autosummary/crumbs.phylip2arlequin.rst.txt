@@ -1,0 +1,32 @@
+crumbs.phylip2arlequin
+======================
+
+.. automodule:: crumbs.phylip2arlequin
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+      phylip2arlequin
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

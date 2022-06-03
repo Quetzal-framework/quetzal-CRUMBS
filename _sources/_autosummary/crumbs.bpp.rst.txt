@@ -1,0 +1,31 @@
+crumbs.bpp
+==========
+
+.. automodule:: crumbs.bpp
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      nb_species_posterior_probabilities
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

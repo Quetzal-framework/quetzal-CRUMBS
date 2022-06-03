@@ -1,0 +1,41 @@
+crumbs.sequence
+===============
+
+.. automodule:: crumbs.sequence
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      fasta_parse
+      fasta_to_phylip
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Sequence
+   
+   
+
+   
+   
+   
+
+
+

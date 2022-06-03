@@ -1,0 +1,6 @@
+crumbs.sample.uniform\_latlon
+=============================
+
+.. currentmodule:: crumbs.sample
+
+.. autofunction:: uniform_latlon

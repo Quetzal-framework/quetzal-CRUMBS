@@ -1,0 +1,6 @@
+crumbs.get\_successful\_simulations\_rowids.get\_successful\_simulations\_rowids
+================================================================================
+
+.. currentmodule:: crumbs.get_successful_simulations_rowids
+
+.. autofunction:: get_successful_simulations_rowids

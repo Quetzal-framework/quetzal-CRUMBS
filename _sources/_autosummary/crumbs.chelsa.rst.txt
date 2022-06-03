@@ -1,0 +1,32 @@
+crumbs.chelsa
+=============
+
+.. automodule:: crumbs.chelsa
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.chelsa.helpers
+   crumbs.chelsa.request
+   crumbs.chelsa.utils
+

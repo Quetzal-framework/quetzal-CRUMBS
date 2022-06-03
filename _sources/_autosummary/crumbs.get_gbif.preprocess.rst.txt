@@ -1,0 +1,6 @@
+crumbs.get\_gbif.preprocess
+===========================
+
+.. currentmodule:: crumbs.get_gbif
+
+.. autofunction:: preprocess

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>crumbs.raster.interpolate &mdash; Quetzal-CRUMBS  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Quetzal-CRUMBS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/crumbs.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Quetzal-CRUMBS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>crumbs.raster.interpolate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for crumbs.raster.interpolate</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+
+
+<div class="viewcode-block" id="convert_size"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.convert_size.html#crumbs.raster.interpolate.convert_size">[docs]</a><span class="k">def</span> <span class="nf">convert_size</span><span class="p">(</span><span class="n">size_bytes</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="k">if</span> <span class="n">size_bytes</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;0B&quot;</span>
+    <span class="n">size_name</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;KB&quot;</span><span class="p">,</span> <span class="s2">&quot;MB&quot;</span><span class="p">,</span> <span class="s2">&quot;GB&quot;</span><span class="p">,</span> <span class="s2">&quot;TB&quot;</span><span class="p">,</span> <span class="s2">&quot;PB&quot;</span><span class="p">,</span> <span class="s2">&quot;EB&quot;</span><span class="p">,</span> <span class="s2">&quot;ZB&quot;</span><span class="p">,</span> <span class="s2">&quot;YB&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">size_bytes</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)))</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">size_bytes</span> <span class="o">/</span> <span class="n">p</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">size_name</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="test_preconditions"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.test_preconditions.html#crumbs.raster.interpolate.test_preconditions">[docs]</a><span class="k">def</span> <span class="nf">test_preconditions</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="c1"># The x-coordinates (missing times) at which to evaluate the interpolated values.</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+    <span class="c1"># The x-coordinates (existing times) of the data points (where returns a tuple because each element of the tuple refers to a dimension.)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">,</span> <span class="s1">&#39;Sequence of yearsBP must be increasing&#39;</span></div>
+
+
+<div class="viewcode-block" id="unmasked_interpolation"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.unmasked_interpolation.html#crumbs.raster.interpolate.unmasked_interpolation">[docs]</a><span class="k">def</span> <span class="nf">unmasked_interpolation</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">test_preconditions</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">)</span>
+
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xp</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+
+    <span class="c1"># Returns the one-dimensional piecewise linear interpolant to a function with given discrete data points (xp, fp), evaluated at x.</span>
+    <span class="n">new_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">new_y</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_y</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="mask_interpolation"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.mask_interpolation.html#crumbs.raster.interpolate.mask_interpolation">[docs]</a><span class="k">def</span> <span class="nf">mask_interpolation</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">test_preconditions</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">)</span>
+    <span class="n">mask</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>  <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mask</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># the mask y values at existing times</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">xp</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+
+    <span class="n">new_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+    <span class="n">mask</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_y</span>
+    <span class="k">return</span> <span class="n">mask</span> <span class="o">&gt;</span> <span class="mf">0.5</span></div>
+
+
+<div class="viewcode-block" id="missing_years_known_years"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.missing_years_known_years.html#crumbs.raster.interpolate.missing_years_known_years">[docs]</a><span class="k">def</span> <span class="nf">missing_years_known_years</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">known_years</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span>
+    <span class="n">all_years</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+    <span class="n">missing_years</span> <span class="o">=</span> <span class="n">all_years</span> <span class="o">-</span> <span class="n">known_years</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">missing_years</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">known_years</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="number_of_missing_bands"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.number_of_missing_bands.html#crumbs.raster.interpolate.number_of_missing_bands">[docs]</a><span class="k">def</span> <span class="nf">number_of_missing_bands</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">band_to_yearBP</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">sum</span> <span class="o">+=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="nb">sum</span></div>
+
+
+<div class="viewcode-block" id="make_masked_array"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.make_masked_array.html#crumbs.raster.interpolate.make_masked_array">[docs]</a><span class="k">def</span> <span class="nf">make_masked_array</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">known_ma_array</span><span class="p">,</span> <span class="n">band_to_yearBP</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+    <span class="n">ma_array</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">known_ma_array</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1">#Filling the data shape with existing bands</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">yearBP</span> <span class="ow">in</span> <span class="n">band_to_yearBP</span><span class="p">:</span>
+        <span class="n">ma_array</span><span class="p">[</span><span class="n">yearBP</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="n">known_ma_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - band &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;assigned to year BP &quot;</span><span class="p">,</span> <span class="n">yearBP</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">ma_array</span></div>
+
+
+<div class="viewcode-block" id="temporal_interpolation"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.temporal_interpolation.html#crumbs.raster.interpolate.temporal_interpolation">[docs]</a><span class="k">def</span> <span class="nf">temporal_interpolation</span><span class="p">(</span><span class="n">inputFile</span><span class="p">,</span> <span class="n">band_to_yearBP</span><span class="p">,</span> <span class="n">outputFile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">dask</span>
+    <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+    <span class="kn">import</span> <span class="nn">rasterio</span>
+    <span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span>
+    <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+    <span class="kn">import</span> <span class="nn">rioxarray</span>
+    <span class="kn">import</span> <span class="nn">threading</span>
+
+    <span class="n">outputFile</span> <span class="o">=</span> <span class="s1">&#39;interpolated.tif&#39;</span> <span class="k">if</span> <span class="n">outputFile</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">outputFile</span>
+
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">inputFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... reading multiband raster&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - number of existing bands is&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">source</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Need at least 2 bands in raster to interpolate.&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - bands will be macthed against (in years BP):&#39;</span><span class="p">,</span> <span class="n">band_to_yearBP</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">source</span><span class="o">.</span><span class="n">count</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">),</span> <span class="s1">&#39;Incorrect number of existing bands, or incorrect mapping {band number -&gt; year BP}.&#39;</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">,</span> <span class="s1">&#39;Incorrect mapping: sequence of yearsBP must be strictly increasing.&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - number of missing bands is&#39;</span><span class="p">,</span> <span class="n">number_of_missing_bands</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">))</span>
+
+        <span class="c1"># chaunks is provided &amp; lock is False: ensure that reading and operating on your data happen in parallel.</span>
+        <span class="n">x_array</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">inputFile</span><span class="p">,</span> <span class="n">masked</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">chunks</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span><span class="s1">&#39;auto&#39;</span><span class="p">),</span> <span class="n">lock</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Create a view</span>
+        <span class="n">src_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="o">.</span><span class="n">to_masked_array</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># src_array = source.read(masked=True)</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">src_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">src_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="c1"># Predicting requested memory</span>
+        <span class="c1"># size_bytes = new_shape[0]*new_shape[1]*new_shape[2] * src_array.itemsize</span>
+        <span class="c1"># print(&#39;        - memory allocation request would be: &#39;, convert_size(size_bytes))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... creating new array&#39;</span><span class="p">)</span>
+        <span class="n">ma_arr</span> <span class="o">=</span> <span class="n">make_masked_array</span><span class="p">(</span><span class="n">new_shape</span><span class="p">,</span> <span class="n">src_array</span><span class="p">,</span> <span class="n">band_to_yearBP</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... interpolating missing bands&#39;</span><span class="p">)</span>
+        <span class="n">missing_years</span><span class="p">,</span> <span class="n">known_years</span> <span class="o">=</span> <span class="n">missing_years_known_years</span><span class="p">(</span><span class="n">band_to_yearBP</span><span class="p">)</span>
+
+        <span class="n">da_ma_arr</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">ma_arr</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">,</span><span class="mi">10000</span><span class="p">))</span>
+
+        <span class="n">arr_interpolated</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">unmasked_interpolation</span><span class="p">,</span>
+                                           <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">arr</span><span class="o">=</span><span class="n">da</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">da_ma_arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">),</span>
+                                           <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">da_ma_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span>
+                                           <span class="n">dtype</span><span class="o">=</span><span class="n">da_ma_arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                           <span class="n">x</span><span class="o">=</span><span class="n">missing_years</span><span class="p">,</span>
+                                           <span class="n">xp</span><span class="o">=</span><span class="n">known_years</span><span class="p">)</span>
+
+        <span class="n">mask_interpolated</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">func1d</span><span class="o">=</span><span class="n">mask_interpolation</span><span class="p">,</span>
+                                           <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">arr</span><span class="o">=</span><span class="n">ma_arr</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
+                                           <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">da_ma_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],),</span>
+                                           <span class="n">dtype</span><span class="o">=</span><span class="n">da_ma_arr</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                                           <span class="n">x</span><span class="o">=</span><span class="n">missing_years</span><span class="p">,</span>
+                                           <span class="n">xp</span><span class="o">=</span><span class="n">known_years</span><span class="p">)</span>
+
+        <span class="n">interpolated</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">arr_interpolated</span><span class="p">,</span> <span class="n">mask_interpolated</span><span class="p">)</span>
+        <span class="n">filled</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">interpolated</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">nodata</span><span class="p">)</span>
+
+        <span class="c1"># Writing the new raster</span>
+        <span class="n">new_meta</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">meta</span>
+        <span class="n">new_meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;count&#39;</span> <span class="p">:</span> <span class="n">new_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;nodata&#39;</span> <span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">nodata</span>  <span class="p">})</span>
+
+        <span class="k">assert</span> <span class="n">filled</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">src_array</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="k">assert</span> <span class="n">filled</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">new_meta</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">new_meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">new_meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">])</span>
+
+        <span class="n">ProgressBar</span><span class="p">()</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">filled</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;band&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">])</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">x_array</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_nodata</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">nodata</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_transform</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">transform</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">to_raster</span><span class="p">(</span><span class="n">outputFile</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">())</span>
+
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="get_times_args"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.get_times_args.html#crumbs.raster.interpolate.get_times_args">[docs]</a><span class="k">def</span> <span class="nf">get_times_args</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">):</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">option</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../_autosummary/crumbs.raster.interpolate.main.html#crumbs.raster.interpolate.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Quetzal-CRUMBS - Temporal interpolation for missing layers&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--timesID&quot;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;generations&quot;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;callback&#39;</span><span class="p">,</span>
+                        <span class="n">callback</span><span class="o">=</span><span class="n">get_times_args</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Comma separated sequence mapping band layers to years before present. Example for a 3 band raster: 0,500,1000.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--output&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Cliped output raster name&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">temporal_interpolation</span><span class="p">(</span>
+        <span class="n">inputFile</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">band_to_yearBP</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">generations</span><span class="p">,</span>
+        <span class="n">outputFile</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

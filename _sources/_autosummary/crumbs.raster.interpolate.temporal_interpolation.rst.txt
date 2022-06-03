@@ -1,0 +1,6 @@
+crumbs.raster.interpolate.temporal\_interpolation
+=================================================
+
+.. currentmodule:: crumbs.raster.interpolate
+
+.. autofunction:: temporal_interpolation

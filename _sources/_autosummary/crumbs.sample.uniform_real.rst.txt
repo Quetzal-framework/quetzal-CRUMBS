@@ -1,0 +1,6 @@
+crumbs.sample.uniform\_real
+===========================
+
+.. currentmodule:: crumbs.sample
+
+.. autofunction:: uniform_real

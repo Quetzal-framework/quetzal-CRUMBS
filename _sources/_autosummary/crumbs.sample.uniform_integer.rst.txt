@@ -1,0 +1,6 @@
+crumbs.sample.uniform\_integer
+==============================
+
+.. currentmodule:: crumbs.sample
+
+.. autofunction:: uniform_integer

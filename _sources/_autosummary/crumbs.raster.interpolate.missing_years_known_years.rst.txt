@@ -1,0 +1,6 @@
+crumbs.raster.interpolate.missing\_years\_known\_years
+======================================================
+
+.. currentmodule:: crumbs.raster.interpolate
+
+.. autofunction:: missing_years_known_years

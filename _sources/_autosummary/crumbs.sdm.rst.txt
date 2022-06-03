@@ -1,0 +1,32 @@
+crumbs.sdm
+==========
+
+.. automodule:: crumbs.sdm
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.sdm.extrapolate
+   crumbs.sdm.fit
+   crumbs.sdm.sdm
+

@@ -1,0 +1,6 @@
+crumbs.retrieve\_parameters.retrieve\_parameters
+================================================
+
+.. currentmodule:: crumbs.retrieve_parameters
+
+.. autofunction:: retrieve_parameters

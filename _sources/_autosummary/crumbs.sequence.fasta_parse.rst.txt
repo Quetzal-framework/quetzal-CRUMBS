@@ -1,0 +1,6 @@
+crumbs.sequence.fasta\_parse
+============================
+
+.. currentmodule:: crumbs.sequence
+
+.. autofunction:: fasta_parse

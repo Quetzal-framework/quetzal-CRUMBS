@@ -1,0 +1,6 @@
+crumbs.phylip2arlequin.main
+===========================
+
+.. currentmodule:: crumbs.phylip2arlequin
+
+.. autofunction:: main

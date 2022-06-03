@@ -1,0 +1,36 @@
+crumbs.raster
+=============
+
+.. automodule:: crumbs.raster
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.raster.animate
+   crumbs.raster.circle_mask
+   crumbs.raster.interpolate
+   crumbs.raster.resample
+   crumbs.raster.rotate_and_rescale
+   crumbs.raster.show_raster
+   crumbs.raster.utils
+

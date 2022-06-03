@@ -1,0 +1,34 @@
+crumbs.sample
+=============
+
+.. automodule:: crumbs.sample
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      random_sample_from_masked_array
+      uniform_integer
+      uniform_latlon
+      uniform_real
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

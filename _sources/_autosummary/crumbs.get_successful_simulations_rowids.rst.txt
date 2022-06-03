@@ -1,0 +1,32 @@
+crumbs.get\_successful\_simulations\_rowids
+===========================================
+
+.. automodule:: crumbs.get_successful_simulations_rowids
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_successful_simulations_rowids
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+crumbs.sample.random\_sample\_from\_masked\_array
+=================================================
+
+.. currentmodule:: crumbs.sample
+
+.. autofunction:: random_sample_from_masked_array

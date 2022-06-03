@@ -1,0 +1,36 @@
+crumbs.sdm.sdm.SDM
+==================
+
+.. currentmodule:: crumbs.sdm.sdm
+
+.. autoclass:: SDM
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SDM.fit_on_present_data
+      ~SDM.load_classifiers_and_extrapolate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SDM.Dict
+      ~SDM.List
+      ~SDM.Optional
+      ~SDM.Set
+      ~SDM.Tuple
+   
+   

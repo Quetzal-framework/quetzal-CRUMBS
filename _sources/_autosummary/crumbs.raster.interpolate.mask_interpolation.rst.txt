@@ -1,0 +1,6 @@
+crumbs.raster.interpolate.mask\_interpolation
+=============================================
+
+.. currentmodule:: crumbs.raster.interpolate
+
+.. autofunction:: mask_interpolation
