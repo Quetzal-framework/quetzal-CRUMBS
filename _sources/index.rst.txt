@@ -46,3 +46,10 @@ Short list of features:
 5. Prepare the dynamic landscape for simulation-based inference (virtual layers, resolution...)
 6. If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data from the output database
 7. Use Decrypt to perform robustness analysis of species delimitation methods.
+
+.. figure:: pipeline_CRUMBS.svg
+   :alt: Quetzal-CRUMBS main features
+   :class: with-shadow
+   :width: 400px
+
+   How you can use Quetzal-CRUMBS to inform spatially explicit landscape simulations at phylogeographic scales
