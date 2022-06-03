@@ -1670,8 +1670,8 @@
   </g>
   <g class="com.sun.star.drawing.TextShape">
    <g id="id57">
-    <rect class="BoundingBox" stroke="none" fill="none" x="933" y="18109" width="5201" height="2133"/>
-    <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1183" y="18742"><tspan fill="rgb(52,101,164)" stroke="none">virtualization </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1183" y="19369"><tspan fill="rgb(52,101,164)" stroke="none">or interpolation </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1183" y="19996"><tspan fill="rgb(52,101,164)" stroke="none">of missing layers</tspan></tspan></tspan></text>
+    <rect class="BoundingBox" stroke="none" fill="none" x="1033" y="18109" width="5201" height="2133"/>
+    <text class="TextShape"><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1283" y="18742"><tspan fill="rgb(52,101,164)" stroke="none">virtualization </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1283" y="19369"><tspan fill="rgb(52,101,164)" stroke="none">or interpolation </tspan></tspan></tspan><tspan class="TextParagraph" font-family="Liberation Sans, sans-serif" font-size="564px" font-weight="700"><tspan class="TextPosition" x="1283" y="19996"><tspan fill="rgb(52,101,164)" stroke="none">of missing layers</tspan></tspan></tspan></text>
    </g>
   </g>
   <g class="com.sun.star.drawing.TextShape">
@@ -1730,9 +1730,9 @@
   </g>
   <g class="com.sun.star.drawing.ConnectorShape">
    <g id="id66">
-    <rect class="BoundingBox" stroke="none" fill="none" x="6069" y="18382" width="4801" height="1214"/>
-    <path fill="none" stroke="rgb(52,101,164)" d="M 6070,18383 C 9568,18383 7374,19356 10402,19445"/>
-    <path fill="rgb(52,101,164)" stroke="none" d="M 10869,19451 L 10421,19295 10417,19595 10869,19451 Z"/>
+    <rect class="BoundingBox" stroke="none" fill="none" x="5575" y="18826" width="5295" height="1475"/>
+    <path fill="none" stroke="rgb(52,101,164)" stroke-width="51" stroke-linejoin="round" stroke-linecap="round" d="M 5601,18852 C 5601,19694 7175,20069 10323,20111"/>
+    <path fill="rgb(52,101,164)" stroke="none" d="M 10869,20115 L 10306,19923 10304,20299 10869,20115 Z"/>
    </g>
   </g>
  </g>
