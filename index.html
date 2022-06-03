@@ -94,17 +94,33 @@
 </div>
 <section id="welcome-to-quetzal-crumbs-documentation">
 <h1>Welcome to Quetzal-crumbs documentation<a class="headerlink" href="#welcome-to-quetzal-crumbs-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This Sphinx-built HTML doc set uses the new <code class="docutils literal notranslate"><span class="pre">:recursive:</span></code> option available in <code class="docutils literal notranslate"><span class="pre">sphinx.ext.autosummary</span></code>. From version 3.1. Sphinx can now iterate
-over a Python package automatically, so you no longer have to hard code all your module names, or integrate a 3rd party extension to provide this functionality.</p>
-<p>You can:</p>
-<ul class="simple">
-<li><p>Point Sphinx at the top of a Python source code tree, and have it automatically find all the modules in the package, however deeply nested.</p></li>
-<li><p>For each module, list the attributes, functions, classes and exceptions in that module in summary tables.</p></li>
-<li><p>For each entry in a summary table, create a hyperlink to a new page displaying the extracted docstrings for that attribute, function, class or exception.</p></li>
-<li><p>For each class, document (my choice of) inheritence, public members, inherited members, and special members such as <code class="docutils literal notranslate"><span class="pre">__call__</span></code>. Other choices are available.</p></li>
+<p>This python library is meant to be used along other software from the Quetzal
+framework to perform iDDC modeling and inference.</p>
+<p>iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
+methodology for statistical phylogeography. It relies heavily on spatial models
+and methods to explain how past processes (sea level change, glaciers dynamics,
+climate modifications) shaped the present spatial distribution of genetic lineages.</p>
+<p>For a quick tour of iDDC, have a look at <a class="reference external" href="https://becheler.github.io/who-am-i/">my blog post</a></p>
+<section id="short-list-of-features">
+<h2>Short list of features:<a class="headerlink" href="#short-list-of-features" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Access the Global Biodiversity Information Facility to retrieve presence points</p></li>
+<li><p>Access the high resolution paleoclimatic database CHELSA to download world files</p></li>
+<li><p>Fit a Species Distribution model and save (persist) the fitted models</p></li>
+<li><dl class="simple">
+<dt>Distribute the fitted models on cluster nodes and</dt><dd><ul class="simple">
+<li><p>reconstruct landscape habitability dynamics across millennia</p></li>
+<li><p>perform model averaging</p></li>
+<li><p>fetch and assemble the layers</p></li>
 </ul>
-<p>It’s also relatively easy to integrate Jupyter Notebooks with Sphinx, to provide tutorial-style material.</p>
-<p>To see how to configure Sphinx to do all this, start with the <a class="reference external" href="https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion">Github repo README</a>.</p>
+</dd>
+</dl>
+</li>
+<li><p>Prepare the dynamic landscape for simulation-based inference (virtual layers, resolution…)</p></li>
+<li><p>If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data from the output database</p></li>
+<li><p>Use Decrypt to perform robustness analysis of species delimitation methods.</p></li>
+</ol>
+</section>
 </section>
 
 

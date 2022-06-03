@@ -10,16 +10,26 @@
 Welcome to Quetzal-crumbs documentation
 =====================================================
 
-This Sphinx-built HTML doc set uses the new ``:recursive:`` option available in ``sphinx.ext.autosummary``. From version 3.1. Sphinx can now iterate
-over a Python package automatically, so you no longer have to hard code all your module names, or integrate a 3rd party extension to provide this functionality.
+This python library is meant to be used along other software from the Quetzal
+framework to perform iDDC modeling and inference.
 
-You can:
+iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
+methodology for statistical phylogeography. It relies heavily on spatial models
+and methods to explain how past processes (sea level change, glaciers dynamics,
+climate modifications) shaped the present spatial distribution of genetic lineages.
 
-* Point Sphinx at the top of a Python source code tree, and have it automatically find all the modules in the package, however deeply nested.
-* For each module, list the attributes, functions, classes and exceptions in that module in summary tables.
-* For each entry in a summary table, create a hyperlink to a new page displaying the extracted docstrings for that attribute, function, class or exception.
-* For each class, document (my choice of) inheritence, public members, inherited members, and special members such as ``__call__``. Other choices are available.
+For a quick tour of iDDC, have a look at `my blog post <https://becheler.github.io/who-am-i/>`_
 
-It's also relatively easy to integrate Jupyter Notebooks with Sphinx, to provide tutorial-style material.
+Short list of features:
+-----------------------
 
-To see how to configure Sphinx to do all this, start with the `Github repo README <https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion>`_.
+1. Access the Global Biodiversity Information Facility to retrieve presence points
+2. Access the high resolution paleoclimatic database CHELSA to download world files
+3. Fit a Species Distribution model and save (persist) the fitted models
+4. Distribute the fitted models on cluster nodes and
+    * reconstruct landscape habitability dynamics across millennia
+    * perform model averaging
+    * fetch and assemble the layers
+5. Prepare the dynamic landscape for simulation-based inference (virtual layers, resolution...)
+6. If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data from the output database
+7. Use Decrypt to perform robustness analysis of species delimitation methods.
