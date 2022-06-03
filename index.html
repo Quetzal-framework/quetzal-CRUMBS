@@ -129,8 +129,17 @@ climate modifications) shaped the present spatial distribution of genetic lineag
 </dd>
 </dl>
 </li>
-<li><p>Prepare the dynamic landscape for simulation-based inference (virtual layers, resolution…)</p></li>
-<li><p>If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data from the output database</p></li>
+<li><dl class="simple">
+<dt>Prepare the dynamic landscape for simulation-based inference</dt><dd><ul class="simple">
+<li><p>adjust the landscape extent and its grid resolution</p></li>
+<li><p>interpolate missing layers if you need to smooth sharp climatic transitions</p></li>
+<li><p>virtualize missing layers if you need to save memory</p></li>
+<li><p>Use the resulting <code class="docutils literal notranslate"><span class="pre">landscape.vrt</span></code> file to trick the simulator into believing a layer exists for each generation to simulate</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Use Quetzal-EGGS spatial simulators, retrieve parameters and simulated genetic data from the output database</p></li>
 <li><p>Use Decrypt to perform robustness analysis of species delimitation methods.</p></li>
 </ol>
 <figure class="align-default" id="id2">
