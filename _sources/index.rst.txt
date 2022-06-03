@@ -5,10 +5,9 @@
    :hidden:
 
    Home page <self>
-   Jupyter tutorials <tutorials>
-   API reference <_autosummary/mytoolbox>
+   API reference <_autosummary/crumbs>
 
-Welcome to Sphinx-Autosummary-Recursion documentation
+Welcome to Quetzal-crumbs documentation
 =====================================================
 
 This Sphinx-built HTML doc set uses the new ``:recursive:`` option available in ``sphinx.ext.autosummary``. From version 3.1. Sphinx can now iterate
