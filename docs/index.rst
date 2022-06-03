@@ -7,4 +7,6 @@ Some words.
   :toctree: _autosummary
   :recursive:
 
-  crumbs
+  crumbs.sdm
+  crumbs.chelsa
+  crumbs.raster
