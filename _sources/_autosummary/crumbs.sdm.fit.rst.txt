@@ -1,0 +1,22 @@
+crumbs.sdm.fit
+==============
+
+.. automodule:: crumbs.sdm.fit
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   

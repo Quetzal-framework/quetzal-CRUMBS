@@ -1,0 +1,23 @@
+crumbs.chelsa.helpers
+=====================
+
+.. automodule:: crumbs.chelsa.helpers
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_timesID_args
+      get_variables_args
+   
+   
+
+   
+   
+   
+
+   
+   
+   

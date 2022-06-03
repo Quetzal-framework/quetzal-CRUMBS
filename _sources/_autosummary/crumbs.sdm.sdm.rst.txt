@@ -1,0 +1,22 @@
+crumbs.sdm.sdm
+==============
+
+.. automodule:: crumbs.sdm.sdm
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      SDM
+   
+   
+
+   
+   
+   
