@@ -62,7 +62,7 @@ jobs:
             pip3 install dist/quetzal_crumbs-1.0.16-py3-none-any.whl
       - run:
           name: Run tests
-          command: python -W ignore -m unittest discover
+          command: python3 -W ignore -m unittest discover
 
   test_pypi_publish:
     executor: executor-crumbs
