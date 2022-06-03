@@ -3,7 +3,8 @@ Module declaring the base class for Species Distribution Modeling.
 """
 
 class SDM:
-    """ Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences
+    """
+    Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences
     and fit classifiers, saving fitted models for later extrapolations to past time periods
     with dHTC.
     """
@@ -20,7 +21,9 @@ class SDM:
     buffer: float = 0.0,
     cleanup: bool = True
     ):
-        """Species Distribution Model constuctor"""
+        """
+        Species Distribution Model constuctor
+        """
 
         self.scientific_name    = scientific_name
         self.presence_shapefile = presence_shapefile
@@ -44,7 +47,8 @@ class SDM:
         self.variables = list(v)
 
     def _get_ML_classifiers(self):
-        """ Imports a bunch of machine learning classifiers
+        """
+        Imports a bunch of machine learning classifiers
         """
         from sklearn.ensemble import RandomForestClassifier
         from sklearn.ensemble import ExtraTreesClassifier
@@ -61,7 +65,8 @@ class SDM:
         return class_map
 
     def _train_and_save_classifiers(self,train_xs, train_y, target_xs, raster_info):
-        """ Fitting classifiers from target data
+        """
+        Fitting classifiers from target data
         """
 
         from sklearn import model_selection
@@ -101,7 +106,8 @@ class SDM:
         return None
 
     def _random_sample_from_masked_array(self, masked, nb_sample):
-        """ Sample indices uniformely at random in a masked array, ignoring masked values.
+        """
+        Sample indices uniformely at random in a masked array, ignoring masked values.
         Returns a tuple (idx,idy)
         """
         import numpy as np
@@ -130,7 +136,8 @@ class SDM:
         return gdf
 
     def _sample_background(self, demRaster, nb_sample=30):
-        """ If presence-only data are given (e.g., from GBIF) then some form of absence points is needed.
+        """
+        If presence-only data are given (e.g., from GBIF) then some form of absence points is needed.
         Random background points are sampled uniformely at random from contemporary DEM band.
         Returns a geopandas dataframe, with a CLASS column filled with 0 values (absence)
         """
@@ -155,7 +162,9 @@ class SDM:
         return gdf
 
     def _download_chelsa_variables_at_time(self, timeID) -> None :
-        """Download chelsa datasets in order to fit and extrapolate classifiers"""
+        """
+        Download chelsa datasets in order to fit and extrapolate classifiers
+        """
 
         from crumbs.chelsa.utils import request
 
@@ -181,8 +190,9 @@ class SDM:
         return None
 
     def _drop_ocean_cells(self, gdf, rasterFile):
-        """ Drop coordinates of a geopandadataframe that happen to fall in the ocean cells
-            of a digital elevation model.
+        """
+        Drop coordinates of a geopandadataframe that happen to fall in the ocean cells
+        of a digital elevation model.
         """
         import rasterio
         import numpy as np
@@ -199,7 +209,8 @@ class SDM:
         return gdf
 
     def _read_and_clean_presence_dataset(self):
-        """ Read a presence dataset, drop duplicates and remove points falling in ocean cells
+        """
+        Read a presence dataset, drop duplicates and remove points falling in ocean cells
         """
         print('    ... reading presence shapefile datatsets:')
         presences = self._to_geopanda_dataframe(self.presence_shapefile)
@@ -216,7 +227,8 @@ class SDM:
         return presences
 
     def _plot(self, pa, filename : str = "presences-pseudo-absences.png") -> None:
-        """ Plot presences and absences on top of each others.
+        """
+        Plot presences and absences on top of each others.
         """
         import matplotlib.pyplot as plt
 
@@ -230,7 +242,9 @@ class SDM:
         return None
 
     def _build_presence_absence(self, presence, pseudo_absence, plot=False):
-        """ Concatenate presence and pseudo-absence geopanda dataframes"""
+        """
+        Concatenate presence and pseudo-absence geopanda dataframes
+        """
         import pandas
 
         pa = pandas.concat([presence, pseudo_absence],  axis=0, ignore_index=True, join="inner")
@@ -246,8 +260,9 @@ class SDM:
         return pa
 
     def _ocean_cells_to_nodata(self, demRaster, rasters) -> None :
-        """ Transfer the notdata values from a Digital Elevation Model raster to a list
-            of rasters of similar metadata
+        """
+        Transfer the notdata values from a Digital Elevation Model raster to a list
+        of rasters of similar metadata
         """
         import rasterio
         import numpy as np
@@ -276,7 +291,8 @@ class SDM:
         return None
 
     def _get_paths_of_explanatory_rasters_at_time(self, timeID):
-        """ Returns paths to all expplanatory rasters and mask their ocean cells using DEM
+        """
+        Returns paths to all expplanatory rasters and mask their ocean cells using DEM
         """
         from glob import glob
         explanatory_rasters = sorted(glob(self.landscape_dir + '/*_' + str(timeID) +'_*.tif'))
@@ -284,7 +300,8 @@ class SDM:
         return explanatory_rasters
 
     def _mask_ocean_cells(self, explanatory_rasters: List[str]) -> None:
-        """" Mask ocean cells of raster using DEM
+        """"
+        Mask ocean cells of raster using DEM
         """
         print('    ... masking ocean cells to DEM nodata value for all explanatory rasters')
         self._ocean_cells_to_nodata(self.present_time_DEM, explanatory_rasters)
@@ -316,8 +333,9 @@ class SDM:
         return imputed_images
 
     def _average_and_save_imputed_rasters(self, timeID, imputed_images) -> None:
-        """ Opens raster images imputed by different classifiers and average
-            them, saving the averaged raster.
+        """
+        Opens raster images imputed by different classifiers and average
+        them, saving the averaged raster.
         """
         import numpy.ma as ma
         import rasterio
@@ -343,7 +361,8 @@ class SDM:
         return None
 
     def load_classifiers_and_extrapolate(self, timeID) -> None:
-        """ Load the classifiers from joblib files and project them to present
+        """
+        Load the classifiers from joblib files and project them to present
         and past climates.
         """
         from pyimpute import load_targets
@@ -371,8 +390,9 @@ class SDM:
         return None
 
     def fit_on_present_data(self) -> None:
-        """ Use presences and modern DEM to generate pseudo-absence, then fit the classifiers
-            and generate joblib files for model persistence.
+        """
+        Use presences and modern DEM to generate pseudo-absence, then fit the classifiers
+        and generate joblib files for model persistence.
         """
         from pyimpute import (
             load_training_vector,
