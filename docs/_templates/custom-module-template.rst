@@ -4,7 +4,7 @@
 
    {% block attributes %}
    {% if attributes %}
-   .. rubric:: Module Attributes
+   .. rubric:: Module attributes
 
    .. autosummary::
       :toctree:
@@ -20,6 +20,7 @@
 
    .. autosummary::
       :toctree:
+      :nosignatures:
    {% for item in functions %}
       {{ item }}
    {%- endfor %}
@@ -33,6 +34,7 @@
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
+      :nosignatures:
    {% for item in classes %}
       {{ item }}
    {%- endfor %}
@@ -53,8 +55,6 @@
 
 {% block modules %}
 {% if modules %}
-.. rubric:: Modules
-
 .. autosummary::
    :toctree:
    :template: custom-module-template.rst
