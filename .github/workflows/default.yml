@@ -17,25 +17,10 @@ jobs:
       with:
         python-version: '3.7'
         cache: 'pip'
-    - run: pip install -r docs/requirements.txt
-    # Standard drop-in approach that should work for most people.
-    - uses: ammaraskar/sphinx-action@master
-      with:
-        docs-folder: "docs/"
-        build-command: "make html"
-    # Great extra actions to compose with:
-    # Create an artifact of the html output.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: DocumentationHTML
-        path: docs/_build/html/
-    # Create an artifact out of the previously built pdf.
-    # - uses: actions/upload-artifact@v1
-    #   with:
-    #     name: Documentation
-    #     path: docs2/_build/latex/pdfexample.pdf
-    # Publish built docs to gh-pages branch.
-    # ===============================
+    - run: |
+        cd docs
+        pip install -r requirements.txt
+        make html
     - name: Commit documentation changes
       run: |
         git clone https://github.com/ammaraskar/sphinx-action-test.git --branch gh-pages --single-branch gh-pages
