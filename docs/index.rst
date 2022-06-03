@@ -1,16 +1,11 @@
 Welcome to Quetzal-CRUMBS's documentation!
 ==================================================
 
-.. automodule:: my_project.sdm
+Some words.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
+.. autosummary::
+   :toctree: _autosummary
+   :template: custom-module-template.rst
+   :recursive:
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   crumbs
