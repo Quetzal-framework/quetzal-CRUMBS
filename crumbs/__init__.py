@@ -1,1 +1,3 @@
-__version__ = "1.0.0"
+"""
+API reference documentation for the `crumbs` package, for Integrated Distributional, Demograhic Coalescent modeling.
+"""
