@@ -17,9 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'No Errors Test Project'
-copyright = '2019, sphinx-action Test Suite'
-author = 'sphinx-action Test Suite'
+project = 'Quetzal-CRUMBS'
+author = 'Arnaud Becheler'
 
 
 # -- General configuration ---------------------------------------------------
@@ -28,6 +27,7 @@ author = 'sphinx-action Test Suite'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+'sphinx.ext.autodoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
