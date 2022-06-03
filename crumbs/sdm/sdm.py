@@ -1,4 +1,6 @@
-#!/usr/bin/python
+"""
+Module declaring the base class for Species Distribution Modeling.
+"""
 
 class SDM:
     """ Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences

@@ -1,3 +1,6 @@
+"""
+Module declaring helper functions to read options.
+"""
 
 def get_variables_args(option, opt, value, parser):
     setattr(parser.values, option.dest, value.split(','))

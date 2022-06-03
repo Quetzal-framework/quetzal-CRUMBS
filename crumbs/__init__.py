@@ -1,3 +1,3 @@
 """
-API reference documentation for the `crumbs` package, for Integrated Distributional, Demograhic Coalescent modeling.
+API reference documentation for the `crumbs` package, for Integrated Distributional, Demographic Coalescent modeling.
 """

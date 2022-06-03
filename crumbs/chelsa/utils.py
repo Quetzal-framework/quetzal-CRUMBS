@@ -1,4 +1,6 @@
-#!/usr/bin/python
+"""
+Module declaring utility functions for downloading CHELSA datasets.
+"""
 
 import requests
 import os
