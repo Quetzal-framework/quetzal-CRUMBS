@@ -7,6 +7,7 @@ Some words.
 
 .. autosummary::
   :toctree: _autosummary
+  :recursive:
 
   crumbs.sdm.sdm
   crumbs.sdm.extrapolate
