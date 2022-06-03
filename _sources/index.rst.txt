@@ -29,9 +29,9 @@ climate modifications) shaped the present spatial distribution of genetic lineag
    How Quetzal-CRUMBS fit into other resources for spatial simulations.
 
 
-* For a quick tour of iDDC, have a look at `my blog post.<https://becheler.github.io/who-am-i/>`_
+* For a quick tour of iDDC, have a look at `my blog post. <https://becheler.github.io/who-am-i/>`_
 * For a more formal presentation of the field, see this excellent review by
-  `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.<https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
+  `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss. <https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
 
 Short list of features:
 -----------------------
