@@ -54,6 +54,6 @@ Short list of features:
 .. figure:: pipeline_CRUMBS.svg
    :alt: Quetzal-CRUMBS main features
    :class: with-shadow
-   :width: 400px
+   :width: 600px
 
    How you can use Quetzal-CRUMBS to inform spatially explicit landscape simulations at phylogeographic scales
