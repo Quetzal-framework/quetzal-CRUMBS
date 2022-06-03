@@ -1,4 +1,4 @@
-name: CI
+name: Documentation
 
 on:
   push:
@@ -58,10 +58,3 @@ jobs:
       with:
         branch: gh-pages # The branch the action should deploy to.
         folder: gh-pages # The folder the action should deploy.
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     branch: gh-pages
-    #     directory: gh-pages
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    # ===============================
