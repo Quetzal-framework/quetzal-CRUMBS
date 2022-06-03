@@ -94,13 +94,24 @@
 </div>
 <section id="welcome-to-quetzal-crumbs-documentation">
 <h1>Welcome to Quetzal-crumbs documentation<a class="headerlink" href="#welcome-to-quetzal-crumbs-documentation" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>This python library is meant to be used along other software from the Quetzal
 framework to perform iDDC modeling and inference.</p>
+<figure class="align-default" id="id1">
+<a class="with-shadow reference internal image-reference" href="pipeline_SOFTWARES.svg"><img alt="Quetzal framework" class="with-shadow" src="pipeline_SOFTWARES.svg" width="400px" /></a>
+<figcaption>
+<p><span class="caption-text">How Quetzal-CRUMBS fit into other resources for spatial simulations.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <p>iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
 methodology for statistical phylogeography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics,
 climate modifications) shaped the present spatial distribution of genetic lineages.</p>
-<p>For a quick tour of iDDC, have a look at <a class="reference external" href="https://becheler.github.io/who-am-i/">my blog post</a></p>
+<blockquote>
+<div><p>For a quick tour of iDDC, have a look at <a class="reference external" href="https://becheler.github.io/who-am-i/">my blog post</a></p>
+</div></blockquote>
+</section>
 <section id="short-list-of-features">
 <h2>Short list of features:<a class="headerlink" href="#short-list-of-features" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
@@ -108,7 +119,7 @@ climate modifications) shaped the present spatial distribution of genetic lineag
 <li><p>Access the high resolution paleoclimatic database CHELSA to download world files</p></li>
 <li><p>Fit a Species Distribution model and save (persist) the fitted models</p></li>
 <li><dl class="simple">
-<dt>Distribute the fitted models on cluster nodes and</dt><dd><ul class="simple">
+<dt>Distribute the fitted models on cluster nodes and:</dt><dd><ul class="simple">
 <li><p>reconstruct landscape habitability dynamics across millennia</p></li>
 <li><p>perform model averaging</p></li>
 <li><p>fetch and assemble the layers</p></li>
