@@ -43,8 +43,12 @@ Short list of features:
     * reconstruct landscape habitability dynamics across millennia
     * perform model averaging
     * fetch and assemble the layers
-5. Prepare the dynamic landscape for simulation-based inference (virtual layers, resolution...)
-6. If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data from the output database
+5. Prepare the dynamic landscape for simulation-based inference
+    * adjust the landscape extent and its grid resolution
+    * interpolate missing layers if you need to smooth sharp climatic transitions
+    * virtualize missing layers if you need to save memory
+    * Use the resulting ``landscape.vrt`` file to trick the simulator into believing a layer exists for each generation to simulate
+6. Use Quetzal-EGGS spatial simulators, retrieve parameters and simulated genetic data from the output database
 7. Use Decrypt to perform robustness analysis of species delimitation methods.
 
 .. figure:: pipeline_CRUMBS.svg
