@@ -16,8 +16,8 @@ Introduction
 This python library is meant to be used along other software from the Quetzal
 framework to perform iDDC modeling and inference.
 
-iDDC modeling (Integrated Distributional, Demographic, Coalescent modeling) is a
-methodology for statistical phylogeography. It relies heavily on spatial models
+**iDDC modeling** (*integrated Distributional, Demographic, Coalescent modeling*) is a
+methodology for statistical phylo-geography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics,
 climate modifications) shaped the present spatial distribution of genetic lineages.
 
@@ -28,9 +28,9 @@ climate modifications) shaped the present spatial distribution of genetic lineag
 
    How Quetzal-CRUMBS fit into other resources for spatial simulations.
 
-  For a quick tour of iDDC, have a look at `my blog post.<https://becheler.github.io/who-am-i/>`_
 
-  For a more formal presentation of the field, see this excellent review by
+* For a quick tour of iDDC, have a look at `my blog post.<https://becheler.github.io/who-am-i/>`_
+* For a more formal presentation of the field, see this excellent review by
   `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss.<https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
 
 Short list of features:
