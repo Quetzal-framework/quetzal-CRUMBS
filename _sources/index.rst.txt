@@ -20,11 +20,16 @@ methodology for statistical phylo-geography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics,
 climate modifications) shaped the present spatial distribution of genetic lineages.
 
-To sustain this field, I developed the Quetzal suite:
-*  `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ toolbox to build the Quetzal-EGGS simulators
-*  `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity
-*  Quetzal-CRUMBS: this very Python library that produces EGGS inputs and digest their output
-*  `Quetzal-NEST <https://hub.docker.com/r/arnaudbecheler/quetzal-nest>`_ : a Docker container, a reproducible environment that contains all the Quetzal dependencies and allows to run simulations on clusters grids.
+Quetzal
+------------
+
+To sustain the IDDC field, I developed the Quetzal suite:
+
+* `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ toolbox to build the Quetzal-EGGS simulators
+* `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity
+* Quetzal-CRUMBS: this very Python library that produces EGGS inputs and digest their output
+* `Quetzal-NEST <https://hub.docker.com/r/arnaudbecheler/quetzal-nest>`_ : a Docker container, a reproducible environment that contains all the Quetzal dependencies and allows to run simulations on clusters grids.
+
 
 .. figure:: pipeline_SOFTWARES.svg
    :alt: Quetzal framework
