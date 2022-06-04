@@ -26,7 +26,7 @@ climate modifications) shaped the present spatial distribution of genetic lineag
    :width: 400px
    :align: center
 
-   Simulating climatic pulses in sky-islands system with Quetzal.
+   Simulating the effect of climatic pulses on sky-islands populations with Quetzal.
 
 * For a quick tour of the iDDC field, have a look at `my blog post. <https://becheler.github.io/who-am-i/>`_
 * For a more formal presentation of the field, see this excellent review by
