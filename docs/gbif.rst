@@ -40,6 +40,14 @@ You could do that manually, but for reproducible science it's nice to have these
 steps configured in a script and executed programmatically: this is in essence
 what the ``crumbs-get-gbif`` utility does.
 
+.. figure:: pipeline_CRUMBS_gbif.svg
+   :alt: Quetzal crumbs-get-gbif
+   :class: with-shadow
+   :width: 400px
+   :align: center
+
+   Effect of the ``crumbs-get-gbif`` command
+   
 Usage
 -------
 
@@ -51,7 +59,7 @@ reproduce our example then just download our test data points from Github:
 2. Enter this url: ``https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points``
 3. Press enter to start the download
 4. Extract the archive in your working directory
-5. You should find 3 files:
+5. You should find 3 files: move them to your Docker working directory
 
    * ``test_points.shp``
    * ``test_points.shx``
