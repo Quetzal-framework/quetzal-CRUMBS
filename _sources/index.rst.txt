@@ -33,10 +33,10 @@ climate modifications) shaped the present spatial distribution of genetic lineag
   `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss. <https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
 
 
-Quetzal
---------
+The Quetzal framework
+--------------------
 
-To sustain the IDDC field, I develop the Quetzal suite:
+To sustain the IDDC field, we develop the Quetzal suite:
 
 * `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ toolbox to build the Quetzal-EGGS simulators
 * `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity
