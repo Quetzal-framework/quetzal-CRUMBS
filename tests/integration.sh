@@ -3,7 +3,7 @@
 # exit when any command fails
 set -e
 
-sample='sampling-points/sampling-points.shp'
+sample='data/test_points/test_points.shp'
 buffer=2.0
 biovars=dem,bio01
 

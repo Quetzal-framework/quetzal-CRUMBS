@@ -42,3 +42,15 @@ what the ``crumbs-get-gbif`` utility does.
 
 Usage
 -------
+
+To run this command successfully, you will need to start with a set of longitude/latitude points.
+That would normally be the coordinates of your DNA samples, but if you want to
+reproduce our example then just download our test data points from Github:
+1. Go to the `Download Directory <https://download-directory.github.io/>`_ utility
+2. Enter this url: ``https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points``
+3. Press enter to start the download
+4. Extract the archive in your working directory
+5. You should find 3 files:
+   * ``test_points.shp``
+   * ``test_points.shx``
+   * ``test_points.dbf``
