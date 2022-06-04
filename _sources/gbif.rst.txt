@@ -1,7 +1,7 @@
 Accessing the GBIF database with Quetzal-CRUMBS
 =====================================================
 
-The Global Biodiversity Information Facility is an international network
+The `Global Biodiversity Information Facility <https://www.gbif.org/>`_ is an international network
 and data infrastructure that provides open access to around 2 billions of occurrence
 records.
 
@@ -31,10 +31,10 @@ To integrate GBIF occurrence records in an IDDC workflow, you need to:
 
 1. download the observational data
 2. restrict them to your area of interest (a bounding box around your genetic sample +/- an offset in km)
-3. remove duplicated points
+3. remove the duplicated obsevations
 4. download the CHELSA-TraCE21k Digital Elevation Model for the present century
-5. filter out the data points that falls in the ocean cells
-6. export the remaining points to a shapefile
+5. filter out the data points that fall in the ocean cells
+6. export the remaining points as a shapefile
 
 You could do that manually, but for reproducible science it's nice to have these
 steps configured in a script and executed programmatically: this is in essence
