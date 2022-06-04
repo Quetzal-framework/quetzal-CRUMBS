@@ -192,12 +192,12 @@ no need to ask your favorite cluster maintenance guy to manually install every d
 <h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://opensciencegrid.org/">Open Science Grid</a> is a consortium of research collaborations,
 campuses, national laboratories, and software providers dedicated
-to the advancement of all open science via the practice of distributed High Throughput Computing (dHTC).</p>
-<p>It provides a capability to run independent computations at massive scales, what is
+to the advancement of all open science via the practice of distributed High Throughput Computing (dHTC).
+It provides a capability to run independent computations at massive scales, what is
 pretty clutch for iDDC, and <a class="reference external" href="https://support.opensciencegrid.org/support/solutions/articles/12000024676-docker-and-singularity-containers">supports the use of Docker/Singularity images</a></p>
 <p>Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
-where it is available for distributed High Throughput Computing.</p>
-<p>To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
+where it is available for distributed High Throughput Computing.
+To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Requirements</span>           <span class="o">=</span> <span class="n">HAS_SINGULARITY</span> <span class="o">==</span> <span class="n">TRUE</span>
 <span class="o">+</span><span class="n">SingularityImage</span>      <span class="o">=</span> <span class="s2">&quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;</span>
 </pre></div>

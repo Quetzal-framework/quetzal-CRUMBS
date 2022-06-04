@@ -89,13 +89,11 @@ On the Open Science Grid:
 The `Open Science Grid <https://opensciencegrid.org/>`_ is a consortium of research collaborations,
 campuses, national laboratories, and software providers dedicated
 to the advancement of all open science via the practice of distributed High Throughput Computing (dHTC).
-
 It provides a capability to run independent computations at massive scales, what is
 pretty clutch for iDDC, and `supports the use of Docker/Singularity images <https://support.opensciencegrid.org/support/solutions/articles/12000024676-docker-and-singularity-containers>`_
 
 Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
 where it is available for distributed High Throughput Computing.
-
 To make it available to your computation, just add these two lines to your ``.condor`` project file:
 
 .. code-block::
