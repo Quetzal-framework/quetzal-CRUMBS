@@ -46,6 +46,7 @@ Usage
 To run this command successfully, you will need to start with a set of longitude/latitude points.
 That would normally be the coordinates of your DNA samples, but if you want to
 reproduce our example then just download our test data points from Github:
+
 1. Go to the `Download Directory <https://download-directory.github.io/>`_ utility
 2. Enter this url: ``https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points``
 3. Press enter to start the download
