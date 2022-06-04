@@ -178,7 +178,12 @@ def search_gbif(scientific_name: str,
     return None
 
 
-def main(argv):
+def main(argv=None):
+    """The main routine."""
+    import sys
+    if argv is None:
+        argv = sys.argv[1:]
+
     from optparse import OptionParser
 
     parser = OptionParser()
@@ -244,4 +249,4 @@ def main(argv):
 
 if __name__ == '__main__':
     import sys
-    main(sys.argv[1:])
+    sys.exit(main())
