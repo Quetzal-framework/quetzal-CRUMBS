@@ -61,13 +61,15 @@ jobs:
             python3 -m build
             pip3 install dist/quetzal_crumbs-1.0.17-py3-none-any.whl
       - run:
+          name: Run CLI tests
+          no_output_timeout: 30m
+          command: |
+            chmod +x tests/integration.sh
+            ./tests/integration.sh
+      - run:
           name: Run unit tests
           no_output_timeout: 30m
           command: python3 -W ignore -m unittest discover
-      - run:
-          name: Run CLI tests
-          no_output_timeout: 30m
-          command: ./tests/integration.sh
 
   test_pypi_publish:
     executor: executor-crumbs
