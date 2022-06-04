@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Starting the Quetzal-NEST Docker container &mdash; Quetzal-CRUMBS  documentation</title>
+  <title>Enter the Quetzal-NEST Docker container &mdash; Quetzal-CRUMBS  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
@@ -43,13 +43,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Entering the NEST</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-a-docker-container">Why do we need a Docker container?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-a-docker-container">Why do we need a Docker container?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#to-encapsulate-the-chaos-of-iddc-analysis">To encapsulate the chaos of iDDC analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-provide-the-benefits-of-virtual-machines-with-extra-bonus">To provide the benefits of virtual machines  with extra bonus</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-use-quetzal-nest-locally">How do I use Quetzal-NEST locally?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-do-i-deploy-quetzal-nest-on-clusters">How do I deploy quetzal-NEST on clusters?</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#on-the-open-science-grid">On the Open Science Grid:</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#on-the-nasa-pleiades">On the NASA Pleiades</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#how-do-i-use-it-locally">How do I use it locally?</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gbif.html">Get GBIF</a></li>
@@ -74,7 +78,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Starting the Quetzal-NEST Docker container</li>
+      <li>Enter the Quetzal-NEST Docker container</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -107,46 +111,42 @@
     text-align: unset;
 }
 </style>
-<section id="starting-the-quetzal-nest-docker-container">
-<h1>Starting the Quetzal-NEST Docker container<a class="headerlink" href="#starting-the-quetzal-nest-docker-container" title="Permalink to this headline">¶</a></h1>
+<section id="enter-the-quetzal-nest-docker-container">
+<h1>Enter the Quetzal-NEST Docker container<a class="headerlink" href="#enter-the-quetzal-nest-docker-container" title="Permalink to this headline">¶</a></h1>
 <p>Quetzal-NEST is the Docker container where the Quetzal framework lives, and it
 can be deployed on clusters for scalable, massively parallel, reproducible science.
-The container is published on <a class="reference external" href="https://hub.docker.com/r/arnaudbecheler/quetzal-nest">DockerHub</a> and publicly available for local and remote use.</p>
+The container is published on <a class="reference external" href="https://hub.docker.com/r/arnaudbecheler/quetzal-nest">DockerHub</a>
+and publicly available for local and remote use.</p>
 <section id="why-do-we-need-a-docker-container">
 <h2>Why do we need a Docker container?<a class="headerlink" href="#why-do-we-need-a-docker-container" title="Permalink to this headline">¶</a></h2>
+<section id="to-encapsulate-the-chaos-of-iddc-analysis">
+<h3>To encapsulate the chaos of iDDC analysis<a class="headerlink" href="#to-encapsulate-the-chaos-of-iddc-analysis" title="Permalink to this headline">¶</a></h3>
 <p>iDDC modeling is quite a complex workflow and requires many system dependencies
-and tricky configurations (in the present state, it’s more than 65 dependencies
-that have to coexist peacefully!).</p>
+and tricky configurations: in its current version, the Quetzal framework needs
+more than 65 dependencies that have to coexist peacefully on the same system.</p>
 <p>Using Docker containers allows to simplify and stabilize things quite a lot,
-as these containers allow to <em>freeze</em> and <em>distribute</em> entire systems.</p>
+as these containers allow to <em>freeze</em> entire systems and <em>distribute</em> them to the users.</p>
 </section>
-<section id="how-do-i-deploy-quetzal-nest-on-clusters">
-<h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this headline">¶</a></h2>
-<p>You can use Singularity to deploy Docker images on clusters to run iDDC worflows:
-no need to ask your favorite cluster maintenance guy to manually install every dependency!</p>
-<section id="on-the-open-science-grid">
-<h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this headline">¶</a></h3>
-<p>Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
-where it is available for distributed High Throughput Computing.</p>
-<p>To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Requirements</span>           <span class="o">=</span> <span class="n">HAS_SINGULARITY</span> <span class="o">==</span> <span class="n">TRUE</span>
-<span class="o">+</span><span class="n">SingularityImage</span>      <span class="o">=</span> <span class="s2">&quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;</span>
-</pre></div>
-</div>
-</section>
-<section id="on-the-nasa-pleiades">
-<h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
-<p>To deploy it on the NASA Pleiades:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
-pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
-# or
-pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
-</pre></div>
-</div>
+<section id="to-provide-the-benefits-of-virtual-machines-with-extra-bonus">
+<h3>To provide the benefits of virtual machines  with extra bonus<a class="headerlink" href="#to-provide-the-benefits-of-virtual-machines-with-extra-bonus" title="Permalink to this headline">¶</a></h3>
+<p>Containers are enabled by isolation and virtualization capabilities built into
+the Linux kernel. These capabilities makes it possible for multiple application components
+to coexist on an host operating system and share its resources.</p>
+<p>It is quite similar to the way that multiple virtual machines (VMs) can share the CPU and memory
+of a same hardware, and containers and VMs actually share a number of benefits:</p>
+<ul class="simple">
+<li><p>application isolation: <em>you don’t need to mess up your system to use the app</em></p></li>
+<li><p>disposability: <em>download, use when needed, delete whenever, repeat</em></p></li>
+</ul>
+<p>But containers come with some extras:</p>
+<ul class="simple">
+<li><p>Lighter weight: <em>containers don’t have to pack an entire OS like VMs do, they just embed what is strictly necessary to interface with the hos OS.</em></p></li>
+<li><p>Improved productivity: <em>containers are faster and easier to deploy than VMs, making them great for distributed computing.</em></p></li>
+</ul>
 </section>
 </section>
-<section id="how-do-i-use-it-locally">
-<h2>How do I use it locally?<a class="headerlink" href="#how-do-i-use-it-locally" title="Permalink to this headline">¶</a></h2>
+<section id="how-do-i-use-quetzal-nest-locally">
+<h2>How do I use Quetzal-NEST locally?<a class="headerlink" href="#how-do-i-use-quetzal-nest-locally" title="Permalink to this headline">¶</a></h2>
 <p>First you will need to <a class="reference external" href="https://docs.docker.com/get-docker/">install Docker</a> on your system. It’s very quick, I promise!</p>
 <p>Then, you can type this on a terminal</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the docker image with all the dependencies</span>
@@ -161,6 +161,37 @@ becheler/quetzal-nest:latest /bin/bash
 All files present in you folder at the moment you start the container will be available
 to the computations, and all files generated in the container will also be available to
 your system.</p>
+</section>
+<section id="how-do-i-deploy-quetzal-nest-on-clusters">
+<h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this headline">¶</a></h2>
+<p>You can use Singularity to deploy Docker images on clusters to run iDDC worflows:
+no need to ask your favorite cluster maintenance guy to manually install every dependency!</p>
+<section id="on-the-open-science-grid">
+<h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://opensciencegrid.org/">Open Science Grid</a> is a consortium of research collaborations,
+campuses, national laboratories, and software providers dedicated
+to the advancement of all open science via the practice of distributed High Throughput Computing (dHTC).</p>
+<p>It provides a capability to run independent computations at massive scales, what is
+pretty clutch for iDDC, and <a class="reference external" href="https://support.opensciencegrid.org/support/solutions/articles/12000024676-docker-and-singularity-containers">supports the use of Docker/Singularity images</a></p>
+<p>Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
+where it is available for distributed High Throughput Computing.</p>
+<p>To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Requirements</span>           <span class="o">=</span> <span class="n">HAS_SINGULARITY</span> <span class="o">==</span> <span class="n">TRUE</span>
+<span class="o">+</span><span class="n">SingularityImage</span>      <span class="o">=</span> <span class="s2">&quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="on-the-nasa-pleiades">
+<h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
+<p>Docker containers present some security risks and have to be first <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html">converted to Singularity</a>
+to be deployed on the NASA Pleiades:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
+pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
+# or
+pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
