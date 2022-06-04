@@ -5,7 +5,7 @@
    :hidden:
 
    Home <self>
-   NEST <nest>
+   Entering the NEST <nest>
    Get GBIF <gbif>
    Get CHELSA-TraCE21k <self>
    Fit a SDM <self>
