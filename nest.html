@@ -136,6 +136,12 @@ where it is available for distributed High Throughput Computing.</p>
 <section id="on-the-nasa-pleiades">
 <h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
 <p>To deploy it on the NASA Pleiades:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
+pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
+# or
+pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
+</pre></div>
+</div>
 </section>
 </section>
 <section id="how-do-i-use-it-locally">
