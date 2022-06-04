@@ -21,6 +21,7 @@ There are many models available out there, and in CRUMBS we use a model averagin
 * Light Gradient Boosted Machine (LGBM)
 
 These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:
+
 * presence points (*retrieved from the Global Biodiversity Information Facility*)
 * pseudo-absence points (*generated from the presence points and the CHELSA Digital Elevation Model*).
 
