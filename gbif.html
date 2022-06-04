@@ -98,9 +98,9 @@
 </style>
 <section id="accessing-the-gbif-database-with-quetzal-crumbs">
 <h1>Accessing the GBIF database with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-gbif-database-with-quetzal-crumbs" title="Permalink to this headline">¶</a></h1>
-<p>The first step in IDDC modeling is to reconstruct a suitability map for every
-generation (or year, or century) of a simulation.</p>
-<p>This suitability map can be derived from a Species Distribution Model
+<p>The first step in IDDC modeling is to reconstruct a dynamic suitability map to inform every
+generation (or year, or century) of the simulation of a meta-population.
+This suitability map can be derived from a Species Distribution Model
 (aka an Environmental Niche Model).</p>
 <p>There are many models available out there, and in CRUMBS we use a model averaging over 4 classifiers:</p>
 <ul class="simple">
@@ -109,11 +109,14 @@ generation (or year, or century) of a simulation.</p>
 <li><p>Extreme Gradient Boosting (XGB)</p></li>
 <li><p>Light Gradient Boosted Machine (LGBM)</p></li>
 </ul>
-<p>These models use spatial predictors (bioclimatic variables from CHELSA) and the following features:</p>
+<p>These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:</p>
 <ul class="simple">
 <li><p>presence points retrieved from the Global Biodiversity Information Facility</p></li>
 <li><p>pseudo-absence points generated from the presence points and the CHELSA Digital Elevation Model.</p></li>
 </ul>
+<p>You could download manually the observational data, restrict them to you area of interest,
+discard the data points that are aberrant in regard of the simulated topography etc.
+But To facilitate the</p>
 </section>
 
 
