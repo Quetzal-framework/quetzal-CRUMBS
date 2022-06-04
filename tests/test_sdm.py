@@ -32,7 +32,7 @@ class TestSDM(unittest.TestCase):
             presence_shapefile = self.occurrences_filename + ".shp",
             nb_background_points = 30,
             variables = ['dem','bio01'],
-            chelsa_time_IDs = [20,19],
+            chelsa_time_IDs = [20],
             buffer = 1.0
             )
 
@@ -44,7 +44,6 @@ class TestSDM(unittest.TestCase):
         with open("my_sdm.bin","rb") as f:
             my_saved_sdm = pickle.load(f)
             my_saved_sdm.load_classifiers_and_extrapolate(20)
-            my_saved_sdm.load_classifiers_and_extrapolate(19)
 
     def tearDown(self):
         from pathlib import Path

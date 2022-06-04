@@ -15,15 +15,18 @@ class TestGetChelsa(unittest.TestCase):
     def SetUp(self):
         pass
 
+    @unittest.skip("Redundant and too slow on circle CI")
     def test_get_chelsa_with_input_file(self):
         request(inputFile = "tests/data/chelsa_url_test.txt",
                               points = "tests/data/test_points/test_points.shp")
 
+    @unittest.skip("Redundant and too slow on circle CI")
     def test_get_chelsa_with_no_input_file(self):
         request(points = "tests/data/test_points/test_points.shp",
                               variables = ['dem'],
                               timesID = [20])
 
+    @unittest.skip("Redundant and too slow on circle CI")
     def test_get_chelsa_with_time_range(self):
         request(points = "tests/data/test_points/test_points.shp",
                               variables = ['bio01'],
