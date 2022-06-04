@@ -72,7 +72,11 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
     html_theme = "sphinx_rtd_theme"
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_css_files = ["readthedocs-custom.css"] # Override some CSS settings
-
+html_logo = "quetzal-crumbs-fa.svg"
+html_theme_options = {
+    'logo_only': True,
+    'display_version': False,
+}
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
