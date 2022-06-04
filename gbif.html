@@ -110,14 +110,19 @@ This suitability map can be derived from a Species Distribution Model
 <li><p>Extreme Gradient Boosting (XGB)</p></li>
 <li><p>Light Gradient Boosted Machine (LGBM)</p></li>
 </ul>
-<p>These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:</p>
-<ul class="simple">
-<li><p>presence points retrieved from the Global Biodiversity Information Facility</p></li>
-<li><p>pseudo-absence points generated from the presence points and the CHELSA Digital Elevation Model.</p></li>
-</ul>
-<p>You could download manually the observational data, restrict them to you area of interest,
-discard the data points that are aberrant in regard of the simulated topography etc.
-But To facilitate the</p>
+<p>These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:
+* presence points (<em>retrieved from the Global Biodiversity Information Facility</em>)
+* pseudo-absence points (<em>generated from the presence points and the CHELSA Digital Elevation Model</em>).</p>
+<p>To integrate GBIF occurrence records in an IDDC workflow, you need to:</p>
+<ol class="arabic simple">
+<li><p>download the observational data</p></li>
+<li><p>restrict them to your area of interest (a bounding box around your genetic sample +/- an offset in km)</p></li>
+<li><p>remove duplicated points</p></li>
+<li><p>download the CHELSA-TraCE21k Digital Elevation Model for the present century</p></li>
+<li><p>filter out the data points that falls in the ocean cells</p></li>
+<li><p>export the remaining points to a shapefile</p></li>
+</ol>
+<p>But To facilitate the</p>
 </section>
 
 
