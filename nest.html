@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starting the Quetzal-NEST Docker container &mdash; Quetzal-CRUMBS  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Accessing the GBIF database with Quetzal-CRUMBS" href="gbif.html" />
+    <link rel="prev" title="Welcome to Quetzal-CRUMBS" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Quetzal-CRUMBS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NEST</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-a-docker-container">Why do we need a Docker container?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-deploy-quetzal-nest-on-clusters">How do I deploy quetzal-NEST on clusters?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-the-open-science-grid">On the Open Science Grid:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-the-nasa-pleiades">On the NASA Pleiades</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-use-it-locally">How do I use it locally?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gbif.html">Get GBIF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Get CHELSA-TraCE21k</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Fit a SDM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Extrapolate a SDM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Prepare the landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/crumbs.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Quetzal-CRUMBS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Starting the Quetzal-NEST Docker container</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="starting-the-quetzal-nest-docker-container">
+<h1>Starting the Quetzal-NEST Docker container<a class="headerlink" href="#starting-the-quetzal-nest-docker-container" title="Permalink to this headline">¶</a></h1>
+<p>Quetzal-NEST is the Docker container where the Quetzal framework lives, and it
+can be deployed on clusters for scalable, massively parallel, reproducible science.
+The container is published on <a class="reference external" href="https://hub.docker.com/r/arnaudbecheler/quetzal-nest">DockerHub</a> and publicly available for local and remote use.</p>
+<section id="why-do-we-need-a-docker-container">
+<h2>Why do we need a Docker container?<a class="headerlink" href="#why-do-we-need-a-docker-container" title="Permalink to this headline">¶</a></h2>
+<p>iDDC modeling is quite a complex workflow and requires many system dependencies
+and tricky configurations (in the present state, it’s more than 65 dependencies
+that have to coexist peacefully!).</p>
+<p>Using Docker containers allows to simplify and stabilize things quite a lot,
+as these containers allow to <em>freeze</em> and <em>distribute</em> entire systems.</p>
+</section>
+<section id="how-do-i-deploy-quetzal-nest-on-clusters">
+<h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this headline">¶</a></h2>
+<p>You can use Singularity to deploy Docker images on clusters to run iDDC worflows:
+no need to ask your favorite cluster maintenance guy to manually install every dependency!</p>
+<section id="on-the-open-science-grid">
+<h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this headline">¶</a></h3>
+<p>Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
+where it is available for distributed High Throughput Computing.</p>
+<p>To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Requirements</span>           <span class="o">=</span> <span class="n">HAS_SINGULARITY</span> <span class="o">==</span> <span class="n">TRUE</span>
+<span class="o">+</span><span class="n">SingularityImage</span>      <span class="o">=</span> <span class="s2">&quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="on-the-nasa-pleiades">
+<h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
+<p>To deploy it on the NASA Pleiades:</p>
+</section>
+</section>
+<section id="how-do-i-use-it-locally">
+<h2>How do I use it locally?<a class="headerlink" href="#how-do-i-use-it-locally" title="Permalink to this headline">¶</a></h2>
+<p>First you will need to <a class="reference external" href="https://docs.docker.com/get-docker/">install Docker</a> on your system. It’s very quick, I promise!</p>
+<p>Then, you can type this on a terminal</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the docker image with all the dependencies</span>
+docker pull arnaudbecheler/quetzal-nest:latest
+<span class="c1"># Run the docker image synchronizing with your working directory</span>
+docker run --user <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> --rm<span class="o">=</span><span class="nb">true</span> -it <span class="se">\</span>
+-v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/srv -w /srv <span class="se">\</span>
+becheler/quetzal-nest:latest /bin/bash
+</pre></div>
+</div>
+<p>This will start your docker container, where the Quetzal tools are ready to be used.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Quetzal-CRUMBS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gbif.html" class="btn btn-neutral float-right" title="Accessing the GBIF database with Quetzal-CRUMBS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright © 2022 Arnaud Becheler &amp; L. Lacey Knowles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
