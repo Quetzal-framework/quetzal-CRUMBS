@@ -20,7 +20,7 @@ methodology for statistical phylo-geography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics,
 climate modifications) shaped the present spatial distribution of genetic lineages.
 
-.. figure:: quetzal-EGG2.gif
+.. figure:: quetzal_EGG2.gif
    :alt: Quetzal simulation
    :class: with-shadow
    :width: 400px
@@ -36,7 +36,7 @@ climate modifications) shaped the present spatial distribution of genetic lineag
 Quetzal
 --------
 
-To sustain the IDDC field, I developed the Quetzal suite:
+To sustain the IDDC field, I develop the Quetzal suite:
 
 * `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ toolbox to build the Quetzal-EGGS simulators
 * `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity

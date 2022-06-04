@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 project = 'Quetzal-CRUMBS'
 author = 'Arnaud Becheler'
-
+copyright = "© 2022 Arnaud Becheler & L. Lacey Knowles"
 
 # -- General configuration ---------------------------------------------------
 
