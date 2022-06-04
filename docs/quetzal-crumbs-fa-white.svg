@@ -9,8 +9,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.2"
-   width="50mm"
-   height="50mm"
+   width="180px"
+   height="180px"
    viewBox="0 0 10160 10160"
    preserveAspectRatio="xMidYMid"
    fill-rule="evenodd"
@@ -283,7 +283,5 @@
    inkscape:connector-curvature="0"
    id="path95"
    d="m 5662,2279 76,73 1,107 h 108 l 80,75 76,-74 112,-1 v -104 l 78,-76 -77,-74 -1,-107 h -108 l -80,-74 -76,73 -112,1 v 104 z" />
-
-<text x="1" y="1">Quetzal-CRUMBS</text>
 
 </svg>
