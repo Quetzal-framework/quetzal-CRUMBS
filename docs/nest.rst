@@ -64,3 +64,6 @@ Then, you can type this on a terminal
    becheler/quetzal-nest:latest /bin/bash
 
 This will start your docker container, where the Quetzal tools are ready to be used.
+All files present in you folder at the moment you start the container will be available
+to the computations, and all files generated in the container will also be available from
+outside it.
