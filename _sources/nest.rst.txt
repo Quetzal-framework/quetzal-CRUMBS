@@ -40,6 +40,9 @@ But containers come with some extras:
 How do I use Quetzal-NEST locally?
 ----------------------
 
+Get started
+^^^^^^^^^^^^^^^^^^^^^^
+
 First you will need to `install Docker <https://docs.docker.com/get-docker/>`_ on your system. It's very quick, I promise!
 
 Then, you can type this on a terminal
@@ -57,6 +60,21 @@ This will start your docker container, where the Quetzal tools are ready to be u
 All files present in you folder at the moment you start the container will be available
 to the computations, and all files generated in the container will also be available to
 your system.
+
+List of basic docker commands
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   docker -version # will give the version of Docker is installed.
+   docker pull <image_name> # will download the image from dockerhub.
+   docker run  <image_name> # will run the image pulled from dockerhub to create a container. If you don’t have a local copy of the image, the run command will pull and then run the image to create a container.
+   docker ps # Process status of containers. If no container is running, you get a blank line.
+   docker ps -a # process status of all containers.
+   docker exec -it <container_id> bash # allows you to run a command in the docker container. The -it flag provides an interactive tty (shell) within the container.
+   docker stop <container_id> # shuts down a container.
+   docker build <path_to_docker_file> # Builds an image from the specified docker file.
+   docker push <docker_hub_username/image_name> # pushes an image to the docker hub repository.
 
 
 How do I deploy quetzal-NEST on clusters?
@@ -98,3 +116,15 @@ to be deployed on the NASA Pleiades:
    pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
    # or
    pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
+
+
+On JetStream2
+^^^^^^^^^^^^^^
+
+Jetstream2 `supports Docker and Apptainer/Singularity. <https://docs.jetstream-cloud.org/general/docker/>`_
+Apptainer (previously known as Singularity) is installed as part of the Jetstream Software Collection.
+You can access Apptainer from any Jetstream Featured Image by doing:
+
+.. code-block::
+
+   module load apptainer

@@ -48,10 +48,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#to-provide-the-benefits-of-virtual-machines-with-extra-bonus">To provide the benefits of virtual machines  with extra bonus</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#how-do-i-use-quetzal-nest-locally">How do I use Quetzal-NEST locally?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-use-quetzal-nest-locally">How do I use Quetzal-NEST locally?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#get-started">Get started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-basic-docker-commands">List of basic docker commands</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#how-do-i-deploy-quetzal-nest-on-clusters">How do I deploy quetzal-NEST on clusters?</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#on-the-open-science-grid">On the Open Science Grid:</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#on-the-nasa-pleiades">On the NASA Pleiades</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-jetstream2">On JetStream2</a></li>
 </ul>
 </li>
 </ul>
@@ -147,6 +152,8 @@ of a same hardware, and containers and VMs actually share a number of benefits:<
 </section>
 <section id="how-do-i-use-quetzal-nest-locally">
 <h2>How do I use Quetzal-NEST locally?<a class="headerlink" href="#how-do-i-use-quetzal-nest-locally" title="Permalink to this headline">¶</a></h2>
+<section id="get-started">
+<h3>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline">¶</a></h3>
 <p>First you will need to <a class="reference external" href="https://docs.docker.com/get-docker/">install Docker</a> on your system. It’s very quick, I promise!</p>
 <p>Then, you can type this on a terminal</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the docker image with all the dependencies</span>
@@ -161,6 +168,21 @@ becheler/quetzal-nest:latest /bin/bash
 All files present in you folder at the moment you start the container will be available
 to the computations, and all files generated in the container will also be available to
 your system.</p>
+</section>
+<section id="list-of-basic-docker-commands">
+<h3>List of basic docker commands<a class="headerlink" href="#list-of-basic-docker-commands" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker -version <span class="c1"># will give the version of Docker is installed.</span>
+docker pull &lt;image_name&gt; <span class="c1"># will download the image from dockerhub.</span>
+docker run  &lt;image_name&gt; <span class="c1"># will run the image pulled from dockerhub to create a container. If you don’t have a local copy of the image, the run command will pull and then run the image to create a container.</span>
+docker ps <span class="c1"># Process status of containers. If no container is running, you get a blank line.</span>
+docker ps -a <span class="c1"># process status of all containers.</span>
+docker <span class="nb">exec</span> -it &lt;container_id&gt; bash <span class="c1"># allows you to run a command in the docker container. The -it flag provides an interactive tty (shell) within the container.</span>
+docker stop &lt;container_id&gt; <span class="c1"># shuts down a container.</span>
+docker build &lt;path_to_docker_file&gt; <span class="c1"># Builds an image from the specified docker file.</span>
+docker push &lt;docker_hub_username/image_name&gt; <span class="c1"># pushes an image to the docker hub repository.</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="how-do-i-deploy-quetzal-nest-on-clusters">
 <h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this headline">¶</a></h2>
@@ -189,6 +211,15 @@ to be deployed on the NASA Pleiades:</p>
 pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
 # or
 pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
+</pre></div>
+</div>
+</section>
+<section id="on-jetstream2">
+<h3>On JetStream2<a class="headerlink" href="#on-jetstream2" title="Permalink to this headline">¶</a></h3>
+<p>Jetstream2 <a class="reference external" href="https://docs.jetstream-cloud.org/general/docker/">supports Docker and Apptainer/Singularity.</a>
+Apptainer (previously known as Singularity) is installed as part of the Jetstream Software Collection.
+You can access Apptainer from any Jetstream Featured Image by doing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">apptainer</span>
 </pre></div>
 </div>
 </section>
