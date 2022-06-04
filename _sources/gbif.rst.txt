@@ -52,6 +52,7 @@ reproduce our example then just download our test data points from Github:
 3. Press enter to start the download
 4. Extract the archive in your working directory
 5. You should find 3 files:
+
    * ``test_points.shp``
    * ``test_points.shx``
    * ``test_points.dbf``
