@@ -67,7 +67,7 @@ jobs:
       - run:
           name: Run CLI tests
           no_output_timeout: 30m
-          command: ./integration.sh
+          command: ./tests/integration.sh
 
   test_pypi_publish:
     executor: executor-crumbs
