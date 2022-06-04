@@ -42,7 +42,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nest.html">Entering the NEST</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Get GBIF</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get GBIF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-to-access-gbif">Why do we need to access GBIF ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-a-scripted-approach">Why a scripted approach?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Get CHELSA-TraCE21k</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Fit a SDM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Extrapolate a SDM</a></li>
@@ -99,6 +104,11 @@
 </style>
 <section id="accessing-the-gbif-database-with-quetzal-crumbs">
 <h1>Accessing the GBIF database with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-gbif-database-with-quetzal-crumbs" title="Permalink to this headline">¶</a></h1>
+<p>The Global Biodiversity Information Facility is an international network
+and data infrastructure that provides open access to around 2 billions of occurrence
+records.</p>
+<section id="why-do-we-need-to-access-gbif">
+<h2>Why do we need to access GBIF ?<a class="headerlink" href="#why-do-we-need-to-access-gbif" title="Permalink to this headline">¶</a></h2>
 <p>The first step in IDDC modeling is to reconstruct a dynamic suitability map to inform every
 generation (or year, or century) of the simulation of a meta-population.
 This suitability map can be derived from a Species Distribution Model
@@ -113,6 +123,9 @@ This suitability map can be derived from a Species Distribution Model
 <p>These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:
 * presence points (<em>retrieved from the Global Biodiversity Information Facility</em>)
 * pseudo-absence points (<em>generated from the presence points and the CHELSA Digital Elevation Model</em>).</p>
+</section>
+<section id="why-a-scripted-approach">
+<h2>Why a scripted approach?<a class="headerlink" href="#why-a-scripted-approach" title="Permalink to this headline">¶</a></h2>
 <p>To integrate GBIF occurrence records in an IDDC workflow, you need to:</p>
 <ol class="arabic simple">
 <li><p>download the observational data</p></li>
@@ -122,7 +135,13 @@ This suitability map can be derived from a Species Distribution Model
 <li><p>filter out the data points that falls in the ocean cells</p></li>
 <li><p>export the remaining points to a shapefile</p></li>
 </ol>
-<p>But To facilitate the</p>
+<p>You could do that manually, but for reproducible science it’s nice to have these
+steps configured in a script and executed programmatically: this is in essence
+what the <code class="docutils literal notranslate"><span class="pre">crumbs-get-gbif</span></code> utility does.</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+</section>
 </section>
 
 

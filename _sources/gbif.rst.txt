@@ -1,6 +1,13 @@
 Accessing the GBIF database with Quetzal-CRUMBS
 =====================================================
 
+The Global Biodiversity Information Facility is an international network
+and data infrastructure that provides open access to around 2 billions of occurrence
+records.
+
+Why do we need to access GBIF ?
+-------------------------------
+
 The first step in IDDC modeling is to reconstruct a dynamic suitability map to inform every
 generation (or year, or century) of the simulation of a meta-population.
 This suitability map can be derived from a Species Distribution Model
@@ -17,6 +24,9 @@ These classifiers use spatial predictors (bioclimatic variables from CHELSA) and
 * presence points (*retrieved from the Global Biodiversity Information Facility*)
 * pseudo-absence points (*generated from the presence points and the CHELSA Digital Elevation Model*).
 
+Why a scripted approach?
+------------------------
+
 To integrate GBIF occurrence records in an IDDC workflow, you need to:
 
 1. download the observational data
@@ -26,4 +36,9 @@ To integrate GBIF occurrence records in an IDDC workflow, you need to:
 5. filter out the data points that falls in the ocean cells
 6. export the remaining points to a shapefile
 
-But To facilitate the
+You could do that manually, but for reproducible science it's nice to have these
+steps configured in a script and executed programmatically: this is in essence
+what the ``crumbs-get-gbif`` utility does.
+
+Usage
+-------
