@@ -1,5 +1,5 @@
 Accessing the GBIF database with Quetzal-CRUMBS
-=====================================================
+================================================
 
 The `Global Biodiversity Information Facility <https://www.gbif.org/>`_ is an international network
 and data infrastructure that provides open access to around 2 billions of occurrence
@@ -54,3 +54,16 @@ reproduce our example then just download our test data points from Github:
    * ``test_points.shp``
    * ``test_points.shx``
    * ``test_points.dbf``
+
+You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
+with a buffer of 2.0km around the bounding box of the sampling points:
+
+.. code-block:: bash
+
+   crumbs-get-gbif \
+         --species "Heteronotia binoei" \
+         --points 'test_points.shp' \
+         --limit 30 \
+         --year "1950,2022" \
+         --margin 2.0 \
+         --output occurrences
