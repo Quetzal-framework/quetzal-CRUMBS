@@ -12,6 +12,7 @@ class TestSDM(unittest.TestCase):
         self.sampling_points = "tests/data/test_points/test_points.shp"
         self.occurrences_filename = "occurrences"
 
+    @unittest.skip("Too slow on circle CI")
     def test_fit_and_extrapolate(self):
 
         from crumbs.sdm.sdm import SDM
