@@ -20,8 +20,13 @@ methodology for statistical phylo-geography. It relies heavily on spatial models
 and methods to explain how past processes (sea level change, glaciers dynamics,
 climate modifications) shaped the present spatial distribution of genetic lineages.
 
+* For a quick tour of the iDDC field, have a look at `my blog post. <https://becheler.github.io/who-am-i/>`_
+* For a more formal presentation of the field, see this excellent review by
+  `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss. <https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
+
+
 Quetzal
-------------
+--------
 
 To sustain the IDDC field, I developed the Quetzal suite:
 
@@ -29,6 +34,9 @@ To sustain the IDDC field, I developed the Quetzal suite:
 * `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity
 * Quetzal-CRUMBS: this very Python library that produces EGGS inputs and digest their output
 * `Quetzal-NEST <https://hub.docker.com/r/arnaudbecheler/quetzal-nest>`_ : a Docker container, a reproducible environment that contains all the Quetzal dependencies and allows to run simulations on clusters grids.
+
+
+In other words, the Quetzal-CRUMBS library is meant to be a part of a bigger workflow.
 
 
 .. figure:: pipeline_SOFTWARES.svg
@@ -39,12 +47,8 @@ To sustain the IDDC field, I developed the Quetzal suite:
    How Quetzal-CRUMBS fit in the Quetzal framework.
 
 
-* For a quick tour of iDDC, have a look at `my blog post. <https://becheler.github.io/who-am-i/>`_
-* For a more formal presentation of the field, see this excellent review by
-  `Dennis J. Larsson, Da Pan and Gerald M. Schneeweiss. <https://www.annualreviews.org/doi/abs/10.1146/annurev.ecolsys.38.091206.095702?journalCode=ecolsys>`_
-
-Short list of features:
------------------------
+CRUMBS features:
+----------------
 
 1. Access the Global Biodiversity Information Facility to retrieve presence points
 2. Access the high resolution paleoclimatic database CHELSA to download world files
