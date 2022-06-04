@@ -4,7 +4,13 @@
 .. toctree::
    :hidden:
 
-   Home page <self>
+   Home <self>
+   Get GBIF <gbif>
+   Get CHELSA-TraCE21k <self>
+   Fit a SDM <self>
+   Extrapolate a SDM <self>
+   Prepare the landscape <self>
+
    API reference <_autosummary/crumbs>
 
 Welcome to Quetzal-CRUMBS
