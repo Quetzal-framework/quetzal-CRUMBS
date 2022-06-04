@@ -43,11 +43,11 @@ what the ``crumbs-get-gbif`` utility does.
 .. figure:: pipeline_CRUMBS_gbif.svg
    :alt: Quetzal crumbs-get-gbif
    :class: with-shadow
-   :width: 400px
+   :width: 700px
    :align: center
 
    Effect of the ``crumbs-get-gbif`` command
-   
+
 Usage
 -------
 
