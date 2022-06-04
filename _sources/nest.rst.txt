@@ -40,7 +40,7 @@ On the NASA Pleiades
 
 To deploy it on the NASA Pleiades:
 
-.. code-block::
+.. code-block:: bash
    pfe$ module load singularity
    pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
    # or
