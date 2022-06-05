@@ -4,13 +4,13 @@
 .. toctree::
    :hidden:
 
-   Home <self>
-   Enter the Quetzal-NEST <nest>
-   Get GBIF <gbif>
-   Get CHELSA-TraCE21k <self>
-   Fit a SDM <self>
-   Extrapolate a SDM <self>
-   Prepare the landscape <self>
+   Welcome <self>
+   1. Enter the Quetzal-NEST <1-nest>
+   2. Get GBIF <2-gbif>
+   3. Get CHELSA-TraCE21k <3-chelsa>
+   4. Fit a SDM <self>
+   5. Extrapolate a SDM <self>
+   6. Prepare the landscape <self>
 
    API reference <_autosummary/crumbs>
 
