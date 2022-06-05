@@ -253,8 +253,10 @@ To make it available to your computation, just add these two lines to your <code
 </section>
 <section id="on-the-nasa-pleiades">
 <h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
-<p>Docker containers can be <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html">converted to Singularity</a>
-and deployed on the NASA Pleiades with this command:</p>
+<dl class="simple">
+<dt>Docker containers can be converted to Singularity <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html">to be deployed on the NASA Pleiades</a></dt><dd><p>with this command:</p>
+</dd>
+</dl>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
 pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
 # or

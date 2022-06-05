@@ -65,7 +65,7 @@ data points from Github:
   CHELSA-TraCE21k uses times identifiers that range from 20 (present century) to -200 (LGM).
   Have a look `at their technical notice <https://chelsa-climate.org/chelsa-trace21k/>`_
 
-Command
+Bash command
 ^^^^^^^^
 
 .. code-block:: bash

@@ -46,10 +46,15 @@
 <li class="toctree-l1"><a class="reference internal" href="2-gbif.html">2. Get GBIF presence records</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3-chelsa.html">3. Get CHELSA climate data</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4. Landscape habitability reconstruction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#fitting-a-sdm">Fitting a SDM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fitting-a-sdm-on-present-climate">Fitting a SDM on present climate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bash-command">Bash command</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extrapolation-to-past-climates">Extrapolation to past climates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Output</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
@@ -113,29 +118,54 @@
 is a methodoogy that tries to predict the distribution
 of a species across geographic space and time.</p>
 <p>Within the iDDC approach, the idea is to reconstruct the landscape habitability
-to inform various aspects of a species ecology. Although there are many tools
-existing for SDM, several reasons motivated us to develop an iDDC-specific resource.</p>
+to inform various aspects of a species ecology (like migration rates,fecundity etc).</p>
+<p>Although there are many tools existing for SDM, several reasons motivated us to develop our own iDDC-specific resource:</p>
 <ul class="simple">
-<li><p>High-resolution environmental data like CHELSA are new (2021) and to our
-knowledge there is no other way to easily script the access to these layers and their post-treatment</p></li>
+<li><p>High-resolution environmental data like CHELSA_TraCE21k are relatively new (2021) and to our
+knowledge there was no other way to easily make CHELSA_TraCE21k data available to SDM</p></li>
 <li><dl class="simple">
-<dt>Developing our own tools for iDDC means more control on scalability:</dt><dd><ul>
-<li><p>For example we could integrate <strong>dask</strong> <a class="reference internal" href="#rocklin2015" id="id1"><span>[Rocklin2015]</span></a> for parallel computing and larger-than-memory data management</p></li>
+<dt>Developing our own tools for iDDC meant more control on scalability:</dt><dd><ul>
+<li><p>We could integrate <strong>dask</strong> <a class="reference internal" href="#rocklin2015" id="id1"><span>[Rocklin2015]</span></a> for parallel computing and larger-than-memory data management:
+it allows to work with larger landscapes and to request more nodes with less RAM</p></li>
 <li><p>We use <strong>jòblib</strong> for model persistence of fitted classifiers</p></li>
-<li><p>Combined with the right command-line interfaces, that makes SDM extrapolation to past climates
-easier to distribute on High-Throughput Computing Grids.</p></li>
+<li><p>Combined with a dedicated command-line interface, it makes SDM extrapolation to past climates
+easier to script and distribute on High-Throughput Computing Grids.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
 </ul>
-<section id="fitting-a-sdm">
-<h2>Fitting a SDM<a class="headerlink" href="#fitting-a-sdm" title="Permalink to this headline">¶</a></h2>
+<section id="fitting-a-sdm-on-present-climate">
+<h2>Fitting a SDM on present climate<a class="headerlink" href="#fitting-a-sdm-on-present-climate" title="Permalink to this headline">¶</a></h2>
 <section id="context">
 <h3>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h3>
+<p>We assume that you got some GBIF occurrences records from the previous steps.
+This command will fit 4 Classifiers:</p>
+<ul class="simple">
+<li><p>Random Forest (RF)</p></li>
+<li><p>Extra-Tree (ET)</p></li>
+<li><p>Extreme Gradient Boosting (XGB)</p></li>
+<li><p>Light Gradient Boosted Machine (LGBM)</p></li>
+</ul>
+<p>These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:</p>
+<ul class="simple">
+<li><p>presence points (<em>retrieved from the Global Biodiversity Information Facility</em>)</p></li>
+<li><p>pseudo-absence points (<em>generated from the presence points and the CHELSA Digital Elevation Model</em>).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once fitted, the classifiers are saved in a persistence folder: <code class="docutils literal notranslate"><span class="pre">model-persistence/xgb.joblib</span></code>.
+These <strong>joblib</strong> files can then be copied for transfer to remote compute nodes
+for distributing the extrapolation of hundreds or thousands of past climate conditions.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An instance of the python SDM object is also saved as a <code class="docutils literal notranslate"><span class="pre">my_sdm.bin</span></code> file. It allows to preserve
+the model performance information for model averaging during the extrapolation step.</p>
+</div>
 </section>
-<section id="command">
-<h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
+<section id="bash-command">
+<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">species</span><span class="o">=</span><span class="s1">&#39;Heteronotia binoei&#39;</span>
 <span class="nv">presences</span><span class="o">=</span><span class="s1">&#39;occurrences.shp&#39;</span>
 <span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
@@ -208,6 +238,15 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
         - trained model will be saved to model-persistence/lgbm.joblib
 </pre></div>
 </div>
+</section>
+</section>
+<section id="extrapolation-to-past-climates">
+<h2>Extrapolation to past climates<a class="headerlink" href="#extrapolation-to-past-climates" title="Permalink to this headline">¶</a></h2>
+<section id="command">
+<h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3>Output<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 </section>
 </section>
 <section id="references">

@@ -25,6 +25,8 @@ These classifiers use spatial predictors (bioclimatic variables from CHELSA) and
 * presence points (*retrieved from the Global Biodiversity Information Facility*)
 * pseudo-absence points (*generated from the presence points and the CHELSA Digital Elevation Model*).
 
+That is why you need GBIF: it's a cheap, easy way to have access to presence data.
+
 Why a scripted approach?
 ------------------------
 
@@ -74,10 +76,10 @@ reproduce our example then just download our test data points from Github:
    make sure you always transfer all of them, and not only the ``.shp``!
 
 
-Command
+Bash command
 ^^^^^^^^
 
-You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
+You can then execute this command in a terminal (or a bash script) to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points.
 The records will be saved as a ``occurrences.shp`` shapefile (and a ``.csv`` for human readibility).
 

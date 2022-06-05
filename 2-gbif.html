@@ -48,7 +48,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#why-a-scripted-approach">Why a scripted approach?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bash-command">Bash command</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
 </ul>
 </li>
@@ -130,6 +130,7 @@ This suitability map can be derived from a Species Distribution Model
 <li><p>presence points (<em>retrieved from the Global Biodiversity Information Facility</em>)</p></li>
 <li><p>pseudo-absence points (<em>generated from the presence points and the CHELSA Digital Elevation Model</em>).</p></li>
 </ul>
+<p>That is why you need GBIF: it’s a cheap, easy way to have access to presence data.</p>
 </section>
 <section id="why-a-scripted-approach">
 <h2>Why a scripted approach?<a class="headerlink" href="#why-a-scripted-approach" title="Permalink to this headline">¶</a></h2>
@@ -180,9 +181,9 @@ make sure you always transfer all of them, and not only the <code class="docutil
 </div>
 </div></blockquote>
 </section>
-<section id="command">
-<h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
-<p>You can then execute this command to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
+<section id="bash-command">
+<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this headline">¶</a></h3>
+<p>You can then execute this command in a terminal (or a bash script) to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points.
 The records will be saved as a <code class="docutils literal notranslate"><span class="pre">occurrences.shp</span></code> shapefile (and a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> for human readibility).</p>
 <div class="admonition note">
