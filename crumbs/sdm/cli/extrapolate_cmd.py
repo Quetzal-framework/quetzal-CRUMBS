@@ -16,10 +16,10 @@ def main(argv=None):
     parser = get_parser()
     (options, args) = parser.parse_args(argv)
 
-        with open(options.sdm_file,"rb") as f:
-            my_saved_sdm = pickle.load(f)
-            my_saved_sdm.load_classifiers_and_extrapolate(options.timeID)
-            
+    with open(options.sdm_file,"rb") as f:
+        my_saved_sdm = pickle.load(f)
+        my_saved_sdm.load_classifiers_and_extrapolate(options.timeID)
+
 if __name__ == '__main__':
     import sys
     sys.exit(main())
