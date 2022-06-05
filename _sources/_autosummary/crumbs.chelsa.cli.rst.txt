@@ -1,7 +1,7 @@
-crumbs.chelsa
-=============
+crumbs.chelsa.cli
+=================
 
-.. automodule:: crumbs.chelsa
+.. automodule:: crumbs.chelsa.cli
 
    
    
@@ -26,7 +26,6 @@ crumbs.chelsa
    :template: custom-module-template.rst
    :recursive:
 
-   crumbs.chelsa.cli
-   crumbs.chelsa.request
-   crumbs.chelsa.utils
+   crumbs.chelsa.cli.options
+   crumbs.chelsa.cli.request_cmd
 

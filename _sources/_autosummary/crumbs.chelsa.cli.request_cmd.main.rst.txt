@@ -1,0 +1,6 @@
+crumbs.chelsa.cli.request\_cmd.main
+===================================
+
+.. currentmodule:: crumbs.chelsa.cli.request_cmd
+
+.. autofunction:: main

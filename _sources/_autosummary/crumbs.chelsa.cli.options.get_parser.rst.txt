@@ -1,0 +1,6 @@
+crumbs.chelsa.cli.options.get\_parser
+=====================================
+
+.. currentmodule:: crumbs.chelsa.cli.options
+
+.. autofunction:: get_parser

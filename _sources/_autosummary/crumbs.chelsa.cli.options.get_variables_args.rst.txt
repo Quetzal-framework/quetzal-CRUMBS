@@ -1,0 +1,6 @@
+crumbs.chelsa.cli.options.get\_variables\_args
+==============================================
+
+.. currentmodule:: crumbs.chelsa.cli.options
+
+.. autofunction:: get_variables_args

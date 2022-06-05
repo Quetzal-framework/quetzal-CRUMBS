@@ -1,0 +1,6 @@
+crumbs.chelsa.request.request
+=============================
+
+.. currentmodule:: crumbs.chelsa.request
+
+.. autofunction:: request

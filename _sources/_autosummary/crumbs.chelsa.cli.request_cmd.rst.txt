@@ -1,0 +1,31 @@
+crumbs.chelsa.cli.request\_cmd
+==============================
+
+.. automodule:: crumbs.chelsa.cli.request_cmd
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

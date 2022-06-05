@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>crumbs.chelsa.helpers.get_variables_args &mdash; Quetzal-CRUMBS  documentation</title>
+  <title>crumbs.chelsa.cli &mdash; Quetzal-CRUMBS  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="crumbs.gbif" href="crumbs.gbif.html" />
-    <link rel="prev" title="crumbs.chelsa.helpers.get_timesID_args" href="crumbs.chelsa.helpers.get_timesID_args.html" /> 
+    <link rel="next" title="crumbs.chelsa.cli.options" href="crumbs.chelsa.cli.options.html" />
+    <link rel="prev" title="crumbs.chelsa" href="crumbs.chelsa.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,11 +51,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="crumbs.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="crumbs.bpp.html">crumbs.bpp</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="crumbs.chelsa.html">crumbs.chelsa</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="crumbs.chelsa.helpers.html">crumbs.chelsa.helpers</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="crumbs.chelsa.helpers.get_timesID_args.html">crumbs.chelsa.helpers.get_timesID_args</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">crumbs.chelsa.helpers.get_variables_args</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">crumbs.chelsa.cli</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.chelsa.cli.options.html">crumbs.chelsa.cli.options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.chelsa.cli.request_cmd.html">crumbs.chelsa.cli.request_cmd</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="crumbs.chelsa.request.html">crumbs.chelsa.request</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.gbif.html">crumbs.gbif</a></li>
@@ -87,8 +88,7 @@
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="crumbs.html">crumbs</a> &raquo;</li>
           <li><a href="crumbs.chelsa.html">crumbs.chelsa</a> &raquo;</li>
-          <li><a href="crumbs.chelsa.helpers.html">crumbs.chelsa.helpers</a> &raquo;</li>
-      <li>crumbs.chelsa.helpers.get_variables_args</li>
+      <li>crumbs.chelsa.cli</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -121,21 +121,31 @@
     text-align: unset;
 }
 </style>
-<section id="crumbs-chelsa-helpers-get-variables-args">
-<h1>crumbs.chelsa.helpers.get_variables_args<a class="headerlink" href="#crumbs-chelsa-helpers-get-variables-args" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="crumbs.chelsa.helpers.get_variables_args">
-<span class="sig-name descname"><span class="pre">get_variables_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/crumbs/chelsa/helpers.html#get_variables_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#crumbs.chelsa.helpers.get_variables_args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<section id="module-crumbs.chelsa.cli">
+<span id="crumbs-chelsa-cli"></span><h1>crumbs.chelsa.cli<a class="headerlink" href="#module-crumbs.chelsa.cli" title="Permalink to this headline">¶</a></h1>
+<p>Package for CLI access to CHELSA-Trace21k</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.chelsa.cli.options.html#module-crumbs.chelsa.cli.options" title="crumbs.chelsa.cli.options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crumbs.chelsa.cli.options</span></code></a></p></td>
+<td><p>Defines parsing options from command line</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="crumbs.chelsa.cli.request_cmd.html#module-crumbs.chelsa.cli.request_cmd" title="crumbs.chelsa.cli.request_cmd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crumbs.chelsa.cli.request_cmd</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="crumbs.chelsa.helpers.get_timesID_args.html" class="btn btn-neutral float-left" title="crumbs.chelsa.helpers.get_timesID_args" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="crumbs.gbif.html" class="btn btn-neutral float-right" title="crumbs.gbif" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="crumbs.chelsa.html" class="btn btn-neutral float-left" title="crumbs.chelsa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crumbs.chelsa.cli.options.html" class="btn btn-neutral float-right" title="crumbs.chelsa.cli.options" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,7 +1,7 @@
-crumbs.chelsa.helpers
+crumbs.chelsa.request
 =====================
 
-.. automodule:: crumbs.chelsa.helpers
+.. automodule:: crumbs.chelsa.request
 
    
    
@@ -15,8 +15,7 @@ crumbs.chelsa.helpers
       :toctree:
       :nosignatures:
    
-      get_timesID_args
-      get_variables_args
+      request
    
    
 

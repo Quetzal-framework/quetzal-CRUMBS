@@ -1,0 +1,33 @@
+crumbs.chelsa.cli.options
+=========================
+
+.. automodule:: crumbs.chelsa.cli.options
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_parser
+      get_timesID_args
+      get_variables_args
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,6 +1,0 @@
-crumbs.chelsa.helpers.get\_timesID\_args
-========================================
-
-.. currentmodule:: crumbs.chelsa.helpers
-
-.. autofunction:: get_timesID_args
