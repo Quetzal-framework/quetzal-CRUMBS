@@ -43,11 +43,6 @@ def get_parser():
                         callback=get_variables_args,
                         help="Comma-separated list of explanatory variables from CHELSA. Possible options: dem, glz, bio01 to bio19 or bio for all.")
 
-    parser.add_option("-t", "--timeID",
-                        dest="chelsa_time_IDs",
-                        type=float,
-                        help="CHELSA_TraCE21k_ time ID to download for projection to past climates: 20 (present) to -200 (LGM)")
-
     parser.add_option("-b", "--buffer",
                         type="float",
                         dest="buffer",

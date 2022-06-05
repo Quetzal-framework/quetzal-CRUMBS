@@ -21,7 +21,6 @@ def main(argv=None):
         presence_shapefile = options.presence_shapefile,
         nb_background_points = options.nb_background_points,
         variables = options.variables,
-        chelsa_time_IDs = options.chelsa_time_IDs,
         buffer = options.buffer,
         cleanup = options.cleanup
     )

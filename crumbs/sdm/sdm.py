@@ -17,7 +17,6 @@ class SDM:
     presence_shapefile: str,
     nb_background_points: float = 30,
     variables = ['bio'],
-    chelsa_time_IDs: List[float] = [20,19],
     buffer: float = 0.0,
     cleanup: bool = True
     ):
@@ -28,7 +27,6 @@ class SDM:
         self.scientific_name    = scientific_name
         self.presence_shapefile = presence_shapefile
         self.nb_background_points  = nb_background_points
-        self.chelsa_time_IDs    = chelsa_time_IDs
         self.variables          = variables
         self.buffer             = buffer
         self.cleanup            = cleanup

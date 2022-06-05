@@ -30,6 +30,5 @@ crumbs-fit-sdm \
       --presences $presences \
       --nb-backround 30 \
       --variables $biovars \
-      --timesID 20 \
       --buffer $buffer \
       --cleanup
