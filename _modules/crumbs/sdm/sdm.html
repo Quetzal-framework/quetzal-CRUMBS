@@ -238,18 +238,19 @@
 <span class="sd">        Download chelsa datasets in order to fit and extrapolate classifiers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">crumbs.chelsa.utils</span> <span class="kn">import</span> <span class="n">request</span>
+        <span class="kn">from</span> <span class="nn">crumbs.chelsa.request</span> <span class="kn">import</span> <span class="n">request</span>
 
         <span class="n">request</span><span class="p">(</span>
-        <span class="n">inputFile</span>   <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
-        <span class="n">variables</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
-        <span class="n">timesID</span>     <span class="o">=</span>   <span class="p">[</span><span class="n">timeID</span><span class="p">],</span>
-        <span class="n">points</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span><span class="p">,</span>
-        <span class="n">margin</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
-        <span class="n">chelsa_dir</span>  <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span><span class="p">,</span>
-        <span class="n">clip_dir</span>    <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span><span class="p">,</span>
-        <span class="n">geotiff</span>     <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
-        <span class="n">cleanup</span>     <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span> <span class="p">)</span>
+            <span class="n">inputFile</span>   <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
+            <span class="n">variables</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
+            <span class="n">timesID</span>     <span class="o">=</span>   <span class="p">[</span><span class="n">timeID</span><span class="p">],</span>
+            <span class="n">points</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span><span class="p">,</span>
+            <span class="n">margin</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+            <span class="n">world_dir</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span><span class="p">,</span>
+            <span class="n">landscape_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span><span class="p">,</span>
+            <span class="n">geotiff</span>     <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
+            <span class="n">cleanup</span>     <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
