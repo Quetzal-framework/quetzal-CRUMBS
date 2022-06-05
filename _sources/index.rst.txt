@@ -9,8 +9,10 @@
    2. Get GBIF presence records <2-gbif>
    3. Get CHELSA climate data <3-chelsa>
    4. Landscape habitability reconstruction <4-sdm>
-   5. Prepare the landscape <self>
-
+   5. GIS pre-processing <self>
+   6. Spatial simulations with EGGs  <self>
+   7. ABC Random Forest inference
+   
    API reference <_autosummary/crumbs>
 
 Welcome to Quetzal-CRUMBS
