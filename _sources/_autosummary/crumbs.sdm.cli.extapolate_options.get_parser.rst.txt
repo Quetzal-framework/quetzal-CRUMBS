@@ -1,6 +1,0 @@
-crumbs.sdm.cli.extapolate\_options.get\_parser
-==============================================
-
-.. currentmodule:: crumbs.sdm.cli.extapolate_options
-
-.. autofunction:: get_parser

@@ -1,7 +1,7 @@
-crumbs.sdm.cli.extapolate\_options
-==================================
+crumbs.sdm.cli.extrapolate\_options
+===================================
 
-.. automodule:: crumbs.sdm.cli.extapolate_options
+.. automodule:: crumbs.sdm.cli.extrapolate_options
 
    
    
