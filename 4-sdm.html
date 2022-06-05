@@ -136,13 +136,78 @@ easier to distribute on High-Throughput Computing Grids.</p></li>
 </section>
 <section id="command">
 <h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
-<dl class="simple">
-<dt>crumbs-fit-sdm </dt><dd><p>–species $species –presences $presences –nb-backround 30 –variables $biovars –buffer $buffer –cleanup</p>
-</dd>
-</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">species</span><span class="o">=</span><span class="s1">&#39;Heteronotia binoei&#39;</span>
+<span class="nv">presences</span><span class="o">=</span><span class="s1">&#39;occurrences.shp&#39;</span>
+<span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
+<span class="nv">biovars</span><span class="o">=</span>dem,bio01
+
+crumbs-fit-sdm <span class="se">\</span>
+      --species <span class="nv">$species</span> <span class="se">\</span>
+      --presences <span class="nv">$presences</span> <span class="se">\</span>
+      --nb-backround <span class="m">30</span> <span class="se">\</span>
+      --variables <span class="nv">$biovars</span> <span class="se">\</span>
+      --buffer <span class="nv">$buffer</span> <span class="se">\</span>
+      --cleanup
+</pre></div>
+</div>
 </section>
 <section id="output">
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Fitting Species Distribution Models for iDDC modeling
+- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
+    ... rasters will be cropped to bounding box infered from points: POLYGON ((128.349138 -18.275254, 138.893138 -18.275254, 138.893138 -9.750165, 128.349138 -9.750165, 128.349138 -18.275254))
+https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_20_V1.0.tif
+    ... World file does not exist, starting download from scratch.
+100% 252M/252M [00:16&lt;00:00, 15.5MiB/s]
+https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_bio01_20_V1.0.tif
+    ... World file does not exist, starting download from scratch.
+100% 528M/528M [00:33&lt;00:00, 15.7MiB/s]
+    ... reading presence shapefile datatsets:
+        - number of duplicates:  4
+        - number of NA&#39;s:  0
+        - coordinate reference system: epsg:4326
+        - 30 observations with 3 columns
+    ... after removing duplicated occurrences:
+        - number of duplicates:  0
+        - number of NA&#39;s:  0
+        - coordinate reference system: epsg:4326
+        - 26 observations with 3 columns
+    ... after removing occurrences falling in ocean cells (NA, -inf, +inf):
+        - number of duplicates:  0
+        - number of NA&#39;s:  0
+        - coordinate reference system: epsg:4326
+        - 26 observations with 4 columns
+    ... building presence/absence dataset:
+        - number of duplicates:  0
+        - number of NA&#39;s:  0
+        - coordinate reference system: epsg:4326
+        - 56 observations with 2 columns
+    ... there are 2 explanatory rasters features
+    ... loading training vector
+    ... loading explanatory rasters
+    ... fitting classifiers on training data
+    ... Classifier rf
+        - k-fold cross validation for accuracy scores (displayed as a percentage)
+        - rf 5-fold Cross Validation Accuracy: 57.42 (+/- 23.71)
+        - fitting model
+        - trained model will be saved to model-persistence/rf.joblib
+    ... Classifier et
+        - k-fold cross validation for accuracy scores (displayed as a percentage)
+        - et 5-fold Cross Validation Accuracy: 59.09 (+/- 19.92)
+        - fitting model
+        - trained model will be saved to model-persistence/et.joblib
+    ... Classifier xgb
+        - k-fold cross validation for accuracy scores (displayed as a percentage)
+        - xgb 5-fold Cross Validation Accuracy: 57.27 (+/- 30.21)
+        - fitting model
+        - trained model will be saved to model-persistence/xgb.joblib
+    ... Classifier lgbm
+        - k-fold cross validation for accuracy scores (displayed as a percentage)
+        - lgbm 5-fold Cross Validation Accuracy: 38.18 (+/- 38.83)
+        - fitting model
+        - trained model will be saved to model-persistence/lgbm.joblib
+</pre></div>
+</div>
 </section>
 </section>
 <section id="references">
