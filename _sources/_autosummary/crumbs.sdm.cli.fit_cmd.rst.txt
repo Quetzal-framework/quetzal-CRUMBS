@@ -1,7 +1,7 @@
-crumbs.sdm.fit
-==============
+crumbs.sdm.cli.fit\_cmd
+=======================
 
-.. automodule:: crumbs.sdm.fit
+.. automodule:: crumbs.sdm.cli.fit_cmd
 
    
    

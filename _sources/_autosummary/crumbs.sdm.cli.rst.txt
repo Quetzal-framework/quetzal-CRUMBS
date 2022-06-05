@@ -1,0 +1,32 @@
+crumbs.sdm.cli
+==============
+
+.. automodule:: crumbs.sdm.cli
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.sdm.cli.extrapolate_cmd
+   crumbs.sdm.cli.fit_cmd
+   crumbs.sdm.cli.fit_options
+

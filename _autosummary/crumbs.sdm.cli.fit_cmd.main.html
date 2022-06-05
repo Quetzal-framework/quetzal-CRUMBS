@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>crumbs.sdm.sdm &mdash; Quetzal-CRUMBS  documentation</title>
+  <title>crumbs.sdm.cli.fit_cmd.main &mdash; Quetzal-CRUMBS  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="crumbs.sdm.sdm.SDM" href="crumbs.sdm.sdm.SDM.html" />
-    <link rel="prev" title="crumbs.sdm.cli.fit_cmd.main" href="crumbs.sdm.cli.fit_cmd.main.html" /> 
+    <link rel="next" title="crumbs.sdm.sdm" href="crumbs.sdm.sdm.html" />
+    <link rel="prev" title="crumbs.sdm.cli.fit_cmd" href="crumbs.sdm.cli.fit_cmd.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,11 +58,12 @@
 <li class="toctree-l2"><a class="reference internal" href="crumbs.retrieve_parameters.html">crumbs.retrieve_parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.sample.html">crumbs.sample</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="crumbs.sdm.html">crumbs.sdm</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="crumbs.sdm.cli.html">crumbs.sdm.cli</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">crumbs.sdm.sdm</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="crumbs.sdm.sdm.SDM.html">crumbs.sdm.sdm.SDM</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="crumbs.sdm.cli.html">crumbs.sdm.cli</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="crumbs.sdm.cli.extrapolate_cmd.html">crumbs.sdm.cli.extrapolate_cmd</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="crumbs.sdm.cli.fit_cmd.html">crumbs.sdm.cli.fit_cmd</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="crumbs.sdm.sdm.html">crumbs.sdm.sdm</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.sequence.html">crumbs.sequence</a></li>
@@ -86,7 +87,9 @@
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="crumbs.html">crumbs</a> &raquo;</li>
           <li><a href="crumbs.sdm.html">crumbs.sdm</a> &raquo;</li>
-      <li>crumbs.sdm.sdm</li>
+          <li><a href="crumbs.sdm.cli.html">crumbs.sdm.cli</a> &raquo;</li>
+          <li><a href="crumbs.sdm.cli.fit_cmd.html">crumbs.sdm.cli.fit_cmd</a> &raquo;</li>
+      <li>crumbs.sdm.cli.fit_cmd.main</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -119,29 +122,22 @@
     text-align: unset;
 }
 </style>
-<section id="module-crumbs.sdm.sdm">
-<span id="crumbs-sdm-sdm"></span><h1>crumbs.sdm.sdm<a class="headerlink" href="#module-crumbs.sdm.sdm" title="Permalink to this headline">¶</a></h1>
-<p>Module declaring the base class for Species Distribution Modeling.</p>
-<p class="rubric">Classes</p>
-<table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.sdm.sdm.SDM.html#crumbs.sdm.sdm.SDM" title="crumbs.sdm.sdm.SDM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SDM</span></code></a></p></td>
-<td><p>Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences and fit classifiers, saving fitted models for later extrapolations to past time periods with dHTC.</p></td>
-</tr>
-</tbody>
-</table>
+<section id="crumbs-sdm-cli-fit-cmd-main">
+<h1>crumbs.sdm.cli.fit_cmd.main<a class="headerlink" href="#crumbs-sdm-cli-fit-cmd-main" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="crumbs.sdm.cli.fit_cmd.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/crumbs/sdm/cli/fit_cmd.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#crumbs.sdm.cli.fit_cmd.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main routine</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="crumbs.sdm.cli.fit_cmd.main.html" class="btn btn-neutral float-left" title="crumbs.sdm.cli.fit_cmd.main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="crumbs.sdm.sdm.SDM.html" class="btn btn-neutral float-right" title="crumbs.sdm.sdm.SDM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="crumbs.sdm.cli.fit_cmd.html" class="btn btn-neutral float-left" title="crumbs.sdm.cli.fit_cmd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crumbs.sdm.sdm.html" class="btn btn-neutral float-right" title="crumbs.sdm.sdm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

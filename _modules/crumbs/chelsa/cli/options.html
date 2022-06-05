@@ -114,28 +114,17 @@
                         <span class="n">callback</span><span class="o">=</span><span class="n">get_timesID_args</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)&quot;</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--points&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--presences&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;points&quot;</span><span class="p">,</span>
                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">)</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--buffer&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;buffer&quot;</span><span class="p">,</span>
                         <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Buffer to add around the bounding box, in degrees.&quot;</span><span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--world-dir&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;world_dir&quot;</span><span class="p">,</span>
-                        <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;chelsa-world&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output directory for CHELSA world files.&quot;</span><span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--lanscape-dir&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;landscape_dir&quot;</span><span class="p">,</span>
-                        <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;chelsa-landscape&quot;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output directory for CHELSA landscape files (cropped to bounding box).&quot;</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;--cleanup&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cleanup&quot;</span><span class="p">,</span>
@@ -146,7 +135,9 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;--no-cleanup&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cleanup&quot;</span><span class="p">,</span>
                         <span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Keep downloaded CHELSA files on disk.&quot;</span><span class="p">)</span></div>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Keep downloaded CHELSA files on disk.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span></div>
 </pre></div>
 
            </div>

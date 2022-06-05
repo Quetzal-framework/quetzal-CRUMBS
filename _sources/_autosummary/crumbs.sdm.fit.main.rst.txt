@@ -1,6 +1,0 @@
-crumbs.sdm.fit.main
-===================
-
-.. currentmodule:: crumbs.sdm.fit
-
-.. autofunction:: main

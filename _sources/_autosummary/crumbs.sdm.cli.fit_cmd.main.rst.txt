@@ -1,0 +1,6 @@
+crumbs.sdm.cli.fit\_cmd.main
+============================
+
+.. currentmodule:: crumbs.sdm.cli.fit_cmd
+
+.. autofunction:: main
