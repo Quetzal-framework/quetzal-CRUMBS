@@ -1,3 +1,3 @@
 """
-Package for performing Geospatial operations to prepare the landscape to inference.
+Package preparing a dynamic landscape for simulation.
 """
