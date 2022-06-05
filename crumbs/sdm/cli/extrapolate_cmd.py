@@ -7,7 +7,7 @@ def main(argv=None):
 
     import sys
 
-    from . options import get_parser
+    from . extrapolate_options import get_parser
     from .. sdm import SDM
 
     print("- Quetzal-CRUMBS - Species Distribution Models for iDDC modeling")
