@@ -12,7 +12,7 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    parser = get_parser
+    parser = get_parser()
     (options, args) = parser.parse_args(argv)
 
     return request(

@@ -14,3 +14,10 @@ crumbs-get-gbif \
       --year "1950,2022" \
       --buffer $buffer \
       --output occurrences
+
+crumbs-get-chelsa \
+      --variables $biovars \
+      --timesID 19 \
+      --points $sample \
+      --buffer $buffer \
+      --cleanup

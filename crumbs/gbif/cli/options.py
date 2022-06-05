@@ -1,7 +1,14 @@
+"""
+Defines parsing options from command line
+"""
 
 def get_parser():
+    """
+    Returns parsed options from command line
+    """
 
     from optparse import OptionParser
+
     parser = OptionParser()
 
     parser.add_option("-s", "--species",
@@ -15,7 +22,7 @@ def get_parser():
                         default=None,
                         help="Shapefile of spatial points around which a bounding box will be drawn to perform SDM. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
 
-    parser.add_option("-m", "--buffer",
+    parser.add_option("-b", "--buffer",
                         type="float",
                         dest="buffer",
                         default=0.0,

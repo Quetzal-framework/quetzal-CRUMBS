@@ -238,38 +238,3 @@ def retrieve_variables(urls):
         if any(variable in s for s in urls):
             matched.append(variable)
     return matched
-
-def request(inputFile=None, variables=None, timesID=None, points=None, margin=0.0, chelsa_dir='chelsa-world', clip_dir='chelsa-cropped', geotiff='chelsa-stacked.tif', cleanup=False):
-    """ Downloads bio and orog variables from CHELSA-TraCE21k –
-        1km climate timeseries since the LG and clip to spatial extent of sampling points, converting the output into a geotiff file
-    """
-    print("- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling")
-    if points is not None:
-        bounding_box = bounds_to_polygon(points, margin)
-        print('    ... rasters will be cropped to bounding box infered from points:', bounding_box)
-
-    create_folders_if_dont_exist(chelsa_dir, clip_dir)
-
-    if inputFile is None:
-        variables = expand_bio(variables)
-        urls = generate_urls(variables, timesID)
-    else:
-        urls = read_urls(inputFile)
-        variables = retrieve_variables(urls)
-
-    assert len(urls) != 0 , "no URL generated or read in file."
-
-    clip_files = []
-    for url in urls:
-        clip_file = clip_dir + "/" + get_filename(url)
-        clip_files.append(clip_file)
-        if not exists(clip_file): download_and_clip(url, chelsa_dir, bounding_box, clip_file, cleanup)
-
-    if cleanup is True: remove_chelsa_dir_if_empty(chelsa_dir)
-
-    if geotiff is not None:
-        for variable in variables:
-            matching = [s for s in clip_files if variable in s]
-            filename = geotiff.rsplit('.', 1)[-2]  + "_" + variable
-            VRT = to_vrt(sort_nicely(matching), filename + ".vrt"  )
-            to_geotiff(VRT,  filename + ".tif")
