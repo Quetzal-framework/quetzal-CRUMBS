@@ -96,7 +96,7 @@ Behavior
 Output
 ^^^^^^^^^^
 
-.. code-block::
+.. code-block:: text
 
     - Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
         ... rasters will be cropped to bounding box infered from points: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))

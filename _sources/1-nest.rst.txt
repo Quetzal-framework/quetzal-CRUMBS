@@ -117,7 +117,7 @@ Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
 where it is available for distributed High Throughput Computing.
 To make it available to your computation, just add these two lines to your ``.condor`` project file:
 
-.. code-block::
+.. code-block:: text
 
    Requirements           = HAS_SINGULARITY == TRUE
    +SingularityImage      = "/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest"
@@ -129,7 +129,7 @@ On the NASA Pleiades
 Docker containers can be `converted to Singularity <https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html>`_
 and deployed on the NASA Pleiades with this command:
 
-.. code-block::
+.. code-block:: text
 
    pfe$ module load singularity
    pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
@@ -144,6 +144,6 @@ Jetstream2 `supports Docker and Apptainer/Singularity. <https://docs.jetstream-c
 Apptainer (previously known as Singularity) is installed as part of the Jetstream Software Collection.
 You can access Apptainer from any Jetstream Featured Image by doing:
 
-.. code-block::
+.. code-block:: text
 
    module load apptainer

@@ -172,11 +172,23 @@ reproduce our example then just download our test data points from Github:</p>
 </ul>
 </li>
 </ol>
+<blockquote>
+<div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>All these files are necessary. When you transfer shapefiles to different jobs,
+make sure you always transfer all of them, and not only the <code class="docutils literal notranslate"><span class="pre">.shp</span></code>!</p>
+</div>
+</div></blockquote>
 </section>
 <section id="command">
 <h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
 <p>You can then execute this command to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
-with a buffer of 2.0 degrees around the bounding box of the sampling points:</p>
+with a buffer of 2.0 degrees around the bounding box of the sampling points.
+The records will be saved as a <code class="docutils literal notranslate"><span class="pre">occurrences.shp</span></code> shapefile (and a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> for human readibility).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to retrieve all existing records, use the <code class="docutils literal notranslate"><span class="pre">--all</span></code> option and get rid of the <code class="docutils literal notranslate"><span class="pre">--limit</span></code>.</p>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>crumbs-get-gbif <span class="se">\</span>
       --species <span class="s2">&quot;Heteronotia binoei&quot;</span> <span class="se">\</span>
       --points <span class="s1">&#39;test_points.shp&#39;</span> <span class="se">\</span>
@@ -189,14 +201,14 @@ with a buffer of 2.0 degrees around the bounding box of the sampling points:</p>
 </section>
 <section id="output">
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">Quetzal</span><span class="o">-</span><span class="n">CRUMBS</span> <span class="o">-</span> <span class="n">Global</span> <span class="n">Biodiversity</span> <span class="n">Information</span> <span class="n">Facility</span> <span class="p">(</span><span class="n">GBIF</span><span class="p">)</span> <span class="n">wrapper</span> <span class="k">for</span> <span class="n">iDDC</span> <span class="n">models</span>
-   <span class="o">...</span> <span class="n">Looking</span> <span class="ow">in</span> <span class="n">GBIF</span> <span class="n">database</span> <span class="k">for</span> <span class="n">Heteronotia</span> <span class="n">binoei</span>
-   <span class="o">...</span> <span class="n">Search</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">bounding</span> <span class="n">box</span> <span class="n">provided</span> <span class="n">by</span> <span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">test_points</span><span class="o">/</span><span class="n">test_points</span><span class="o">.</span><span class="n">shp</span> <span class="k">with</span> <span class="n">buffer</span> <span class="mf">2.0</span> <span class="n">degrees</span>
-   <span class="o">...</span> <span class="n">Bounding</span> <span class="n">box</span> <span class="n">used</span><span class="p">:</span> <span class="n">POLYGON</span> <span class="p">((</span><span class="mf">128.8515</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">,</span> <span class="mf">139.0335</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">,</span> <span class="mf">139.0335</span> <span class="o">-</span><span class="mf">9.0333</span><span class="p">,</span> <span class="mf">128.8515</span> <span class="o">-</span><span class="mf">9.0333</span><span class="p">,</span> <span class="mf">128.8515</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">))</span>
-   <span class="o">...</span> <span class="n">For</span> <span class="n">Heteronotia</span> <span class="n">binoei</span> <span class="n">GBIF</span> <span class="n">suggested</span> <span class="n">the</span> <span class="n">taxon</span> <span class="n">key</span><span class="p">:</span> <span class="mi">2448146</span>
-   <span class="o">...</span> <span class="n">We</span> <span class="n">identified</span> <span class="mi">6591</span> <span class="n">available</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">bounding</span> <span class="n">box</span><span class="o">.</span>
-   <span class="o">...</span> <span class="n">Option</span> <span class="nb">all</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="n">using</span> <span class="n">the</span> <span class="n">limit</span> <span class="n">option</span> <span class="n">to</span> <span class="n">retrieve</span> <span class="n">only</span> <span class="n">the</span> <span class="n">first</span> <span class="mi">30</span> <span class="n">available</span> <span class="n">records</span><span class="o">.</span>
-   <span class="o">...</span> <span class="mi">30</span> <span class="n">records</span> <span class="n">retrieved</span><span class="o">.</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
+   ... Looking in GBIF database for Heteronotia binoei
+   ... Search in the bounding box provided by tests/data/test_points/test_points.shp with buffer 2.0 degrees
+   ... Bounding box used: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))
+   ... For Heteronotia binoei GBIF suggested the taxon key: 2448146
+   ... We identified 6591 available records in the bounding box.
+   ... Option all is False, using the limit option to retrieve only the first 30 available records.
+   ... 30 records retrieved.
 </pre></div>
 </div>
 </section>

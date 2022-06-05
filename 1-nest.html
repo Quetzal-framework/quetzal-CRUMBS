@@ -246,8 +246,8 @@ pretty clutch for iDDC, and <a class="reference external" href="https://support.
 <p>Quetzal-NEST has been submitted to the Open Science Grid CVMFS image repository
 where it is available for distributed High Throughput Computing.
 To make it available to your computation, just add these two lines to your <code class="docutils literal notranslate"><span class="pre">.condor</span></code> project file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Requirements</span>           <span class="o">=</span> <span class="n">HAS_SINGULARITY</span> <span class="o">==</span> <span class="n">TRUE</span>
-<span class="o">+</span><span class="n">SingularityImage</span>      <span class="o">=</span> <span class="s2">&quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Requirements           = HAS_SINGULARITY == TRUE
++SingularityImage      = &quot;/cvmfs/singularity.opensciencegrid.org/arnaudbecheler/quetzal-nest:latest&quot;
 </pre></div>
 </div>
 </section>
@@ -255,7 +255,7 @@ To make it available to your computation, just add these two lines to your <code
 <h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
 <p>Docker containers can be <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html">converted to Singularity</a>
 and deployed on the NASA Pleiades with this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pfe$ module load singularity
 pfe% singularity pull lolcow.sif docker://arnaudbecheler/quetzal-nest
 # or
 pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
@@ -267,7 +267,7 @@ pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
 <p>Jetstream2 <a class="reference external" href="https://docs.jetstream-cloud.org/general/docker/">supports Docker and Apptainer/Singularity.</a>
 Apptainer (previously known as Singularity) is installed as part of the Jetstream Software Collection.
 You can access Apptainer from any Jetstream Featured Image by doing:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">apptainer</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>module load apptainer
 </pre></div>
 </div>
 </section>
