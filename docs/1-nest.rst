@@ -96,8 +96,13 @@ List of basic docker commands
 How do I deploy quetzal-NEST on clusters?
 -----------------------------
 
-You can use Singularity to deploy Docker images on clusters to run iDDC worflows:
-no need to ask your favorite cluster maintenance guy to manually install every dependency!
+Docker containers present some security risks when they are used on clusters, and
+they generally have to be first converted to Apptainer/Singularity containers
+before you can deploy them on clusters grids and run iDDC worflows.
+
+The conversation can be done with a simple command (depending on the system):
+no need anymore to ask your favorite cluster maintenance
+guy to manually install every dependency!
 
 On the Open Science Grid:
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -121,8 +126,8 @@ To make it available to your computation, just add these two lines to your ``.co
 On the NASA Pleiades
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Docker containers present some security risks and have to be first `converted to Singularity <https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html>`_
-to be deployed on the NASA Pleiades:
+Docker containers can be `converted to Singularity <https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html>`_
+and deployed on the NASA Pleiades with this command:
 
 .. code-block::
 
