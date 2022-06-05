@@ -27,7 +27,7 @@ def main(argv=None):
 
     my_sdm.fit_on_present_data()
 
-    with open("my_sdm.bin","wb") as f:
+    with open(options.sdm_file, "wb") as f:
         pickle.dump(my_sdm, f)
 
 if __name__ == '__main__':

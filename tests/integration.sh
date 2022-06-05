@@ -31,4 +31,9 @@ crumbs-fit-sdm \
       --nb-backround 30 \
       --variables $biovars \
       --buffer $buffer \
+      --sdm-file 'my-lil-sdm.bin' \
       --cleanup
+
+crumbs-extapolate-sdm \
+      --sdm-file 'my-lil-sdm.bin' \
+      --timeID 20

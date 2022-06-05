@@ -18,8 +18,6 @@ def get_parser():
 
     parser = OptionParser()
 
-    parser = OptionParser()
-
     parser.add_option("-s", "--species",
                         type="str",
                         dest="scientific_name",
@@ -58,6 +56,12 @@ def get_parser():
                         action = 'store_false',
                         help="Keep downloaded CHELSA files on disk.")
 
+    parser.add_option("-f", "--sdm-file",
+                        dest="sdm_file",
+                        type='str',
+                        default="my-sdm.bin"
+                        help="The binary representation of the SDM")
+                        
     parser.add_option("-j", "--joblib",
                         type="str",
                         dest="joblib",
