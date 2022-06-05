@@ -23,7 +23,7 @@ def main(argv=None):
             variables = options.variables,
             timesID = options.timesID,
             points = options.points,
-            buffer = options.buffer,
+            margin = options.buffer,
             cleanup = options.cleanup)
 
     except Exception as e:
