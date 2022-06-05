@@ -69,12 +69,20 @@ reproduce our example then just download our test data points from Github:
    * ``test_points.shx``
    * ``test_points.dbf``
 
+ .. warning::
+   All these files are necessary. When you transfer shapefiles to different jobs,
+   make sure you always transfer all of them, and not only the ``.shp``!
+
 
 Command
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
-with a buffer of 2.0 degrees around the bounding box of the sampling points:
+with a buffer of 2.0 degrees around the bounding box of the sampling points.
+The records will be saved as a ``occurrences.shp`` shapefile (and a ``.csv`` for human readibility).
+
+.. Note::
+  If you want to retrieve all existing records, use the ``--all`` option and get rid of the ``--limit``.
 
 .. code-block:: bash
 
@@ -89,7 +97,7 @@ with a buffer of 2.0 degrees around the bounding box of the sampling points:
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block::
+.. code-block:: text
 
     - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
        ... Looking in GBIF database for Heteronotia binoei

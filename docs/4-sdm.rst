@@ -18,8 +18,25 @@ existing for SDM, several reasons motivated us to develop an iDDC-specific resou
     * Combined with the right command-line interfaces, that makes SDM extrapolation to past climates
       easier to distribute on High-Throughput Computing Grids.
 
-Why do we need CHELSA?
--------------------------------
+Fitting a SDM
+---------------
+
+Context
+^^^^^^^^^^
+
+Command
+^^^^^^^^^^
+
+crumbs-fit-sdm \
+      --species $species \
+      --presences $presences \
+      --nb-backround 30 \
+      --variables $biovars \
+      --buffer $buffer \
+      --cleanup
+
+Output
+^^^^^^^^^^
 
 References
 ----------
