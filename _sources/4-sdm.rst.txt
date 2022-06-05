@@ -136,7 +136,7 @@ Bash command
 
 .. code-block:: text
 
-   crumbs-extapolate-sdm \
+   crumbs-extrapolate-sdm \
         --sdm-file 'my-lil-sdm.bin' \
         --timeID 20
 
