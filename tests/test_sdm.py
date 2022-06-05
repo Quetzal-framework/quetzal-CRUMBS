@@ -16,10 +16,10 @@ class TestSDM(unittest.TestCase):
     def test_fit_and_extrapolate(self):
 
         from crumbs.sdm.sdm import SDM
-        from crumbs.get_gbif import search_gbif
+        from crumbs.gbif.request import request
         import pickle
 
-        search_gbif(scientific_name='Heteronotia binoei',
+        request(scientific_name='Heteronotia binoei',
                              points=self.sampling_points,
                              margin=1.0,
                              all=False,
