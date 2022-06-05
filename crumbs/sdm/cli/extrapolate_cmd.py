@@ -12,7 +12,6 @@ def main(argv=None):
     from .. sdm import SDM
 
     print("- Quetzal-CRUMBS - Species Distribution Models for iDDC modeling")
-    print("Not implemented yet!")
 
     parser = get_parser()
     (options, args) = parser.parse_args(argv)

@@ -19,7 +19,7 @@ def get_parser():
 
     parser.add_option("-t", "--timeID",
                         dest="timeID",
-                        type='float',
+                        type='int',
                         help="CHELSA_TraCE21k time ID to perform the extrapolation: 20 (present) to -200 (LGM)")
 
     return parser

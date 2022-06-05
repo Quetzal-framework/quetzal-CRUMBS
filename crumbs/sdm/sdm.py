@@ -366,7 +366,6 @@ class SDM:
         """
         from pyimpute import load_targets
 
-        print("- Quetzal-CRUMBS - Species Distribution Modeling for iDDC modeling")
         print('    ... projection to time ' + str(timeID))
 
         self._download_chelsa_variables_at_time(timeID)
