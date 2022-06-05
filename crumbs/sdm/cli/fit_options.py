@@ -27,7 +27,7 @@ def get_parser():
 
     parser.add_option("-p", "--presences",
                         type="str",
-                        dest="points",
+                        dest="presence_shapefile",
                         default=None,
                         help="Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
 
@@ -35,11 +35,6 @@ def get_parser():
                         dest="nb_background_points",
                         type=float,
                         help="Number of backround points for pseudo-absence generation.")
-
-    parser.add_option("-j", "--joblib",
-                        type="str",
-                        dest="joblib",
-                        help="joblib files containin the persisted classifiers fitted from a previous step.")
 
     parser.add_option("-v", "--variables",
                         dest="variables",
@@ -49,15 +44,9 @@ def get_parser():
                         help="Comma-separated list of explanatory variables from CHELSA. Possible options: dem, glz, bio01 to bio19 or bio for all.")
 
     parser.add_option("-t", "--timeID"
-                        dest="timeID",
+                        dest="chelsa_time_IDs",
                         type=float,
                         help="CHELSA_TraCE21k_ time ID to download for projection to past climates: 20 (present) to -200 (LGM)")
-
-    parser.add_option("-l", "--landscape_dir",
-                        type="str",
-                        dest="landscape_dir",
-                        default = "chelsa-landscape",
-                        help="Output directory for clipped CHELSA files.")
 
     parser.add_option("-b", "--buffer",
                         type="float",
@@ -73,5 +62,16 @@ def get_parser():
     parser.add_option("--no-cleanup", dest="cleanup",
                         action = 'store_false',
                         help="Keep downloaded CHELSA files on disk.")
+
+    parser.add_option("-j", "--joblib",
+                        type="str",
+                        dest="joblib",
+                        help="joblib files containin the persisted classifiers fitted from a previous step.")
+
+    parser.add_option("-l", "--landscape_dir",
+                        type="str",
+                        dest="landscape_dir",
+                        default = "chelsa-landscape",
+                        help="Output directory for clipped CHELSA files.")
 
     return parser
