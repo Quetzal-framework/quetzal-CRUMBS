@@ -46,6 +46,8 @@ def request(
 
     assert len(urls) != 0 , "no URL generated or read in file."
 
+    from os.path import exists
+
     clip_files = []
     for url in urls:
         clip_file = landscape_dir + "/" + get_filename(url)
