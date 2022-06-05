@@ -52,6 +52,9 @@ what the ``crumbs-get-gbif`` utility does.
 Usage
 -------
 
+Context
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 To run this command successfully, you will need to start with a set of longitude/latitude points.
 That would normally be the coordinates of your DNA samples, but if you want to
 reproduce our example then just download our test data points from Github:
@@ -66,6 +69,10 @@ reproduce our example then just download our test data points from Github:
    * ``test_points.shx``
    * ``test_points.dbf``
 
+
+Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points:
 
@@ -78,3 +85,17 @@ with a buffer of 2.0 degrees around the bounding box of the sampling points:
          --year "1950,2022" \
          --buffer 2.0 \
          --output occurrences
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block::
+
+  - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
+     ... Looking in GBIF database for Heteronotia binoei
+     ... Search in the bounding box provided by tests/data/test_points/test_points.shp with buffer 2.0 degrees
+     ... Bounding box used: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))
+     ... For Heteronotia binoei GBIF suggested the taxon key: 2448146
+     ... We identified 6591 available records in the bounding box.
+     ... Option all is False, using the limit option to retrieve only the first 30 available records.
+     ... 30 records retrieved.

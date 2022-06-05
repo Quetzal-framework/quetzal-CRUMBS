@@ -46,7 +46,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">2. Get GBIF presence records</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-to-access-gbif">Why do we need to access GBIF ?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-a-scripted-approach">Why a scripted approach?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#context">Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="3-chelsa.html">3. Get CHELSA climate data</a></li>
@@ -149,6 +154,8 @@ what the <code class="docutils literal notranslate"><span class="pre">crumbs-get
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<section id="context">
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h3>
 <p>To run this command successfully, you will need to start with a set of longitude/latitude points.
 That would normally be the coordinates of your DNA samples, but if you want to
 reproduce our example then just download our test data points from Github:</p>
@@ -165,6 +172,9 @@ reproduce our example then just download our test data points from Github:</p>
 </ul>
 </li>
 </ol>
+</section>
+<section id="command">
+<h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
 <p>You can then execute this command to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>crumbs-get-gbif <span class="se">\</span>
@@ -176,6 +186,20 @@ with a buffer of 2.0 degrees around the bounding box of the sampling points:</p>
       --output occurrences
 </pre></div>
 </div>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">Quetzal</span><span class="o">-</span><span class="n">CRUMBS</span> <span class="o">-</span> <span class="n">Global</span> <span class="n">Biodiversity</span> <span class="n">Information</span> <span class="n">Facility</span> <span class="p">(</span><span class="n">GBIF</span><span class="p">)</span> <span class="n">wrapper</span> <span class="k">for</span> <span class="n">iDDC</span> <span class="n">models</span>
+   <span class="o">...</span> <span class="n">Looking</span> <span class="ow">in</span> <span class="n">GBIF</span> <span class="n">database</span> <span class="k">for</span> <span class="n">Heteronotia</span> <span class="n">binoei</span>
+   <span class="o">...</span> <span class="n">Search</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">bounding</span> <span class="n">box</span> <span class="n">provided</span> <span class="n">by</span> <span class="n">tests</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">test_points</span><span class="o">/</span><span class="n">test_points</span><span class="o">.</span><span class="n">shp</span> <span class="k">with</span> <span class="n">buffer</span> <span class="mf">2.0</span> <span class="n">degrees</span>
+   <span class="o">...</span> <span class="n">Bounding</span> <span class="n">box</span> <span class="n">used</span><span class="p">:</span> <span class="n">POLYGON</span> <span class="p">((</span><span class="mf">128.8515</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">,</span> <span class="mf">139.0335</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">,</span> <span class="mf">139.0335</span> <span class="o">-</span><span class="mf">9.0333</span><span class="p">,</span> <span class="mf">128.8515</span> <span class="o">-</span><span class="mf">9.0333</span><span class="p">,</span> <span class="mf">128.8515</span> <span class="o">-</span><span class="mf">18.2625</span><span class="p">))</span>
+   <span class="o">...</span> <span class="n">For</span> <span class="n">Heteronotia</span> <span class="n">binoei</span> <span class="n">GBIF</span> <span class="n">suggested</span> <span class="n">the</span> <span class="n">taxon</span> <span class="n">key</span><span class="p">:</span> <span class="mi">2448146</span>
+   <span class="o">...</span> <span class="n">We</span> <span class="n">identified</span> <span class="mi">6591</span> <span class="n">available</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">bounding</span> <span class="n">box</span><span class="o">.</span>
+   <span class="o">...</span> <span class="n">Option</span> <span class="nb">all</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">,</span> <span class="n">using</span> <span class="n">the</span> <span class="n">limit</span> <span class="n">option</span> <span class="n">to</span> <span class="n">retrieve</span> <span class="n">only</span> <span class="n">the</span> <span class="n">first</span> <span class="mi">30</span> <span class="n">available</span> <span class="n">records</span><span class="o">.</span>
+   <span class="o">...</span> <span class="mi">30</span> <span class="n">records</span> <span class="n">retrieved</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
