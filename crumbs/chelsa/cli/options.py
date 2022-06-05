@@ -40,11 +40,11 @@ def get_parser():
                         callback=get_timesID_args,
                         help="CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)")
 
-    parser.add_option("-p", "--presences",
+    parser.add_option("-p", "--points",
                         type="str",
                         dest="points",
                         default=None,
-                        help="Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
+                        help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
 
     parser.add_option("-b", "--buffer",
                         type="float",

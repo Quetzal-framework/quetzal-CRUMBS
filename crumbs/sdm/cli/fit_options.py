@@ -25,6 +25,17 @@ def get_parser():
                         dest="scientific_name",
                         help="Species name for the SDM.")
 
+    parser.add_option("-p", "--presences",
+                        type="str",
+                        dest="points",
+                        default=None,
+                        help="Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
+
+    parser.add_option(, "--nb-backround"
+                        dest="nb_background_points",
+                        type=float,
+                        help="Number of backround points for pseudo-absence generation.")
+
     parser.add_option("-j", "--joblib",
                         type="str",
                         dest="joblib",
