@@ -18,7 +18,7 @@ by a single small strait*) impact a species ecology (*e.g., isolation of populat
 and have a snowball effect on the downstream levels of biodiversity
 at higher spatial scales (*e.g., emergence of two distinct species*).
 
-.. figure:: DEM_dynamic_2D_gif
+.. figure:: DEM_dynamic_2D.gif
    :alt: Digital Elevation Model
    :class: with-shadow
    :width: 400px
