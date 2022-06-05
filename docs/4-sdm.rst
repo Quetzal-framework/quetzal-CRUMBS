@@ -159,7 +159,7 @@ Output
           - loading persisted classifier lgbm
       ... masking ocean cells to dem no data value for all probability_1 rasters
       ... averaging imputed rasters for climate conditions at CHELSA time 20
-
+      ... averaged imputed rasters saved to model-averaging/suitability_20.tif
 
 References
 ----------
