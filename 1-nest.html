@@ -171,17 +171,56 @@ your system.</p>
 </section>
 <section id="list-of-basic-docker-commands">
 <h3>List of basic docker commands<a class="headerlink" href="#list-of-basic-docker-commands" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker -version <span class="c1"># will give the version of Docker is installed.</span>
-docker pull &lt;image_name&gt; <span class="c1"># will download the image from dockerhub.</span>
-docker run  &lt;image_name&gt; <span class="c1"># will run the image pulled from dockerhub to create a container. If you don’t have a local copy of the image, the run command will pull and then run the image to create a container.</span>
-docker ps <span class="c1"># Process status of containers. If no container is running, you get a blank line.</span>
-docker ps -a <span class="c1"># process status of all containers.</span>
-docker <span class="nb">exec</span> -it &lt;container_id&gt; bash <span class="c1"># allows you to run a command in the docker container. The -it flag provides an interactive tty (shell) within the container.</span>
-docker stop &lt;container_id&gt; <span class="c1"># shuts down a container.</span>
-docker build &lt;path_to_docker_file&gt; <span class="c1"># Builds an image from the specified docker file.</span>
-docker push &lt;docker_hub_username/image_name&gt; <span class="c1"># pushes an image to the docker hub repository.</span>
-</pre></div>
-</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"><p>Bash command</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">-version</span></code></p></td>
+<td><p>will give the version of Docker is installed.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">&lt;image_name&gt;</span></code></p></td>
+<td><p>will download the image from dockerhub.</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span>&#160; <span class="pre">&lt;image_name&gt;</span></code></p></td>
+<td><p>will run the image pulled from dockerhub to
+create a container. If you don’t have a local
+copy of the image, the run command will pull
+and then run the image to create a container.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code></p></td>
+<td><p>Process status of containers. If no container
+is running, you get a blank line.</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p></td>
+<td><p>process status of all containers.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container_id&gt;</span> <span class="pre">bash</span></code></p></td>
+<td><dl class="simple">
+<dt>allows you to run a command in the docker</dt><dd><p>container. The -it flag provides an</p>
+</dd>
+</dl>
+<p>interactive tty (shell) within the container.</p>
+</td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code></p></td>
+<td><p>shuts down a container.</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">&lt;path_to_docker_file&gt;</span></code></p></td>
+<td><p>Builds an image from the specified docker file</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span> <span class="pre">&lt;docker_hub_username/image_name&gt;</span></code></p></td>
+<td><p>pushes an image to the docker hub repository.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="how-do-i-deploy-quetzal-nest-on-clusters">
