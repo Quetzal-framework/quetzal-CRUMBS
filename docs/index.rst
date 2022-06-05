@@ -12,8 +12,8 @@
    5. GIS pre-processing <self>
    6. Spatial simulations with EGGs  <self>
    7. ABC Random Forest inference
-   
-   API reference <_autosummary/crumbs>
+
+   Python API <_autosummary/crumbs>
 
 Welcome to Quetzal-CRUMBS
 =====================================================
