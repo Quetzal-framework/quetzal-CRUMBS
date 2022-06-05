@@ -5,7 +5,7 @@ Accessing the CHELSA-TraCE21k 1km climate timeseries with Quetzal-CRUMBS
 monthly climate data for temperature and precipitation at 30 arcsec spatial
 resolution in 100-yeartime steps for the last 21,000 years.
 Based on the reconstructed paleo orography, mean annual
-temperature and precipitation was downscaled using the CHELSA V1.2 algorithm ([KARGER]_).
+temperature and precipitation was downscaled using the CHELSA V1.2 algorithm ([Karger2021]_).
 
 Why do we need CHELSA?
 -------------------------------
@@ -88,4 +88,4 @@ DNA samples, but if you want to reproduce our example then just download our tes
    Have a look `At their technical notice <https://chelsa-climate.org/chelsa-trace21k/>`_
 
 
-.. [KARGER] Karger, D. N., Nobis, M. P., Normand, S., Graham, C. H., & Zimmermann, N. E. (2021): CHELSA-TraCE21k v1. 0. Downscaled transient temperature and precipitation data since the last glacial maximum. Climate of the Past Discussions, 1-27.
+.. [Karger2021] Karger, D. N., Nobis, M. P., Normand, S., Graham, C. H., & Zimmermann, N. E. (2021): CHELSA-TraCE21k v1. 0. Downscaled transient temperature and precipitation data since the last glacial maximum. Climate of the Past Discussions, 1-27.
