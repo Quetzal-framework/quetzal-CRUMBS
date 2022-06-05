@@ -35,39 +35,12 @@ Usage
 -------
 
 Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
-and elevation files
-when they need them: you should not have to download them yourself when you are building
-an iDDC workflow.
+and elevation files when they need them: you should not have to download them yourself when you are building
+an iDDC workflow. However if you happen to download some CHELSA files for your own needs,
+here is how to do so.
 
-However if you happen to download some CHELSA files for your own needs,
-here is how to do so:
-
-Defining the area of interest
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To run this command successfully, you will need to start with a set of longitude/latitude points
-to define the area of the world of interest:
-
-* A world file is downloaded for the variable and time of interest in the ``chelsa-world`` folder
-* The file is cropped to the bounding box of the given points (+/- a buffer in degrees)
-* The resulting landscape file is stored in a ``chelsa-landscae`` folder
-* The world file deleted if ``--cleanup``, or kept if  ``--no-cleanup``.
-
-.. warning::
-   These world files are heavy, and there are many many of them, so if you don't need them, use ``--cleanup``.
-
-In iDDC wokflows, the point of interest would normally be the coordinates of your
-DNA samples, but if you want to reproduce our example then just download our test data points from Github:
-
-1. Go to the `Download Directory <https://download-directory.github.io/>`_ utility
-2. Enter this url: ``https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points``
-3. Press enter to start the download
-4. Extract the archive in your working directory
-5. You should find 3 files: move them to your Docker working directory
-
-   * ``test_points.shp``
-   * ``test_points.shx``
-   * ``test_points.dbf``
+Command
+^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -87,5 +60,35 @@ DNA samples, but if you want to reproduce our example then just download our tes
    CHELSA-TraCE21k uses times identifiers that range from 20 (present century) to -200 (LGM).
    Have a look `At their technical notice <https://chelsa-climate.org/chelsa-trace21k/>`_
 
+Behavior
+^^^^^^^^^^
+
+1. A world file is downloaded for the variable and time of interest in the ``chelsa-world`` folder
+2. The file is cropped to the bounding box of the given geographic points (+/- a buffer in degrees)
+3. The resulting landscape file is stored in a ``chelsa-landscae`` folder
+4. The world file deleted if ``--cleanup``, or kept if  ``--no-cleanup``.
+
+.. warning::
+   These world files are heavy, and there are many many of them, so if you don't need them, use ``--cleanup``.
+
+Area of interest
+^^^^^^^^^^^^^^^^^
+
+You need a shapefile to define the longitude/latitude points to define the area of the world of interest.
+In iDDC wokflows, the point of interest would normally be the coordinates of your
+DNA samples, but if you want to reproduce our example then just download our test data points from Github:
+
+1. Go to the `Download Directory <https://download-directory.github.io/>`_ utility
+2. Enter this url: ``https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points``
+3. Press enter to start the download
+4. Extract the archive in your working directory
+5. You should find 3 files: move them to your Docker working directory
+
+   * ``test_points.shp``
+   * ``test_points.shx``
+   * ``test_points.dbf``
+
+References
+------------
 
 .. [Karger2021] Karger, D. N., Nobis, M. P., Normand, S., Graham, C. H., & Zimmermann, N. E. (2021): CHELSA-TraCE21k v1. 0. Downscaled transient temperature and precipitation data since the last glacial maximum. Climate of the Past Discussions, 1-27.
