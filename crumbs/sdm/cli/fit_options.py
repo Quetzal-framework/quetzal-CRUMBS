@@ -31,7 +31,7 @@ def get_parser():
                         default=None,
                         help="Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
 
-    parser.add_option("n", "--nb-backround",
+    parser.add_option("-n", "--nb-backround",
                         dest="nb_background_points",
                         type=float,
                         help="Number of backround points for pseudo-absence generation.")
