@@ -120,6 +120,8 @@
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">,</span> <span class="s2">&quot;no URL generated or read in file.&quot;</span>
 
+    <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">exists</span>
+
     <span class="n">clip_files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
         <span class="n">clip_file</span> <span class="o">=</span> <span class="n">landscape_dir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">get_filename</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
