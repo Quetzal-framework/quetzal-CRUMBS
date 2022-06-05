@@ -12,5 +12,5 @@ crumbs-get-gbif \
       --points $sample \
       --limit 30 \
       --year "1950,2022" \
-      --margin $buffer \
+      --buffer $buffer \
       --output occurrences
