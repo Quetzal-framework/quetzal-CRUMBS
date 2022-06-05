@@ -1,0 +1,31 @@
+crumbs.sdm.cli.extapolate\_options
+==================================
+
+.. automodule:: crumbs.sdm.cli.extapolate_options
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_parser
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

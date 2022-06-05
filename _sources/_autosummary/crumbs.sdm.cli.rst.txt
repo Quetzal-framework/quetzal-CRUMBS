@@ -26,6 +26,7 @@ crumbs.sdm.cli
    :template: custom-module-template.rst
    :recursive:
 
+   crumbs.sdm.cli.extapolate_options
    crumbs.sdm.cli.extrapolate_cmd
    crumbs.sdm.cli.fit_cmd
    crumbs.sdm.cli.fit_options
