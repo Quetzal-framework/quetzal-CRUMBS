@@ -175,7 +175,7 @@ your system.</p>
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 25%" />
-<col style="width: 49%" />
+<col style="width: 51%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head" colspan="2"><p>Bash command</p></th>
@@ -190,31 +190,37 @@ your system.</p>
 <td><p>will download the image from dockerhub.</p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span>&#160; <span class="pre">&lt;image_name&gt;</span></code></p></td>
-<td><p>will run the image pulled from dockerhub to
-create a container. If you don’t have a local
-copy of the image, the run command will pull
-and then run the image to create a container.</p></td>
+<td><div class="line-block">
+<div class="line">will run the image pulled from dockerhub to</div>
+<div class="line">create a container. If you don’t have a local</div>
+<div class="line">copy of the image, the run command will pull</div>
+<div class="line">and then run the image to create a container.</div>
+</div>
+</td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code></p></td>
-<td><p>Process status of containers. If no container
-is running, you get a blank line.</p></td>
+<td><div class="line-block">
+<div class="line">process status of containers. If no container</div>
+<div class="line">is running, you get a blank line.</div>
+</div>
+</td>
 </tr>
 <tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p></td>
 <td><p>process status of all containers.</p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">&lt;container_id&gt;</span> <span class="pre">bash</span></code></p></td>
-<td><dl class="simple">
-<dt>allows you to run a command in the docker</dt><dd><p>container. The -it flag provides an</p>
-</dd>
-</dl>
-<p>interactive tty (shell) within the container.</p>
+<td><div class="line-block">
+<div class="line">allows you to run a command in the docker</div>
+<div class="line">container. The -it flag provides an</div>
+<div class="line">interactive tty (shell) within the container.</div>
+</div>
 </td>
 </tr>
 <tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code></p></td>
 <td><p>shuts down a container.</p></td>
 </tr>
 <tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">&lt;path_to_docker_file&gt;</span></code></p></td>
-<td><p>Builds an image from the specified docker file</p></td>
+<td><p>builds an image from the specified docker file</p></td>
 </tr>
 <tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">push</span> <span class="pre">&lt;docker_hub_username/image_name&gt;</span></code></p></td>
 <td><p>pushes an image to the docker hub repository.</p></td>
