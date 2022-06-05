@@ -44,9 +44,9 @@ The Quetzal framework
 
 To sustain the IDDC field, we develop the Quetzal suite:
 
-* `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ toolbox to build the Quetzal-EGGS simulators
-* `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : spatially explicit coalescence-based C++ simulators of genetic diversity
-* Quetzal-CRUMBS: this very Python library that feeds the EGGS with inputs and dispose of their output
+* `Quetzal-CoaTL <https://becheler.github.io/softwares/quetzal-CoalTL/home/>`_ : an advanced C++ motherbox that sporadically spawns Quetzal-EGGS simulators
+* `Quetzal-EGGS <https://github.com/Becheler/quetzal-EGGS>`_ : Little C++ simulators for spatially explicit, coalescence-based simulation of genetic diversity
+*  Quetzal-CRUMBS: this very Python library that feeds the EGGS with inputs and dispose of their output
 * `Quetzal-NEST <https://hub.docker.com/r/arnaudbecheler/quetzal-nest>`_ : a Docker container where this little world lives in a relative harmony. Can be deployed on clusters grids.
 
 
