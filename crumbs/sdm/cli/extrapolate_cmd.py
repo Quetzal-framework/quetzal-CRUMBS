@@ -6,6 +6,7 @@ def main(argv=None):
     """
 
     import sys
+    import pickle
 
     from . extrapolate_options import get_parser
     from .. sdm import SDM
