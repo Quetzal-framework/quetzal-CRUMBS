@@ -1,0 +1,32 @@
+crumbs.sdm.cli.fit\_options
+===========================
+
+.. automodule:: crumbs.sdm.cli.fit_options
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_parser
+      get_variables_args
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

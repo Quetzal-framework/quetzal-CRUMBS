@@ -1,0 +1,6 @@
+crumbs.sdm.cli.fit\_options.get\_variables\_args
+================================================
+
+.. currentmodule:: crumbs.sdm.cli.fit_options
+
+.. autofunction:: get_variables_args
