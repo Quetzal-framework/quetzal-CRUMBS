@@ -6,7 +6,7 @@ sys.path.append("..")
 
 from . context import crumbs
 
-from crumbs.get_gbif import search_gbif
+from crumbs.gbif.request import request
 
 class TestGetGbif(unittest.TestCase):
     output_filename = "tests/occurrences"
@@ -14,9 +14,9 @@ class TestGetGbif(unittest.TestCase):
     def SetUp(self):
         pass
 
-    def test_get_gbif(self):
+    def test_request_gbif(self):
 
-        search_gbif(scientific_name='Heteronotia binoei',
+        request(scientific_name='Heteronotia binoei',
                              points="tests/data/test_points/test_points.shp",
                              margin=1.0,
                              all=False,
@@ -25,7 +25,7 @@ class TestGetGbif(unittest.TestCase):
                              csv_file= self.output_filename + ".csv",
                              shapefile= self.output_filename + ".shp")
 
-        search_gbif(scientific_name='Heteronotia binoei',
+        request(scientific_name='Heteronotia binoei',
                              points="tests/data/test_points/test_points.shp",
                              margin=1.0,
                              all=False,
