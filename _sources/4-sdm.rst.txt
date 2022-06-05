@@ -131,8 +131,14 @@ Output
 Extrapolation to past climates
 --------------------------------
 
-Command
+Bash command
 ^^^^^^^^^^
+
+.. code-block:: text
+
+   crumbs-extapolate-sdm \
+        --sdm-file 'my-lil-sdm.bin' \
+        --timeID 20
 
 Output
 ^^^^^^^^^^

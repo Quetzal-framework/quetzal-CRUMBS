@@ -1,6 +1,0 @@
-crumbs.sdm.cli.extrapolate\_cmd.main
-====================================
-
-.. currentmodule:: crumbs.sdm.cli.extrapolate_cmd
-
-.. autofunction:: main
