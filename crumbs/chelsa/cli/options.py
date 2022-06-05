@@ -40,28 +40,17 @@ def get_parser():
                         callback=get_timesID_args,
                         help="CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)")
 
-    parser.add_option("-p", "--points",
+    parser.add_option("-p", "--presences",
                         type="str",
                         dest="points",
                         default=None,
-                        help="Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
+                        help="Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.")
 
     parser.add_option("-b", "--buffer",
                         type="float",
                         dest="buffer",
                         default=0.0,
                         help="Buffer to add around the bounding box, in degrees.")
-
-    parser.add_option("-w", "--world-dir",
-                        type="str",
-                        dest="world_dir",
-                        default = "chelsa-world",
-                        help="Output directory for CHELSA world files.")
-
-    parser.add_option("-l", "--lanscape-dir",
-                        type="str", dest="landscape_dir",
-                        default = "chelsa-landscape",
-                        help="Output directory for CHELSA landscape files (cropped to bounding box).")
 
     parser.add_option("--cleanup",
                         dest="cleanup",
@@ -73,3 +62,5 @@ def get_parser():
                         dest="cleanup",
                         action = 'store_false',
                         help="Keep downloaded CHELSA files on disk.")
+
+    return parser
