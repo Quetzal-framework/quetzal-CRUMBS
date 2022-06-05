@@ -34,7 +34,7 @@ to reconstruct dynamic habitability landscapes.
 Usage
 -------
 
-Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
+Quetzal-CRUMBS utilities will automatically download the CHELSA bioclimatic
 and elevation files when they need them: you should not have to download them yourself when you are building
 an iDDC workflow.
 
@@ -47,8 +47,8 @@ Command
 .. code-block:: bash
 
    sample='test_points/test_points.shp'
-   buffer=2.0
-   biovars=dem,bio01 #or bio01,bio02,bio10,bio12, or simply dem,bio for all
+   buffer=2.0                #in degrees
+   biovars=dem,bio01         #or bio01,bio02,bio10,bio12, or simply dem,bio for all
    chelsaTimes=20,0,-20
 
    crumbs-get-chelsa \
@@ -60,14 +60,14 @@ Command
 
 .. warning::
    CHELSA-TraCE21k uses times identifiers that range from 20 (present century) to -200 (LGM).
-   Have a look `At their technical notice <https://chelsa-climate.org/chelsa-trace21k/>`_
+   Have a look `at their technical notice <https://chelsa-climate.org/chelsa-trace21k/>`_
 
 Behavior
 ^^^^^^^^^^
 
 1. A world file is downloaded for the variable and time of interest in the ``chelsa-world`` folder
 2. The file is cropped to the bounding box of the given geographic points (+/- a buffer in degrees)
-3. The resulting landscape file is stored in a ``chelsa-landscae`` folder
+3. The resulting landscape file is stored in a ``chelsa-landscape`` folder
 4. The world file deleted if ``--cleanup``, or kept if  ``--no-cleanup``.
 
 .. warning::

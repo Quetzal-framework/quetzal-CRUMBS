@@ -137,7 +137,7 @@ to reconstruct dynamic habitability landscapes.</p>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
+<p>Quetzal-CRUMBS utilities will automatically download the CHELSA bioclimatic
 and elevation files when they need them: you should not have to download them yourself when you are building
 an iDDC workflow.</p>
 <p>However if you happen to download some CHELSA files for your own needs,
@@ -145,8 +145,8 @@ here is how to do so.</p>
 <section id="command">
 <h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sample</span><span class="o">=</span><span class="s1">&#39;test_points/test_points.shp&#39;</span>
-<span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
-<span class="nv">biovars</span><span class="o">=</span>dem,bio01 <span class="c1">#or bio01,bio02,bio10,bio12, or simply dem,bio for all</span>
+<span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0                <span class="c1">#in degrees</span>
+<span class="nv">biovars</span><span class="o">=</span>dem,bio01         <span class="c1">#or bio01,bio02,bio10,bio12, or simply dem,bio for all</span>
 <span class="nv">chelsaTimes</span><span class="o">=</span><span class="m">20</span>,0,-20
 
 crumbs-get-chelsa <span class="se">\</span>
@@ -160,7 +160,7 @@ crumbs-get-chelsa <span class="se">\</span>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>CHELSA-TraCE21k uses times identifiers that range from 20 (present century) to -200 (LGM).
-Have a look <a class="reference external" href="https://chelsa-climate.org/chelsa-trace21k/">At their technical notice</a></p>
+Have a look <a class="reference external" href="https://chelsa-climate.org/chelsa-trace21k/">at their technical notice</a></p>
 </div>
 </section>
 <section id="behavior">
@@ -168,7 +168,7 @@ Have a look <a class="reference external" href="https://chelsa-climate.org/chels
 <ol class="arabic simple">
 <li><p>A world file is downloaded for the variable and time of interest in the <code class="docutils literal notranslate"><span class="pre">chelsa-world</span></code> folder</p></li>
 <li><p>The file is cropped to the bounding box of the given geographic points (+/- a buffer in degrees)</p></li>
-<li><p>The resulting landscape file is stored in a <code class="docutils literal notranslate"><span class="pre">chelsa-landscae</span></code> folder</p></li>
+<li><p>The resulting landscape file is stored in a <code class="docutils literal notranslate"><span class="pre">chelsa-landscape</span></code> folder</p></li>
 <li><p>The world file deleted if <code class="docutils literal notranslate"><span class="pre">--cleanup</span></code>, or kept if  <code class="docutils literal notranslate"><span class="pre">--no-cleanup</span></code>.</p></li>
 </ol>
 <div class="admonition warning">
