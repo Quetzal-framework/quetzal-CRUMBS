@@ -36,7 +36,9 @@ Usage
 
 Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
 and elevation files when they need them: you should not have to download them yourself when you are building
-an iDDC workflow. However if you happen to download some CHELSA files for your own needs,
+an iDDC workflow.
+
+However if you happen to download some CHELSA files for your own needs,
 here is how to do so.
 
 Command
@@ -46,7 +48,7 @@ Command
 
    sample='test_points/test_points.shp'
    buffer=2.0
-   biovars=dem,bio01
+   biovars=dem,bio01 #or bio01,bio02,bio10,bio12, or simply dem,bio for all
    chelsaTimes=20,0,-20
 
    crumbs-get-chelsa \
