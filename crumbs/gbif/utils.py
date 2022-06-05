@@ -1,3 +1,8 @@
+"""
+Module declaring utility functions for downloading GBIF records.
+"""
+
+
 def paginated_search(max_limit, *args, **kwargs):
     """
     In its current version, pygbif can not search more than 300 occurrences at
