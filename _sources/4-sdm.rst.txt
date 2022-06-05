@@ -66,6 +66,7 @@ Bash command
         --nb-backround 30 \
         --variables $biovars \
         --buffer $buffer \
+        --sdm-file 'my-lil-sdm.bin' \
         --cleanup
 
 Output
