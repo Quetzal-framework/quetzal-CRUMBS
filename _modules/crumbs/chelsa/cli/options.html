@@ -114,11 +114,11 @@
                         <span class="n">callback</span><span class="o">=</span><span class="n">get_timesID_args</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)&quot;</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--presences&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--points&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;points&quot;</span><span class="p">,</span>
                         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of presence spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">)</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--buffer&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
