@@ -164,18 +164,19 @@ class SDM:
         Download chelsa datasets in order to fit and extrapolate classifiers
         """
 
-        from crumbs.chelsa.utils import request
+        from crumbs.chelsa.request import request
 
         request(
-        inputFile   =   None,
-        variables   =   self.variables,
-        timesID     =   [timeID],
-        points      =   self.presence_shapefile,
-        margin      =   self.buffer,
-        chelsa_dir  =   self.world_dir,
-        clip_dir    =   self.landscape_dir,
-        geotiff     =   None,
-        cleanup     =   self.cleanup )
+            inputFile   =   None,
+            variables   =   self.variables,
+            timesID     =   [timeID],
+            points      =   self.presence_shapefile,
+            margin      =   self.buffer,
+            world_dir   =   self.world_dir,
+            landscape_dir = self.landscape_dir,
+            geotiff     =   None,
+            cleanup     =   self.cleanup
+        )
 
         return None
 
