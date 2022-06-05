@@ -1,0 +1,6 @@
+crumbs.gbif.utils.paginated\_search
+===================================
+
+.. currentmodule:: crumbs.gbif.utils
+
+.. autofunction:: paginated_search

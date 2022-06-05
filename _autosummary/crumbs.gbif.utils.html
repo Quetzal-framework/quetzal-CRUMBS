@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>crumbs.get_gbif.paginated_search &mdash; Quetzal-CRUMBS  documentation</title>
+  <title>crumbs.gbif.utils &mdash; Quetzal-CRUMBS  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="crumbs.get_gbif.preprocess" href="crumbs.get_gbif.preprocess.html" />
-    <link rel="prev" title="crumbs.get_gbif.main" href="crumbs.get_gbif.main.html" /> 
+    <link rel="next" title="crumbs.gbif.utils.bounds_to_polygon" href="crumbs.gbif.utils.bounds_to_polygon.html" />
+    <link rel="prev" title="crumbs.gbif.request.request" href="crumbs.gbif.request.request.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,18 +51,21 @@
 <li class="toctree-l1 current"><a class="reference internal" href="crumbs.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="crumbs.bpp.html">crumbs.bpp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.chelsa.html">crumbs.chelsa</a></li>
-<li class="toctree-l2"><a class="reference internal" href="crumbs.get_failed_simulations_rowids.html">crumbs.get_failed_simulations_rowids</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="crumbs.get_gbif.html">crumbs.get_gbif</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.bounds_to_polygon.html">crumbs.get_gbif.bounds_to_polygon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.main.html">crumbs.get_gbif.main</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">crumbs.get_gbif.paginated_search</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.preprocess.html">crumbs.get_gbif.preprocess</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.search_gbif.html">crumbs.get_gbif.search_gbif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_csv.html">crumbs.get_gbif.to_csv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_polygon.html">crumbs.get_gbif.to_polygon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_shapefile.html">crumbs.get_gbif.to_shapefile</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="crumbs.gbif.html">crumbs.gbif</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="crumbs.gbif.cli.html">crumbs.gbif.cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crumbs.gbif.request.html">crumbs.gbif.request</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">crumbs.gbif.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.bounds_to_polygon.html">crumbs.gbif.utils.bounds_to_polygon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.paginated_search.html">crumbs.gbif.utils.paginated_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.preprocess.html">crumbs.gbif.utils.preprocess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.to_csv.html">crumbs.gbif.utils.to_csv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.to_polygon.html">crumbs.gbif.utils.to_polygon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crumbs.gbif.utils.to_shapefile.html">crumbs.gbif.utils.to_shapefile</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="crumbs.get_failed_simulations_rowids.html">crumbs.get_failed_simulations_rowids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.get_successful_simulations_rowids.html">crumbs.get_successful_simulations_rowids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.phylip2arlequin.html">crumbs.phylip2arlequin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.raster.html">crumbs.raster</a></li>
@@ -89,8 +92,8 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="crumbs.html">crumbs</a> &raquo;</li>
-          <li><a href="crumbs.get_gbif.html">crumbs.get_gbif</a> &raquo;</li>
-      <li>crumbs.get_gbif.paginated_search</li>
+          <li><a href="crumbs.gbif.html">crumbs.gbif</a> &raquo;</li>
+      <li>crumbs.gbif.utils</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -123,23 +126,48 @@
     text-align: unset;
 }
 </style>
-<section id="crumbs-get-gbif-paginated-search">
-<h1>crumbs.get_gbif.paginated_search<a class="headerlink" href="#crumbs-get-gbif-paginated-search" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="crumbs.get_gbif.paginated_search">
-<span class="sig-name descname"><span class="pre">paginated_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_limit</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/crumbs/get_gbif.html#paginated_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#crumbs.get_gbif.paginated_search" title="Permalink to this definition">¶</a></dt>
-<dd><p>In its current version, pygbif can not search more than 300 occurrences at
-once: this solves a bit of the problem.</p>
-</dd></dl>
-
+<section id="module-crumbs.gbif.utils">
+<span id="crumbs-gbif-utils"></span><h1>crumbs.gbif.utils<a class="headerlink" href="#module-crumbs.gbif.utils" title="Permalink to this headline">¶</a></h1>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.gbif.utils.bounds_to_polygon.html#crumbs.gbif.utils.bounds_to_polygon" title="crumbs.gbif.utils.bounds_to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds_to_polygon</span></code></a></p></td>
+<td><p>Convert the given shapefiles points into a polygon, adding a margin.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="crumbs.gbif.utils.paginated_search.html#crumbs.gbif.utils.paginated_search" title="crumbs.gbif.utils.paginated_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paginated_search</span></code></a></p></td>
+<td><p>In its current version, pygbif can not search more than 300 occurrences at once: this solves a bit of the problem.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.gbif.utils.preprocess.html#crumbs.gbif.utils.preprocess" title="crumbs.gbif.utils.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="crumbs.gbif.utils.to_csv.html#crumbs.gbif.utils.to_csv" title="crumbs.gbif.utils.to_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_csv</span></code></a></p></td>
+<td><p>Outputs the results in a CSV file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.gbif.utils.to_polygon.html#crumbs.gbif.utils.to_polygon" title="crumbs.gbif.utils.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
+<td><p>Convert the given points into a polygon, adding a margin.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="crumbs.gbif.utils.to_shapefile.html#crumbs.gbif.utils.to_shapefile" title="crumbs.gbif.utils.to_shapefile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_shapefile</span></code></a></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="crumbs.get_gbif.main.html" class="btn btn-neutral float-left" title="crumbs.get_gbif.main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="crumbs.get_gbif.preprocess.html" class="btn btn-neutral float-right" title="crumbs.get_gbif.preprocess" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="crumbs.gbif.request.request.html" class="btn btn-neutral float-left" title="crumbs.gbif.request.request" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crumbs.gbif.utils.bounds_to_polygon.html" class="btn btn-neutral float-right" title="crumbs.gbif.utils.bounds_to_polygon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

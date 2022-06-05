@@ -1,6 +1,0 @@
-crumbs.get\_gbif.main
-=====================
-
-.. currentmodule:: crumbs.get_gbif
-
-.. autofunction:: main

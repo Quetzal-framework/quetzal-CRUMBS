@@ -1,0 +1,6 @@
+crumbs.gbif.utils.to\_polygon
+=============================
+
+.. currentmodule:: crumbs.gbif.utils
+
+.. autofunction:: to_polygon

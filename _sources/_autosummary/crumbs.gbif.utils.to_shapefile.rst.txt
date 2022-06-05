@@ -1,0 +1,6 @@
+crumbs.gbif.utils.to\_shapefile
+===============================
+
+.. currentmodule:: crumbs.gbif.utils
+
+.. autofunction:: to_shapefile

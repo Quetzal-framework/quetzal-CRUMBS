@@ -1,0 +1,6 @@
+crumbs.gbif.utils.bounds\_to\_polygon
+=====================================
+
+.. currentmodule:: crumbs.gbif.utils
+
+.. autofunction:: bounds_to_polygon

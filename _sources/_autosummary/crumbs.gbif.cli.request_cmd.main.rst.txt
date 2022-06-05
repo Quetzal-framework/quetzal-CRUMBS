@@ -1,0 +1,6 @@
+crumbs.gbif.cli.request\_cmd.main
+=================================
+
+.. currentmodule:: crumbs.gbif.cli.request_cmd
+
+.. autofunction:: main

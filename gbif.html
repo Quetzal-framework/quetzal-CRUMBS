@@ -167,13 +167,13 @@ reproduce our example then just download our test data points from Github:</p>
 </li>
 </ol>
 <p>You can then execute this command to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
-with a buffer of 2.0km around the bounding box of the sampling points:</p>
+with a buffer of 2.0 degrees around the bounding box of the sampling points:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>crumbs-get-gbif <span class="se">\</span>
       --species <span class="s2">&quot;Heteronotia binoei&quot;</span> <span class="se">\</span>
       --points <span class="s1">&#39;test_points.shp&#39;</span> <span class="se">\</span>
       --limit <span class="m">30</span> <span class="se">\</span>
       --year <span class="s2">&quot;1950,2022&quot;</span> <span class="se">\</span>
-      --margin <span class="m">2</span>.0 <span class="se">\</span>
+      --buffer <span class="m">2</span>.0 <span class="se">\</span>
       --output occurrences
 </pre></div>
 </div>

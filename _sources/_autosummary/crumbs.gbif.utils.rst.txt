@@ -1,7 +1,7 @@
-crumbs.get\_gbif
-================
+crumbs.gbif.utils
+=================
 
-.. automodule:: crumbs.get_gbif
+.. automodule:: crumbs.gbif.utils
 
    
    
@@ -16,10 +16,8 @@ crumbs.get\_gbif
       :nosignatures:
    
       bounds_to_polygon
-      main
       paginated_search
       preprocess
-      search_gbif
       to_csv
       to_polygon
       to_shapefile

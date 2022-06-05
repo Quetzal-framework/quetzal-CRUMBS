@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>crumbs.get_gbif &mdash; Quetzal-CRUMBS  documentation</title>
+  <title>crumbs.gbif.request.request &mdash; Quetzal-CRUMBS  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/readthedocs-custom.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="crumbs.get_gbif.bounds_to_polygon" href="crumbs.get_gbif.bounds_to_polygon.html" />
-    <link rel="prev" title="crumbs.get_failed_simulations_rowids.main" href="crumbs.get_failed_simulations_rowids.main.html" /> 
+    <link rel="next" title="crumbs.gbif.utils" href="crumbs.gbif.utils.html" />
+    <link rel="prev" title="crumbs.gbif.request" href="crumbs.gbif.request.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,18 +51,16 @@
 <li class="toctree-l1 current"><a class="reference internal" href="crumbs.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="crumbs.bpp.html">crumbs.bpp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.chelsa.html">crumbs.chelsa</a></li>
-<li class="toctree-l2"><a class="reference internal" href="crumbs.get_failed_simulations_rowids.html">crumbs.get_failed_simulations_rowids</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">crumbs.get_gbif</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.bounds_to_polygon.html">crumbs.get_gbif.bounds_to_polygon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.main.html">crumbs.get_gbif.main</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.paginated_search.html">crumbs.get_gbif.paginated_search</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.preprocess.html">crumbs.get_gbif.preprocess</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.search_gbif.html">crumbs.get_gbif.search_gbif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_csv.html">crumbs.get_gbif.to_csv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_polygon.html">crumbs.get_gbif.to_polygon</a></li>
-<li class="toctree-l3"><a class="reference internal" href="crumbs.get_gbif.to_shapefile.html">crumbs.get_gbif.to_shapefile</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="crumbs.gbif.html">crumbs.gbif</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="crumbs.gbif.cli.html">crumbs.gbif.cli</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="crumbs.gbif.request.html">crumbs.gbif.request</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">crumbs.gbif.request.request</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="crumbs.gbif.utils.html">crumbs.gbif.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="crumbs.get_failed_simulations_rowids.html">crumbs.get_failed_simulations_rowids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.get_successful_simulations_rowids.html">crumbs.get_successful_simulations_rowids</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.phylip2arlequin.html">crumbs.phylip2arlequin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="crumbs.raster.html">crumbs.raster</a></li>
@@ -89,7 +87,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="crumbs.html">crumbs</a> &raquo;</li>
-      <li>crumbs.get_gbif</li>
+          <li><a href="crumbs.gbif.html">crumbs.gbif</a> &raquo;</li>
+          <li><a href="crumbs.gbif.request.html">crumbs.gbif.request</a> &raquo;</li>
+      <li>crumbs.gbif.request.request</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -122,54 +122,50 @@
     text-align: unset;
 }
 </style>
-<section id="module-crumbs.get_gbif">
-<span id="crumbs-get-gbif"></span><h1>crumbs.get_gbif<a class="headerlink" href="#module-crumbs.get_gbif" title="Permalink to this headline">¶</a></h1>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.get_gbif.bounds_to_polygon.html#crumbs.get_gbif.bounds_to_polygon" title="crumbs.get_gbif.bounds_to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bounds_to_polygon</span></code></a></p></td>
-<td><p>Convert the given shapefiles points into a polygon, adding a margin.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="crumbs.get_gbif.main.html#crumbs.get_gbif.main" title="crumbs.get_gbif.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a></p></td>
-<td><p>The main routine.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.get_gbif.paginated_search.html#crumbs.get_gbif.paginated_search" title="crumbs.get_gbif.paginated_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paginated_search</span></code></a></p></td>
-<td><p>In its current version, pygbif can not search more than 300 occurrences at once: this solves a bit of the problem.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="crumbs.get_gbif.preprocess.html#crumbs.get_gbif.preprocess" title="crumbs.get_gbif.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.get_gbif.search_gbif.html#crumbs.get_gbif.search_gbif" title="crumbs.get_gbif.search_gbif"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search_gbif</span></code></a></p></td>
-<td><p>Args:</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="crumbs.get_gbif.to_csv.html#crumbs.get_gbif.to_csv" title="crumbs.get_gbif.to_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_csv</span></code></a></p></td>
-<td><p>Outputs the results in a CSV file.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="crumbs.get_gbif.to_polygon.html#crumbs.get_gbif.to_polygon" title="crumbs.get_gbif.to_polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygon</span></code></a></p></td>
-<td><p>Convert the given points into a polygon, adding a margin.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="crumbs.get_gbif.to_shapefile.html#crumbs.get_gbif.to_shapefile" title="crumbs.get_gbif.to_shapefile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_shapefile</span></code></a></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<section id="crumbs-gbif-request-request">
+<h1>crumbs.gbif.request.request<a class="headerlink" href="#crumbs-gbif-request-request" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="crumbs.gbif.request.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scientific_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'occurrences.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shapefile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'occurrences.shp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/crumbs/gbif/request.html#request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#crumbs.gbif.request.request" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>scientific_name: The scientific name of the species of interest (e.g., “Heteronotia binoei”).
+points:          The path to a shapefile with spatial points to infer a spatial extent (e.g., “data/test_points/test_points.shp”).
+buffer:          A buffer in decimal degrees to add around the bounding box (defaults to 0).
+all:             If True, retrieve all occurrences available. If False, retrieve a number of occurrence defined by argument limit.
+limit:           The maximal number of occurence records to retrieve from gbif if all=False. Default is 30.
+year:            Year (eg. 1990) or range (e.g. 1900,2022) of the occurrences to be retrieved.
+csv_file:        Write in a .csv file the occurrences in a Comma-Separated Values format (a human readable table).
+shapefile:       Write the occurrences in a Shapefile format (compatible with other programs).</p>
+</dd>
+<dt>Returns:</dt><dd><p>The return value. True for success, False otherwise.</p>
 </dd>
 </dl>
-</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>scientific_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+<li><p><strong>points</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+<li><p><strong>buffer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – </p></li>
+<li><p><strong>all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – </p></li>
+<li><p><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – </p></li>
+<li><p><strong>csv_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+<li><p><strong>shapefile</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="crumbs.get_failed_simulations_rowids.main.html" class="btn btn-neutral float-left" title="crumbs.get_failed_simulations_rowids.main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="crumbs.get_gbif.bounds_to_polygon.html" class="btn btn-neutral float-right" title="crumbs.get_gbif.bounds_to_polygon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="crumbs.gbif.request.html" class="btn btn-neutral float-left" title="crumbs.gbif.request" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crumbs.gbif.utils.html" class="btn btn-neutral float-right" title="crumbs.gbif.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

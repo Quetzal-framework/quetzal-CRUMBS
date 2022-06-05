@@ -1,6 +1,0 @@
-crumbs.get\_gbif.search\_gbif
-=============================
-
-.. currentmodule:: crumbs.get_gbif
-
-.. autofunction:: search_gbif

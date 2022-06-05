@@ -29,8 +29,8 @@
    crumbs.bpp
    crumbs.chelsa
    crumbs.fasta2phylip
+   crumbs.gbif
    crumbs.get_failed_simulations_rowids
-   crumbs.get_gbif
    crumbs.get_successful_simulations_rowids
    crumbs.phylip2arlequin
    crumbs.raster

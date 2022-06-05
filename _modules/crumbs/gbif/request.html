@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>crumbs.gbif.request &mdash; Quetzal-CRUMBS  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/readthedocs-custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html">
+            <img src="../../../_static/quetzal-crumbs-fa-white-title.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nest.html">Enter the Quetzal-NEST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gbif.html">Get GBIF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Get CHELSA-TraCE21k</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Fit a SDM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Extrapolate a SDM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Prepare the landscape</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/crumbs.html">API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Quetzal-CRUMBS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>crumbs.gbif.request</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for crumbs.gbif.request</h1><div class="highlight"><pre>
+<span></span>
+<div class="viewcode-block" id="request"><a class="viewcode-back" href="../../../_autosummary/crumbs.gbif.request.request.html#crumbs.gbif.request.request">[docs]</a><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">scientific_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">points</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="nb">all</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+                <span class="n">year</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">csv_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;occurrences.csv&quot;</span><span class="p">,</span>
+                <span class="n">shapefile</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;occurrences.shp&quot;</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        scientific_name: The scientific name of the species of interest (e.g., &quot;Heteronotia binoei&quot;).</span>
+<span class="sd">        points:          The path to a shapefile with spatial points to infer a spatial extent (e.g., &quot;data/test_points/test_points.shp&quot;).</span>
+<span class="sd">        buffer:          A buffer in decimal degrees to add around the bounding box (defaults to 0).</span>
+<span class="sd">        all:             If True, retrieve all occurrences available. If False, retrieve a number of occurrence defined by argument limit.</span>
+<span class="sd">        limit:           The maximal number of occurence records to retrieve from gbif if all=False. Default is 30.</span>
+<span class="sd">        year:            Year (eg. 1990) or range (e.g. 1900,2022) of the occurrences to be retrieved.</span>
+<span class="sd">        csv_file:        Write in a .csv file the occurrences in a Comma-Separated Values format (a human readable table).</span>
+<span class="sd">        shapefile:       Write the occurrences in a Shapefile format (compatible with other programs).</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The return value. True for success, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="kn">from</span> <span class="nn">pygbif</span> <span class="kn">import</span> <span class="n">species</span> <span class="k">as</span> <span class="n">species</span>
+    <span class="kn">from</span> <span class="nn">pygbif</span> <span class="kn">import</span> <span class="n">occurrences</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="n">utils</span> <span class="n">import</span><span class="p">(</span>
+        <span class="n">bounds_to_polygon</span><span class="p">,</span>
+        <span class="n">paginated_search</span><span class="p">,</span>
+        <span class="n">preprocess</span><span class="p">,</span>
+        <span class="n">to_csv</span><span class="p">,</span>
+        <span class="n">to_shapefile</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Retrieve the taxon key</span>
+    <span class="n">taxonKey</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">name_suggest</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">scientific_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Infer the bounding box from spatial points and buffer</span>
+    <span class="n">bounding_box</span> <span class="o">=</span> <span class="n">bounds_to_polygon</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
+
+    <span class="c1"># Report</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... Looking in GBIF database for&quot;</span><span class="p">,</span> <span class="n">scientific_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... Search in the bounding box provided by&quot;</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="s2">&quot;with buffer&quot;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="s2">&quot;degrees&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... Bounding box used:&quot;</span><span class="p">,</span> <span class="n">bounding_box</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... For&quot;</span><span class="p">,</span> <span class="n">scientific_name</span><span class="p">,</span> <span class="s2">&quot;GBIF suggested the taxon key:&quot;</span><span class="p">,</span> <span class="n">taxonKey</span><span class="p">)</span>
+
+    <span class="c1"># Just fetching some information</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">occurrences</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">taxonKey</span><span class="o">=</span><span class="n">taxonKey</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">bounding_box</span><span class="p">,</span> <span class="n">hasCoordinate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... We identified&quot;</span><span class="p">,</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="s2">&quot;available records in the bounding box.&quot;</span><span class="p">)</span>
+
+    <span class="n">LIMIT</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">all</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">LIMIT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... Option all is True. Retrieving all&quot;</span><span class="p">,</span> <span class="n">LIMIT</span><span class="p">,</span> <span class="s2">&quot;records available.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LIMIT</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ... Option all is False, using the limit option to retrieve only the first&quot;</span><span class="p">,</span> <span class="n">LIMIT</span><span class="p">,</span> <span class="s2">&quot;available records.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Retrieving all results along years</span>
+    <span class="n">raw_results</span> <span class="o">=</span> <span class="n">paginated_search</span><span class="p">(</span><span class="n">taxonKey</span><span class="o">=</span><span class="n">taxonKey</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">bounding_box</span><span class="p">,</span> <span class="n">hasCoordinate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_limit</span><span class="o">=</span><span class="n">LIMIT</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    ...&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_results</span><span class="p">),</span> <span class="s2">&quot;records retrieved.&quot;</span><span class="p">)</span>
+
+    <span class="n">results</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">raw_results</span><span class="p">)</span>
+    <span class="n">to_csv</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+    <span class="n">to_shapefile</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">shapefile</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright © 2022 Arnaud Becheler &amp; L. Lacey Knowles.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

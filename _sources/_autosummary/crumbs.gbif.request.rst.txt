@@ -1,0 +1,31 @@
+crumbs.gbif.request
+===================
+
+.. automodule:: crumbs.gbif.request
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      request
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

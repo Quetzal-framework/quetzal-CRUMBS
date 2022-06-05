@@ -1,0 +1,32 @@
+crumbs.gbif
+===========
+
+.. automodule:: crumbs.gbif
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.gbif.cli
+   crumbs.gbif.request
+   crumbs.gbif.utils
+

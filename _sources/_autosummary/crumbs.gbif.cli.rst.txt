@@ -1,0 +1,31 @@
+crumbs.gbif.cli
+===============
+
+.. automodule:: crumbs.gbif.cli
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.gbif.cli.options
+   crumbs.gbif.cli.request_cmd
+

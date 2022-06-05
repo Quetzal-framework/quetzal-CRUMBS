@@ -1,0 +1,6 @@
+crumbs.gbif.request.request
+===========================
+
+.. currentmodule:: crumbs.gbif.request
+
+.. autofunction:: request

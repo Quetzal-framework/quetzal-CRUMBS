@@ -1,0 +1,6 @@
+crumbs.gbif.cli.options.get\_parser
+===================================
+
+.. currentmodule:: crumbs.gbif.cli.options
+
+.. autofunction:: get_parser

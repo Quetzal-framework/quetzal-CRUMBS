@@ -67,7 +67,7 @@ reproduce our example then just download our test data points from Github:
    * ``test_points.dbf``
 
 You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
-with a buffer of 2.0km around the bounding box of the sampling points:
+with a buffer of 2.0 degrees around the bounding box of the sampling points:
 
 .. code-block:: bash
 
@@ -76,5 +76,5 @@ with a buffer of 2.0km around the bounding box of the sampling points:
          --points 'test_points.shp' \
          --limit 30 \
          --year "1950,2022" \
-         --margin 2.0 \
+         --buffer 2.0 \
          --output occurrences
