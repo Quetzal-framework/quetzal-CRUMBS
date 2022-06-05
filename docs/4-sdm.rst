@@ -24,19 +24,84 @@ Fitting a SDM
 Context
 ^^^^^^^^^^
 
+
 Command
 ^^^^^^^^^^
 
-crumbs-fit-sdm \
-      --species $species \
-      --presences $presences \
-      --nb-backround 30 \
-      --variables $biovars \
-      --buffer $buffer \
-      --cleanup
+.. code-block:: bash
+
+  species='Heteronotia binoei'
+  presences='occurrences.shp'
+  buffer=2.0
+  biovars=dem,bio01
+
+  crumbs-fit-sdm \
+        --species $species \
+        --presences $presences \
+        --nb-backround 30 \
+        --variables $biovars \
+        --buffer $buffer \
+        --cleanup
 
 Output
 ^^^^^^^^^^
+
+.. code-block:: text
+
+    - Quetzal-CRUMBS - Fitting Species Distribution Models for iDDC modeling
+    - Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
+        ... rasters will be cropped to bounding box infered from points: POLYGON ((128.349138 -18.275254, 138.893138 -18.275254, 138.893138 -9.750165, 128.349138 -9.750165, 128.349138 -18.275254))
+    https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_20_V1.0.tif
+        ... World file does not exist, starting download from scratch.
+    100% 252M/252M [00:16<00:00, 15.5MiB/s]
+    https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_bio01_20_V1.0.tif
+        ... World file does not exist, starting download from scratch.
+    100% 528M/528M [00:33<00:00, 15.7MiB/s]
+        ... reading presence shapefile datatsets:
+            - number of duplicates:  4
+            - number of NA's:  0
+            - coordinate reference system: epsg:4326
+            - 30 observations with 3 columns
+        ... after removing duplicated occurrences:
+            - number of duplicates:  0
+            - number of NA's:  0
+            - coordinate reference system: epsg:4326
+            - 26 observations with 3 columns
+        ... after removing occurrences falling in ocean cells (NA, -inf, +inf):
+            - number of duplicates:  0
+            - number of NA's:  0
+            - coordinate reference system: epsg:4326
+            - 26 observations with 4 columns
+        ... building presence/absence dataset:
+            - number of duplicates:  0
+            - number of NA's:  0
+            - coordinate reference system: epsg:4326
+            - 56 observations with 2 columns
+        ... there are 2 explanatory rasters features
+        ... loading training vector
+        ... loading explanatory rasters
+        ... fitting classifiers on training data
+        ... Classifier rf
+            - k-fold cross validation for accuracy scores (displayed as a percentage)
+            - rf 5-fold Cross Validation Accuracy: 57.42 (+/- 23.71)
+            - fitting model
+            - trained model will be saved to model-persistence/rf.joblib
+        ... Classifier et
+            - k-fold cross validation for accuracy scores (displayed as a percentage)
+            - et 5-fold Cross Validation Accuracy: 59.09 (+/- 19.92)
+            - fitting model
+            - trained model will be saved to model-persistence/et.joblib
+        ... Classifier xgb
+            - k-fold cross validation for accuracy scores (displayed as a percentage)
+            - xgb 5-fold Cross Validation Accuracy: 57.27 (+/- 30.21)
+            - fitting model
+            - trained model will be saved to model-persistence/xgb.joblib
+        ... Classifier lgbm
+            - k-fold cross validation for accuracy scores (displayed as a percentage)
+            - lgbm 5-fold Cross Validation Accuracy: 38.18 (+/- 38.83)
+            - fitting model
+            - trained model will be saved to model-persistence/lgbm.joblib
+
 
 References
 ----------

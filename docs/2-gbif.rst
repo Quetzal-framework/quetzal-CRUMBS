@@ -53,7 +53,7 @@ Usage
 -------
 
 Context
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
 
 To run this command successfully, you will need to start with a set of longitude/latitude points.
 That would normally be the coordinates of your DNA samples, but if you want to
@@ -75,7 +75,7 @@ reproduce our example then just download our test data points from Github:
 
 
 Command
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
 
 You can then execute this command to retrieve 30 occurrences of *H. binoei* between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points.
@@ -95,7 +95,7 @@ The records will be saved as a ``occurrences.shp`` shapefile (and a ``.csv`` for
          --output occurrences
 
 Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^
 
 .. code-block:: text
 
