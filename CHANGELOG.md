@@ -165,3 +165,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - In SDM, clip_dir not specified defaulted to wrong value
+
+
+## [1.0.17] - 2022-06-04
+
+### Refactored
+
+- General modules and subpackages structure
+- In SDM, fit and extrapolation are now separated through classifier persistence
+
+### Added
+
+- Sphinx documentation deployed on gh-pages
+- CLI integration tests for entrypoints

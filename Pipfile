@@ -22,6 +22,9 @@ mayavi = "*"
 xgboost = "*"
 lightgbm = "*"
 requests-cache="*"
+dask = "*"
+joblib = "*"
+
 [dev-packages]
 
 [requires]
