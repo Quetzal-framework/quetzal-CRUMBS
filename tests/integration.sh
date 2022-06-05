@@ -34,6 +34,6 @@ crumbs-fit-sdm \
       --sdm-file 'my-lil-sdm.bin' \
       --cleanup
 
-crumbs-extapolate-sdm \
+crumbs-extrapolate-sdm \
       --sdm-file 'my-lil-sdm.bin' \
       --timeID 20
