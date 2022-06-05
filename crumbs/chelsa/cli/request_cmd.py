@@ -24,8 +24,6 @@ def main(argv=None):
             timesID = options.timesID,
             points = options.points,
             buffer = options.buffer,
-            world_dir = options.world_dir,
-            landscape_dir = options.landscape_dir,
             cleanup = options.cleanup)
 
     except Exception as e:
