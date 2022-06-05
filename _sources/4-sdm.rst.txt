@@ -135,7 +135,7 @@ Extrapolation to past climates
 Bash command
 ^^^^^^^^^^
 
-.. code-block:: text
+.. code-block:: bash
 
    crumbs-extrapolate-sdm \
         --sdm-file 'my-lil-sdm.bin' \
@@ -143,6 +143,23 @@ Bash command
 
 Output
 ^^^^^^^^^^
+
+.. code-block:: text
+
+  - Quetzal-CRUMBS - Species Distribution Models for iDDC modeling
+      ... projection to time 20
+  - Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
+      ... rasters will be cropped to bounding box infered from points: POLYGON ((128.349138 -18.275254, 138.893138 -18.275254, 138.893138 -9.750165, 128.349138 -9.750165, 128.349138 -18.275254))
+      ... there are 2 explanatory rasters features
+          - loading target explanatory raster data
+          - loading persisted classifiers and imputing
+          - loading persisted classifier rf
+          - loading persisted classifier et
+          - loading persisted classifier xgb
+          - loading persisted classifier lgbm
+      ... masking ocean cells to dem no data value for all probability_1 rasters
+      ... averaging imputed rasters for climate conditions at CHELSA time 20
+
 
 References
 ----------

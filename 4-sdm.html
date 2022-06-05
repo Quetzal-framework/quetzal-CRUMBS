@@ -246,14 +246,29 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
 <h2>Extrapolation to past climates<a class="headerlink" href="#extrapolation-to-past-climates" title="Permalink to this headline">¶</a></h2>
 <section id="id2">
 <h3>Bash command<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>crumbs-extrapolate-sdm \
-     --sdm-file &#39;my-lil-sdm.bin&#39; \
-     --timeID 20
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>crumbs-extrapolate-sdm <span class="se">\</span>
+     --sdm-file <span class="s1">&#39;my-lil-sdm.bin&#39;</span> <span class="se">\</span>
+     --timeID <span class="m">20</span>
 </pre></div>
 </div>
 </section>
 <section id="id3">
 <h3>Output<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Species Distribution Models for iDDC modeling
+    ... projection to time 20
+- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
+    ... rasters will be cropped to bounding box infered from points: POLYGON ((128.349138 -18.275254, 138.893138 -18.275254, 138.893138 -9.750165, 128.349138 -9.750165, 128.349138 -18.275254))
+    ... there are 2 explanatory rasters features
+        - loading target explanatory raster data
+        - loading persisted classifiers and imputing
+        - loading persisted classifier rf
+        - loading persisted classifier et
+        - loading persisted classifier xgb
+        - loading persisted classifier lgbm
+    ... masking ocean cells to dem no data value for all probability_1 rasters
+    ... averaging imputed rasters for climate conditions at CHELSA time 20
+</pre></div>
+</div>
 </section>
 </section>
 <section id="references">
