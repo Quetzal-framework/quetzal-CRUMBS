@@ -91,11 +91,11 @@ Output
 
 .. code-block::
 
-  - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
-     ... Looking in GBIF database for Heteronotia binoei
-     ... Search in the bounding box provided by tests/data/test_points/test_points.shp with buffer 2.0 degrees
-     ... Bounding box used: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))
-     ... For Heteronotia binoei GBIF suggested the taxon key: 2448146
-     ... We identified 6591 available records in the bounding box.
-     ... Option all is False, using the limit option to retrieve only the first 30 available records.
-     ... 30 records retrieved.
+    - Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
+       ... Looking in GBIF database for Heteronotia binoei
+       ... Search in the bounding box provided by tests/data/test_points/test_points.shp with buffer 2.0 degrees
+       ... Bounding box used: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))
+       ... For Heteronotia binoei GBIF suggested the taxon key: 2448146
+       ... We identified 6591 available records in the bounding box.
+       ... Option all is False, using the limit option to retrieve only the first 30 available records.
+       ... 30 records retrieved.
