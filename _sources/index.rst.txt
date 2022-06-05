@@ -6,8 +6,8 @@
 
    Welcome <self>
    1. Enter the Quetzal-NEST <1-nest>
-   2. Get GBIF <2-gbif>
-   3. Get CHELSA-TraCE21k <3-chelsa>
+   2. Get GBIF presence records<2-gbif>
+   3. Get CHELSA climate data <3-chelsa>
    4. Fit a SDM <self>
    5. Extrapolate a SDM <self>
    6. Prepare the landscape <self>
