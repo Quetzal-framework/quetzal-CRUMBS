@@ -27,9 +27,9 @@ at higher spatial scales (*e.g., emergence of two distinct species*).
    Effect of sea-level changes on islands biogeography
 
 Models that can link these scales have to rely on high-resolution landscape data.
-iDDC can integrate this kind of bioclimatic data by fitting models of species distribution
-on present climate and elevation, and extrapole them on past climates and elevations
-to reconstruct dynamic suitability landscapes.
+iDDC can integrate such data by fitting models of species distribution
+on present climate and elevation, extrapolating them to past climates conditions and elevations
+to reconstruct dynamic habitability landscapes.
 
 Usage
 -------
