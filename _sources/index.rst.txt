@@ -6,11 +6,10 @@
 
    Welcome <self>
    1. Enter the Quetzal-NEST <1-nest>
-   2. Get GBIF presence records<2-gbif>
+   2. Get GBIF presence records <2-gbif>
    3. Get CHELSA climate data <3-chelsa>
-   4. Fit a SDM <self>
-   5. Extrapolate a SDM <self>
-   6. Prepare the landscape <self>
+   4. Landscape habitability reconstruction <4-sdm>
+   5. Prepare the landscape <self>
 
    API reference <_autosummary/crumbs>
 
