@@ -7,25 +7,50 @@ is a methodoogy that tries to predict the distribution
 of a species across geographic space and time.
 
 Within the iDDC approach, the idea is to reconstruct the landscape habitability
-to inform various aspects of a species ecology. Although there are many tools
-existing for SDM, several reasons motivated us to develop an iDDC-specific resource.
+to inform various aspects of a species ecology (like migration rates,fecundity etc).
 
-* High-resolution environmental data like CHELSA are new (2021) and to our
-  knowledge there is no other way to easily script the access to these layers and their post-treatment
-* Developing our own tools for iDDC means more control on scalability:
-    * For example we could integrate **dask** [Rocklin2015]_ for parallel computing and larger-than-memory data management
+Although there are many tools existing for SDM, several reasons motivated us to develop our own iDDC-specific resource:
+
+* High-resolution environmental data like CHELSA_TraCE21k are relatively new (2021) and to our
+  knowledge there was no other way to easily make CHELSA_TraCE21k data available to SDM
+* Developing our own tools for iDDC meant more control on scalability:
+    * We could integrate **dask** [Rocklin2015]_ for parallel computing and larger-than-memory data management:
+      it allows to work with larger landscapes and to request more nodes with less RAM
     * We use **jòblib** for model persistence of fitted classifiers
-    * Combined with the right command-line interfaces, that makes SDM extrapolation to past climates
-      easier to distribute on High-Throughput Computing Grids.
+    * Combined with a dedicated command-line interface, it makes SDM extrapolation to past climates
+      easier to script and distribute on High-Throughput Computing Grids.
 
-Fitting a SDM
----------------
+Fitting a SDM on present climate
+--------------------------------
 
 Context
 ^^^^^^^^^^
 
+We assume that you got some GBIF occurrences records from the previous steps.
+This command will fit 4 Classifiers:
 
-Command
+* Random Forest (RF)
+* Extra-Tree (ET)
+* Extreme Gradient Boosting (XGB)
+* Light Gradient Boosted Machine (LGBM)
+
+These classifiers use spatial predictors (bioclimatic variables from CHELSA) and the following features:
+
+* presence points (*retrieved from the Global Biodiversity Information Facility*)
+* pseudo-absence points (*generated from the presence points and the CHELSA Digital Elevation Model*).
+
+.. note::
+
+   Once fitted, the classifiers are saved in a persistence folder: ``model-persistence/xgb.joblib``.
+   These **joblib** files can then be copied for transfer to remote compute nodes
+   for distributing the extrapolation of hundreds or thousands of past climate conditions.
+
+.. note::
+
+   An instance of the python SDM object is also saved as a ``my_sdm.bin`` file. It allows to preserve
+   the model performance information for model averaging during the extrapolation step.
+
+Bash command
 ^^^^^^^^^^
 
 .. code-block:: bash
@@ -102,6 +127,15 @@ Output
             - fitting model
             - trained model will be saved to model-persistence/lgbm.joblib
 
+
+Extrapolation to past climates
+--------------------------------
+
+Command
+^^^^^^^^^^
+
+Output
+^^^^^^^^^^
 
 References
 ----------

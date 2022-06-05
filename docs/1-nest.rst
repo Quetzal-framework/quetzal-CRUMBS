@@ -126,8 +126,8 @@ To make it available to your computation, just add these two lines to your ``.co
 On the NASA Pleiades
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Docker containers can be `converted to Singularity <https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html>`_
-and deployed on the NASA Pleiades with this command:
+Docker containers can be converted to Singularity `to be deployed on the NASA Pleiades <https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html>`_
+ with this command:
 
 .. code-block:: text
 
