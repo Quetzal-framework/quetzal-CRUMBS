@@ -47,9 +47,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Get CHELSA climate data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#why-do-we-need-chelsa">Why do we need CHELSA?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#defining-the-area-of-interest">Defining the area of interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command">Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behavior">Behavior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#area-of-interest">Area of interest</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="index.html">4. Fit a SDM</a></li>
@@ -135,40 +138,11 @@ to reconstruct dynamic suitability landscapes.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
-and elevation files
-when they need them: you should not have to download them yourself when you are building
-an iDDC workflow.</p>
-<p>However if you happen to download some CHELSA files for your own needs,
-here is how to do so:</p>
-<section id="defining-the-area-of-interest">
-<h3>Defining the area of interest<a class="headerlink" href="#defining-the-area-of-interest" title="Permalink to this headline">¶</a></h3>
-<p>To run this command successfully, you will need to start with a set of longitude/latitude points
-to define the area of the world of interest:</p>
-<ul class="simple">
-<li><p>A world file is downloaded for the variable and time of interest in the <code class="docutils literal notranslate"><span class="pre">chelsa-world</span></code> folder</p></li>
-<li><p>The file is cropped to the bounding box of the given points (+/- a buffer in degrees)</p></li>
-<li><p>The resulting landscape file is stored in a <code class="docutils literal notranslate"><span class="pre">chelsa-landscae</span></code> folder</p></li>
-<li><p>The world file deleted if <code class="docutils literal notranslate"><span class="pre">--cleanup</span></code>, or kept if  <code class="docutils literal notranslate"><span class="pre">--no-cleanup</span></code>.</p></li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>These world files are heavy, and there are many many of them, so if you don’t need them, use <code class="docutils literal notranslate"><span class="pre">--cleanup</span></code>.</p>
-</div>
-<p>In iDDC wokflows, the point of interest would normally be the coordinates of your
-DNA samples, but if you want to reproduce our example then just download our test data points from Github:</p>
-<ol class="arabic simple">
-<li><p>Go to the <a class="reference external" href="https://download-directory.github.io/">Download Directory</a> utility</p></li>
-<li><p>Enter this url: <code class="docutils literal notranslate"><span class="pre">https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points</span></code></p></li>
-<li><p>Press enter to start the download</p></li>
-<li><p>Extract the archive in your working directory</p></li>
-<li><p>You should find 3 files: move them to your Docker working directory</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">test_points.shp</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">test_points.shx</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">test_points.dbf</span></code></p></li>
-</ul>
-</li>
-</ol>
+and elevation files when they need them: you should not have to download them yourself when you are building
+an iDDC workflow. However if you happen to download some CHELSA files for your own needs,
+here is how to do so.</p>
+<section id="command">
+<h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sample</span><span class="o">=</span><span class="s1">&#39;test_points/test_points.shp&#39;</span>
 <span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
 <span class="nv">biovars</span><span class="o">=</span>dem,bio01
@@ -187,12 +161,47 @@ crumbs-get-chelsa <span class="se">\</span>
 <p>CHELSA-TraCE21k uses times identifiers that range from 20 (present century) to -200 (LGM).
 Have a look <a class="reference external" href="https://chelsa-climate.org/chelsa-trace21k/">At their technical notice</a></p>
 </div>
+</section>
+<section id="behavior">
+<h3>Behavior<a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>A world file is downloaded for the variable and time of interest in the <code class="docutils literal notranslate"><span class="pre">chelsa-world</span></code> folder</p></li>
+<li><p>The file is cropped to the bounding box of the given geographic points (+/- a buffer in degrees)</p></li>
+<li><p>The resulting landscape file is stored in a <code class="docutils literal notranslate"><span class="pre">chelsa-landscae</span></code> folder</p></li>
+<li><p>The world file deleted if <code class="docutils literal notranslate"><span class="pre">--cleanup</span></code>, or kept if  <code class="docutils literal notranslate"><span class="pre">--no-cleanup</span></code>.</p></li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>These world files are heavy, and there are many many of them, so if you don’t need them, use <code class="docutils literal notranslate"><span class="pre">--cleanup</span></code>.</p>
+</div>
+</section>
+<section id="area-of-interest">
+<h3>Area of interest<a class="headerlink" href="#area-of-interest" title="Permalink to this headline">¶</a></h3>
+<p>You need a shapefile to define the longitude/latitude points to define the area of the world of interest.
+In iDDC wokflows, the point of interest would normally be the coordinates of your
+DNA samples, but if you want to reproduce our example then just download our test data points from Github:</p>
+<ol class="arabic simple">
+<li><p>Go to the <a class="reference external" href="https://download-directory.github.io/">Download Directory</a> utility</p></li>
+<li><p>Enter this url: <code class="docutils literal notranslate"><span class="pre">https://github.com/Becheler/quetzal-CRUMBS/tree/main/tests/data/test_points</span></code></p></li>
+<li><p>Press enter to start the download</p></li>
+<li><p>Extract the archive in your working directory</p></li>
+<li><p>You should find 3 files: move them to your Docker working directory</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_points.shp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_points.shx</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_points.dbf</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="karger2021"><span class="brackets"><a class="fn-backref" href="#id1">Karger2021</a></span></dt>
 <dd><p>Karger, D. N., Nobis, M. P., Normand, S., Graham, C. H., &amp; Zimmermann, N. E. (2021): CHELSA-TraCE21k v1. 0. Downscaled transient temperature and precipitation data since the last glacial maximum. Climate of the Past Discussions, 1-27.</p>
 </dd>
 </dl>
-</section>
 </section>
 </section>
 
