@@ -33,7 +33,7 @@ def get_parser():
 
     parser.add_option("-n", "--nb-backround",
                         dest="nb_background_points",
-                        type=float,
+                        type="int",
                         help="Number of backround points for pseudo-absence generation.")
 
     parser.add_option("-v", "--variables",
