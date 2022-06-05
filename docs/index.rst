@@ -30,7 +30,7 @@ climate modifications) shaped the present spatial distribution of genetic lineag
 .. figure:: quetzal_EGG2.gif
    :alt: Quetzal simulation
    :class: with-shadow
-   :width: 00px
+   :width: 400px
    :align: center
 
    Simulating the effect of climatic pulses on sky-islands populations with Quetzal.
@@ -58,8 +58,6 @@ In other words, the Quetzal-CRUMBS library is meant to be a part of a bigger wor
    :alt: Quetzal framework
    :class: with-shadow
    :width: 600px
-   :align: center
-
 
    How Quetzal-CRUMBS fit in the Quetzal framework.
 
