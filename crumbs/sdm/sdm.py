@@ -357,6 +357,8 @@ class SDM:
 
                 dst.write(averaged.filled(fill_value = mask.nodata), 1)
 
+        print('    ... averaged imputed rasters saved to', dst_raster)
+
         return None
 
     def load_classifiers_and_extrapolate(self, timeID) -> None:

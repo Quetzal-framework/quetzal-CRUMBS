@@ -18,7 +18,7 @@ class TestGetGbif(unittest.TestCase):
 
         request(scientific_name='Heteronotia binoei',
                              points="tests/data/test_points/test_points.shp",
-                             margin=1.0,
+                             buffer=1.0,
                              all=False,
                              limit=50,
                              year='1950,2022',
@@ -27,7 +27,7 @@ class TestGetGbif(unittest.TestCase):
 
         request(scientific_name='Heteronotia binoei',
                              points="tests/data/test_points/test_points.shp",
-                             margin=1.0,
+                             buffer=1.0,
                              all=False,
                              year='1950,2022',
                              limit=50,
