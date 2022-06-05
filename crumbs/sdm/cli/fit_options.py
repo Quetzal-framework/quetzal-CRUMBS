@@ -59,9 +59,9 @@ def get_parser():
     parser.add_option("-f", "--sdm-file",
                         dest="sdm_file",
                         type='str',
-                        default="my-sdm.bin"
+                        default="my-sdm.bin",
                         help="The binary representation of the SDM")
-                        
+
     parser.add_option("-j", "--joblib",
                         type="str",
                         dest="joblib",
