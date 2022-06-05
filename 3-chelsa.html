@@ -139,13 +139,14 @@ to reconstruct dynamic suitability landscapes.</p>
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Quetzal-CRUMBS SDM and GBIF tools automatically download the CHELSA bioclimatic
 and elevation files when they need them: you should not have to download them yourself when you are building
-an iDDC workflow. However if you happen to download some CHELSA files for your own needs,
+an iDDC workflow.</p>
+<p>However if you happen to download some CHELSA files for your own needs,
 here is how to do so.</p>
 <section id="command">
 <h3>Command<a class="headerlink" href="#command" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sample</span><span class="o">=</span><span class="s1">&#39;test_points/test_points.shp&#39;</span>
 <span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
-<span class="nv">biovars</span><span class="o">=</span>dem,bio01
+<span class="nv">biovars</span><span class="o">=</span>dem,bio01 <span class="c1">#or bio01,bio02,bio10,bio12, or simply dem,bio for all</span>
 <span class="nv">chelsaTimes</span><span class="o">=</span><span class="m">20</span>,0,-20
 
 crumbs-get-chelsa <span class="se">\</span>
