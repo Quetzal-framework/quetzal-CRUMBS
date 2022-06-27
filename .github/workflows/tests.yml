@@ -31,11 +31,12 @@ jobs:
         shell: bash -l {0}
         run: |
             pip3 install -r requirements.txt
-            pip install pytest-cov
 
       - name: Run tests
         working-directory: .
-        run: python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch tests
+        run: |
+            pip install pytest-cov
+            python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch tests
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest'
