@@ -1,17 +1,16 @@
 #!/usr/bin/python
-from optparse import OptionParser
+
 import rasterio
-import math
 import rasterio.mask
 
-from functools import partial
-import pyproj
+from math import cos, sin, asin, sqrt, radians
+
 from shapely.ops import transform
 from shapely.geometry import Point, Polygon
 
-proj_wgs84 = pyproj.Proj('+proj=longlat +datum=WGS84')
+import pyproj
+from functools import partial
 
-from math import cos, sin, asin, sqrt, radians
 
 def calc_distance(lat1, lon1, lat2, lon2):
     """
@@ -28,9 +27,14 @@ def calc_distance(lat1, lon1, lat2, lon2):
     km = 6371 * c
     return km
 
+
 def geodesic_point_buffer(lat, lon, km):
+    """
+    Draws a circle (buffer) around the center coordinates
+    """
     # Azimuthal equidistant projection
     aeqd_proj = '+proj=aeqd +lat_0={lat} +lon_0={lon} +x_0=0 +y_0=0'
+    proj_wgs84 = pyproj.Proj('+proj=longlat +datum=WGS84')
     project = partial(
         pyproj.transform,
         pyproj.Proj(aeqd_proj.format(lat=lat, lon=lon)),
@@ -39,20 +43,27 @@ def geodesic_point_buffer(lat, lon, km):
     return transform(project, buf).exterior.coords[:]
 
 
-def circle_mask(inputFile, outputFile=None):
+def clip_circle(inputFile, outputFile=None):
+    """
+    Writes an output raster file after clipping a circle on the input raster.
+    """
     outputFile = 'disk.tif' if outputFile is None else outputFile
 
     with rasterio.open(inputFile) as source:
+
         # Center in pixel coordinates
         c = source.width // 2
         r = source.height // 2
+
         # Center in real world coordinates
         rc2xy = lambda r, c: source.transform * (c, r)
         x, y = rc2xy(r,c)
+
         # Getting minimal distance border to fit the circle
         bounds = source.bounds
         d_width = calc_distance(bounds.bottom, bounds.left, bounds.bottom, bounds.right)
         d_height = calc_distance(bounds.bottom, bounds.left, bounds.top, bounds.left)
+
         # Draw a circle (buffer) around the center coordinates
         b = geodesic_point_buffer(y, x, km=min(d_width, d_height)/2)
         out_image, out_transform = rasterio.mask.mask(source, [Polygon(b)], crop=True, pad=True)
@@ -62,14 +73,3 @@ def circle_mask(inputFile, outputFile=None):
         dest.write(out_image)
 
     return
-
-
-def main(argv):
-    parser = OptionParser()
-    parser.add_option("-o", "--output", type="str", dest="output", help="Cliped output raster name")
-    (options, args) = parser.parse_args(argv)
-    return circle_mask(args[0], options.output)
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])

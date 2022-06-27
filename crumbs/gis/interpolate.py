@@ -162,31 +162,3 @@ def temporal_interpolation(inputFile, band_to_yearBP, outputFile=None):
         result.rio.to_raster(outputFile, lock=threading.Lock())
 
     return
-
-def get_times_args(option, opt, value, parser, type='float'):
-    setattr(parser.values, option.dest, [int(s) for s in value.split(',')])
-
-def main(argv):
-    parser = OptionParser()
-
-    print("- Quetzal-CRUMBS - Temporal interpolation for missing layers")
-
-    parser.add_option("-t", "--timesID",
-                        dest="generations",
-                        type='str',
-                        action='callback',
-                        callback=get_times_args,
-                        help="Comma separated sequence mapping band layers to years before present. Example for a 3 band raster: 0,500,1000.")
-
-    parser.add_option("-o", "--output", type="str", dest="output", help="Cliped output raster name")
-
-    (options, args) = parser.parse_args(argv)
-
-    return temporal_interpolation(
-        inputFile = args[0],
-        band_to_yearBP = options.generations,
-        outputFile = options.output)
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])

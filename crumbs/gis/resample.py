@@ -38,12 +38,4 @@ def resample(inputRaster, resample_factor, outputRaster=None):
         resampled_dataset = resample_raster(src_dataset, resample_factor, outputRaster)
         print('Orig dims: {}, New dims: {}'.format(src_dataset.shape, resampled_dataset.shape))
 
-def main(argv):
-    parser = OptionParser()
-    parser.add_option("-o", "--output", type="str", dest="output", help="Rotated output raster name")
-    (options, args) = parser.parse_args(argv)
-    return resample(args[0], float(args[1]), options.output)
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])
+    return

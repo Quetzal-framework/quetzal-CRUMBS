@@ -1,11 +1,15 @@
 #!/usr/bin/python
-from optparse import OptionParser
+
 import rasterio
-from affine import Affine  # For easly manipulation of affine matrix
 from rasterio.warp import reproject, Resampling, array_bounds, calculate_default_transform
+from affine import Affine  # For easly manipulation of affine matrix
 import numpy as np
 
+
 def summary(dataset):
+    """
+    Print a summary of the raster dataset characteristics
+    """
     print(" - no data value:", dataset.nodata )
     print(" - transform:\n")
     print(dataset.transform, "\n")
@@ -17,8 +21,10 @@ def summary(dataset):
     print(" - height: \t", dataset.height)
     return
 
+
 def get_center_pixel(dataset):
-    """This function return the pixel coordinates of the raster center
+    """
+    This function return the pixel coordinates of the raster center
     """
     width, height = dataset.width, dataset.height
     # We calculate the middle of raster
@@ -26,7 +32,11 @@ def get_center_pixel(dataset):
     y_pixel_med = height // 2
     return (x_pixel_med, y_pixel_med)
 
+
 def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
+    """
+    Rotate a raster by an angle around its estimated center, and rescale its resolution
+    """
     outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
 
     ### Read input
@@ -36,6 +46,7 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
         # Display information
         print("- Source dataset:")
         summary(source)
+
         ### Rotate the affine about a pivot and rescale
         pivot = get_center_pixel(source)
         print("\nPivot coordinates:", source.transform * pivot)
@@ -83,20 +94,12 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
 
             dst_data[np.isnan(dst_data)] = source.nodata
             dst_data=dst_data.astype(source_type)
+
             # Write to the output file
             dst.write(dst_data, indexes=range(1, source.count + 1))
+            
         # Display information
         print("- New rotated dataset:")
         summary(dst)
 
     return
-
-def main(argv):
-    parser = OptionParser()
-    parser.add_option("-o", "--output", type="str", dest="output", help="Rotated output raster name")
-    (options, args) = parser.parse_args(argv)
-    return rotate_and_rescale(args[0], float(args[1]), float(args[2]), options.output)
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv[1:])
