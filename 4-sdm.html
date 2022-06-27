@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -113,7 +114,7 @@
 }
 </style>
 <section id="species-distribution-modeling-with-quetzal-crumbs">
-<h1>Species Distribution Modeling with Quetzal-CRUMBS<a class="headerlink" href="#species-distribution-modeling-with-quetzal-crumbs" title="Permalink to this headline">¶</a></h1>
+<h1>Species Distribution Modeling with Quetzal-CRUMBS<a class="headerlink" href="#species-distribution-modeling-with-quetzal-crumbs" title="Permalink to this heading">¶</a></h1>
 <p>Species distribution modelling (SDM), or equivalently environmental niche modelling (ENM),
 (or habitat modelling, or predictive habitat distribution modelling or range mapping!)
 is a methodoogy that tries to predict the distribution
@@ -137,9 +138,9 @@ easier to script and distribute on High-Throughput Computing Grids.</p></li>
 </li>
 </ul>
 <section id="fitting-a-sdm-on-present-climate">
-<h2>Fitting a SDM on present climate<a class="headerlink" href="#fitting-a-sdm-on-present-climate" title="Permalink to this headline">¶</a></h2>
+<h2>Fitting a SDM on present climate<a class="headerlink" href="#fitting-a-sdm-on-present-climate" title="Permalink to this heading">¶</a></h2>
 <section id="context">
-<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h3>
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this heading">¶</a></h3>
 <p>We assume that you got some GBIF occurrences records from the previous steps.
 This command will fit 4 Classifiers:</p>
 <ul class="simple">
@@ -166,7 +167,7 @@ the model performance information for model averaging during the extrapolation s
 </div>
 </section>
 <section id="bash-command">
-<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this headline">¶</a></h3>
+<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">species</span><span class="o">=</span><span class="s1">&#39;Heteronotia binoei&#39;</span>
 <span class="nv">presences</span><span class="o">=</span><span class="s1">&#39;occurrences.shp&#39;</span>
 <span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0
@@ -184,7 +185,7 @@ crumbs-fit-sdm <span class="se">\</span>
 </div>
 </section>
 <section id="output">
-<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Fitting Species Distribution Models for iDDC modeling
 - Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
     ... rasters will be cropped to bounding box infered from points: POLYGON ((128.349138 -18.275254, 138.893138 -18.275254, 138.893138 -9.750165, 128.349138 -9.750165, 128.349138 -18.275254))
@@ -243,9 +244,9 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
 </section>
 </section>
 <section id="extrapolation-to-past-climates">
-<h2>Extrapolation to past climates<a class="headerlink" href="#extrapolation-to-past-climates" title="Permalink to this headline">¶</a></h2>
+<h2>Extrapolation to past climates<a class="headerlink" href="#extrapolation-to-past-climates" title="Permalink to this heading">¶</a></h2>
 <section id="id2">
-<h3>Bash command<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3>Bash command<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>crumbs-extrapolate-sdm <span class="se">\</span>
      --sdm-file <span class="s1">&#39;my-lil-sdm.bin&#39;</span> <span class="se">\</span>
      --timeID <span class="m">20</span>
@@ -253,7 +254,7 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
 </div>
 </section>
 <section id="id3">
-<h3>Output<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<h3>Output<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Species Distribution Models for iDDC modeling
     ... projection to time 20
 - Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
@@ -273,7 +274,7 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="rocklin2015"><span class="brackets"><a class="fn-backref" href="#id1">Rocklin2015</a></span></dt>
 <dd><p>Rocklin, M. (2015) Dask: Parallel computation with blocked algorithms and task scheduling. In Proceedings of the 14th python

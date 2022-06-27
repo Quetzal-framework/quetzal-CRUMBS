@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.number\_of\_missing\_bands
-====================================================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: number_of_missing_bands

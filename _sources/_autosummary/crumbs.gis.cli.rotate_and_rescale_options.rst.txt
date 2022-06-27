@@ -1,0 +1,31 @@
+crumbs.gis.cli.rotate\_and\_rescale\_options
+============================================
+
+.. automodule:: crumbs.gis.cli.rotate_and_rescale_options
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      get_parser
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

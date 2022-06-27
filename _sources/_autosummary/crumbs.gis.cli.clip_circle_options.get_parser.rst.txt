@@ -1,0 +1,6 @@
+crumbs.gis.cli.clip\_circle\_options.get\_parser
+================================================
+
+.. currentmodule:: crumbs.gis.cli.clip_circle_options
+
+.. autofunction:: get_parser

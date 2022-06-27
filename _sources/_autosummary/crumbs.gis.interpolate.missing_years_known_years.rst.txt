@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.missing\_years\_known\_years
+===================================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: missing_years_known_years

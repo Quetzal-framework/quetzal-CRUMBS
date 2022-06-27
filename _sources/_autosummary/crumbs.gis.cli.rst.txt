@@ -1,0 +1,39 @@
+crumbs.gis.cli
+==============
+
+.. automodule:: crumbs.gis.cli
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.gis.cli.animate_cmd
+   crumbs.gis.cli.animate_options
+   crumbs.gis.cli.clip_circle_cmd
+   crumbs.gis.cli.clip_circle_options
+   crumbs.gis.cli.interpolate_cmd
+   crumbs.gis.cli.interpolate_options
+   crumbs.gis.cli.resample_cmd
+   crumbs.gis.cli.resample_options
+   crumbs.gis.cli.rotate_and_rescale_cmd
+   crumbs.gis.cli.rotate_and_rescale_options
+

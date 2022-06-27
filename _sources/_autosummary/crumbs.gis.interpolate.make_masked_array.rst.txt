@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.make\_masked\_array
+==========================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: make_masked_array

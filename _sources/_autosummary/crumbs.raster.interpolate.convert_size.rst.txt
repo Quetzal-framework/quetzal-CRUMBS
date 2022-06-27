@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.convert\_size
-=======================================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: convert_size

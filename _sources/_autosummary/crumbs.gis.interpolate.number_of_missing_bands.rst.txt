@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.number\_of\_missing\_bands
+=================================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: number_of_missing_bands

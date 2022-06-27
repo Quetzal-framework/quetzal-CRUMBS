@@ -21,3 +21,16 @@ crumbs.gis
 
 
 
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   crumbs.gis.animate
+   crumbs.gis.cli
+   crumbs.gis.clip_circle
+   crumbs.gis.interpolate
+   crumbs.gis.resample
+   crumbs.gis.rotate_and_rescale
+   crumbs.gis.show_raster
+

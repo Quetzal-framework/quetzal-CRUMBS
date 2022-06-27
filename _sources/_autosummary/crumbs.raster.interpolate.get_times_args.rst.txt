@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.get\_times\_args
-==========================================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: get_times_args

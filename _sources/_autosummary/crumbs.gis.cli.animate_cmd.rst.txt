@@ -1,0 +1,31 @@
+crumbs.gis.cli.animate\_cmd
+===========================
+
+.. automodule:: crumbs.gis.cli.animate_cmd
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      main
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

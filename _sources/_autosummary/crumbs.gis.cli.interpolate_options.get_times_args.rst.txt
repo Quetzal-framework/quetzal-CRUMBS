@@ -1,0 +1,6 @@
+crumbs.gis.cli.interpolate\_options.get\_times\_args
+====================================================
+
+.. currentmodule:: crumbs.gis.cli.interpolate_options
+
+.. autofunction:: get_times_args

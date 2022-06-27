@@ -1,0 +1,6 @@
+crumbs.gis.cli.interpolate\_options.get\_parser
+===============================================
+
+.. currentmodule:: crumbs.gis.cli.interpolate_options
+
+.. autofunction:: get_parser

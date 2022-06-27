@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.test\_preconditions
-=============================================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: test_preconditions

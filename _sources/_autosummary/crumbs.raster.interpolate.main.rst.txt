@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.main
-==============================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: main

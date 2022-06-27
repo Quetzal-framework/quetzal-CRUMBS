@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.test\_preconditions
+==========================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: test_preconditions

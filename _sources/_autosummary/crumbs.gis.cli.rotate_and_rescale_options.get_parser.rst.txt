@@ -1,0 +1,6 @@
+crumbs.gis.cli.rotate\_and\_rescale\_options.get\_parser
+========================================================
+
+.. currentmodule:: crumbs.gis.cli.rotate_and_rescale_options
+
+.. autofunction:: get_parser

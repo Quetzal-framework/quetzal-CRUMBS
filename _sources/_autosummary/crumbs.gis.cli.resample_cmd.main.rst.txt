@@ -1,0 +1,6 @@
+crumbs.gis.cli.resample\_cmd.main
+=================================
+
+.. currentmodule:: crumbs.gis.cli.resample_cmd
+
+.. autofunction:: main

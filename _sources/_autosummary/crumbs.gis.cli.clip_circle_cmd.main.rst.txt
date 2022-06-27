@@ -1,0 +1,6 @@
+crumbs.gis.cli.clip\_circle\_cmd.main
+=====================================
+
+.. currentmodule:: crumbs.gis.cli.clip_circle_cmd
+
+.. autofunction:: main

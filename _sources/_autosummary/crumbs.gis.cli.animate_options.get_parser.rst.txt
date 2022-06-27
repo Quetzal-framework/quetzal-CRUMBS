@@ -1,0 +1,6 @@
+crumbs.gis.cli.animate\_options.get\_parser
+===========================================
+
+.. currentmodule:: crumbs.gis.cli.animate_options
+
+.. autofunction:: get_parser

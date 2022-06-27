@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -117,15 +118,15 @@
 }
 </style>
 <section id="enter-the-quetzal-nest-docker-container">
-<h1>Enter the Quetzal-NEST Docker container<a class="headerlink" href="#enter-the-quetzal-nest-docker-container" title="Permalink to this headline">¶</a></h1>
+<h1>Enter the Quetzal-NEST Docker container<a class="headerlink" href="#enter-the-quetzal-nest-docker-container" title="Permalink to this heading">¶</a></h1>
 <p>Quetzal-NEST is the Docker container where the Quetzal framework lives, and it
 can be deployed on clusters for scalable, massively parallel, reproducible science.
 The container is published on <a class="reference external" href="https://hub.docker.com/r/arnaudbecheler/quetzal-nest">DockerHub</a>
 and publicly available for local and remote use.</p>
 <section id="why-do-we-need-a-docker-container">
-<h2>Why do we need a Docker container?<a class="headerlink" href="#why-do-we-need-a-docker-container" title="Permalink to this headline">¶</a></h2>
+<h2>Why do we need a Docker container?<a class="headerlink" href="#why-do-we-need-a-docker-container" title="Permalink to this heading">¶</a></h2>
 <section id="to-encapsulate-the-chaos-of-iddc-analysis">
-<h3>To encapsulate the chaos of iDDC analysis<a class="headerlink" href="#to-encapsulate-the-chaos-of-iddc-analysis" title="Permalink to this headline">¶</a></h3>
+<h3>To encapsulate the chaos of iDDC analysis<a class="headerlink" href="#to-encapsulate-the-chaos-of-iddc-analysis" title="Permalink to this heading">¶</a></h3>
 <p>iDDC modeling is quite a complex workflow and requires many system dependencies
 and tricky configurations: in its current version, the Quetzal framework needs
 more than 65 dependencies that have to coexist peacefully on the same system.</p>
@@ -133,7 +134,7 @@ more than 65 dependencies that have to coexist peacefully on the same system.</p
 as these containers allow to <em>freeze</em> entire systems and <em>distribute</em> them to the users.</p>
 </section>
 <section id="to-provide-the-benefits-of-virtual-machines-with-extra-bonus">
-<h3>To provide the benefits of virtual machines  with extra bonus<a class="headerlink" href="#to-provide-the-benefits-of-virtual-machines-with-extra-bonus" title="Permalink to this headline">¶</a></h3>
+<h3>To provide the benefits of virtual machines  with extra bonus<a class="headerlink" href="#to-provide-the-benefits-of-virtual-machines-with-extra-bonus" title="Permalink to this heading">¶</a></h3>
 <p>Containers are enabled by isolation and virtualization capabilities built into
 the Linux kernel. These capabilities makes it possible for multiple application components
 to coexist on an host operating system and share its resources.</p>
@@ -151,9 +152,9 @@ of a same hardware, and containers and VMs actually share a number of benefits:<
 </section>
 </section>
 <section id="how-do-i-use-quetzal-nest-locally">
-<h2>How do I use Quetzal-NEST locally?<a class="headerlink" href="#how-do-i-use-quetzal-nest-locally" title="Permalink to this headline">¶</a></h2>
+<h2>How do I use Quetzal-NEST locally?<a class="headerlink" href="#how-do-i-use-quetzal-nest-locally" title="Permalink to this heading">¶</a></h2>
 <section id="get-started">
-<h3>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline">¶</a></h3>
+<h3>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading">¶</a></h3>
 <p>First you will need to <a class="reference external" href="https://docs.docker.com/get-docker/">install Docker</a> on your system. It’s very quick, I promise!</p>
 <p>Then, you can type this on a terminal</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the docker image with all the dependencies</span>
@@ -170,7 +171,7 @@ to the computations, and all files generated in the container will also be avail
 your system.</p>
 </section>
 <section id="list-of-basic-docker-commands">
-<h3>List of basic docker commands<a class="headerlink" href="#list-of-basic-docker-commands" title="Permalink to this headline">¶</a></h3>
+<h3>List of basic docker commands<a class="headerlink" href="#list-of-basic-docker-commands" title="Permalink to this heading">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -230,7 +231,7 @@ your system.</p>
 </section>
 </section>
 <section id="how-do-i-deploy-quetzal-nest-on-clusters">
-<h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this headline">¶</a></h2>
+<h2>How do I deploy quetzal-NEST on clusters?<a class="headerlink" href="#how-do-i-deploy-quetzal-nest-on-clusters" title="Permalink to this heading">¶</a></h2>
 <p>Docker containers present some security risks when they are used on clusters, and
 they generally have to be first converted to Apptainer/Singularity containers
 before you can deploy them on clusters grids and run iDDC worflows.</p>
@@ -238,7 +239,7 @@ before you can deploy them on clusters grids and run iDDC worflows.</p>
 no need anymore to ask your favorite cluster maintenance
 guy to manually install every dependency!</p>
 <section id="on-the-open-science-grid">
-<h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this headline">¶</a></h3>
+<h3>On the Open Science Grid:<a class="headerlink" href="#on-the-open-science-grid" title="Permalink to this heading">¶</a></h3>
 <p>The <a class="reference external" href="https://opensciencegrid.org/">Open Science Grid</a> is a consortium of research collaborations,
 campuses, national laboratories, and software providers dedicated
 to the advancement of all open science via the practice of distributed High Throughput Computing (dHTC).
@@ -253,7 +254,7 @@ To make it available to your computation, just add these two lines to your <code
 </div>
 </section>
 <section id="on-the-nasa-pleiades">
-<h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this headline">¶</a></h3>
+<h3>On the NASA Pleiades<a class="headerlink" href="#on-the-nasa-pleiades" title="Permalink to this heading">¶</a></h3>
 <dl class="simple">
 <dt>Docker containers can be converted to Singularity <a class="reference external" href="https://www.nas.nasa.gov/hecc/support/kb/converting-docker-images-to-singularity-for-use-on-pleiades_643.html">to be deployed on the NASA Pleiades</a></dt><dd><p>with this command:</p>
 </dd>
@@ -266,7 +267,7 @@ pfe$ singularity build --sandbox lolcow docker://arnaudbecheler/quetzal-nest
 </div>
 </section>
 <section id="on-jetstream2">
-<h3>On JetStream2<a class="headerlink" href="#on-jetstream2" title="Permalink to this headline">¶</a></h3>
+<h3>On JetStream2<a class="headerlink" href="#on-jetstream2" title="Permalink to this heading">¶</a></h3>
 <p>Jetstream2 <a class="reference external" href="https://docs.jetstream-cloud.org/general/docker/">supports Docker and Apptainer/Singularity.</a>
 Apptainer (previously known as Singularity) is installed as part of the Jetstream Software Collection.
 You can access Apptainer from any Jetstream Featured Image by doing:</p>

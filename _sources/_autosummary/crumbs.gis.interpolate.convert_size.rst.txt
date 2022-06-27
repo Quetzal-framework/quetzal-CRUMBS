@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.convert\_size
+====================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: convert_size

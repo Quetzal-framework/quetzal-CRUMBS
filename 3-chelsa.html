@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -110,14 +111,14 @@
 }
 </style>
 <section id="accessing-the-chelsa-trace21k-1km-climate-timeseries-with-quetzal-crumbs">
-<h1>Accessing the CHELSA-TraCE21k 1km climate timeseries with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-chelsa-trace21k-1km-climate-timeseries-with-quetzal-crumbs" title="Permalink to this headline">¶</a></h1>
+<h1>Accessing the CHELSA-TraCE21k 1km climate timeseries with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-chelsa-trace21k-1km-climate-timeseries-with-quetzal-crumbs" title="Permalink to this heading">¶</a></h1>
 <p><a class="reference external" href="https://chelsa-climate.org/chelsa-trace21k/">CHELSA-TraCE21k</a> provides
 monthly climate data for temperature and precipitation at 30 arcsec spatial
 resolution in 100-yeartime steps for the last 21,000 years.
 Based on the reconstructed paleo orography, mean annual
 temperature and precipitation was downscaled using the CHELSA V1.2 algorithm (<a class="reference internal" href="#karger2021" id="id1"><span>[Karger2021]</span></a>).</p>
 <section id="why-do-we-need-chelsa">
-<h2>Why do we need CHELSA?<a class="headerlink" href="#why-do-we-need-chelsa" title="Permalink to this headline">¶</a></h2>
+<h2>Why do we need CHELSA?<a class="headerlink" href="#why-do-we-need-chelsa" title="Permalink to this heading">¶</a></h2>
 <p>At phylogeographic scales, climatic variations cause changes in sea-levels and orography,
 and as a result have an important impact on the biodiversity, affecting species migration
 patterns and ecology. Database with high spatial resolution are a necessity when
@@ -137,7 +138,7 @@ on present climate and elevation, extrapolating them to past climates conditions
 to reconstruct dynamic habitability landscapes.</p>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
 <p>Quetzal-CRUMBS SDM utilities will automatically download the CHELSA bioclimatic
 and elevation files when they need to make them available to the classifiers:
 you should not have to download them yourself when you are building
@@ -145,7 +146,7 @@ your iDDC workflow.</p>
 <p>However, if you happen to download some CHELSA files for your own needs,
 here is how to do so.</p>
 <section id="context">
-<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h3>
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this heading">¶</a></h3>
 <p>You need a shapefile to define the longitude/latitude points to define the area
 of the world of interest.
 In iDDC wokflows, the points of interest would normally be the coordinates of your
@@ -171,7 +172,7 @@ Have a look <a class="reference external" href="https://chelsa-climate.org/chels
 </div>
 </section>
 <section id="bash-command">
-<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this headline">¶</a></h3>
+<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sample</span><span class="o">=</span><span class="s1">&#39;test_points/test_points.shp&#39;</span>
 <span class="nv">buffer</span><span class="o">=</span><span class="m">2</span>.0                <span class="c1">#in degrees</span>
 <span class="nv">biovars</span><span class="o">=</span>dem,bio01         <span class="c1">#or bio01,bio02,bio10,bio12, or simply dem,bio for all</span>
@@ -187,7 +188,7 @@ crumbs-get-chelsa <span class="se">\</span>
 </div>
 </section>
 <section id="behavior">
-<h3>Behavior<a class="headerlink" href="#behavior" title="Permalink to this headline">¶</a></h3>
+<h3>Behavior<a class="headerlink" href="#behavior" title="Permalink to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>A world file is downloaded for the variable and time of interest in the <code class="docutils literal notranslate"><span class="pre">chelsa-world</span></code> folder</p></li>
 <li><p>The file is cropped to the bounding box of the given geographic points (+/- a buffer in degrees)</p></li>
@@ -200,7 +201,7 @@ crumbs-get-chelsa <span class="se">\</span>
 </div>
 </section>
 <section id="output">
-<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - CHELSA-TraCE21k data access for iDDC modeling
     ... rasters will be cropped to bounding box infered from points: POLYGON ((128.8515 -18.2625, 139.0335 -18.2625, 139.0335 -9.0333, 128.8515 -9.0333, 128.8515 -18.2625))
 https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_19_V1.0.tif
@@ -218,7 +219,7 @@ https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHEL
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
 <dl class="citation">
 <dt class="label" id="karger2021"><span class="brackets"><a class="fn-backref" href="#id1">Karger2021</a></span></dt>
 <dd><p>Karger, D. N., Nobis, M. P., Normand, S., Graham, C. H., &amp; Zimmermann, N. E. (2021): CHELSA-TraCE21k v1. 0. Downscaled transient temperature and precipitation data since the last glacial maximum. Climate of the Past Discussions, 1-27.</p>

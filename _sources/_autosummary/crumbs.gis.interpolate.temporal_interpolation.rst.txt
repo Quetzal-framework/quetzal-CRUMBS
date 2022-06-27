@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.temporal\_interpolation
+==============================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: temporal_interpolation

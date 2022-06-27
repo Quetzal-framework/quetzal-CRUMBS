@@ -1,0 +1,6 @@
+crumbs.gis.cli.animate\_cmd.main
+================================
+
+.. currentmodule:: crumbs.gis.cli.animate_cmd
+
+.. autofunction:: main

@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -109,12 +110,12 @@
 }
 </style>
 <section id="accessing-the-gbif-database-with-quetzal-crumbs">
-<h1>Accessing the GBIF database with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-gbif-database-with-quetzal-crumbs" title="Permalink to this headline">¶</a></h1>
+<h1>Accessing the GBIF database with Quetzal-CRUMBS<a class="headerlink" href="#accessing-the-gbif-database-with-quetzal-crumbs" title="Permalink to this heading">¶</a></h1>
 <p>The <a class="reference external" href="https://www.gbif.org/">Global Biodiversity Information Facility</a> is an international network
 and data infrastructure that provides open access to around 2 billions of occurrence
 records.</p>
 <section id="why-do-we-need-to-access-gbif">
-<h2>Why do we need to access GBIF ?<a class="headerlink" href="#why-do-we-need-to-access-gbif" title="Permalink to this headline">¶</a></h2>
+<h2>Why do we need to access GBIF ?<a class="headerlink" href="#why-do-we-need-to-access-gbif" title="Permalink to this heading">¶</a></h2>
 <p>The first step in IDDC modeling is to reconstruct a dynamic suitability map to inform every
 generation (or year, or century) of the simulation of a meta-population.
 This suitability map can be derived from a Species Distribution Model
@@ -134,7 +135,7 @@ This suitability map can be derived from a Species Distribution Model
 <p>That is why you need GBIF: it’s a cheap, easy way to have access to presence data.</p>
 </section>
 <section id="why-a-scripted-approach">
-<h2>Why a scripted approach?<a class="headerlink" href="#why-a-scripted-approach" title="Permalink to this headline">¶</a></h2>
+<h2>Why a scripted approach?<a class="headerlink" href="#why-a-scripted-approach" title="Permalink to this heading">¶</a></h2>
 <p>To integrate GBIF occurrence records in an IDDC workflow, you need to:</p>
 <ol class="arabic simple">
 <li><p>download the observational data</p></li>
@@ -155,9 +156,9 @@ what the <code class="docutils literal notranslate"><span class="pre">crumbs-get
 </figure>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
 <section id="context">
-<h3>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h3>
+<h3>Context<a class="headerlink" href="#context" title="Permalink to this heading">¶</a></h3>
 <p>To run this command successfully, you will need to start with a set of longitude/latitude points.
 That would normally be the coordinates of your DNA samples, but if you want to
 reproduce our example then just download our test data points from Github:</p>
@@ -183,7 +184,7 @@ make sure you always transfer all of them, and not only the <code class="docutil
 </div></blockquote>
 </section>
 <section id="bash-command">
-<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this headline">¶</a></h3>
+<h3>Bash command<a class="headerlink" href="#bash-command" title="Permalink to this heading">¶</a></h3>
 <p>You can then execute this command in a terminal (or a bash script) to retrieve 30 occurrences of <em>H. binoei</em> between 1950 and 2022
 with a buffer of 2.0 degrees around the bounding box of the sampling points.
 The records will be saved as a <code class="docutils literal notranslate"><span class="pre">occurrences.shp</span></code> shapefile (and a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> for human readibility).</p>
@@ -202,7 +203,7 @@ The records will be saved as a <code class="docutils literal notranslate"><span 
 </div>
 </section>
 <section id="output">
-<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>- Quetzal-CRUMBS - Global Biodiversity Information Facility (GBIF) wrapper for iDDC models
    ... Looking in GBIF database for Heteronotia binoei
    ... Search in the bounding box provided by tests/data/test_points/test_points.shp with buffer 2.0 degrees

@@ -1,0 +1,6 @@
+crumbs.gis.cli.interpolate\_cmd.main
+====================================
+
+.. currentmodule:: crumbs.gis.cli.interpolate_cmd
+
+.. autofunction:: main

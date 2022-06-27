@@ -1,0 +1,6 @@
+crumbs.gis.cli.rotate\_and\_rescale\_cmd.main
+=============================================
+
+.. currentmodule:: crumbs.gis.cli.rotate_and_rescale_cmd
+
+.. autofunction:: main

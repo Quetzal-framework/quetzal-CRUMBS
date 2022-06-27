@@ -1,0 +1,6 @@
+crumbs.gis.interpolate.unmasked\_interpolation
+==============================================
+
+.. currentmodule:: crumbs.gis.interpolate
+
+.. autofunction:: unmasked_interpolation

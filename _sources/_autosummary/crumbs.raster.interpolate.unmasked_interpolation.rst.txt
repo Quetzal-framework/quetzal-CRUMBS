@@ -1,6 +1,0 @@
-crumbs.raster.interpolate.unmasked\_interpolation
-=================================================
-
-.. currentmodule:: crumbs.raster.interpolate
-
-.. autofunction:: unmasked_interpolation

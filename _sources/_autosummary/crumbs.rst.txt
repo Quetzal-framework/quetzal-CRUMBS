@@ -34,7 +34,6 @@
    crumbs.get_successful_simulations_rowids
    crumbs.gis
    crumbs.phylip2arlequin
-   crumbs.raster
    crumbs.retrieve_parameters
    crumbs.sample
    crumbs.sdm

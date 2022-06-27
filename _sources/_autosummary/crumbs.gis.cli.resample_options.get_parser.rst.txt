@@ -1,0 +1,6 @@
+crumbs.gis.cli.resample\_options.get\_parser
+============================================
+
+.. currentmodule:: crumbs.gis.cli.resample_options
+
+.. autofunction:: get_parser
