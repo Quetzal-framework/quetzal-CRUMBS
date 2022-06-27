@@ -29,7 +29,9 @@ jobs:
 
       - name: Install pip deps
         shell: bash -l {0}
-        run: pip3 install -r requirements.txt
+        run: |
+            pip3 install -r requirements.txt
+            pip install pytest-cov
 
       - name: Run tests
         working-directory: .
