@@ -32,7 +32,7 @@ jobs:
         run: pip3 install -r requirements.txt
 
       - name: Run tests
-        working-directory: python
+        working-directory: .
         run: python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch tests
 
       - name: Upload coverage to Codecov
