@@ -77,7 +77,7 @@
 <span></span><span class="kn">import</span> <span class="nn">re</span>
 
 <div class="viewcode-block" id="nb_species_posterior_probabilities"><a class="viewcode-back" href="../../_autosummary/crumbs.bpp.nb_species_posterior_probabilities.html#crumbs.bpp.nb_species_posterior_probabilities">[docs]</a><span class="k">def</span> <span class="nf">nb_species_posterior_probabilities</span><span class="p">(</span><span class="n">bpp_output</span><span class="p">):</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;P\[(\d)\] = (\d+\.\d+)&#39;</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;P\[(\d)\] = (\d+\.\d+)&#39;</span><span class="p">)</span>
     <span class="n">iterator</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">bpp_output</span><span class="p">)</span>
     <span class="n">posterior</span><span class="o">=</span><span class="nb">dict</span><span class="p">();</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
