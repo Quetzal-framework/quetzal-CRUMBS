@@ -59,6 +59,7 @@ jobs:
           name: Run CLI tests
           no_output_timeout: 30m
           command: |
+            pip install -r requirements.txt
             chmod +x tests/integration.sh
             ./tests/integration.sh
       - run:
