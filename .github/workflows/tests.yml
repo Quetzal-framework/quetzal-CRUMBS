@@ -1,0 +1,47 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+jobs:
+
+  test:
+    name: Python
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: [ 3.7, 3.9, "3.10" ]
+        os:  [ macos-latest, ubuntu-latest, windows-latest ]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install pip deps
+        shell: bash -l {0}
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: python
+        run: |
+          python -m pytest --cov=crumbs --cov-report=xml --cov-branch tests
+
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v2
+        with:
+          working-directory: crumbs
+          fail_ci_if_error: true
+          flags: tests
+          name: codecov-umbrella
+          verbose: true
