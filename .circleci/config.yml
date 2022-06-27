@@ -56,11 +56,6 @@ jobs:
           name: Copy simulated database to package test data
           command: cp EGGS/out.db tests/data/
       - run:
-          name: Create a source distribution and a shareable wheel
-          command: |
-            python3 -m build
-            pip3 install dist/quetzal_crumbs-1.0.17-py3-none-any.whl
-      - run:
           name: Run CLI tests
           no_output_timeout: 30m
           command: |
@@ -70,25 +65,34 @@ jobs:
           name: Run unit tests
           no_output_timeout: 30m
           command: python3 -W ignore -m unittest discover
+      - run:
+          name: Create a source distribution and a shareable wheel
+          command: |
+            python3 -m build
+            pip3 install dist/quetzal_crumbs-1.0.17-py3-none-any.whl
 
+   # create whl, install twine and publish to Test PyPI
   test_pypi_publish:
     executor: executor-crumbs
     steps:
       - checkout
       - run:
-          command: |  # create whl, install twine and publish to Test PyPI
+          command: |
             #pip3 install build twine
             python3 -m build
             python3 -m twine upload -u $TESTPYPI_USERNAME -p $TESTPYPI_PASSWORD --repository testpypi dist/*
+
+  # create whl, install twine and publish to PyPI
   pypi_publish:
     executor: executor-crumbs
     steps:
       - checkout
       - run:
-          command: |  # create whl, install twine and publish to PyPI
+          command: |
             #pip3 install build twine
             python3 -m build
             python3 -m twine upload -u $PYPI_USERNAME -p $PYPI_PASSWORD dist/*
+
 workflows:
   version: 2
   CRUMBS-integration:

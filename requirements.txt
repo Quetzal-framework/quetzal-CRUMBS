@@ -3,8 +3,11 @@
 Pyvolve==1.0.3
 numpy
 tqdm
+pytest
+setuptools < 60.0 # Avoid bug with Mayavi, see https://numpy.org/devdocs/reference/distutils_status_migration.html
 
 # For crumbs geospatial & parallelism
+
 rasterio==1.3b2 # See https://github.com/rasterio/rasterio/issues/2333
 matplotlib
 imageio
@@ -17,6 +20,7 @@ xarray
 rioxarray
 
 # For crumbs.get_chelsa and crumbs.sdm
+
 joblib
 git+https://github.com/perrygeo/pyimpute.git@1371e5bf1f5ef35bd88ea5c2d57d2cbedf4f5d1d
 xgboost
@@ -25,14 +29,16 @@ scikit-learn
 geopandas
 
 # For crumbs.get_gbif
+
 pygbif==0.6.1
 
 # PyVirtualDisplay and its dependencies
-pyvirtualdisplay
-pillow
-EasyProcess
-vtk
-opencv-python
-PyVirtualDisplay
+
+# pyvirtualdisplay
+# pillow
+# EasyProcess
+# vtk
+# opencv-python
+# PyVirtualDisplay
 mayavi
-PyQt5
+# PyQt5
