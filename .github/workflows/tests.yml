@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         working-directory: .
         run: |
-            pip install pytest-cov
+            pip3 install pytest-cov
             python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch tests
 
       - name: Upload coverage to Codecov
