@@ -30,6 +30,8 @@ geopandas
 
 # For crumbs.get_gbif
 
+
+attrs==21.4.0 # avoids requests-cache 0.9.4 has requirement attrs<22.0,>=21.2, but you'll have attrs 19.3.0 which is incompatible.
 pygbif==0.6.1
 
 # PyVirtualDisplay and its dependencies
