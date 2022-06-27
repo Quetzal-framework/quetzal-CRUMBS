@@ -24,6 +24,7 @@ lightgbm = "*"
 requests-cache="*"
 dask = "*"
 joblib = "*"
+tqdm = "*"
 
 [dev-packages]
 
