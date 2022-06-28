@@ -65,9 +65,11 @@ jobs:
 
 
       - name: Until Kitware releases official VTK wheels for Python 3.10
-        # See https://github.com/enthought/mayavi/issues/1156
+        # 1) avoids Could not load the Qt platform plugin "xcb" in "" even though it was found.
+        # 2) See https://github.com/enthought/mayavi/issues/1156
         if: matrix.os == 'ubuntu-22.04'
         run: |
+              sudo apt install libxcb-xinerama0
               pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 
       - name: Install pip deps
