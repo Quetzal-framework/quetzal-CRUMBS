@@ -1,3 +1,3 @@
 """
-Package preparing a dynamic landscape for simulation.
+Package for preparing a dynamic landscape for simulation.
 """

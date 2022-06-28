@@ -1,7 +1,7 @@
 import re
 
 def nb_species_posterior_probabilities(bpp_output):
-    p = re.compile('P\[(\d)\] = (\d+\.\d+)')
+    p = re.compile(r'P\[(\d)\] = (\d+\.\d+)')
     iterator = p.finditer(bpp_output)
     posterior=dict();
     for match in iterator:

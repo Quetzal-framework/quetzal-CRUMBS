@@ -37,3 +37,11 @@ crumbs-fit-sdm \
 crumbs-extrapolate-sdm \
       --sdm-file 'my-lil-sdm.bin' \
       --timeID 20
+
+crumbs-clip-circle 'model-averaging/suitability_20.tif' -o 'disk.tif'
+
+angle=10.0
+crumbs-rotate-and-rescale 'disk.tif' $angle -o 'rotated.tif'
+
+factor=0.5
+crumbs.resample 'rotated.tif' $factor -o 'resampled.tif'
