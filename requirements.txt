@@ -75,8 +75,7 @@ traits==6.3.2
 traitsui==7.3.1
 url-normalize==1.4.3
 urllib3==1.26.9
-vtk==9.2.0rc1
-wslink==1.6.5
+https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whlwslink==1.6.5
 xarray==2022.3.0
 xgboost==1.6.1
 yarl==1.7.2
