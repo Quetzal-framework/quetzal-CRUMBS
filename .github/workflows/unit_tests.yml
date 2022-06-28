@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         python: [ 3.7, 3.9, "3.10" ]
-        os:  [ macos-latest, ubuntu-latest ]
+        os:  [ macos-latest, ubuntu-20.04, ubuntu-22.04]
     defaults:
       run:
         shell: bash
@@ -26,11 +26,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Debug Mayavi
-        if: matrix.os == 'ubuntu-latest'
-        # See https://stackoverflow.com/questions/68036484/qt6-qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-thou
+      - name: Mayavi: install all dependencies and backends on Ubuntu 20.04:
+        if: matrix.os == 'ubuntu-20.04'
         run: |
-            sudo apt-get update -y && sudo apt-get install -y libxcb-xinerama0
+              sudo apt-get update -y && sudo apt-get install -y \
+                  xvfb \
+                  xserver-xephyr \
+                  tigervnc-standalone-server \
+                  x11-utils \
+                  gnumeric \
+                  && apt-get clean -y
+
+      - name: Mayavi: Qt platform plugin xcb for mayavi on Ubuntu 20.04
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+              sudo apt-get update -y && sudo apt-get install -y \
+                  xvfb \
+                  xserver-xephyr \
+                  tigervnc-standalone-server \
+                  x11-utils \
+                  gnumeric \
+                  && apt-get clean -y
 
       - name: Install pip deps
         shell: bash -l {0}
