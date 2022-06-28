@@ -1,18 +1,16 @@
-# avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
 import pytest
 
 from . context import crumbs
-
 from . utils import delete_folder
 
-class TestSDM(unittest.TestCase):
+class TestSDM():
 
     def setup_method(self, test_method):
         self.sampling_points = "tests/data/test_points/test_points.shp"
         self.occurrences_filename = "occurrences"
 
 
-    def  teardown_method(self, test_method):
+    def teardown_method(self, test_method):
         from pathlib import Path
         import glob
 

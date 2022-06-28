@@ -1,11 +1,9 @@
-# avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
 import pytest
 
 from . context import crumbs
-
 from crumbs.gbif.request import request
 
-class TestGetGbif(unittest.TestCase):
+class TestGetGbif():
     output_filename = "tests/occurrences"
 
     def setup_method(self, test_method):

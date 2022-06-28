@@ -1,6 +1,4 @@
-# avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
-import unittest
-import sys
+import pytest
 
 from . context import crumbs
 
@@ -9,10 +7,15 @@ from crumbs import get_failed_simulations_rowids
 from crumbs import retrieve_parameters
 from crumbs import simulate_phylip_sequences
 
-class TestGetSimulation(unittest.TestCase):
-    def SetUp(self):
+class TestGetSimulation():
+
+    def setup_method(self, test_method):
         pass
 
+    def teardown_class(cls):
+        from pathlib import Path
+        Path("sim_test.phyl").unlink()
+        
     def test_database_IDS(self):
         # Open the file:
         success_rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
@@ -34,12 +37,3 @@ class TestGetSimulation(unittest.TestCase):
         c = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], False)
 
         self.assertEqual(a,b)
-
-    @classmethod
-    def tearDownClass(cls):
-        from pathlib import Path
-        Path("sim_test.phyl").unlink()
-
-
-if __name__=="__main__":
-    unittest.main()

@@ -1,26 +1,22 @@
-# avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
-import unittest
+import pytest
 import sys
 
 from . context import crumbs
 
-class TestConvertPhylipToArlequin(unittest.TestCase):
+class TestConvertPhylipToArlequin():
 
     output_filename = "tests/test.arlequin"
-    
-    def SetUp(self):
+
+    def setup_method(self, test_method):
         pass
 
-    def test_phylip_to_alequin(self):
-        from crumbs import phylip2arlequin
-        phylip2arlequin.phylip2arlequin("tests/data/seq.phyl", "tests/data/imap.txt", self.output_filename)
-
-    def tearDown(self):
+    def teardown_method(self, test_method):
         from pathlib import Path
         import glob
         # Remove all occurrences files generated
         for p in Path(".").glob( self.output_filename):
             p.unlink()
 
-if __name__=="__main__":
-    unittest.main()
+    def test_phylip_to_alequin(self):
+        from crumbs import phylip2arlequin
+        phylip2arlequin.phylip2arlequin("tests/data/seq.phyl", "tests/data/imap.txt", self.output_filename)

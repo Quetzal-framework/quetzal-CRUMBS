@@ -1,11 +1,10 @@
-# avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
-import unittest
-import sys
+import pytest
 
 from . context import crumbs
 
-class TestSequence(unittest.TestCase):
-    def SetUp(self):
+class TestSequence():
+
+    def setup_method(self, test_method):
         pass
 
     def test_new(self):
@@ -22,7 +21,3 @@ class TestSequence(unittest.TestCase):
         self.assertEqual(sequences[0].sequence, "GGCAGATTCCCCCTA")
         self.assertEqual(sequences[1].header, "AZER2")
         self.assertEqual(sequences[1].sequence, "---CTGCACTCACCG")
-
-
-if __name__=="__main__":
-    unittest.main()
