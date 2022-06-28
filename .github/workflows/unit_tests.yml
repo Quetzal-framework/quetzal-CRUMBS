@@ -53,10 +53,9 @@ jobs:
 
       - name: Install Linux packages for Qt5 support
         if: matrix.os == 'ubuntu-22.04'
-        # qt5-default has been removed 
+        # qt5-default has been removed
         run: |
             sudo apt-get update
-            sudo apt-get install qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools
             sudo apt-get install libxkbcommon-x11-0
             sudo apt-get install libxcb-icccm4
             sudo apt-get install libxcb-image0
@@ -81,7 +80,6 @@ jobs:
       - name: Install dependencies and local packages, until Kitware releases official VTK wheels for Python 3.10
         if: matrix.os == 'ubuntu-22.04'
         run: |
-            python3 -m pip install pyqt5
             python3 -m pip install numpy
             python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
             python3 -m pip install pillow
