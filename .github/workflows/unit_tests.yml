@@ -64,13 +64,13 @@ jobs:
             python3 -m pip install vtk
             python3 -m pip install pillow
 
-      - name: Until Kitware releases official VTK wheels for Python 3.10
-        # 1) avoids Could not load the Qt platform plugin "xcb" in "" even though it was found.
-        # 2) See https://github.com/enthought/mayavi/issues/1156
+      - name: Install dependencies and local packages, until Kitware releases official VTK wheels for Python 3.10
         if: matrix.os == 'ubuntu-22.04'
         run: |
-              sudo apt install libxcb-xinerama0
-              pythin3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+            python3 -m pip install pyqt5
+            python3 -m pip install numpy
+            python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+            python3 -m pip install pillow
 
       - name: Install pip deps
         run: python3 -m pip install -r requirements.txt
