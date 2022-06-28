@@ -30,7 +30,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         # See https://stackoverflow.com/questions/68036484/qt6-qt-qpa-plugin-could-not-load-the-qt-platform-plugin-xcb-in-even-thou
         run: |
-            apt-get update -y && apt-get install -y libxcb-xinerama0
+            sudo apt-get update -y && apt-get install -y libxcb-xinerama0
 
       - name: Install pip deps
         shell: bash -l {0}
