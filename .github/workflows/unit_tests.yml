@@ -63,7 +63,6 @@ jobs:
             python -m pip install numpy
             python -m pip install vtk
             python -m pip install pillow
-            python -m pip install nose
 
       - name: Until Kitware releases official VTK wheels for Python 3.10
         # 1) avoids Could not load the Qt platform plugin "xcb" in "" even though it was found.
