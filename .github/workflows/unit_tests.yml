@@ -54,6 +54,16 @@ jobs:
                   gnumeric \
                   && sudo apt-get clean -y
 
+      - name: Load Qt plaform plugin xcb for Mayavi
+        # Avoids "Could not load the Qt platform plugin "xcb" in "" even though it was found"
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+              sudo apt-get update -y && sudo apt-get install -y \
+              qt5-default \
+              && sudo apt-get clean -y
+
+
+
       - name: Until Kitware releases official VTK wheels for Python 3.10
         # See https://github.com/enthought/mayavi/issues/1156
         if: matrix.os == 'ubuntu-22.04'
