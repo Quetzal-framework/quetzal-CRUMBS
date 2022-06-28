@@ -19,7 +19,7 @@ jobs:
             python: 3.7
           - os: ubuntu-22.04
             python: 3.9
-            
+
     defaults:
       run:
         shell: bash
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Mayavi install all dependencies and backends on Ubuntu 20.04
+      - name: Manually install dependencies and backends for Mayavi
         if: matrix.os == 'ubuntu-20.04'
         run: |
               sudo apt-get update -y && sudo apt-get install -y \
@@ -43,7 +43,7 @@ jobs:
                   gnumeric \
                   && sudo apt-get clean -y
 
-      - name: Qt platform plugin xcb for mayavi on Ubuntu 20.04
+      - name: Manually install Qt platform plugin xcb for Mayavi
         if: matrix.os == 'ubuntu-20.04'
         run: |
               sudo apt-get update -y && sudo apt-get install -y \
@@ -53,6 +53,12 @@ jobs:
                   x11-utils \
                   gnumeric \
                   && sudo apt-get clean -y
+
+      - name: Until Kitware releases official VTK wheels for Python 3.10
+        # See https://github.com/enthought/mayavi/issues/1156
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+              pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 
       - name: Install pip deps
         shell: bash -l {0}
