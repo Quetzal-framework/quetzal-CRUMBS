@@ -79,3 +79,4 @@ wslink==1.6.5
 xarray==2022.3.0
 xgboost==1.6.1
 yarl==1.7.2
+mayavi==4.7.4
