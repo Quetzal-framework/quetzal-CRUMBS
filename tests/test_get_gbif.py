@@ -1,8 +1,5 @@
 # avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
-import unittest
-import sys
-sys.path.append("..")
-# from src.crumbs import my_module
+import pytest
 
 from . context import crumbs
 
@@ -11,7 +8,7 @@ from crumbs.gbif.request import request
 class TestGetGbif(unittest.TestCase):
     output_filename = "tests/occurrences"
 
-    def SetUp(self):
+    def setup_method(self, test_method):
         pass
 
     def test_request_gbif(self):
@@ -34,12 +31,9 @@ class TestGetGbif(unittest.TestCase):
                              csv_file= self.output_filename + ".csv",
                              shapefile= self.output_filename + ".shp")
 
-    def tearDown(self):
+    def teardown_method(self, test_method):
         from pathlib import Path
         import glob
         # Removing all occurrences files generated
         for p in Path(".").glob( self.output_filename + ".*"):
             p.unlink()
-
-if __name__=="__main__":
-    unittest.main()
