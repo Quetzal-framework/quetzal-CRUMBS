@@ -51,11 +51,6 @@ jobs:
             sudo apt-get install libxcb-render-util0
             sudo apt-get install libxcb-xinerama0
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
       - name: Install dependencies and local packages
         if: matrix.os == 'ubuntu-20.04'
         run: |
