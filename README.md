@@ -3,8 +3,8 @@
 [![Website becheler.github.io](https://img.shields.io/website-up-down-green-red/https/becheler.github.io.svg)](https://becheler.github.io/quetzal-CRUMBS/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![PyPI version](https://badge.fury.io/py/quetzal-crumbs.svg)](https://badge.fury.io/py/quetzal-crumbs)
+[![Supported Python Versions](https://img.shields.io/pypi/pyversions/quetzal-crumbs.svg)](https://pypi.org/project/quetzal-crumbs/)
 ![Lines of code](https://img.shields.io/tokei/lines/github/Becheler/quetzal-CRUMBS)
-[![Becheler](https://circleci.com/gh/Becheler/quetzal-CRUMBS.svg?style=shield)](https://app.circleci.com/pipelines/github/Becheler)
 
 This python library is meant to be used along other software from the Quetzal
 framework to perform iDDC modeling and inference.
