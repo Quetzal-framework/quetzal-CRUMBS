@@ -3,7 +3,6 @@ name: Unit tests
 on:
   pull_request:
   push:
-    branches: [main, develop]
 
 jobs:
 
@@ -13,12 +12,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: [ 3.7, 3.9, "3.10" ]
-        os:  [ macos-latest, ubuntu-latest ]
+        python: [ 3.6, 3.7, 3.8, 3.9, "3.10" ]
+        os:  [ macos-latest, ubuntu-20.04, ubuntu-22.04]
+        exclude:
+          - os: ubuntu-22.04
+            python: 3.6
+          - os: ubuntu-22.04
+            python: 3.7
+          - os: ubuntu-22.04
+            python: 3.8
+          - os: ubuntu-22.04
+            python: 3.9
+
     defaults:
       run:
         shell: bash
+
     steps:
+
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.6.0
         with:
@@ -27,10 +38,48 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install pip deps
-        shell: bash -l {0}
+      - name: Install Linux packages for Qt5 support
+        if: matrix.os == 'ubuntu-20.04'
         run: |
-            pip3 install -r requirements.txt
+            sudo apt-get update
+            sudo apt-get install qt5-default
+            sudo apt-get install libxkbcommon-x11-0
+            sudo apt-get install libxcb-icccm4
+            sudo apt-get install libxcb-image0
+            sudo apt-get install libxcb-keysyms1
+            sudo apt-get install libxcb-randr0
+            sudo apt-get install libxcb-render-util0
+            sudo apt-get install libxcb-xinerama0
+
+      - name: Install Linux packages for Qt5 support
+        if: matrix.os == 'ubuntu-22.04'
+        # qt5-default has been removed
+        run: |
+            sudo apt-get update
+            sudo apt-get install libxcb-xinerama0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies and local packages
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+            python3 -m pip install pyqt5
+            python3 -m pip install numpy
+            python3 -m pip install vtk
+            python3 -m pip install pillow
+
+      - name: Install dependencies and local packages, until Kitware releases official VTK wheels for Python 3.10
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+            python3 -m pip install numpy
+            python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+            python3 -m pip install pillow
+
+      - name: Install pip deps
+        run: python3 -m pip install -r requirements.txt
 
       - name: Run tests
         working-directory: .
