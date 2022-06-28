@@ -38,9 +38,9 @@ jobs:
                   tigervnc-standalone-server \
                   x11-utils \
                   gnumeric \
-                  && apt-get clean -y
+                  && sudo apt-get clean -y
 
-      - name: Mayavi Qt platform plugin xcb for mayavi on Ubuntu 20.04
+      - name: Qt platform plugin xcb for mayavi on Ubuntu 20.04
         if: matrix.os == 'ubuntu-20.04'
         run: |
               sudo apt-get update -y && sudo apt-get install -y \
@@ -49,18 +49,7 @@ jobs:
                   tigervnc-standalone-server \
                   x11-utils \
                   gnumeric \
-                  && apt-get clean -y
-
-      - name: Mayavi Qt platform plugin xcb for mayavi on Ubuntu 20.04
-        if: matrix.os == 'ubuntu-20.04'
-        run: |
-              sudo apt-get update -y && sudo apt-get install -y \
-                  xvfb \
-                  xserver-xephyr \
-                  tigervnc-standalone-server \
-                  x11-utils \
-                  gnumeric \
-                  && apt-get clean -y
+                  && sudo apt-get clean -y
 
       - name: Install pip deps
         shell: bash -l {0}
