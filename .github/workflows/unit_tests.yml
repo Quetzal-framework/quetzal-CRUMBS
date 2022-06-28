@@ -56,12 +56,6 @@ jobs:
         # qt5-default has been removed
         run: |
             sudo apt-get update
-            sudo apt-get install libxkbcommon-x11-0
-            sudo apt-get install libxcb-icccm4
-            sudo apt-get install libxcb-image0
-            sudo apt-get install libxcb-keysyms1
-            sudo apt-get install libxcb-randr0
-            sudo apt-get install libxcb-render-util0
             sudo apt-get install libxcb-xinerama0
 
       - name: Set up Python ${{ matrix.python-version }}
