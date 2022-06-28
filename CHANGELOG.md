@@ -178,3 +178,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Sphinx documentation deployed on gh-pages
 - CLI integration tests for entrypoints
+
+
+## [1.0.18] - 2022-06-28
+
+### Refactored
+
+- GIS modules and subpackages structure
+
+### Added
+
+- CLI and entrypoints for GIS
