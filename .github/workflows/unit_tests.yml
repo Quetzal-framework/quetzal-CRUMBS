@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Mayavi: install all dependencies and backends on Ubuntu 20.04:
+      - name: Mayavi install all dependencies and backends on Ubuntu 20.04
         if: matrix.os == 'ubuntu-20.04'
         run: |
               sudo apt-get update -y && sudo apt-get install -y \
@@ -37,7 +37,7 @@ jobs:
                   gnumeric \
                   && apt-get clean -y
 
-      - name: Mayavi: Qt platform plugin xcb for mayavi on Ubuntu 20.04
+      - name: Mayavi Qt platform plugin xcb for mayavi on Ubuntu 20.04
         if: matrix.os == 'ubuntu-20.04'
         run: |
               sudo apt-get update -y && sudo apt-get install -y \
