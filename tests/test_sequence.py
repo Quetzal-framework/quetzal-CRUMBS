@@ -10,14 +10,14 @@ class TestSequence():
     def test_new(self):
         from crumbs import sequence
         s = sequence.Sequence(">HEADER","--ACGT")
-        self.assertEqual(s.header,"HEADER")
-        self.assertEqual(s.sequence,"--ACGT")
+        assert(s.header == "HEADER")
+        assert(s.sequence == "--ACGT")
 
     def test_parse(self):
         from crumbs import sequence
         generator = sequence.fasta_parse("tests/data/sequences.fasta")
         sequences = list(generator)
-        self.assertEqual(sequences[0].header, "QWER1")
-        self.assertEqual(sequences[0].sequence, "GGCAGATTCCCCCTA")
-        self.assertEqual(sequences[1].header, "AZER2")
-        self.assertEqual(sequences[1].sequence, "---CTGCACTCACCG")
+        assert(sequences[0].header == "QWER1")
+        assert(sequences[0].sequence == "GGCAGATTCCCCCTA")
+        assert(sequences[1].header == "AZER2")
+        assert(sequences[1].sequence == "---CTGCACTCACCG")
