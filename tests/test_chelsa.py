@@ -48,7 +48,7 @@ def test_get_chelsa_with_no_input_file(tmp_path):
             )
 
 @pytest.mark.slow
-def test_get_chelsa_with_time_range():
+def test_get_chelsa_with_time_range(tmp_path):
 
     d1 = tmp_path / 'chelsa-world'
     d1.mkdir()
