@@ -15,14 +15,14 @@ class TestGetSimulation():
     def teardown_class(cls):
         from pathlib import Path
         Path("sim_test.phyl").unlink()
-        
+
     def test_database_IDS(self):
         # Open the file:
         success_rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
-        self.assertEqual(success_rowids, list(range(1,31)))
+        assert(success_rowids == list(range(1,31)))
 
         failed_rowids = get_failed_simulations_rowids.get_failed_simulations_rowids("tests/data/database_failed_newicks.db", "quetzal_EGG_1")
-        self.assertEqual(failed_rowids, list(range(1,31)))
+        assert(failed_rowids == list(range(1,31)))
 
     def test_simulate_phylip(self):
         rowids = get_successful_simulations_rowids.get_successful_simulations_rowids("tests/data/database_with_newicks.db", "quetzal_EGG_1")
@@ -36,4 +36,4 @@ class TestGetSimulation():
         b = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], True)
         c = retrieve_parameters.retrieve_parameters("tests/data/database_with_newicks.db", "quetzal_EGG_1", rowids[0], False)
 
-        self.assertEqual(a,b)
+        assert(a == b)

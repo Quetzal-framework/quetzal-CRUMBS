@@ -27,7 +27,7 @@ def alphanum_key(s):
     """ Turn a string into a list of string and number chunks.
         "z23a" -> ["z", 23, "a"]
     """
-    return [ tryfloat(c) for c in re.split('_(-*\d+)_' , s) ]
+    return [ tryfloat(c) for c in re.split(r'_(-*\d+)_' , s) ]
 
 def sort_nicely(l):
     """ Sort the given list in the way that humans expect.

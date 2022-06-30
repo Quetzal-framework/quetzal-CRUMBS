@@ -37,7 +37,7 @@ class TestSDM():
 
         request(scientific_name='Heteronotia binoei',
                              points=self.sampling_points,
-                             margin=1.0,
+                             buffer=1.0,
                              all=False,
                              limit=50,
                              year='1950,2022',
