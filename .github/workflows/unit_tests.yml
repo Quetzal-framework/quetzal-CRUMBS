@@ -41,9 +41,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install GDAL
-        if: ${{ (matrix.os == 'ubuntu-20.04') || (matrix.os == 'ubuntu-22.04') }}
+        if: matrix.os == 'ubuntu-20.04'
         run: |
             sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+            sudo apt-get install gdal-bin
+            # sudo apt-get install libgdal-dev
+            python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+
+      - name: Install GDAL
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
             sudo apt-get install gdal-bin
             # sudo apt-get install libgdal-dev
             python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
