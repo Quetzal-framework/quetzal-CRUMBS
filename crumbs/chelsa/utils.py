@@ -97,7 +97,7 @@ def download(url, output_dir):
     """
     print(url)
     #  Retrievethe filename from the URL so we have a local file to write to
-    filename = output_dir + "/" + get_filename(url)
+    filename = output_dir / get_filename(url)
     path = Path(filename)
     if path.is_file():
         resume_byte = path.stat().st_size

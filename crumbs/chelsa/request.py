@@ -50,7 +50,7 @@ def request(
 
     clip_files = []
     for url in urls:
-        clip_file = landscape_dir + "/" + get_filename(url)
+        clip_file = landscape_dir / get_filename(url)
         clip_files.append(clip_file)
         if not exists(clip_file): download_and_clip(url, world_dir, bounding_box, clip_file, cleanup)
 

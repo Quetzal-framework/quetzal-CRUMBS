@@ -4,61 +4,67 @@ import pytest
 from . context import crumbs
 from crumbs.chelsa.request import request
 
-from pathlib import Path
-import glob
+@pytest.mark.slow
+def test_get_chelsa_with_input_file(tmp_path):
 
-class TestGetChelsa():
+    d1 = tmp_path / 'chelsa-world'
+    d1.mkdir()
 
-    def setup_method(self, test_method):
-        pass
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
 
-    @pytest.fixture
-    def output_filename():
-        # before test - create resource
-        output_filename = "chelsa-stacked"
-        file_path = pathlib.Path(output_filename)
-        yield file_path
-        # after test - Remove all chelsa stacked files generated
-        for p in Path(".").glob( output_filename + "*.*"):
-            p.unlink()
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
 
-    @pytest.fixture
-    def world_file_dir():
-        # before test - create resource
-        world_file_dir = "chelsa-world"
-        file_path = pathlib.Path(world_file_dir)
-        yield file_path
-        # Remove all chelsa world files generated
-        for p in Path(world_file_dir).glob("*.tif"):
-            p.unlink()
+    geotiff = d3 / "stacked.tif"
 
-        Path(world_file_dir).rmdir()
+    request(inputFile = "tests/data/chelsa_url_test.txt",
+            points = "tests/data/test_points/test_points.shp",
+            world_dir=d1,
+            landscape_dir=d2,
+            geotiff=geotiff
+            )
 
-    @pytest.fixture
-    def cropped_file_dir():
-        # before test - create resource
-        cropped_file_dir = "chelsa-cropped"
-        file_path = pathlib.Path(cropped_file_dir)
-        yield file_path
-        # Remove all chelsa cropped files generated
-        for p in Path(cropped_file_dir).glob("*.tif"):
-            p.unlink()
+@pytest.mark.slow
+def test_get_chelsa_with_no_input_file(tmp_path):
 
-        Path(cropped_file_dir).rmdir()
+    d1 = tmp_path / 'chelsa-world'
+    d1.mkdir()
 
-    @pytest.mark.slow
-    def test_get_chelsa_with_input_file(self, output_filename):
-        request(inputFile = "tests/data/chelsa_url_test.txt",
-                              points = "tests/data/test_points/test_points.shp")
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
 
-    @pytest.mark.slow
-    def test_get_chelsa_with_no_input_file(self, world_file_dir):
-        request(points = "tests/data/test_points/test_points.shp",
-                              variables = ['dem'],
-                              timesID = [20])
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
 
-    @pytest.mark.slow
-    def test_get_chelsa_with_time_range(self, cropped_file_dir):
-        request(points = "tests/data/test_points/test_points.shp",
-                              variables = ['bio01'],
-                              timesID = [0, -1])
+    geotiff = d3 / "stacked.tif"
+
+    request(points = "tests/data/test_points/test_points.shp",
+            variables = ['dem'],
+            timesID = [20],
+            world_dir=d1,
+            landscape_dir=d2,
+            geotiff=geotiff
+            )
+
+@pytest.mark.slow
+def test_get_chelsa_with_time_range():
+
+    d1 = tmp_path / 'chelsa-world'
+    d1.mkdir()
+
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
+
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
+
+    geotiff = d3 / "stacked.tif"
+
+    request(points = "tests/data/test_points/test_points.shp",
+            variables = ['bio01'],
+            timesID = [0, -1],
+            world_dir=d1,
+            landscape_dir=d2,
+            geotiff=geotiff
+            )
