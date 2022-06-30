@@ -50,21 +50,21 @@ jobs:
 
       - name: Install Linux packages for Qt5 support
         if: matrix.os == 'ubuntu-20.04'
-          run: |
-              sudo apt-get update
-              sudo apt-get install qt5-default
-              sudo apt-get install libxkbcommon-x11-0
-              sudo apt-get install libxcb-icccm4
-              sudo apt-get install libxcb-image0
-              sudo apt-get install libxcb-keysyms1
-              sudo apt-get install libxcb-randr0
-              sudo apt-get install libxcb-render-util0
-              sudo apt-get install libxcb-xinerama0
+        run: |
+            sudo apt-get update
+            sudo apt-get install qt5-default
+            sudo apt-get install libxkbcommon-x11-0
+            sudo apt-get install libxcb-icccm4
+            sudo apt-get install libxcb-image0
+            sudo apt-get install libxcb-keysyms1
+            sudo apt-get install libxcb-randr0
+            sudo apt-get install libxcb-render-util0
+            sudo apt-get install libxcb-xinerama0
         if: matrix.os == 'ubuntu-22.04'
-          # qt5-default has been removed
-          run: |
-              sudo apt-get update
-              sudo apt-get install libxcb-xinerama0
+        # qt5-default has been removed
+        run: |
+            sudo apt-get update
+            sudo apt-get install libxcb-xinerama0
 
 
       - name: Set up Python ${{ matrix.python-version }}
