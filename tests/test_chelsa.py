@@ -7,9 +7,6 @@ from crumbs.chelsa.request import request
 @pytest.mark.slow
 def test_get_chelsa_with_input_file(tmp_path):
 
-    d1 = tmp_path / 'chelsa-world'
-    d1.mkdir()
-
     d2 = tmp_path / "chelsa-landscape"
     d2.mkdir()
 
@@ -20,16 +17,12 @@ def test_get_chelsa_with_input_file(tmp_path):
 
     request(inputFile = "data/chelsa_url_test.txt",
             points = "data/test_points/test_points.shp",
-            world_dir=d1,
             landscape_dir=d2,
             geotiff=geotiff
             )
 
 @pytest.mark.slow
 def test_get_chelsa_with_no_input_file(tmp_path):
-
-    d1 = tmp_path / 'chelsa-world'
-    d1.mkdir()
 
     d2 = tmp_path / "chelsa-landscape"
     d2.mkdir()
@@ -39,19 +32,15 @@ def test_get_chelsa_with_no_input_file(tmp_path):
 
     geotiff = d3 / "stacked.tif"
 
-    request(points = "data/test_points/test_points.shp",
-            variables = ['dem'],
-            timesID = [20],
-            world_dir=d1,
-            landscape_dir=d2,
-            geotiff=geotiff
-            )
+    landscapes = request(points = "data/test_points/test_points.shp",
+                        variables = ['dem','bio01'],
+                        timesID = [20],
+                        landscape_dir=d2,
+                        geotiff=geotiff
+                        )
 
 @pytest.mark.slow
 def test_get_chelsa_with_time_range(tmp_path):
-
-    d1 = tmp_path / 'chelsa-world'
-    d1.mkdir()
 
     d2 = tmp_path / "chelsa-landscape"
     d2.mkdir()
@@ -64,7 +53,6 @@ def test_get_chelsa_with_time_range(tmp_path):
     request(points = "data/test_points/test_points.shp",
             variables = ['bio01'],
             timesID = [0, -1],
-            world_dir=d1,
             landscape_dir=d2,
             geotiff=geotiff
             )

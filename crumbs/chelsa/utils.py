@@ -17,28 +17,51 @@ from os.path import exists
 import re
 import glob
 
+from typing import List, Set, Tuple, Dict
+
 def tryfloat(s):
     try:
         return float(s)
     except:
         return s
 
+
 def alphanum_key(s):
-    """ Turn a string into a list of string and number chunks.
-        "z23a" -> ["z", 23, "a"]
+    """
+    Turn a string into a list of string and number chunks. "z23a" -> ["z", 23, "a"].
+    Useful for sorting filenames nicely.
     """
     return [ tryfloat(c) for c in re.split(r'_(-*\d+)_' , s) ]
 
+
 def sort_nicely(l):
-    """ Sort the given list in the way that humans expect.
+    """
+    Sort the given list in the way that humans expect.
     """
     l.sort(key=alphanum_key)
     return l
 
+def implemented_variables():
+    """
+    Defines the list of bioclimatic variables accessible from crumbs
+    """
+    return ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
+
+
+def retrieve_variable_names_from(urls):
+    """
+    Identify the name of the bioclimatic variables from the download urls
+    """
+    matched = []
+    for variable in implemented_variables():
+        if any(variable in s for s in urls):
+            matched.append(variable)
+    return matched
 
 def bounds_to_polygon(shapefile, margin):
-    """ Computes a bounding box around points in the shapefile, adding a margin.
-        Returns a spatial polygon.
+    """
+    Computes a bounding box around points in the shapefile, adding a margin.
+    Returns a spatial polygon.
     """
     import fiona
     import numpy as np
@@ -49,9 +72,10 @@ def bounds_to_polygon(shapefile, margin):
         bbox = to_polygon(bot_left_x, bot_left_y, top_right_x, top_right_y, margin)
         return bbox
 
+
 def bounding_box_naive(points):
-    """returns a list containing the bottom left and the top right
-    points in the sequence.
+    """
+    Returns a list containing the bottom left and the top right points in the sequence.
     Here, we use min and max four times over the collection of points.
     """
     bot_left_x = min(point[0] for point in points)
@@ -61,82 +85,99 @@ def bounding_box_naive(points):
 
     return bot_left_x, bot_left_y, top_right_x, top_right_y
 
+
 def to_polygon(long0, lat0, long1, lat1, margin=0.0):
-    """ Convert the given points into a polygon, adding a margin.
+    """
+    Convert the given points into a polygon, adding a margin.
     """
     return Polygon([[long0 - margin , lat0 - margin],
                     [long1 + margin , lat0 - margin],
                     [long1 + margin , lat1 + margin],
                     [long0 - margin , lat1 + margin]])
 
-def clip(inputFile, shape, outputFile):
-    """ Clip the input file by the shape given, saving the output file.
+
+def clip(inputFile: Path, shape, outputFile: Path) -> None:
     """
-    # read source
+    Clip the input file by the shape given, saving the output file.
+    """
     with rasterio.open(inputFile) as source :
         out_image, out_transform = msk.mask(source, [shape], crop=True)
         out_meta = source.meta
-        # udate metadata
+        # update metadata
         out_meta.update({"driver": "GTiff",
                          "height": out_image.shape[1],
                          "width": out_image.shape[2],
-                         "transform": out_transform})
+                         "transform": out_transform
+                        })
 
     with rasterio.open(outputFile, "w", **out_meta) as dest:
         dest.write(out_image)
 
+    return None
+
 
 def resume_download(fileurl, resume_byte_pos):
-    """ Resume the download of the file given its url
+    """
+    Resume the download of the file given its url
     """
     resume_header = {'Range': 'bytes=%d-' % resume_byte_pos}
     return requests.get(fileurl, headers=resume_header, stream=True,  verify=True, allow_redirects=True)
 
-def download(url, output_dir):
-    """ Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LG
-    """
-    print(url)
-    #  Retrievethe filename from the URL so we have a local file to write to
-    filename = output_dir / get_filename(url)
-    path = Path(filename)
-    if path.is_file():
-        resume_byte = path.stat().st_size
-        print("    ... World file exists, resuming download to byte", resume_byte)
-    else:
-        print("    ... World file does not exist, starting download from scratch.")
-        resume_byte = 0.0
+#
+# def download(url: str, output_dir: Path) -> Path:
+#     """
+#     Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LGM
+#     """
+#     #  Retrievethe filename from the URL so we have a local file to write to
+#     filename = output_dir / get_filename(url)
+#
+#     if filename.is_file():
+#
+#         resume_byte = filename.stat().st_size
+#         print("    ... World file exists, resuming download to byte", resume_byte)
+#
+#     else:
+#
+#         print("    ... World file does not exist, starting download from scratch.")
+#         resume_byte = 0.0
+#
+#     try:
+#
+#         with open(filename, 'ab') as file:
+#
+#             response = resume_download(url, resume_byte)
+#
+#             # progress bar
+#             total_size_in_bytes= int(response.headers.get('content-length', 0))
+#             block_size = 1024 #1 Kibibyte
+#             progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
+#
+#             # download progress
+#             for data in response.iter_content(block_size):
+#                 progress_bar.update(len(data))
+#                 file.write(data)
+#
+#             assert total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes
+#
+#             progress_bar.close()
+#
+#     except requests.RequestException as e:
+#         print(e)
+#
+#     return filename
 
-    try:
-        with open(filename, 'ab') as file:
-            response = resume_download(url, resume_byte)
 
-            # progress bar
-            total_size_in_bytes= int(response.headers.get('content-length', 0))
-            block_size = 1024 #1 Kibibyte
-            progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
-
-            # download progress
-            for data in response.iter_content(block_size):
-                progress_bar.update(len(data))
-                file.write(data)
-
-        progress_bar.close()
-
-        if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-            print("ERROR, something went wrong")
-        return filename
-    except requests.RequestException as e:
-        print(e)
-    return
-
-def expand_bio(variables):
+def expand_bio(variables: List[str]) -> List[str]:
     bioset = set(variables) - set(['dem','glz'])
+
     if( len(bioset) > 0 ) :
         if bioset == set(['bio']):
             bioset = set(['bio' + str(i).zfill(2) for i in range(1, 19, 1)])
+
     return list(bioset.union(set(variables)) - set(['bio']))
 
-def generate_urls(variables, timesID):
+
+def generate_urls(variables: List[str], timesID: List[int]) -> List[str]:
     """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
     """
     assert len(variables) > 0 , "Unable to generate URL fom an empty variables list"
@@ -172,69 +213,60 @@ def generate_urls(variables, timesID):
 
     # Post condition: at least one workable URL
     assert len(urls) > 0 , "Unable to generate URL."
+
     return urls
 
-def to_vrt(inputFiles, outputFile='stacked.vrt'):
-    """ Converts the list of input files into an output VRT file, that can be converted to geoTiff
+
+def to_vrt(inputFiles: List[str], outputFile: str) -> str:
     """
+    Converts the list of input files into an output VRT file, that can be converted to geoTiff
+    """
+
     print("    ... Converting bands to VRT file:", outputFile)
-    gdal.BuildVRT(outputFile, inputFiles,
-        separate=True,
-        #callback=gdal.TermProgress_nocb
-        )
+
+    gdal.BuildVRT(outputFile,
+                  inputFiles,
+                  #callback=gdal.TermProgress_nocb,
+                  separate=True
+                  )
+
     vrt_options = gdal.BuildVRTOptions(separate=True,
                                         #callback=gdal.TermProgress_nocb,
                                         resampleAlg='average')
+
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
+
+    # free C resource ...
     my_vrt = None
-    return(outputFile)
 
-def to_geotiff(vrt, outputFile='stacked.tif'):
-    """ Converts the VRT files to a geotiff file
+    return outputFile
+
+
+def to_geotiff(vrt: str, outputFile: str) -> str:
     """
+    Converts the VRT files to a geotiff file
+    """
+    assert vrt is not None
     print('    ... Converting', vrt, 'to GeoTiff file:', outputFile)
-    ds = gdal.Open(vrt)
-    ds = gdal.Translate(outputFile, ds)
+    ds = gdal.Open(str(vrt))
+    ds = gdal.Translate(str(outputFile), ds)
+    # free C resource
     ds = None
+    return outputFile
 
-def create_folders_if_dont_exist(output_dir, clipped_dir):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    if not os.path.exists(clipped_dir):
-        os.makedirs(clipped_dir)
-    return
 
-def read_urls(inputFile):
+def read_urls(inputFile: Path) -> List[str]:
+    """
+    Read the URLs in the Chelsa input file
+    """
     with open(inputFile, 'r') as input:
         urls = input.readlines()
         return [url.strip() for url in urls]
 
+
 def get_filename(url):
-    #  splits the url into a list, starting from the right and get last element
+    """
+    Split the url into a list, starting from the right and get last element
+    """
     filename = url.rsplit('/', 1)[-1].strip()
     return filename
-
-def download_and_clip(url, output_dir, clip_shape, clipped_file, cleanup):
-    import rasterio
-    downloaded = download(url, output_dir)
-    clip(downloaded, clip_shape, clipped_file)
-    if cleanup is True: os.remove(downloaded)
-    return
-
-def remove_chelsa_dir_if_empty(output_dir):
-    if len(os.listdir(output_dir)) == 0:
-        os.rmdir(output_dir)
-    else:
-        import warnings
-        warnings.warn("Directory " + output_dir + " is not empty and will not be deleted.")
-    return
-
-def implemented_variables():
-    return ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
-
-def retrieve_variables(urls):
-    matched = []
-    for variable in implemented_variables():
-        if any(variable in s for s in urls):
-            matched.append(variable)
-    return matched
