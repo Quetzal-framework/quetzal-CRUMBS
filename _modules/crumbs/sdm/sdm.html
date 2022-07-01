@@ -96,7 +96,7 @@
     <span class="n">nb_background_points</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
     <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bio&#39;</span><span class="p">],</span>
     <span class="n">buffer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">cleanup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">outdir</span><span class="p">:</span> <span class="n">Path</span><span class="o">=</span><span class="s1">&#39;SDM/&#39;</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Species Distribution Model constuctor</span>
@@ -107,14 +107,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nb_background_points</span>  <span class="o">=</span> <span class="n">nb_background_points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">variables</span>          <span class="o">=</span> <span class="n">variables</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span>             <span class="o">=</span> <span class="n">buffer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span>            <span class="o">=</span> <span class="n">cleanup</span>
 
         <span class="c1"># File system</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span>          <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;chelsa-world&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span>      <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;chelsa-landscape&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span>         <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-persistence&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span>         <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-imputation&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span>  <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-averaging&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span>      <span class="o">=</span> <span class="n">outdir</span> <span class="o">/</span> <span class="s1">&#39;chelsa-landscape&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span>         <span class="o">=</span> <span class="n">outdir</span> <span class="o">/</span> <span class="s1">&#39;model-persistence&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span>         <span class="o">=</span> <span class="n">outdir</span> <span class="o">/</span> <span class="s1">&#39;model-imputation&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span>  <span class="o">=</span> <span class="n">outdir</span> <span class="o">/</span> <span class="s1">&#39;model-averaging&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">/</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_20_V1.0.tif&#39;</span>
 
         <span class="c1"># We need to download Digital Elevation Model for marine/terrestial filter</span>
@@ -152,8 +150,8 @@
         <span class="kn">import</span> <span class="nn">warnings</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
 
-            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">)</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+            <span class="c1"># warnings.filterwarnings(&quot;ignore&quot;, category=UserWarning)</span>
+            <span class="c1"># warnings.filterwarnings(&quot;ignore&quot;, category=FutureWarning)</span>
 
             <span class="n">class_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_ML_classifiers</span><span class="p">()</span>
 
@@ -248,11 +246,9 @@
             <span class="n">variables</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
             <span class="n">timesID</span>     <span class="o">=</span>   <span class="p">[</span><span class="n">timeID</span><span class="p">],</span>
             <span class="n">points</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">presence_shapefile</span><span class="p">,</span>
-            <span class="n">margin</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
-            <span class="n">world_dir</span>   <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span><span class="p">,</span>
+            <span class="n">buffer</span>      <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
             <span class="n">landscape_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span><span class="p">,</span>
-            <span class="n">geotiff</span>     <span class="o">=</span>   <span class="kc">None</span><span class="p">,</span>
-            <span class="n">cleanup</span>     <span class="o">=</span>   <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span>
+            <span class="n">geotiff</span>     <span class="o">=</span>   <span class="kc">None</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
@@ -488,7 +484,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading training vector&#39;</span><span class="p">)</span>
         <span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">load_training_vector</span><span class="p">(</span><span class="n">presence_absence</span><span class="p">,</span> <span class="n">explanatory_rasters</span><span class="p">,</span> <span class="n">response_field</span><span class="o">=</span><span class="s1">&#39;CLASS&#39;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading explanatory rasters&#39;</span><span class="p">)</span>            
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading explanatory rasters&#39;</span><span class="p">)</span>
         <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span> <span class="o">=</span> <span class="n">load_targets</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">)</span>
 
         <span class="c1"># check shape, does it match the size above of the observations?</span>
