@@ -122,7 +122,7 @@ jobs:
             python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch -s -m slow
 
       - name: Upload coverage to Codecov
-        if:  success() && github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-latest'
+        if:  success() && github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-22.04'
         uses: codecov/codecov-action@v2
         with:
           working-directory: crumbs
