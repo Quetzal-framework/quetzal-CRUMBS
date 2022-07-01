@@ -4,7 +4,7 @@ class Sequence(object):
     """The Sequence object has a string *header* and various representations."""
 
     def __init__(self, header, seq):
-        self.header = re.findall('^>(\S+)', header)[0]
+        self.header = re.findall(r'^>(\S+)', header)[0]
         self.sequence = seq
 
     def __len__(self):

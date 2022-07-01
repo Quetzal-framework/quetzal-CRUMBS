@@ -1,54 +1,58 @@
 # avoid Module not found, see https://gideonbrimleaf.github.io/2021/01/26/relative-imports-python.html
-import unittest
-import sys
+import pytest
 
 from . context import crumbs
-
 from crumbs.chelsa.request import request
 
-class TestGetChelsa(unittest.TestCase):
+@pytest.mark.slow
+def test_get_chelsa_with_input_file(tmp_path):
 
-    output_filename = "chelsa-stacked"
-    world_file_dir = "chelsa-world"
-    cropped_file_dir = "chelsa-cropped"
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
 
-    def SetUp(self):
-        pass
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
 
-    @unittest.skip("Redundant and too slow on circle CI")
-    def test_get_chelsa_with_input_file(self):
-        request(inputFile = "tests/data/chelsa_url_test.txt",
-                              points = "tests/data/test_points/test_points.shp")
+    geotiff = d3 / "stacked.tif"
 
-    @unittest.skip("Redundant and too slow on circle CI")
-    def test_get_chelsa_with_no_input_file(self):
-        request(points = "tests/data/test_points/test_points.shp",
-                              variables = ['dem'],
-                              timesID = [20])
+    request(inputFile = "data/chelsa_url_test.txt",
+            points = "data/test_points/test_points.shp",
+            landscape_dir=d2,
+            geotiff=geotiff
+            )
 
-    @unittest.skip("Redundant and too slow on circle CI")
-    def test_get_chelsa_with_time_range(self):
-        request(points = "tests/data/test_points/test_points.shp",
-                              variables = ['bio01'],
-                              timesID = [0, -1])
+@pytest.mark.slow
+def test_get_chelsa_with_no_input_file(tmp_path):
 
-    def tearDown(self):
-        from pathlib import Path
-        import glob
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
 
-        # Remove all chelsa stacked files generated
-        for p in Path(".").glob( self.output_filename + "*.*"):
-            p.unlink()
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
 
-        # Remove all chelsa world files generated
-        for p in Path(self.world_file_dir).glob("*.tif"):
-            p.unlink()
-        Path(self.world_file_dir).rmdir()
+    geotiff = d3 / "stacked.tif"
 
-        # Remove all chelsa cropped files generated
-        for p in Path(self.cropped_file_dir).glob("*.tif"):
-            p.unlink()
-        Path(self.cropped_file_dir).rmdir()
+    landscapes = request(points = "data/test_points/test_points.shp",
+                        variables = ['dem','bio01'],
+                        timesID = [20],
+                        landscape_dir=d2,
+                        geotiff=geotiff
+                        )
 
-if __name__=="__main__":
-    unittest.main()
+@pytest.mark.slow
+def test_get_chelsa_with_time_range(tmp_path):
+
+    d2 = tmp_path / "chelsa-landscape"
+    d2.mkdir()
+
+    d3 = tmp_path / "chelsa-stacked"
+    d3.mkdir()
+
+    geotiff = d3 / "stacked.tif"
+
+    request(points = "data/test_points/test_points.shp",
+            variables = ['bio01'],
+            timesID = [0, -1],
+            landscape_dir=d2,
+            geotiff=geotiff
+            )
