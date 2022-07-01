@@ -20,7 +20,7 @@ class SDM:
     nb_background_points: float = 30,
     variables = ['bio'],
     buffer: float = 0.0,
-    cleanup: bool = True
+    outdir: Path='SDM/'
     ):
         """
         Species Distribution Model constuctor
@@ -31,14 +31,12 @@ class SDM:
         self.nb_background_points  = nb_background_points
         self.variables          = variables
         self.buffer             = buffer
-        self.cleanup            = cleanup
 
         # File system
-        self.world_dir          = Path('chelsa-world')
-        self.landscape_dir      = Path('chelsa-landscape')
-        self.joblib_dir         = Path('model-persistence')
-        self.impute_dir         = Path('model-imputation')
-        self.model_average_dir  = Path('model-averaging')
+        self.landscape_dir      = outdir / 'chelsa-landscape'
+        self.joblib_dir         = outdir / 'model-persistence'
+        self.impute_dir         = outdir / 'model-imputation'
+        self.model_average_dir  = outdir / 'model-averaging'
         self.present_time_DEM =  self.landscape_dir / 'CHELSA_TraCE21k_dem_20_V1.0.tif'
 
         # We need to download Digital Elevation Model for marine/terrestial filter
@@ -76,8 +74,8 @@ class SDM:
         import warnings
         with warnings.catch_warnings():
 
-            warnings.filterwarnings("ignore", category=UserWarning)
-            warnings.filterwarnings("ignore", category=FutureWarning)
+            # warnings.filterwarnings("ignore", category=UserWarning)
+            # warnings.filterwarnings("ignore", category=FutureWarning)
 
             class_map = self._get_ML_classifiers()
 
@@ -172,11 +170,9 @@ class SDM:
             variables   =   self.variables,
             timesID     =   [timeID],
             points      =   self.presence_shapefile,
-            margin      =   self.buffer,
-            world_dir   =   self.world_dir,
+            buffer      =   self.buffer,
             landscape_dir = self.landscape_dir,
-            geotiff     =   None,
-            cleanup     =   self.cleanup
+            geotiff     =   None
         )
 
         return None
@@ -412,7 +408,7 @@ class SDM:
         print('    ... loading training vector')
         train_xs, train_y = load_training_vector(presence_absence, explanatory_rasters, response_field='CLASS')
 
-        print('    ... loading explanatory rasters')            
+        print('    ... loading explanatory rasters')
         target_xs, raster_info = load_targets(explanatory_rasters)
 
         # check shape, does it match the size above of the observations?
