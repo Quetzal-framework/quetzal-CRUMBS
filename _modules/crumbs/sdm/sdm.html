@@ -78,6 +78,8 @@
 <span class="sd">Module declaring the base class for Species Distribution Modeling.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
 <div class="viewcode-block" id="SDM"><a class="viewcode-back" href="../../../_autosummary/crumbs.sdm.sdm.SDM.html#crumbs.sdm.sdm.SDM">[docs]</a><span class="k">class</span> <span class="nc">SDM</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences</span>
@@ -108,12 +110,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cleanup</span>            <span class="o">=</span> <span class="n">cleanup</span>
 
         <span class="c1"># File system</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span>          <span class="o">=</span> <span class="s1">&#39;chelsa-world&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span>      <span class="o">=</span> <span class="s1">&#39;chelsa-landscape&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span>         <span class="o">=</span> <span class="s1">&#39;model-persistence&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span>         <span class="o">=</span> <span class="s1">&#39;model-imputation&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span>  <span class="o">=</span> <span class="s1">&#39;model-averaging&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_20_V1.0.tif&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">world_dir</span>          <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;chelsa-world&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span>      <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;chelsa-landscape&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span>         <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-persistence&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span>         <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-imputation&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span>  <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;model-averaging&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">present_time_DEM</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">/</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_20_V1.0.tif&#39;</span>
 
         <span class="c1"># We need to download Digital Elevation Model for marine/terrestial filter</span>
         <span class="n">v</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
@@ -172,10 +174,9 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - fitting model&#39;</span><span class="p">)</span>
                 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
 
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - trained model will be saved to&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
-                <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;        - trained model will be saved to&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">/</span> <span class="p">(</span><span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">/</span> <span class="p">(</span><span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -370,7 +371,7 @@
 <span class="sd">        Returns paths to all expplanatory rasters and mask their ocean cells using DEM</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
-        <span class="n">explanatory_rasters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/*_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_*.tif&#39;</span><span class="p">))</span>
+        <span class="n">explanatory_rasters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">/</span> <span class="p">(</span><span class="s1">&#39;*_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span><span class="s1">&#39;_*.tif&#39;</span><span class="p">)</span> <span class="p">)</span> <span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... there are&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">),</span> <span class="s1">&#39;explanatory rasters features&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">explanatory_rasters</span>
 
@@ -384,7 +385,7 @@
         <span class="k">return</span> <span class="n">explanatory_rasters</span>
 
     <span class="k">def</span> <span class="nf">_find_digital_elevation_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;CHELSA_TraCE21k_dem_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_V1.0.tif&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">landscape_dir</span> <span class="o">/</span> <span class="p">(</span><span class="s1">&#39;CHELSA_TraCE21k_dem_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_V1.0.tif&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_load_classifiers_and_impute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeID</span><span class="p">,</span> <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">joblib</span>
@@ -397,13 +398,13 @@
 
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;        - loading persisted classifier&quot;</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
 
-            <span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joblib_dir</span> <span class="o">/</span> <span class="p">(</span><span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;.joblib&#39;</span><span class="p">))</span>
 
-            <span class="n">outdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
+            <span class="n">outdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">impute_dir</span> <span class="o">/</span> <span class="n">model_name</span> <span class="o">/</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span>
 
             <span class="n">pyimpute</span><span class="o">.</span><span class="n">impute</span><span class="p">(</span><span class="n">target_xs</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">raster_info</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="n">outdir</span><span class="p">,</span> <span class="n">linechunk</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">class_prob</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">certainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="n">imputed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outdir</span>  <span class="o">+</span><span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s1">&#39;probability_1.tif&#39;</span><span class="p">)</span>
+            <span class="n">imputed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outdir</span> <span class="o">/</span> <span class="s1">&#39;probability_1.tif&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">imputed_images</span>
 
@@ -420,10 +421,9 @@
 
         <span class="n">averaged</span> <span class="o">=</span> <span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rasters</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">dst_raster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span> <span class="o">+</span> <span class="s1">&#39;/suitability_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tif&#39;</span>
+        <span class="n">dst_raster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_average_dir</span> <span class="o">/</span> <span class="p">(</span><span class="s1">&#39;suitability_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timeID</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.tif&#39;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">imputed_images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">as</span> <span class="n">mask</span><span class="p">:</span>
 
@@ -488,7 +488,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading training vector&#39;</span><span class="p">)</span>
         <span class="n">train_xs</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">load_training_vector</span><span class="p">(</span><span class="n">presence_absence</span><span class="p">,</span> <span class="n">explanatory_rasters</span><span class="p">,</span> <span class="n">response_field</span><span class="o">=</span><span class="s1">&#39;CLASS&#39;</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading explanatory rasters&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ... loading explanatory rasters&#39;</span><span class="p">)</span>            
         <span class="n">target_xs</span><span class="p">,</span> <span class="n">raster_info</span> <span class="o">=</span> <span class="n">load_targets</span><span class="p">(</span><span class="n">explanatory_rasters</span><span class="p">)</span>
 
         <span class="c1"># check shape, does it match the size above of the observations?</span>
