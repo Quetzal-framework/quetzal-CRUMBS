@@ -32,24 +32,23 @@ def test_fit_and_extrapolate(tmp_path):
     from crumbs.gbif.request import request
     import pickle
 
-    sampling_points = "tests/data/test_points/test_points.shp"
+    sampling_points = "data/test_points/test_points.shp"
     occurrences_filename = "occurrences"
 
     request(scientific_name='Heteronotia binoei',
-                         points=self.sampling_points,
+                         points=sampling_points,
                          buffer=1.0,
                          all=False,
                          limit=50,
                          year='1950,2022',
-                         csv_file= self.occurrences_filename + ".csv",
-                         shapefile= self.occurrences_filename + ".shp")
+                         csv_file= occurrences_filename + ".csv",
+                         shapefile= occurrences_filename + ".shp")
 
     my_sdm = SDM(
         scientific_name='Heteronotia binoei',
-        presence_shapefile = self.occurrences_filename + ".shp",
+        presence_shapefile = occurrences_filename + ".shp",
         nb_background_points = 30,
         variables = ['dem','bio01'],
-        chelsa_time_IDs = [20],
         buffer = 1.0
         )
 

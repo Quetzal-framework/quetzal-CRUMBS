@@ -18,8 +18,8 @@ def test_get_chelsa_with_input_file(tmp_path):
 
     geotiff = d3 / "stacked.tif"
 
-    request(inputFile = "tests/data/chelsa_url_test.txt",
-            points = "tests/data/test_points/test_points.shp",
+    request(inputFile = "data/chelsa_url_test.txt",
+            points = "data/test_points/test_points.shp",
             world_dir=d1,
             landscape_dir=d2,
             geotiff=geotiff
@@ -39,7 +39,7 @@ def test_get_chelsa_with_no_input_file(tmp_path):
 
     geotiff = d3 / "stacked.tif"
 
-    request(points = "tests/data/test_points/test_points.shp",
+    request(points = "data/test_points/test_points.shp",
             variables = ['dem'],
             timesID = [20],
             world_dir=d1,
@@ -61,7 +61,7 @@ def test_get_chelsa_with_time_range(tmp_path):
 
     geotiff = d3 / "stacked.tif"
 
-    request(points = "tests/data/test_points/test_points.shp",
+    request(points = "data/test_points/test_points.shp",
             variables = ['bio01'],
             timesID = [0, -1],
             world_dir=d1,

@@ -4,7 +4,7 @@ from . context import crumbs
 from crumbs.gbif.request import request
 
 class TestGetGbif():
-    output_filename = "tests/occurrences"
+    output_filename = "occurrences"
 
     def setup_method(self, test_method):
         pass
@@ -12,7 +12,7 @@ class TestGetGbif():
     def test_request_gbif(self):
 
         request(scientific_name='Heteronotia binoei',
-                             points="tests/data/test_points/test_points.shp",
+                             points="data/test_points/test_points.shp",
                              buffer=1.0,
                              all=False,
                              limit=50,
@@ -21,7 +21,7 @@ class TestGetGbif():
                              shapefile= self.output_filename + ".shp")
 
         request(scientific_name='Heteronotia binoei',
-                             points="tests/data/test_points/test_points.shp",
+                             points="data/test_points/test_points.shp",
                              buffer=1.0,
                              all=False,
                              year='1950,2022',

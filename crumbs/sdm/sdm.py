@@ -2,6 +2,8 @@
 Module declaring the base class for Species Distribution Modeling.
 """
 
+from pathlib import Path
+
 class SDM:
     """
     Species Distribution Model: use presence points (from GBIF) to infer pseudo-absences
@@ -32,12 +34,12 @@ class SDM:
         self.cleanup            = cleanup
 
         # File system
-        self.world_dir          = 'chelsa-world'
-        self.landscape_dir      = 'chelsa-landscape'
-        self.joblib_dir         = 'model-persistence'
-        self.impute_dir         = 'model-imputation'
-        self.model_average_dir  = 'model-averaging'
-        self.present_time_DEM =  self.landscape_dir + '/' + 'CHELSA_TraCE21k_dem_20_V1.0.tif'
+        self.world_dir          = Path('chelsa-world')
+        self.landscape_dir      = Path('chelsa-landscape')
+        self.joblib_dir         = Path('model-persistence')
+        self.impute_dir         = Path('model-imputation')
+        self.model_average_dir  = Path('model-averaging')
+        self.present_time_DEM =  self.landscape_dir / 'CHELSA_TraCE21k_dem_20_V1.0.tif'
 
         # We need to download Digital Elevation Model for marine/terrestial filter
         v = set(self.variables)
@@ -96,10 +98,9 @@ class SDM:
                 print('        - fitting model')
                 model.fit(train_xs, train_y)
 
-                print('        - trained model will be saved to', self.joblib_dir + '/' + model_name + '.joblib')
-                path = Path(self.joblib_dir + '/')
-                path.mkdir(parents=True, exist_ok=True)
-                dump(model, self.joblib_dir + '/' + model_name + '.joblib')
+                print('        - trained model will be saved to', self.joblib_dir / (model_name + '.joblib'))
+                self.joblib_dir.mkdir(parents=True, exist_ok=True)
+                dump(model, self.joblib_dir / (model_name + '.joblib'))
 
         return None
 
@@ -294,7 +295,7 @@ class SDM:
         Returns paths to all expplanatory rasters and mask their ocean cells using DEM
         """
         from glob import glob
-        explanatory_rasters = sorted(glob(self.landscape_dir + '/*_' + str(timeID) +'_*.tif'))
+        explanatory_rasters = sorted(glob(str(self.landscape_dir / ('*_' + str(timeID) +'_*.tif') ) ))
         print('    ... there are', len(explanatory_rasters), 'explanatory rasters features')
         return explanatory_rasters
 
@@ -308,7 +309,7 @@ class SDM:
         return explanatory_rasters
 
     def _find_digital_elevation_raster(self, timeID):
-        return self.landscape_dir + '/' + 'CHELSA_TraCE21k_dem_' + str(timeID) + '_V1.0.tif'
+        return self.landscape_dir / ('CHELSA_TraCE21k_dem_' + str(timeID) + '_V1.0.tif')
 
     def _load_classifiers_and_impute(self, timeID, target_xs, raster_info):
         import joblib
@@ -321,13 +322,13 @@ class SDM:
 
             print("        - loading persisted classifier", model_name)
 
-            model = joblib.load(self.joblib_dir + '/' + model_name + '.joblib')
+            model = joblib.load(self.joblib_dir / (model_name + '.joblib'))
 
-            outdir = self.impute_dir + '/' + model_name + '/' + str(timeID)
+            outdir = self.impute_dir / model_name / str(timeID)
 
             pyimpute.impute(target_xs, model, raster_info, outdir=outdir, linechunk=400, class_prob=True, certainty=True)
 
-            imputed_images.append(outdir  +'/' + 'probability_1.tif')
+            imputed_images.append(outdir / 'probability_1.tif')
 
         return imputed_images
 
@@ -344,10 +345,9 @@ class SDM:
 
         averaged = ma.array(rasters).mean(axis=0)
 
-        path = Path(self.model_average_dir + '/')
-        path.mkdir(parents=True, exist_ok=True)
+        self.model_average_dir.mkdir(parents=True, exist_ok=True)
 
-        dst_raster = self.model_average_dir + '/suitability_' + str(timeID) + '.tif'
+        dst_raster = self.model_average_dir / ('suitability_' + str(timeID) + '.tif')
 
         with rasterio.open(imputed_images[0]) as mask:
 
@@ -412,7 +412,7 @@ class SDM:
         print('    ... loading training vector')
         train_xs, train_y = load_training_vector(presence_absence, explanatory_rasters, response_field='CLASS')
 
-        print('    ... loading explanatory rasters')
+        print('    ... loading explanatory rasters')            
         target_xs, raster_info = load_targets(explanatory_rasters)
 
         # check shape, does it match the size above of the observations?

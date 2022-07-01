@@ -15,7 +15,7 @@ class TestSequence():
 
     def test_parse(self):
         from crumbs import sequence
-        generator = sequence.fasta_parse("tests/data/sequences.fasta")
+        generator = sequence.fasta_parse("data/sequences.fasta")
         sequences = list(generator)
         assert(sequences[0].header == "QWER1")
         assert(sequences[0].sequence == "GGCAGATTCCCCCTA")
