@@ -41,13 +41,10 @@ Then install quetzal-crumbs in a virtual environment:
     python3 -m pip install quetzal-crumbs
 
 
-Ubuntu
+Ubuntu 20.04 LTS (Focal Fossa)
 **********
 
 Things get a bit trickier with Linux distributions |:see_no_evil:|
-
-Ubuntu 20.04 LTS (Focal Fossa)
-===========
 
 Install GDAL:
 
@@ -91,7 +88,7 @@ And finally install quetzal-crumbs (in your virtual environment)
 
 
 Ubuntu 22.04 LTS (Jammy Jellyfish)
-===========
+**********
 
 Install GDAL:
 
