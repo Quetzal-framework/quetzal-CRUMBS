@@ -117,7 +117,9 @@ Then (in a virtual environment) install python packages for Mayavi support:
     python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
     python3 -m pip install pillow
 
-|:bulb:| Until Kitware releases official VTK wheels for Python 3.10, we will need this weird dependency...
+.. note::
+
+    |:bulb:| Until Kitware releases official VTK wheels for Python 3.10, we will need this weird dependency...
 
 And finally install CRUMBS (in a virtual environment)
 
