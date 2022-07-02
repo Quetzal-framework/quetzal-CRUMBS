@@ -34,7 +34,7 @@ First install GDAL:
 
     brew install gdal
 
-Then install the Python package:
+Then install quetzal-crumbs in a virtual environment:
 
 .. code-block:: bash
 
@@ -83,7 +83,7 @@ Then (in your virtual environment) install python packages for Mayavi support:
     python3 -m pip install vtk
     python3 -m pip install pillow
 
-And finally install CRUMBS (in your virtual environment)
+And finally install quetzal-crumbs (in your virtual environment)
 
 .. code-block:: bash
 
@@ -109,7 +109,7 @@ Then install Linux packages for Qt5 support:
     sudo apt-get update
     sudo apt-get install libxcb-xinerama0
 
-Then (in your virtual environment) install python packages for Mayavi support:
+Then (in a virtual environment) install python packages for Mayavi support:
 
 .. code-block:: bash
 
@@ -119,7 +119,7 @@ Then (in your virtual environment) install python packages for Mayavi support:
 
 |:bulb:| Until Kitware releases official VTK wheels for Python 3.10, we will need this weird dependency...
 
-And finally install CRUMBS (in your virtual environment)
+And finally install CRUMBS (in a virtual environment)
 
 .. code-block:: bash
 
