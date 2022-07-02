@@ -1,5 +1,5 @@
-Install the CRUMBS and their dependencies
-==========================================
+Install Quetzal-crumbs on your local system
+######################
 
 iDDC modeling is quite a complex workflow and geospatial manipulations,
 C++ simulations and visualization require some system dependencies.
@@ -26,7 +26,7 @@ been tested with
     but if you have any problem, again `see you on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_!
 
 macOS
-------
+**********
 
 First install GDAL:
 
@@ -42,12 +42,12 @@ Then install the Python package:
 
 
 Ubuntu
-------
+**********
 
 Things get a bit trickier with Linux distributions |:see_no_evil:|
 
 Ubuntu 20.04 LTS (Focal Fossa)
-^^^^^^^^^^^^
+===========
 
 Install GDAL:
 
@@ -91,7 +91,7 @@ And finally install CRUMBS (in your virtual environment)
 
 
 Ubuntu 22.04 LTS (Jammy Jellyfish)
-^^^^^^^^^^^^^^^
+===========
 
 Install GDAL:
 
