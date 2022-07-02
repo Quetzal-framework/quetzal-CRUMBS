@@ -25,7 +25,7 @@ been tested with
     |:ambulance:| I tried my best to come with a repeatable local installation procedure,
     but if you have any problem, again `see you on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_!
 
-macOS
+macOS 12 Monterey
 **********
 
 First install GDAL:
