@@ -5,6 +5,7 @@
    :hidden:
 
    Welcome <self>
+   0. Installation on local systems <0-installation>
    1. Enter the Quetzal-NEST <1-nest>
    2. Get GBIF presence records <2-gbif>
    3. Get CHELSA climate data <3-chelsa>
