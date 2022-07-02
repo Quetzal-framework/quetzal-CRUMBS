@@ -21,6 +21,7 @@ jobs:
     - run: |
         cd docs
         pip install -r requirements.txt
+        pip install sphinxemoji
         make html
     - name: Commit documentation changes
       run: |
