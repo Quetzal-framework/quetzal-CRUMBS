@@ -15,14 +15,18 @@ been tested with
 * Ubuntu 22.04 LTS
 * for Python 3.6 to 3.10.
 
-|:bulb:| If you are outside of this configuration, you may have some problems,
-but `ask me on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_ if we can find a fix!
+.. note::
 
-|:ambulance:| I tried my best to come with a repeatable local installation procedure,
-but if you have any problem, again `see you on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_!
+    |:bulb:| If you are outside of this configuration, you may have some problems,
+    but `ask me on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_ if we can find a fix!
+
+.. note::
+
+    |:ambulance:| I tried my best to come with a repeatable local installation procedure,
+    but if you have any problem, again `see you on Github <https://github.com/Becheler/quetzal-CRUMBS/issues>`_!
 
 macOS
----
+------
 
 First install GDAL:
 
@@ -38,12 +42,12 @@ Then install the Python package:
 
 
 Ubuntu
----
+------
 
 Things get a bit trickier with Linux distributions |:see_no_evil:|
 
 Ubuntu 20.04 LTS (Focal Fossa)
-^^^
+^^^^^^^^^^^^
 
 Install GDAL:
 
@@ -87,7 +91,7 @@ And finally install CRUMBS (in your virtual environment)
 
 
 Ubuntu 22.04 LTS (Jammy Jellyfish)
-^^^
+^^^^^^^^^^^^^^^
 
 Install GDAL:
 
