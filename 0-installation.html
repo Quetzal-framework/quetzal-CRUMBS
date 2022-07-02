@@ -115,83 +115,76 @@ been tested with</p>
 <li><p>for Python 3.6 to 3.10.</p></li>
 </ul>
 <p>💡 If you are outside of this configuration, you may have some problems,
-but [ask me on Github](<a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">https://github.com/Becheler/quetzal-CRUMBS/issues</a>) if we can find a fix!</p>
+but <a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">ask me on Github</a> if we can find a fix!</p>
 <p>🚑 I tried my best to come with a repeatable local installation procedure,
-but if you have any problem, again [see you on Github](<a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">https://github.com/Becheler/quetzal-CRUMBS/issues</a>)!</p>
+but if you have any problem, again <a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">see you on Github</a>!</p>
 <p>macOS
 —</p>
 <p>First install GDAL:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">brew</span> <span class="pre">install</span> <span class="pre">gdal</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install gdal
+</pre></div>
+</div>
 <p>Then install the Python package:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quetzal-crumbs</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
+</pre></div>
+</div>
 <p>Ubuntu
 —</p>
-<p>Things get a bit trickier with Linux distributions :see_no_evil:</p>
+<p>Things get a bit trickier with Linux distributions 🙈</p>
 <p>Ubuntu 20.04 LTS (Focal Fossa)
 ^^^</p>
 <p>Install GDAL:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span>
-<span class="pre">sudo</span> <span class="pre">add-apt-repository</span> <span class="pre">ppa:ubuntugis/ppa</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gdal-bin</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libgdal-dev</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--global-option=build_ext</span> <span class="pre">--global-option=&quot;-I/usr/include/gdal&quot;</span> <span class="pre">GDAL==`gdal-config</span> <span class="pre">--version`</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
+sudo add-apt-repository ppa:ubuntugis/ppa <span class="o">&amp;&amp;</span> sudo apt-get update
+sudo apt-get install gdal-bin
+sudo apt-get install libgdal-dev
+python3 -m pip install --global-option<span class="o">=</span>build_ext --global-option<span class="o">=</span><span class="s2">&quot;-I/usr/include/gdal&quot;</span> <span class="nv">GDAL</span><span class="o">==</span><span class="sb">`</span>gdal-config --version<span class="sb">`</span>
+</pre></div>
+</div>
 <p>Then install Linux packages for Qt5 support:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">qt5-default</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxkbcommon-x11-0</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-icccm4</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-image0</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-keysyms1</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-randr0</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-render-util0</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-xinerama0</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get install qt5-default
+sudo apt-get install libxkbcommon-x11-0
+sudo apt-get install libxcb-icccm4
+sudo apt-get install libxcb-image0
+sudo apt-get install libxcb-keysyms1
+sudo apt-get install libxcb-randr0
+sudo apt-get install libxcb-render-util0
+sudo apt-get install libxcb-xinerama0
+</pre></div>
+</div>
 <p>Then (in your virtual environment) install python packages for Mayavi support:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pyqt5</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">vtk</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pillow</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install pyqt5
+python3 -m pip install numpy
+python3 -m pip install vtk
+python3 -m pip install pillow
+</pre></div>
+</div>
 <p>And finally install CRUMBS (in your virtual environment)</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quetzal-crumbs</span>
-<span class="pre">`</span></code></p>
 <p>Ubuntu 22.04 LTS (Jammy Jellyfish)
 ^^^</p>
 <p>Install GDAL:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">gdal-bin</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libgdal-dev</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--global-option=build_ext</span> <span class="pre">--global-option=&quot;-I/usr/include/gdal&quot;</span> <span class="pre">GDAL==`gdal-config</span> <span class="pre">--version`</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
+sudo apt-get install gdal-bin
+sudo apt-get install libgdal-dev
+python3 -m pip install --global-option<span class="o">=</span>build_ext --global-option<span class="o">=</span><span class="s2">&quot;-I/usr/include/gdal&quot;</span> <span class="nv">GDAL</span><span class="o">==</span><span class="sb">`</span>gdal-config --version<span class="sb">`</span>
+</pre></div>
+</div>
 <p>Then install Linux packages for Qt5 support:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span>
-<span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libxcb-xinerama0</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
+sudo apt-get install libxcb-xinerama0
+</pre></div>
+</div>
 <p>Then (in your virtual environment) install python packages for Mayavi support:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pillow</span>
-<span class="pre">`</span></code></p>
-<dl class="field-list simple">
-<dt class="field-odd">bulb</dt>
-<dd class="field-odd"><p>Until Kitware releases official VTK wheels for Python 3.10, we will need this weird dependency…</p>
-</dd>
-</dl>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install numpy
+python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+python3 -m pip install pillow
+</pre></div>
+</div>
+<p>💡 Until Kitware releases official VTK wheels for Python 3.10, we will need this weird dependency…</p>
 <p>And finally install CRUMBS (in your virtual environment)</p>
-<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
-<span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">quetzal-crumbs</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
+</pre></div>
+</div>
 </section>
 
 
