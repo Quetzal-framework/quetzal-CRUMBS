@@ -8,8 +8,11 @@ Using Docker containers allows to simplify this a lot (see next section), especi
 if you want to deploy the framework on clusters.
 
 If you want/need a local installation, you can try the following steps, that have
-been tested with macOS 12 Monterey, Ubuntu 20.04 LTS, Ubuntu 22.04 LTS for Python
-3.6 to 3.10.
+been tested with
+- macOS 12 Monterey
+- Ubuntu 20.04 LTS
+- Ubuntu 22.04 LTS
+- for Python 3.6 to 3.10.
 
 :bulb: If you are outside of this configuration, you may have some problems,
 but [ask me on Github](https://github.com/Becheler/quetzal-CRUMBS/issues) if we can find a fix!
