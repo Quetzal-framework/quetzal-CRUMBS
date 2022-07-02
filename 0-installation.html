@@ -43,7 +43,15 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Welcome</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">0. Installation on local systems</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">0. Installation on local systems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ubuntu">Ubuntu</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ubuntu-20-04-lts-focal-fossa">Ubuntu 20.04 LTS (Focal Fossa)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ubuntu-22-04-lts-jammy-jellyfish">Ubuntu 22.04 LTS (Jammy Jellyfish)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="1-nest.html">1. Enter the Quetzal-NEST</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2-gbif.html">2. Get GBIF presence records</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3-chelsa.html">3. Get CHELSA climate data</a></li>
@@ -114,12 +122,18 @@ been tested with</p>
 <li><p>Ubuntu 22.04 LTS</p></li>
 <li><p>for Python 3.6 to 3.10.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>💡 If you are outside of this configuration, you may have some problems,
 but <a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">ask me on Github</a> if we can find a fix!</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>🚑 I tried my best to come with a repeatable local installation procedure,
 but if you have any problem, again <a class="reference external" href="https://github.com/Becheler/quetzal-CRUMBS/issues">see you on Github</a>!</p>
-<p>macOS
-—</p>
+</div>
+<section id="macos">
+<h2>macOS<a class="headerlink" href="#macos" title="Permalink to this heading">¶</a></h2>
 <p>First install GDAL:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install gdal
 </pre></div>
@@ -128,11 +142,12 @@ but if you have any problem, again <a class="reference external" href="https://g
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
 </pre></div>
 </div>
-<p>Ubuntu
-—</p>
+</section>
+<section id="ubuntu">
+<h2>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this heading">¶</a></h2>
 <p>Things get a bit trickier with Linux distributions 🙈</p>
-<p>Ubuntu 20.04 LTS (Focal Fossa)
-^^^</p>
+<section id="ubuntu-20-04-lts-focal-fossa">
+<h3>Ubuntu 20.04 LTS (Focal Fossa)<a class="headerlink" href="#ubuntu-20-04-lts-focal-fossa" title="Permalink to this heading">¶</a></h3>
 <p>Install GDAL:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
 sudo add-apt-repository ppa:ubuntugis/ppa <span class="o">&amp;&amp;</span> sudo apt-get update
@@ -160,8 +175,9 @@ python3 -m pip install pillow
 </pre></div>
 </div>
 <p>And finally install CRUMBS (in your virtual environment)</p>
-<p>Ubuntu 22.04 LTS (Jammy Jellyfish)
-^^^</p>
+</section>
+<section id="ubuntu-22-04-lts-jammy-jellyfish">
+<h3>Ubuntu 22.04 LTS (Jammy Jellyfish)<a class="headerlink" href="#ubuntu-22-04-lts-jammy-jellyfish" title="Permalink to this heading">¶</a></h3>
 <p>Install GDAL:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
 sudo apt-get install gdal-bin
@@ -185,6 +201,8 @@ python3 -m pip install pillow
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
 </pre></div>
 </div>
+</section>
+</section>
 </section>
 
 
