@@ -14,10 +14,10 @@ been tested with
 - Ubuntu 22.04 LTS
 - for Python 3.6 to 3.10.
 
-:bulb: If you are outside of this configuration, you may have some problems,
+|:bulb:| If you are outside of this configuration, you may have some problems,
 but [ask me on Github](https://github.com/Becheler/quetzal-CRUMBS/issues) if we can find a fix!
 
-:ambulance: I tried my best to come with a repeatable local installation procedure,
+|:ambulance:| I tried my best to come with a repeatable local installation procedure,
 but if you have any problem, again [see you on Github](https://github.com/Becheler/quetzal-CRUMBS/issues)!
 
 macOS
