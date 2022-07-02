@@ -86,8 +86,8 @@ Then (in your virtual environment) install python packages for Mayavi support:
 And finally install CRUMBS (in your virtual environment)
 
 .. code-block:: bash
-    python3 -m pip install quetzal-crumbs
 
+    python3 -m pip install quetzal-crumbs
 
 
 Ubuntu 22.04 LTS (Jammy Jellyfish)
