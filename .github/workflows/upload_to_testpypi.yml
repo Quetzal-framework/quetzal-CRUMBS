@@ -24,13 +24,16 @@ jobs:
       # Installs and upgrades pip, installs other dependencies and installs the package from setup.py
       - name: "Installs and upgrades pip, installs other dependencies and installs the package from setup.py"
         run: |
-          brew install gdal
           # Upgrade pip
           python3 -m pip install --upgrade pip
           # Install build deps
           python3 -m pip install setuptools wheel twine
           # If requirements.txt exists, install from it
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Install gdal
+          brew install gdal
+          # Python bindings
+          python3 -m pip install gdal
           # Install the package from setup.py
           python3 -m pip install -e .[tests,dev]
 
@@ -40,7 +43,7 @@ jobs:
           cd tests
           ./integration.sh
           cd ..
-          
+
       # Upload to TestPyPI
       - name: Build and Upload to TestPyPI
         if: success()
