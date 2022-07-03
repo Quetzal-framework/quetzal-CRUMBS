@@ -32,13 +32,15 @@ jobs:
           # If requirements.txt exists, install from it
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           # Install the package from setup.py
-          python3 setup.py install
+          python3 -m pip install -e .[tests,dev]
 
       # Tests CLI
       - name: Test CLI
         run: |
-          ./tests/integration.sh
-
+          cd tests
+          ./integration.sh
+          cd ..
+          
       # Upload to TestPyPI
       - name: Build and Upload to TestPyPI
         if: success()
