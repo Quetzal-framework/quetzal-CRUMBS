@@ -40,10 +40,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install GDAL for MacOs
+      - name: Install GDAL and X11 for MacOs
         if: matrix.os == 'macos-latest'
         run: |
              brew install gdal
+             brew install --cask xquartz
 
       - name: Install GDAL for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
