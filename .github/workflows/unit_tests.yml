@@ -44,6 +44,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
              brew install gdal
+             brew install xdpyinfo
              brew install --cask xquartz
 
       - name: Install GDAL for Ubuntu 20
