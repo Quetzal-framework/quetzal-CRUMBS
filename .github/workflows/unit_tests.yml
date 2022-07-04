@@ -46,6 +46,12 @@ jobs:
              brew install gdal
              brew install xdpyinfo
              brew install --cask xquartz
+             # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
+             echo "/opt/X11/bin" >> $GITHUB_PATH
+             # https://github.com/ponty/PyVirtualDisplay/issues/42
+             mkdir /tmp/.X11-unix
+             sudo chmod 1777 /tmp/.X11-unix
+             sudo chown root /tmp/.X11-unix
 
       - name: Install GDAL for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
@@ -103,7 +109,6 @@ jobs:
             python3 -m pip install numpy
             python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
             python3 -m pip install pillow
-
 
       - name: Install pip deps
         run: python3 -m pip install -r requirements.txt
