@@ -14,8 +14,7 @@ def test_2D_animation_on_demographic_file(tmp_path):
 
     filename = d / "demography.mp4"
 
-    chose_method(inputRaster=demographic_tiff)
-    chose_method(inputRaster=demographic_tiff, vmax=500)
+    chose_method(inputRaster=demographic_tiff, output=filename)
     chose_method(inputRaster=demographic_tiff, vmax=500, output=filename)
 
 
@@ -31,7 +30,7 @@ def test_3D_default_on_elevation_file(tmp_path):
     chose_method(inputRaster=elevation_tiff,
                         vmin=None,
                         vmax=None,
-                        output=None,
+                        output=filename,
                         gbif_occurrences=None,
                         DDD=True,
                         warp_scale=1.0,
@@ -49,7 +48,7 @@ def test_3D_with_elevation_rescaled(tmp_path):
     chose_method(inputRaster=elevation_tiff,
                         vmin=None,
                         vmax=None,
-                        output=None,
+                        output=filename,
                         gbif_occurrences=None,
                         DDD=True,
                         warp_scale=0.1,
@@ -67,7 +66,7 @@ def test_3D_with_elevation_rescaled_and_triangulated(tmp_path):
     chose_method(inputRaster=elevation_tiff,
                         vmin=None,
                         vmax=None,
-                        output=None,
+                        output=filename,
                         gbif_occurrences=None,
                         DDD=True,
                         warp_scale=0.1,
@@ -86,7 +85,7 @@ def test_3D_with_elevation_rescaled_and_triangulated_and_bif_data_display(tmp_pa
     chose_method(inputRaster=elevation_tiff,
                         vmin=None,
                         vmax=None,
-                        output=None,
+                        output=filename,
                         gbif_occurrences=gbif_files,
                         DDD=True,
                         warp_scale=0.1,
