@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+from pathlib import Path
+
 def main(argv=None):
     """
     The main routine
@@ -22,7 +24,7 @@ def main(argv=None):
         nb_background_points = options.nb_background_points,
         variables = options.variables,
         buffer = options.buffer,
-        cleanup = options.cleanup
+        outdir = Path(options.outdir)
     )
 
     my_sdm.fit_on_present_data()

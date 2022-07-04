@@ -4,7 +4,7 @@ import rasterio
 from rasterio.warp import reproject, Resampling, array_bounds, calculate_default_transform
 from affine import Affine  # For easly manipulation of affine matrix
 import numpy as np
-
+from pathlib import Path
 
 def summary(dataset):
     """
@@ -33,7 +33,7 @@ def get_center_pixel(dataset):
     return (x_pixel_med, y_pixel_med)
 
 
-def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
+def rotate_and_rescale(inputRaster: Path, angle:float, scale:float=1.0, outputRaster:Path=None):
     """
     Rotate a raster by an angle around its estimated center, and rescale its resolution
     """
@@ -97,7 +97,7 @@ def rotate_and_rescale(inputRaster, angle, scale=1, outputRaster=None):
 
             # Write to the output file
             dst.write(dst_data, indexes=range(1, source.count + 1))
-            
+
         # Display information
         print("- New rotated dataset:")
         summary(dst)
