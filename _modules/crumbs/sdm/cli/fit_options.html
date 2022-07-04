@@ -124,15 +124,6 @@
                         <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Buffer to add around the bounding box, in degrees.&quot;</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;--cleanup&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cleanup&quot;</span><span class="p">,</span>
-                        <span class="n">default</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Remove downloaded CHELSA world files, but keep clipped files.&quot;</span><span class="p">)</span>
-
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;--no-cleanup&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;cleanup&quot;</span><span class="p">,</span>
-                        <span class="n">action</span> <span class="o">=</span> <span class="s1">&#39;store_false&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Keep downloaded CHELSA files on disk.&quot;</span><span class="p">)</span>
-
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--sdm-file&quot;</span><span class="p">,</span>
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;sdm_file&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span>
@@ -144,10 +135,10 @@
                         <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;joblib&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;joblib files containin the persisted classifiers fitted from a previous step.&quot;</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--landscape_dir&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--outdir&quot;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;landscape_dir&quot;</span><span class="p">,</span>
-                        <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;chelsa-landscape&quot;</span><span class="p">,</span>
+                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;outdir&quot;</span><span class="p">,</span>
+                        <span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;SDM/&quot;</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output directory for clipped CHELSA files.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>

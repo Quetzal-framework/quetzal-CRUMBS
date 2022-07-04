@@ -77,6 +77,8 @@
   <h1>Source code for crumbs.sdm.cli.fit_cmd</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../../_autosummary/crumbs.sdm.cli.fit_cmd.main.html#crumbs.sdm.cli.fit_cmd.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The main routine</span>
@@ -99,7 +101,7 @@
         <span class="n">nb_background_points</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">nb_background_points</span><span class="p">,</span>
         <span class="n">variables</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
         <span class="n">buffer</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
-        <span class="n">cleanup</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">cleanup</span>
+        <span class="n">outdir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="n">my_sdm</span><span class="o">.</span><span class="n">fit_on_present_data</span><span class="p">()</span>

@@ -86,6 +86,7 @@
 
     <span class="kn">from</span> <span class="nn">.</span> <span class="n">options</span> <span class="kn">import</span> <span class="nn">get_parser</span>
     <span class="kn">from</span> <span class="nn">..</span> <span class="n">request</span> <span class="kn">import</span> <span class="nn">request</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
     <span class="k">if</span> <span class="n">argv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -100,8 +101,10 @@
             <span class="n">variables</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span>
             <span class="n">timesID</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">timesID</span><span class="p">,</span>
             <span class="n">points</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">points</span><span class="p">,</span>
-            <span class="n">margin</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
-            <span class="n">cleanup</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">cleanup</span><span class="p">)</span>
+            <span class="n">buffer</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span>
+            <span class="n">landscape_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">landscape_dir</span><span class="p">),</span>
+            <span class="n">geotiff</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">geotiff</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
