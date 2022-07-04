@@ -47,15 +47,6 @@ def get_parser():
                         default=0.0,
                         help="Buffer to add around the bounding box, in degrees.")
 
-    parser.add_option("--cleanup", dest="cleanup",
-                        default = False,
-                        action = 'store_true',
-                        help="Remove downloaded CHELSA world files, but keep clipped files.")
-
-    parser.add_option("--no-cleanup", dest="cleanup",
-                        action = 'store_false',
-                        help="Keep downloaded CHELSA files on disk.")
-
     parser.add_option("-f", "--sdm-file",
                         dest="sdm_file",
                         type='str',
@@ -67,10 +58,10 @@ def get_parser():
                         dest="joblib",
                         help="joblib files containin the persisted classifiers fitted from a previous step.")
 
-    parser.add_option("-l", "--landscape_dir",
+    parser.add_option("-o", "--outdir",
                         type="str",
-                        dest="landscape_dir",
-                        default = "chelsa-landscape",
+                        dest="outdir",
+                        default = "SDM/",
                         help="Output directory for clipped CHELSA files.")
 
     return parser

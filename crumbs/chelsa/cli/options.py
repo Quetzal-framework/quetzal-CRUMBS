@@ -52,15 +52,16 @@ def get_parser():
                         default=0.0,
                         help="Buffer to add around the bounding box, in degrees.")
 
-    parser.add_option("--cleanup",
-                        dest="cleanup",
-                        default = False,
-                        action = 'store_true',
-                        help="Remove downloaded CHELSA world files, but keep landscape files.")
+    parser.add_option("-l", "--landscape_dir",
+                        type="str",
+                        dest="landscape_dir",
+                        default='chelsa-landscape/',
+                        help="Directory where to store landscape rasters.")
 
-    parser.add_option("--no-cleanup",
-                        dest="cleanup",
-                        action = 'store_false',
-                        help="Keep downloaded CHELSA files on disk.")
+    parser.add_option("-g", "--geotiff",
+                        type="str",
+                        dest="geotiff",
+                        default='stacked.tif',
+                        help="Multilayer geotiff for each variable, where each layer is a time step.")
 
     return parser

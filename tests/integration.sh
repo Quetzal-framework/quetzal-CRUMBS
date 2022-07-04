@@ -3,8 +3,12 @@
 # exit when any command fails
 set -e
 
+rm -rf integration
+mkdir integration
+cd integration
+
 species='Heteronotia binoei'
-sample='data/test_points/test_points.shp'
+sample='../data/test_points/test_points.shp'
 buffer=2.0
 biovars=dem,bio01
 
@@ -23,7 +27,8 @@ crumbs-get-chelsa \
       --timesID 19 \
       --points $sample \
       --buffer $buffer \
-      --cleanup
+      --landscape_dir 'chelsa-landscape' \
+      --geotiff 'stack'
 
 crumbs-fit-sdm \
       --species $species \
@@ -32,16 +37,16 @@ crumbs-fit-sdm \
       --variables $biovars \
       --buffer $buffer \
       --sdm-file 'my-lil-sdm.bin' \
-      --cleanup
+      -- outdir 'SDM'
 
 crumbs-extrapolate-sdm \
       --sdm-file 'my-lil-sdm.bin' \
       --timeID 20
 
-crumbs-clip-circle 'model-averaging/suitability_20.tif' -o 'disk.tif'
+crumbs-clip-circle 'SDM/model-averaging/suitability_20.tif' -o 'disk.tif'
 
 angle=10.0
-crumbs-rotate-and-rescale 'disk.tif' $angle -o 'rotated.tif'
+crumbs-rotate-rescale 'disk.tif' $angle -o 'rotated.tif'
 
 factor=0.5
-crumbs.resample 'rotated.tif' $factor -o 'resampled.tif'
+crumbs-resample 'rotated.tif' $factor -o 'resampled.tif'

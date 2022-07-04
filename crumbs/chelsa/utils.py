@@ -11,7 +11,7 @@ from shapely.geometry import shape, Point, Polygon
 from optparse import OptionParser
 from tqdm import tqdm
 from osgeo import gdal
-from pathlib import Path;
+from pathlib import Path
 from os import walk
 from os.path import exists
 import re
@@ -100,6 +100,8 @@ def clip(inputFile: Path, shape, outputFile: Path) -> None:
     """
     Clip the input file by the shape given, saving the output file.
     """
+    import numpy as np
+
     with rasterio.open(inputFile) as source :
         out_image, out_transform = msk.mask(source, [shape], crop=True)
         out_meta = source.meta
@@ -110,8 +112,15 @@ def clip(inputFile: Path, shape, outputFile: Path) -> None:
                          "transform": out_transform
                         })
 
-    with rasterio.open(outputFile, "w", **out_meta) as dest:
-        dest.write(out_image)
+        #  The meta property of a dataset is a copy of some of its important metadata.
+        # Modifying that object has no effect on the dataset.
+        with rasterio.open(outputFile, "w", **out_meta) as dest:
+            dest.write(out_image)
+            # Avoids warnings in pyimpute: "Setting nodata to -999; specify nodata explicitly"
+            if source.nodata is None:
+                dest.nodata = np.nan
+            else:
+                dest.nodata = source.nodata
 
     return None
 
@@ -122,49 +131,6 @@ def resume_download(fileurl, resume_byte_pos):
     """
     resume_header = {'Range': 'bytes=%d-' % resume_byte_pos}
     return requests.get(fileurl, headers=resume_header, stream=True,  verify=True, allow_redirects=True)
-
-#
-# def download(url: str, output_dir: Path) -> Path:
-#     """
-#     Downloads bio and orog variables from CHELSA-TraCE21k – 1km climate timeseries since the LGM
-#     """
-#     #  Retrievethe filename from the URL so we have a local file to write to
-#     filename = output_dir / get_filename(url)
-#
-#     if filename.is_file():
-#
-#         resume_byte = filename.stat().st_size
-#         print("    ... World file exists, resuming download to byte", resume_byte)
-#
-#     else:
-#
-#         print("    ... World file does not exist, starting download from scratch.")
-#         resume_byte = 0.0
-#
-#     try:
-#
-#         with open(filename, 'ab') as file:
-#
-#             response = resume_download(url, resume_byte)
-#
-#             # progress bar
-#             total_size_in_bytes= int(response.headers.get('content-length', 0))
-#             block_size = 1024 #1 Kibibyte
-#             progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
-#
-#             # download progress
-#             for data in response.iter_content(block_size):
-#                 progress_bar.update(len(data))
-#                 file.write(data)
-#
-#             assert total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes
-#
-#             progress_bar.close()
-#
-#     except requests.RequestException as e:
-#         print(e)
-#
-#     return filename
 
 
 def expand_bio(variables: List[str]) -> List[str]:

@@ -9,6 +9,7 @@ def main(argv=None):
 
     from . options import get_parser
     from .. request import request
+    from pathlib import Path
 
     if argv is None:
         argv = sys.argv[1:]
@@ -23,8 +24,10 @@ def main(argv=None):
             variables = options.variables,
             timesID = options.timesID,
             points = options.points,
-            margin = options.buffer,
-            cleanup = options.cleanup)
+            buffer = options.buffer,
+            landscape_dir = Path(options.landscape_dir),
+            geotiff = Path(options.geotiff)
+            )
 
     except Exception as e:
         print(e)

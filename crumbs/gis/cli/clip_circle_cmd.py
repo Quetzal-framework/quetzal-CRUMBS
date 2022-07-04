@@ -14,7 +14,7 @@ def main(argv=None):
 
     (options, args) = parser.parse_args(argv)
 
-    return circle_mask(args[0], options.output)
+    return clip_circle(args[0], options.output)
 
 if __name__ == '__main__':
     import sys

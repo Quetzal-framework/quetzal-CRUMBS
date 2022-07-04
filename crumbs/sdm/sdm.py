@@ -3,6 +3,7 @@ Module declaring the base class for Species Distribution Modeling.
 """
 
 from pathlib import Path
+import rasterio
 
 class SDM:
     """
