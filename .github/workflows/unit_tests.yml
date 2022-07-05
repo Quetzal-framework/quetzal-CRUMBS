@@ -40,18 +40,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install GDAL and X11 for MacOs
+      - name: Install GDAL for MacOs
         if: matrix.os == 'macos-latest'
         run: |
              brew install gdal
-             brew install xdpyinfo
-             brew install --cask xquartz
-             # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
-             echo "/opt/X11/bin" >> $GITHUB_PATH
-             # https://github.com/ponty/PyVirtualDisplay/issues/42
-             mkdir /tmp/.X11-unix
-             sudo chmod 1777 /tmp/.X11-unix
-             sudo chown root /tmp/.X11-unix
 
       - name: Install GDAL for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
@@ -70,7 +62,18 @@ jobs:
             sudo apt-get install libgdal-dev
             python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
-      - name: Install Linux packages for Qt5 support
+      - name: Install X11 for MacOs
+        if: matrix.os == 'macos-latest'
+        run: |
+             brew install --cask xquartz
+             # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
+             echo "/opt/X11/bin" >> $GITHUB_PATH
+             # https://github.com/ponty/PyVirtualDisplay/issues/42
+             mkdir /tmp/.X11-unix
+             sudo chmod 1777 /tmp/.X11-unix
+             sudo chown root /tmp/.X11-unix
+
+      - name: Install X11 and Qt5 support for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
         run: |
             sudo apt-get update
@@ -83,13 +86,17 @@ jobs:
             sudo apt-get install libxcb-render-util0
             sudo apt-get install libxcb-xinerama0
 
-      - name: Install Linux packages for Qt5 support
+      - name: Install X11 and Qt5 support for Ubuntu 22
         if: matrix.os == 'ubuntu-22.04'
         # qt5-default has been removed
         run: |
             sudo apt-get update
             sudo apt-get install libxcb-xinerama0
             sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
+
+      - name: Xvfb -help
+        run: |
+          Xvfb -help
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -119,7 +126,7 @@ jobs:
         run: |
             python3 -m pip install pytest
             cd tests
-            python3 -m pytest
+            pytest
 
       - name: Run slow tests with coverage
         if:  github.ref == 'refs/heads/main'
@@ -127,7 +134,7 @@ jobs:
         run: |
             python3 -m pip install pytest-cov
             cd tests
-            python3 -m pytest --cov=crumbs --cov-report=xml --cov-branch -s -m slow
+            pytest --cov=crumbs --cov-report=xml --cov-branch -s -m slow
 
       - name: Upload coverage to Codecov
         if:  success() && github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-22.04'
