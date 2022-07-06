@@ -37,6 +37,12 @@ pyimpute==0.3
 # smart progress meter
 tqdm==4.64.0
 
+# Mayavi dependencies
+pyqt5==5.15.7
+pillow==9.1.1
+nose
+traitsui==7.2.1
+
 # interactive visualization of 3D data.
 mayavi==4.7.4
 
