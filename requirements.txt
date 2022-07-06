@@ -25,6 +25,9 @@ scikit-learn==1.1.1
 # Light Gradient Boosting Machine
 lightgbm==3.3.2
 
+# regularizing gradient boosting 
+xgboost==1.6.1
+
 # Utilities for applying scikit-learn to spatial datasets
 pyimpute==0.3
 
