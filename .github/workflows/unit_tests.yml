@@ -7,15 +7,14 @@ on:
       - main
 
 jobs:
-
   test:
     name: Python
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python: [ 3.6, 3.7, 3.8, 3.9, "3.10" ]
-        os:  [ macos-latest, ubuntu-20.04, ubuntu-22.04]
+        python: [3.6, 3.7, 3.8, 3.9, "3.10"]
+        os: [macos-latest, ubuntu-20.04, ubuntu-22.04]
         exclude:
           - os: ubuntu-22.04
             python: 3.6
@@ -31,7 +30,6 @@ jobs:
         shell: bash
 
     steps:
-
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.6.0
         with:
@@ -43,56 +41,56 @@ jobs:
       - name: Install GDAL for MacOs
         if: matrix.os == 'macos-latest'
         run: |
-             brew install gdal
+          brew install gdal
 
       - name: Install GDAL for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
         run: |
-            sudo apt-get update
-            sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
-            sudo apt-get install gdal-bin
-            sudo apt-get install libgdal-dev
-            python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+          sudo apt-get update
+          sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+          sudo apt-get install gdal-bin
+          sudo apt-get install libgdal-dev
+          python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
       - name: Install GDAL for Ubuntu 22
         if: matrix.os == 'ubuntu-22.04'
         run: |
-            sudo apt-get update
-            sudo apt-get install gdal-bin
-            sudo apt-get install libgdal-dev
-            python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          sudo apt-get install libgdal-dev
+          python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
       - name: Install X11 for MacOs
         if: matrix.os == 'macos-latest'
         run: |
-             brew install --cask xquartz
-             # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
-             echo "/opt/X11/bin" >> $GITHUB_PATH
-             # https://github.com/ponty/PyVirtualDisplay/issues/42
-             mkdir /tmp/.X11-unix
-             sudo chmod 1777 /tmp/.X11-unix
-             sudo chown root /tmp/.X11-unix
+          brew install --cask xquartz
+          # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
+          echo "/opt/X11/bin" >> $GITHUB_PATH
+          # https://github.com/ponty/PyVirtualDisplay/issues/42
+          mkdir /tmp/.X11-unix
+          sudo chmod 1777 /tmp/.X11-unix
+          sudo chown root /tmp/.X11-unix
 
       - name: Install X11 and Qt5 support for Ubuntu 20
         if: matrix.os == 'ubuntu-20.04'
         run: |
-            sudo apt-get update
-            sudo apt-get install qt5-default
-            sudo apt-get install libxkbcommon-x11-0
-            sudo apt-get install libxcb-icccm4
-            sudo apt-get install libxcb-image0
-            sudo apt-get install libxcb-keysyms1
-            sudo apt-get install libxcb-randr0
-            sudo apt-get install libxcb-render-util0
-            sudo apt-get install libxcb-xinerama0
+          sudo apt-get update
+          sudo apt-get install qt5-default
+          sudo apt-get install libxkbcommon-x11-0
+          sudo apt-get install libxcb-icccm4
+          sudo apt-get install libxcb-image0
+          sudo apt-get install libxcb-keysyms1
+          sudo apt-get install libxcb-randr0
+          sudo apt-get install libxcb-render-util0
+          sudo apt-get install libxcb-xinerama0
 
       - name: Install X11 and Qt5 support for Ubuntu 22
         if: matrix.os == 'ubuntu-22.04'
         # qt5-default has been removed
         run: |
-            sudo apt-get update
-            sudo apt-get install libxcb-xinerama0
-            sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
+          sudo apt-get update
+          sudo apt-get install libxcb-xinerama0
+          sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
 
       - name: Xvfb -help
         run: |
@@ -106,17 +104,17 @@ jobs:
       - name: Install dependencies and local packages
         if: matrix.os == 'ubuntu-20.04'
         run: |
-            python3 -m pip install pyqt5
-            python3 -m pip install numpy
-            python3 -m pip install vtk
-            python3 -m pip install pillow
+          python3 -m pip install pyqt5
+          python3 -m pip install numpy
+          python3 -m pip install vtk
+          python3 -m pip install pillow
 
       - name: Install dependencies and local packages, until Kitware releases official VTK wheels for Python 3.10
         if: matrix.os == 'ubuntu-22.04'
         run: |
-            python3 -m pip install numpy
-            python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-            python3 -m pip install pillow
+          python3 -m pip install numpy
+          python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+          python3 -m pip install pillow
 
       - name: Install pip deps
         run: python3 -m pip install -r requirements.txt
@@ -124,20 +122,20 @@ jobs:
       - name: Run fast tests
         working-directory: .
         run: |
-            python3 -m pip install pytest
-            cd tests
-            python3 -m pytest
+          python3 -m pip install pytest
+          cd tests
+          python3 -m pytest
 
       - name: Run slow tests with coverage
-        if:  github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         working-directory: .
         run: |
-            python3 -m pip install pytest-cov
-            cd tests
-            pytest --cov=crumbs --cov-report=xml --cov-branch -s -m slow
+          python3 -m pip install pytest-cov
+          cd tests
+          pytest --cov=crumbs --cov-report=xml --cov-branch -s -m slow
 
       - name: Upload coverage to Codecov
-        if:  success() && github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-22.04'
+        if: success() && github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-22.04'
         uses: codecov/codecov-action@v2
         with:
           working-directory: crumbs

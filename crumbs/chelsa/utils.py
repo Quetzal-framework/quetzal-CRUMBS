@@ -2,22 +2,23 @@
 Module declaring utility functions for downloading CHELSA datasets.
 """
 
-import requests
+import glob
 import os
-import rasterio
-from rasterio import mask as msk
-import fiona
-from shapely.geometry import shape, Point, Polygon
+import re
 from optparse import OptionParser
-from tqdm import tqdm
-from osgeo import gdal
-from pathlib import Path
 from os import walk
 from os.path import exists
-import re
-import glob
+from pathlib import Path
+from typing import Dict, List, Set, Tuple
 
-from typing import List, Set, Tuple, Dict
+import fiona
+import rasterio
+import requests
+from osgeo import gdal
+from rasterio import mask as msk
+from shapely.geometry import Point, Polygon, shape
+from tqdm import tqdm
+
 
 def tryfloat(s):
     try:
@@ -31,7 +32,7 @@ def alphanum_key(s):
     Turn a string into a list of string and number chunks. "z23a" -> ["z", 23, "a"].
     Useful for sorting filenames nicely.
     """
-    return [ tryfloat(c) for c in re.split(r'_(-*\d+)_' , s) ]
+    return [tryfloat(c) for c in re.split(r"_(-*\d+)_", s)]
 
 
 def sort_nicely(l):
@@ -41,11 +42,12 @@ def sort_nicely(l):
     l.sort(key=alphanum_key)
     return l
 
+
 def implemented_variables():
     """
     Defines the list of bioclimatic variables accessible from crumbs
     """
-    return ['dem', 'glz', *['bio' + str(i).zfill(2) for i in range(1, 19, 1)]]
+    return ["dem", "glz", *["bio" + str(i).zfill(2) for i in range(1, 19, 1)]]
 
 
 def retrieve_variable_names_from(urls):
@@ -58,6 +60,7 @@ def retrieve_variable_names_from(urls):
             matched.append(variable)
     return matched
 
+
 def bounds_to_polygon(shapefile, margin):
     """
     Computes a bounding box around points in the shapefile, adding a margin.
@@ -65,9 +68,10 @@ def bounds_to_polygon(shapefile, margin):
     """
     import fiona
     import numpy as np
+
     with fiona.open(shapefile) as file:
         shapes = list(file)
-        coords = [p['geometry']['coordinates'] for p in shapes]
+        coords = [p["geometry"]["coordinates"] for p in shapes]
         bot_left_x, bot_left_y, top_right_x, top_right_y = bounding_box_naive(coords)
         bbox = to_polygon(bot_left_x, bot_left_y, top_right_x, top_right_y, margin)
         return bbox
@@ -90,10 +94,14 @@ def to_polygon(long0, lat0, long1, lat1, margin=0.0):
     """
     Convert the given points into a polygon, adding a margin.
     """
-    return Polygon([[long0 - margin , lat0 - margin],
-                    [long1 + margin , lat0 - margin],
-                    [long1 + margin , lat1 + margin],
-                    [long0 - margin , lat1 + margin]])
+    return Polygon(
+        [
+            [long0 - margin, lat0 - margin],
+            [long1 + margin, lat0 - margin],
+            [long1 + margin, lat1 + margin],
+            [long0 - margin, lat1 + margin],
+        ]
+    )
 
 
 def clip(inputFile: Path, shape, outputFile: Path) -> None:
@@ -102,15 +110,18 @@ def clip(inputFile: Path, shape, outputFile: Path) -> None:
     """
     import numpy as np
 
-    with rasterio.open(inputFile) as source :
+    with rasterio.open(inputFile) as source:
         out_image, out_transform = msk.mask(source, [shape], crop=True)
         out_meta = source.meta
         # update metadata
-        out_meta.update({"driver": "GTiff",
-                         "height": out_image.shape[1],
-                         "width": out_image.shape[2],
-                         "transform": out_transform
-                        })
+        out_meta.update(
+            {
+                "driver": "GTiff",
+                "height": out_image.shape[1],
+                "width": out_image.shape[2],
+                "transform": out_transform,
+            }
+        )
 
         #  The meta property of a dataset is a copy of some of its important metadata.
         # Modifying that object has no effect on the dataset.
@@ -129,56 +140,77 @@ def resume_download(fileurl, resume_byte_pos):
     """
     Resume the download of the file given its url
     """
-    resume_header = {'Range': 'bytes=%d-' % resume_byte_pos}
-    return requests.get(fileurl, headers=resume_header, stream=True,  verify=True, allow_redirects=True)
+    resume_header = {"Range": "bytes=%d-" % resume_byte_pos}
+    return requests.get(
+        fileurl, headers=resume_header, stream=True, verify=True, allow_redirects=True
+    )
 
 
 def expand_bio(variables: List[str]) -> List[str]:
-    bioset = set(variables) - set(['dem','glz'])
+    bioset = set(variables) - set(["dem", "glz"])
 
-    if( len(bioset) > 0 ) :
-        if bioset == set(['bio']):
-            bioset = set(['bio' + str(i).zfill(2) for i in range(1, 19, 1)])
+    if len(bioset) > 0:
+        if bioset == set(["bio"]):
+            bioset = set(["bio" + str(i).zfill(2) for i in range(1, 19, 1)])
 
-    return list(bioset.union(set(variables)) - set(['bio']))
+    return list(bioset.union(set(variables)) - set(["bio"]))
 
 
 def generate_urls(variables: List[str], timesID: List[int]) -> List[str]:
-    """ Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve.
-    """
-    assert len(variables) > 0 , "Unable to generate URL fom an empty variables list"
-    assert len(timesID) > 0 , "Unable to generate URL from an empty timesID list"
+    """Generate the expected CHELSA TraCE21k urls given the variables and the time IDS to retrieve."""
+    assert len(variables) > 0, "Unable to generate URL fom an empty variables list"
+    assert len(timesID) > 0, "Unable to generate URL from an empty timesID list"
 
     urls = []
     implemented = implemented_variables()
 
-    if( set(variables).issubset(set(implemented)) or set(variables) - set(['dem','glz']) == set(['bio'])  ) :
+    if set(variables).issubset(set(implemented)) or set(variables) - set(
+        ["dem", "glz"]
+    ) == set(["bio"]):
 
-        if(set(['dem']).issubset(set(variables))):
-            for timeID in timesID :
-                url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_"+ str(timeID) + "_V1.0.tif"
+        if set(["dem"]).issubset(set(variables)):
+            for timeID in timesID:
+                url = (
+                    "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_dem_"
+                    + str(timeID)
+                    + "_V1.0.tif"
+                )
                 urls.append(url)
 
-        if(set(['glz']).issubset(set(variables))):
-            for timeID in timesID :
-                url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_glz_"+ str(timeID) + "_V1.0.tif"
+        if set(["glz"]).issubset(set(variables)):
+            for timeID in timesID:
+                url = (
+                    "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/orog/CHELSA_TraCE21k_glz_"
+                    + str(timeID)
+                    + "_V1.0.tif"
+                )
                 urls.append(url)
 
-        bioset = set(variables) - set(['dem','glz'])
-        if( len(bioset) > 0 ) :
-            if bioset == set(['bio']):
-                bioset = set(['bio' + str(i).zfill(2) for i in range(1, 19, 1)])
+        bioset = set(variables) - set(["dem", "glz"])
+        if len(bioset) > 0:
+            if bioset == set(["bio"]):
+                bioset = set(["bio" + str(i).zfill(2) for i in range(1, 19, 1)])
             for bio in bioset:
-                for timeID in timesID :
-                    url = "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_" + bio + "_"+ str(timeID) + "_V1.0.tif"
+                for timeID in timesID:
+                    url = (
+                        "https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V1/chelsa_trace/bio/CHELSA_TraCE21k_"
+                        + bio
+                        + "_"
+                        + str(timeID)
+                        + "_V1.0.tif"
+                    )
                     urls.append(url)
 
     else:
         not_implemented = set(variables) - set(variables).intersection(set(implemented))
-        raise ValueError(" ".join([str(i) for i in not_implemented]) + " not implemented. Implemented CHELSA variables are: " + " ".join([str(i) for i in implemented]))
+        raise ValueError(
+            " ".join([str(i) for i in not_implemented])
+            + " not implemented. Implemented CHELSA variables are: "
+            + " ".join([str(i) for i in implemented])
+        )
 
     # Post condition: at least one workable URL
-    assert len(urls) > 0 , "Unable to generate URL."
+    assert len(urls) > 0, "Unable to generate URL."
 
     return urls
 
@@ -190,15 +222,18 @@ def to_vrt(inputFiles: List[str], outputFile: str) -> str:
 
     print("    ... Converting bands to VRT file:", outputFile)
 
-    gdal.BuildVRT(outputFile,
-                  inputFiles,
-                  #callback=gdal.TermProgress_nocb,
-                  separate=True
-                  )
+    gdal.BuildVRT(
+        outputFile,
+        inputFiles,
+        # callback=gdal.TermProgress_nocb,
+        separate=True,
+    )
 
-    vrt_options = gdal.BuildVRTOptions(separate=True,
-                                        #callback=gdal.TermProgress_nocb,
-                                        resampleAlg='average')
+    vrt_options = gdal.BuildVRTOptions(
+        separate=True,
+        # callback=gdal.TermProgress_nocb,
+        resampleAlg="average",
+    )
 
     my_vrt = gdal.BuildVRT(outputFile, inputFiles, options=vrt_options)
 
@@ -213,7 +248,7 @@ def to_geotiff(vrt: str, outputFile: str) -> str:
     Converts the VRT files to a geotiff file
     """
     assert vrt is not None
-    print('    ... Converting', vrt, 'to GeoTiff file:', outputFile)
+    print("    ... Converting", vrt, "to GeoTiff file:", outputFile)
     ds = gdal.Open(str(vrt))
     ds = gdal.Translate(str(outputFile), ds)
     # free C resource
@@ -225,7 +260,7 @@ def read_urls(inputFile: Path) -> List[str]:
     """
     Read the URLs in the Chelsa input file
     """
-    with open(inputFile, 'r') as input:
+    with open(inputFile, "r") as input:
         urls = input.readlines()
         return [url.strip() for url in urls]
 
@@ -234,5 +269,5 @@ def get_filename(url):
     """
     Split the url into a list, starting from the right and get last element
     """
-    filename = url.rsplit('/', 1)[-1].strip()
+    filename = url.rsplit("/", 1)[-1].strip()
     return filename

@@ -1,14 +1,15 @@
 #!/usr/bin/python
 
+
 def main(argv=None):
     """
     The main routine
     """
 
-    from . rotate_and_rescale_options import get_parser
-    from .. rotate_and_rescale import rotate_and_rescale
-
     from pathlib import Path
+
+    from ..rotate_and_rescale import rotate_and_rescale
+    from .rotate_and_rescale_options import get_parser
 
     print("- Quetzal-CRUMBS Rotation - GIS utility for landscape preparation")
 
@@ -16,8 +17,12 @@ def main(argv=None):
 
     (options, args) = parser.parse_args(argv)
 
-    return rotate_and_rescale(args[0], options.angle, options.factor, Path(options.output))
+    return rotate_and_rescale(
+        args[0], options.angle, options.factor, Path(options.output)
+    )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import sys
+
     sys.exit(main())
