@@ -1,6 +1,9 @@
 # Avoids "cannot import name 'define' from 'attr' "
 attrs==21.4.0
 
+# Array computing
+numpy==1.23.0
+
 # Parallel computing libary
 dask==2022.6.1
 
