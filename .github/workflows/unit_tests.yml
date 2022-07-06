@@ -86,9 +86,10 @@ jobs:
 
       - name: Install X11 and Qt5 support for Ubuntu 22
         if: matrix.os == 'ubuntu-22.04'
-        # qt5-default has been removed
+        # qt5-default has been removed, see: https://askubuntu.com/questions/1404263/how-do-you-install-qt-on-ubuntu22-04
         run: |
           sudo apt-get update
+          sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
           sudo apt-get install libxcb-xinerama0
           sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
 

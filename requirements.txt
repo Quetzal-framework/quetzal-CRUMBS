@@ -44,7 +44,8 @@ pyimpute==0.3
 tqdm==4.64.0
 
 # Python bindings for the Qt platform (mayavi dep.)
-# pyqt5==5.15.7
+# Bug on Ub.22.04 but avoids AttributeError: 'Timer' object has no attribute 'start' on other OS
+pyqt5==5.15.7
 
 # Image processing capabilities (mayavi dep.)
 pillow==9.1.1
