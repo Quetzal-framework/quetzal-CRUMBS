@@ -1,15 +1,44 @@
+# Parallel computing libary
 dask==2022.6.1
-Fiona==1.8.21
-geopandas==0.11.0
+
+# Lightweight pipelining with Python functions
 joblib==1.1.0
+
+# Python client for GBIF API
 pygbif==0.6.1
-pyimpute==0.3
+
+# Sequence simulation along phylogenies according to continuous-time Markov models
 Pyvolve==1.0.3
+
+# Read and write GIS
 rasterio==1.3b2
+
+# Read and write spatial data
+Fiona==1.8.21
+
+# Geographic dataframes
+geopandas==0.11.0
+
+# machine learning
 scikit-learn==1.1.1
+
+# Light Gradient Boosting Machine
+lightgbm==3.3.2
+
+# Utilities for applying scikit-learn to spatial datasets
+pyimpute==0.3
+
+# smart progress meter
 tqdm==4.64.0
+
+# interactive visualization of 3D data.
 mayavi==4.7.4
+
+# python wrapper for Xvfb, Xephyr and Xvnc.
 PyVirtualDisplay==3.0
+
+# python interface to read/write image data: animated images, volumetric data, and scientific formats.
 imageio==2.19.3
-# FFMPEG wrapper for Python.
+
+# python FFMPEG wrapper.
 imageio-ffmpeg==0.4.7
