@@ -1,3 +1,6 @@
+# Avoids "cannot import name 'define' from 'attr' "
+attrs==21.4.0
+
 # Parallel computing libary
 dask==2022.6.1
 
@@ -25,7 +28,7 @@ scikit-learn==1.1.1
 # Light Gradient Boosting Machine
 lightgbm==3.3.2
 
-# regularizing gradient boosting 
+# regularizing gradient boosting
 xgboost==1.6.1
 
 # Utilities for applying scikit-learn to spatial datasets
