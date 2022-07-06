@@ -79,18 +79,19 @@
 <span class="sd">Defines parsing options from command line</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+
 <div class="viewcode-block" id="get_variables_args"><a class="viewcode-back" href="../../../../_autosummary/crumbs.chelsa.cli.options.get_variables_args.html#crumbs.chelsa.cli.options.get_variables_args">[docs]</a><span class="k">def</span> <span class="nf">get_variables_args</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">setattr</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">option</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span></div>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">option</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="get_timesID_args"><a class="viewcode-back" href="../../../../_autosummary/crumbs.chelsa.cli.options.get_timesID_args.html#crumbs.chelsa.cli.options.get_timesID_args">[docs]</a><span class="k">def</span> <span class="nf">get_timesID_args</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_timesID_args"><a class="viewcode-back" href="../../../../_autosummary/crumbs.chelsa.cli.options.get_timesID_args.html#crumbs.chelsa.cli.options.get_timesID_args">[docs]</a><span class="k">def</span> <span class="nf">get_timesID_args</span><span class="p">(</span><span class="n">option</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">setattr</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">option</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)])</span></div>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">option</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)])</span></div>
 
 
 <div class="viewcode-block" id="get_parser"><a class="viewcode-back" href="../../../../_autosummary/crumbs.chelsa.cli.options.get_parser.html#crumbs.chelsa.cli.options.get_parser">[docs]</a><span class="k">def</span> <span class="nf">get_parser</span><span class="p">():</span>
@@ -101,45 +102,69 @@
 
     <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--input&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Input urls file, one url by line&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--input&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Input urls file, one url by line&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--variables&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;variables&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;callback&#39;</span><span class="p">,</span>
-                        <span class="n">callback</span><span class="o">=</span><span class="n">get_variables_args</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If no input given, comma-separated CHELSA TraCE21k variables to download. Possible options: dem, glz, bio01 to bio19 or bio for all&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--variables&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;variables&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;callback&quot;</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="n">get_variables_args</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;If no input given, comma-separated CHELSA TraCE21k variables to download. Possible options: dem, glz, bio01 to bio19 or bio for all&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--timesID&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;timesID&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;callback&#39;</span><span class="p">,</span>
-                        <span class="n">callback</span><span class="o">=</span><span class="n">get_timesID_args</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-t&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--timesID&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;timesID&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;callback&quot;</span><span class="p">,</span>
+        <span class="n">callback</span><span class="o">=</span><span class="n">get_timesID_args</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;CHELSA_TraCE21k_ times IDs to download: 20 (present) to -200 (LGM)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--points&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;points&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--points&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;points&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Shapefile of spatial points around which a bounding box will be drawn to clip the CHELSA tif. Example: all DNA samples coordinates, or 4 coordinates defining a bounding box.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--buffer&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;buffer&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Buffer to add around the bounding box, in degrees.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-b&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--buffer&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;buffer&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Buffer to add around the bounding box, in degrees.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--landscape_dir&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;landscape_dir&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;chelsa-landscape/&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory where to store landscape rasters.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-l&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--landscape_dir&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;landscape_dir&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;chelsa-landscape/&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory where to store landscape rasters.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--geotiff&quot;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
-                        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;geotiff&quot;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="s1">&#39;stacked.tif&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Multilayer geotiff for each variable, where each layer is a time step.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s2">&quot;-g&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--geotiff&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;geotiff&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;stacked.tif&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Multilayer geotiff for each variable, where each layer is a time step.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>
 </pre></div>
