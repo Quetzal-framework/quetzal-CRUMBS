@@ -1,12 +1,13 @@
 #!/usr/bin/python
 
+
 def main(argv=None):
     """
     The main routine
     """
 
-    from . clip_circle_options import get_parser
-    from .. clip_circle import clip_circle
+    from ..clip_circle import clip_circle
+    from .clip_circle_options import get_parser
 
     print("- Quetzal-CRUMBS Clip Circle - GIS utility for landscape preparation")
 
@@ -16,6 +17,8 @@ def main(argv=None):
 
     return clip_circle(args[0], options.output)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import sys
+
     sys.exit(main())

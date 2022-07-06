@@ -1,16 +1,23 @@
 #!/usr/bin/python
 
-import rasterio
-from rasterio.warp import reproject, Resampling, array_bounds, calculate_default_transform
-from affine import Affine  # For easly manipulation of affine matrix
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import rasterio
+from affine import Affine  # For easly manipulation of affine matrix
+from rasterio.warp import (
+    Resampling,
+    array_bounds,
+    calculate_default_transform,
+    reproject,
+)
+
 
 def summary(dataset):
     """
     Print a summary of the raster dataset characteristics
     """
-    print(" - no data value:", dataset.nodata )
+    print(" - no data value:", dataset.nodata)
     print(" - transform:\n")
     print(dataset.transform, "\n")
     print(" - ", dataset.bounds, "\n")
@@ -33,15 +40,19 @@ def get_center_pixel(dataset):
     return (x_pixel_med, y_pixel_med)
 
 
-def rotate_and_rescale(inputRaster: Path, angle:float, scale:float=1.0, outputRaster:Path=None):
+def rotate_and_rescale(
+    inputRaster: Path, angle: float, scale: float = 1.0, outputRaster: Path = None
+):
     """
     Rotate a raster by an angle around its estimated center, and rescale its resolution
     """
-    outputRaster = 'rotated.tif' if outputRaster is None else outputRaster
+    outputRaster = "rotated.tif" if outputRaster is None else outputRaster
 
     ### Read input
     with rasterio.open(inputRaster) as source:
-        assert source.crs == 'EPSG:4326', "Raster must have CRS=EPSG:4326, that is unprojected lon/lat (degree) relative to WGS84 datum"
+        assert (
+            source.crs == "EPSG:4326"
+        ), "Raster must have CRS=EPSG:4326, that is unprojected lon/lat (degree) relative to WGS84 datum"
 
         # Display information
         print("- Source dataset:")
@@ -51,49 +62,54 @@ def rotate_and_rescale(inputRaster: Path, angle:float, scale:float=1.0, outputRa
         pivot = get_center_pixel(source)
         print("\nPivot coordinates:", source.transform * pivot)
 
-        # Apply transformation
-        new_transform = source.transform*Affine.rotation(angle, pivot) * Affine.scale(scale)
+        # Apply transformation
+        new_transform = (
+            source.transform * Affine.rotation(angle, pivot) * Affine.scale(scale)
+        )
         new_width = int(source.width // scale)
-        new_height =  int(source.height // scale)
+        new_height = int(source.height // scale)
 
         # Update metadata
         kwargs = source.meta.copy()
-        kwargs.update({
-            'count': source.count,
-            'width': new_width,
-            'height': new_height,
-            'transform': new_transform,
-            'nodata': source.nodata,
-            'crs': source.crs
-            })
+        kwargs.update(
+            {
+                "count": source.count,
+                "width": new_width,
+                "height": new_height,
+                "transform": new_transform,
+                "nodata": source.nodata,
+                "crs": source.crs,
+            }
+        )
 
         # Source data: use normal array because mask won't work with reproject
         src_data = source.read()
-        source_type = src_data.dtype;
-        src_data=src_data.astype('float64')
+        source_type = src_data.dtype
+        src_data = src_data.astype("float64")
         src_data[src_data == source.nodata] = np.nan
 
-        # Array to store destination data
-        dst_shape=[source.count, new_height, new_width]
-        dst_data = np.empty(dst_shape); dst_data[:] = np.nan
+        # Array to store destination data
+        dst_shape = [source.count, new_height, new_width]
+        dst_data = np.empty(dst_shape)
+        dst_data[:] = np.nan
 
-        with rasterio.open(outputRaster, mode='w', **kwargs) as dst:
+        with rasterio.open(outputRaster, mode="w", **kwargs) as dst:
 
             for i in range(1, source.count + 1):
                 # Reproject from array to array
                 reproject(
-                    source=src_data[i-1],
-                    destination=dst_data[i-1],
+                    source=src_data[i - 1],
+                    destination=dst_data[i - 1],
                     src_transform=source.transform,
                     src_crs=source.crs,
                     dst_transform=new_transform,
                     dst_crs=dst.crs,
                     resampling=Resampling.average,
-                    dst_nodata=np.nan
-                    )
+                    dst_nodata=np.nan,
+                )
 
             dst_data[np.isnan(dst_data)] = source.nodata
-            dst_data=dst_data.astype(source_type)
+            dst_data = dst_data.astype(source_type)
 
             # Write to the output file
             dst.write(dst_data, indexes=range(1, source.count + 1))

@@ -25,7 +25,6 @@ In short:
 5. If using Quetzal-EGGS spatial simulators, retrieve parameters and simulated data
 6. Use Decrypt to perform robustness analysis of species delimitation methods.
 
-
 ## What problem does this library solve?
 
 iDDC modeling is quite a complex workflow and Quetzal-CRUMBS allows to simplify things quite a lot.
@@ -98,44 +97,47 @@ and distribute this load on a cluster grid: check out
 
 # Contact and troubleshooting
 
-:boom: A problem? A bug? *Outrageous!* :scream_cat: Please let me know by opening
+:boom: A problem? A bug? _Outrageous!_ :scream_cat: Please let me know by opening
 an issue or sending me an email so I can fix this! :rescue_worker_helmet:
 
 :bellhop_bell: In need of assistance about this project? Just want to chat?
 Let me know and let's have a zoom meeting!
 
---------------------------------------------------------------------------------
+---
+
 # :rocket: Updating the package (tip note for the dev)
 
-* Create a `feature` branch, make updates to it.
-* Test the feature
-* Bump the version in `setup.cfg`
-* Bump the version of the `whl` file in `.circleci/config.yml`
-* Update the ChangeLog
-* Push to GitHub
+- Create a `feature` branch, make updates to it.
+- Test the feature
+- Bump the version in `setup.cfg`
+- Bump the version of the `whl` file in `.circleci/config.yml`
+- Update the ChangeLog
+- Push to GitHub
 
 :rainbow: When you have a successful build on https://app.circleci.com/pipelines/github/Becheler/quetzal-CRUMBS:
-* create a Pull Request (PR) to the develop branch
-* Merge the PR if it looks good.
-* When that build succeeds, create a PR to the main branch, review it, and merge.
-* Go get a beer and bless this new version with some luuuv :beer: :revolving_hearts:
+
+- create a Pull Request (PR) to the develop branch
+- Merge the PR if it looks good.
+- When that build succeeds, create a PR to the main branch, review it, and merge.
+- Go get a beer and bless this new version with some luuuv :beer: :revolving_hearts:
 
 Workflow from https://circleci.com/blog/publishing-a-python-package/.
 
----------------------------------------------------
+---
+
 # :books: References
 
-* Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann,
-N.E. (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data
-since the last glacial maximum. Geoscientific Model Development - Discussions
+- Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann,
+  N.E. (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data
+  since the last glacial maximum. Geoscientific Model Development - Discussions
 
-* Version 1.0
-Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann, N.E.
-(2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data since
-the last glacial maximum. EnviDat.
+- Version 1.0
+  Karger, Dirk Nikolaus; Nobis, M., Normand, Signe; Graham, Catherine H., Zimmermann, N.E.
+  (2021). CHELSA-TraCE21k: Downscaled transient temperature and precipitation data since
+  the last glacial maximum. EnviDat.
 
-* Bocedi, G., Pe’er, G., Heikkinen, R. K., Matsinos, Y., & Travis, J. M. (2012). Projecting species’ range expansion dynamics: sources of systematic biases when scaling up patterns and processes. Methods in Ecology and Evolution, 3(6), 1008-1018.
+- Bocedi, G., Pe’er, G., Heikkinen, R. K., Matsinos, Y., & Travis, J. M. (2012). Projecting species’ range expansion dynamics: sources of systematic biases when scaling up patterns and processes. Methods in Ecology and Evolution, 3(6), 1008-1018.
 
-* Baird, S. J., & Santos, F. (2010). Monte Carlo integration over stepping stone models for spatial genetic inference using approximate Bayesian computation. Molecular ecology resources, 10(5), 873-885.
+- Baird, S. J., & Santos, F. (2010). Monte Carlo integration over stepping stone models for spatial genetic inference using approximate Bayesian computation. Molecular ecology resources, 10(5), 873-885.
 
-* Estoup, A., Baird, S. J., Ray, N., Currat, M., CORNUET, J. M., Santos, F., ... & Excoffier, L. (2010). Combining genetic, historical and geographical data to reconstruct the dynamics of bioinvasions: application to the cane toad Bufo marinus. Molecular ecology resources, 10(5), 886-901.
+- Estoup, A., Baird, S. J., Ray, N., Currat, M., CORNUET, J. M., Santos, F., ... & Excoffier, L. (2010). Combining genetic, historical and geographical data to reconstruct the dynamics of bioinvasions: application to the cane toad Bufo marinus. Molecular ecology resources, 10(5), 886-901.

@@ -1,15 +1,16 @@
 import pytest
 
-from . context import crumbs
 from crumbs import bpp
+
+from .context import crumbs
 
 
 def test_nb_species_posterior_probabilities():
 
-    from pathlib import Path
     import math
+    from pathlib import Path
 
-    string = Path('data/bpp_output.txt').read_text()
+    string = Path("data/bpp_output.txt").read_text()
     posterior = bpp.nb_species_posterior_probabilities(string)
 
     assert math.isclose(posterior[1], 0.0)

@@ -65,13 +65,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Debug
 
-
 ## [0.0.11] - 2021-09-01
 
 ### Added
 
 - Debug
-
 
 ## [0.0.12] - 2021-09-21
 
@@ -166,7 +164,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - In SDM, clip_dir not specified defaulted to wrong value
 
-
 ## [1.0.17] - 2022-06-04
 
 ### Refactored
@@ -178,7 +175,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Sphinx documentation deployed on gh-pages
 - CLI integration tests for entrypoints
-
 
 ## [1.0.18] - 2022-06-28
 
