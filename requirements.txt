@@ -37,7 +37,7 @@ pyimpute==0.3
 # smart progress meter
 tqdm==4.64.0
 
-Python bindings for the Qt platform (mayavi dep.)
+# Python bindings for the Qt platform (mayavi dep.)
 pyqt5==5.15.7
 
 # Image processing capabilities (mayavi dep.)
