@@ -1,83 +1,63 @@
-affine==2.3.1
-aiohttp==3.8.1
-aiosignal==1.2.0
-appdirs==1.4.4
-apptools==5.1.0
-async-timeout==4.0.2
+# Avoids "cannot import name 'define' from 'attr' "
 attrs==21.4.0
-biopython==1.79
-cattrs==1.10.0
-certifi==2022.6.15
-charset-normalizer==2.0.12
-click==8.1.3
-click-plugins==1.1.1
-cligj==0.7.2
-cloudpickle==2.1.0
-configobj==5.0.6
-cycler==0.11.0
-dask==2022.6.1
-envisage==6.0.1
-Fiona==1.8.21
-fonttools==4.33.3
-frozenlist==1.3.0
-fsspec==2022.5.0
-geojson-rewind==1.0.3
-geomet==0.3.0
-geopandas==0.11.0
-idna==3.3
-imageio==2.19.3
-imageio-ffmpeg==0.4.7
-iniconfig==1.1.1
-joblib==1.1.0
-kiwisolver==1.4.3
-lightgbm==3.3.2
-locket==1.0.0
-matplotlib==3.5.2
-multidict==6.0.2
-munch==2.5.0
+
+# Array computing
 numpy==1.23.0
-packaging==21.3
-pandas==1.4.3
-partd==1.2.0
-Pillow==9.1.1
-pluggy==1.0.0
-py==1.11.0
-pyface==7.4.1
+
+# Composable command line interface toolkit
+click==8.1.3
+
+# Parallel computing libary
+dask==2022.6.1
+
+# Lightweight pipelining with Python functions
+joblib==1.1.0
+
+# Python client for GBIF API
 pygbif==0.6.1
-Pygments==2.12.0
-pyimpute==0.3
-pyparsing==3.0.9
-pyproj==3.3.1
-PyQt5==5.15.7
-PyQt5-Qt5==5.15.2
-PyQt5-sip==12.11.0
-pytest==7.1.2
-python-dateutil==2.8.2
-pytz==2022.1
+
+# Sequence simulation along phylogenies according to continuous-time Markov models
 Pyvolve==1.0.3
-PyYAML==6.0
+
+# Read and write GIS
 rasterio==1.3b2
-rasterstats==0.16.0
-requests==2.28.0
-requests-cache==0.9.4
-rioxarray==0.11.1
+
+# Read and write spatial data
+Fiona==1.8.21
+
+# Geographic dataframes
+geopandas==0.11.0
+
+# machine learning
 scikit-learn==1.1.1
-scipy==1.8.1
-Shapely==1.8.2
-simplejson==3.17.6
-six==1.16.0
-snuggs==1.4.7
-threadpoolctl==3.1.0
-tomli==2.0.1
-toolz==0.11.2
-tqdm==4.64.0
-traits==6.3.2
-traitsui==7.3.1
-url-normalize==1.4.3
-urllib3==1.26.9
-wslink==1.6.5
-xarray==2022.3.0
+
+# Light Gradient Boosting Machine
+lightgbm==3.3.2
+
+# regularizing gradient boosting
 xgboost==1.6.1
-yarl==1.7.2
+
+# Utilities for applying scikit-learn to spatial datasets
+pyimpute==0.3
+
+# smart progress meter
+tqdm==4.64.0
+
+# Python bindings for the Qt platform (mayavi dep.)
+# Bug on Ub.22.04 but avoids AttributeError: 'Timer' object has no attribute 'start' on other OS
+pyqt5==5.15.7
+
+# Image processing capabilities (mayavi dep.)
+pillow==9.1.1
+
+# interactive visualization of 3D data.
 mayavi==4.7.4
+
+# python wrapper for Xvfb, Xephyr and Xvnc.
 PyVirtualDisplay==3.0
+
+# python interface to read/write image data: animated images, volumetric data, and scientific formats.
+imageio==2.19.3
+
+# python FFMPEG wrapper.
+imageio-ffmpeg==0.4.7
