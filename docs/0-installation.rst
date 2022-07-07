@@ -113,10 +113,10 @@ and you now need to install directly its dependencies:
 
 .. code-block:: bash
 
-sudo apt-get update
-sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
-sudo apt-get install libxcb-xinerama0
-sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
+    sudo apt-get update
+    sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
+    sudo apt-get install libxcb-xinerama0
+    sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
 
 Then (in a virtual environment) install python packages for Mayavi support:
 
