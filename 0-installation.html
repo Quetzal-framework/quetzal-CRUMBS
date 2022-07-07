@@ -135,6 +135,16 @@ but if you have any problem, again <a class="reference external" href="https://g
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install gdal
 </pre></div>
 </div>
+<p>Then install XQuartz to allow cross-platform applications using X11 for the GUI to run on macOS:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install --cask xquartz
+<span class="c1"># https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path</span>
+<span class="nb">echo</span> <span class="s2">&quot;/opt/X11/bin&quot;</span> &gt;&gt; <span class="nv">$GITHUB_PATH</span>
+<span class="c1"># https://github.com/ponty/PyVirtualDisplay/issues/42</span>
+mkdir /tmp/.X11-unix
+sudo chmod <span class="m">1777</span> /tmp/.X11-unix
+sudo chown root /tmp/.X11-unix
+</pre></div>
+</div>
 <p>Then install quetzal-crumbs in a virtual environment:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
 </pre></div>
@@ -162,14 +172,12 @@ sudo apt-get install libxcb-render-util0
 sudo apt-get install libxcb-xinerama0
 </pre></div>
 </div>
-<p>Then (in your virtual environment) install python packages for Mayavi support:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install pyqt5
-python3 -m pip install numpy
-python3 -m pip install vtk
-python3 -m pip install pillow
+<p>Then in your virtual environment install the Visualization Toolkit (VTK), an
+open source software for manipulating and displaying scientific data:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install vtk
 </pre></div>
 </div>
-<p>And finally install quetzal-crumbs (in your virtual environment)</p>
+<p>And finally install quetzal-crumbs in your virtual environment:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install quetzal-crumbs
 </pre></div>
 </div>
@@ -183,15 +191,18 @@ sudo apt-get install libgdal-dev
 python3 -m pip install --global-option<span class="o">=</span>build_ext --global-option<span class="o">=</span><span class="s2">&quot;-I/usr/include/gdal&quot;</span> <span class="nv">GDAL</span><span class="o">==</span><span class="sb">`</span>gdal-config --version<span class="sb">`</span>
 </pre></div>
 </div>
-<p>Then install Linux packages for Qt5 support:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
-sudo apt-get install libxcb-xinerama0
+<p>Then install Linux packages for Qt5 support: the <cite>qt5-default</cite> package has been removed
+(see <a class="reference external" href="https://askubuntu.com/questions/1404263/how-do-you-install-qt-on-ubuntu22-04">here</a>)
+and you now need to install directly its dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
+<p>sudo apt-get update
+sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
+sudo apt-get install libxcb-xinerama0
+sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils</p>
 <p>Then (in a virtual environment) install python packages for Mayavi support:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install numpy
-python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-python3 -m pip install pillow
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 </pre></div>
 </div>
 <div class="admonition note">

@@ -34,6 +34,18 @@ First install GDAL:
 
     brew install gdal
 
+Then install XQuartz to allow cross-platform applications using X11 for the GUI to run on macOS:
+
+.. code-block:: bash
+
+    brew install --cask xquartz
+    # https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#adding-a-system-path
+    echo "/opt/X11/bin" >> $GITHUB_PATH
+    # https://github.com/ponty/PyVirtualDisplay/issues/42
+    mkdir /tmp/.X11-unix
+    sudo chmod 1777 /tmp/.X11-unix
+    sudo chown root /tmp/.X11-unix
+
 Then install quetzal-crumbs in a virtual environment:
 
 .. code-block:: bash
@@ -56,8 +68,6 @@ Install GDAL:
     sudo apt-get install libgdal-dev
     python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
-
-
 Then install Linux packages for Qt5 support:
 
 .. code-block:: bash
@@ -71,16 +81,14 @@ Then install Linux packages for Qt5 support:
     sudo apt-get install libxcb-render-util0
     sudo apt-get install libxcb-xinerama0
 
-Then (in your virtual environment) install python packages for Mayavi support:
+Then in your virtual environment install the Visualization Toolkit (VTK), an
+open source software for manipulating and displaying scientific data:
 
 .. code-block:: bash
 
-    python3 -m pip install pyqt5
-    python3 -m pip install numpy
     python3 -m pip install vtk
-    python3 -m pip install pillow
 
-And finally install quetzal-crumbs (in your virtual environment)
+And finally install quetzal-crumbs in your virtual environment:
 
 .. code-block:: bash
 
@@ -99,20 +107,22 @@ Install GDAL:
     sudo apt-get install libgdal-dev
     python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
-Then install Linux packages for Qt5 support:
+Then install Linux packages for Qt5 support: the `qt5-default` package has been removed
+(see `here <https://askubuntu.com/questions/1404263/how-do-you-install-qt-on-ubuntu22-04>`_)
+and you now need to install directly its dependencies:
 
 .. code-block:: bash
 
-    sudo apt-get update
-    sudo apt-get install libxcb-xinerama0
+sudo apt-get update
+sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
+sudo apt-get install libxcb-xinerama0
+sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
 
 Then (in a virtual environment) install python packages for Mayavi support:
 
 .. code-block:: bash
 
-    python3 -m pip install numpy
     python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-    python3 -m pip install pillow
 
 .. note::
 
