@@ -194,13 +194,12 @@ python3 -m pip install --global-option<span class="o">=</span>build_ext --global
 <p>Then install Linux packages for Qt5 support: the <cite>qt5-default</cite> package has been removed
 (see <a class="reference external" href="https://askubuntu.com/questions/1404263/how-do-you-install-qt-on-ubuntu22-04">here</a>)
 and you now need to install directly its dependencies:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<p>sudo apt-get update
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
 sudo apt install -y qtcreator qtbase5-dev qt5-qmake cmake
 sudo apt-get install libxcb-xinerama0
-sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils</p>
+sudo apt-get install -y tigervnc-standalone-server xserver-xephyr gnumeric x11-utils
+</pre></div>
+</div>
 <p>Then (in a virtual environment) install python packages for Mayavi support:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 </pre></div>
